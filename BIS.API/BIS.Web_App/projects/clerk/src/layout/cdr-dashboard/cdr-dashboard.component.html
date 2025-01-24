@@ -1,0 +1,351 @@
+<mat-card appearance="outlined">
+    <mat-card-header class="insync-header">
+        <div class="row full-width">
+            <div class="col-sm-2">CDR Dashboard</div>
+            <!-- <div class="col-sm-2 offset-md-6">Bulk</div> -->
+            <!-- <div class="col-sm-2"><button class="btn btn-link" style="margin-left:50px" (click)="add()">+ Add Data</button></div> -->
+        </div>
+    </mat-card-header>
+    <mat-card-content>
+        <div class="row">
+            <div class="col-sm-3">
+                <mat-form-field>
+                    <mat-label>Start Date</mat-label>
+                    <input matInput [matDatepicker]="startDatePickerN" [(ngModel)]="filterNew.startDate"
+                        (dateInput)="filternew()">
+                    <mat-datepicker-toggle matSuffix [for]="startDatePickerN"></mat-datepicker-toggle>
+                    <mat-datepicker #startDatePickerN></mat-datepicker>
+                </mat-form-field>
+            </div>
+            <div class="col-sm-3">
+                <mat-form-field>
+                    <mat-label>End Date</mat-label>
+                    <input matInput [matDatepicker]="endDatePickerN" [(ngModel)]="filterNew.endDate"
+                        (dateInput)="filternew()">
+                    <mat-datepicker-toggle matSuffix [for]="endDatePickerN"></mat-datepicker-toggle>
+                    <mat-datepicker #endDatePickerN></mat-datepicker>
+                </mat-form-field>
+            </div>
+            <div class="col-sm-3">
+                <mat-form-field class="w-full">
+                    <mat-label>Select your chart</mat-label>
+                    <mat-select [(value)]="selected11" (selectionChange)="onChange1($event)">
+                        <mat-option value="Monthly">Monthly</mat-option>
+                        <mat-option value="Daily">Daily</mat-option>
+                        <mat-option value="Weekly">Weekly</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="col-sm-3">
+                <ng-select appendTo="ng-select" [items]="sectorList" [multiple]="false" bindLabel="name"
+                    bindValue="name" placeholder="Sector" [searchable]="true">
+                    <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                        <div class="ng-value" *ngFor="let item of items">
+                            <span class="ng-value-label">{{item}}</span>
+                        </div>
+                    </ng-template>
+                </ng-select>
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3">
+                <ng-select appendTo="ng-select" [items]="aspectList" [multiple]="false" bindLabel="name"
+                    bindValue="name" placeholder="Sector" [searchable]="true">
+                    <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                        <div class="ng-value" *ngFor="let item of items">
+                            <span class="ng-value-label">{{item}}</span>
+                        </div>
+                    </ng-template>
+                </ng-select>
+            </div>
+            <div class="col-sm-3">
+                @if(selectedNew == 'Svl / Counter Svl'){
+                <div class="col-sm-3">
+                    <ng-select appendTo="ng-select" [items]="indicatorList" [multiple]="false" bindLabel="name"
+                        bindValue="name" placeholder="Sector" [searchable]="true">
+                        <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                            <div class="ng-value" *ngFor="let item of items">
+                                <span class="ng-value-label">{{item}}</span>
+                            </div>
+                        </ng-template>
+                    </ng-select>
+                </div>
+                }
+            </div>
+        </div>
+        <div class="row">
+            <!-- <div class="col-md-12"> -->
+            <div class="card-container">
+                <mat-card class="card card-equal">
+                    <h3 class="card-title">Monthly Data Line Chart</h3>
+                    <div class="chart-container">
+                        <canvas baseChart [data]="lineChartData" [labels]="lineChartData.labels"
+                            [options]="lineChartOptions" [type]="lineChartType">
+                        </canvas>
+                    </div>
+                </mat-card>
+                <!-- </div> -->
+
+
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-sm-4">
+                <mat-form-field>
+                    <mat-label>Start Date</mat-label>
+                    <input matInput [matDatepicker]="startDatePickerV" [(ngModel)]="filterNew.startDate"
+                        (dateInput)="filternew()">
+                    <mat-datepicker-toggle matSuffix [for]="startDatePickerV"></mat-datepicker-toggle>
+                    <mat-datepicker #startDatePickerV></mat-datepicker>
+                </mat-form-field>
+            </div>
+            <div class="col-sm-4">
+                <ng-select appendTo="ng-select" [items]="staffList" [multiple]="false" bindLabel="name" bindValue="name"
+                    placeholder="Sector" [searchable]="true">
+                    <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                        <div class="ng-value" *ngFor="let item of items">
+                            <span class="ng-value-label">{{item}}</span>
+                        </div>
+                    </ng-template>
+                </ng-select>
+            </div>
+            <div class="col-sm-4">
+                <ng-select appendTo="ng-select" [items]="notesList" [multiple]="false" bindLabel="name" bindValue="name"
+                    placeholder="Sector" [searchable]="true">
+                    <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                        <div class="ng-value" *ngFor="let item of items">
+                            <span class="ng-value-label">{{item}}</span>
+                        </div>
+                    </ng-template>
+                </ng-select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <mat-card class="card adjust-height">
+                    <mat-card-header>
+                        <h6>SAVED NOTES</h6>
+                    </mat-card-header>
+                    <mat-card-content>
+
+                    </mat-card-content>
+                </mat-card>
+            </div>
+            <div class="col-sm-12">
+                <mat-card class="card adjust-height">
+                    <mat-card-header>
+                        <h6>SAVED ALERT GRAPH</h6>
+                    </mat-card-header>
+                    <mat-card-content>
+
+                    </mat-card-content>
+                </mat-card>
+            </div>
+            <br> <br>
+            <div class="row">
+                <div class="col-sm-11">
+                    <mat-form-field>
+                        <mat-label>REMARKS (By Cdr) : </mat-label>
+                        <textarea matInput class="remarks"></textarea>
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-1 custom-btn">
+                    <button type="button" mat-raised-button color="primary">Save</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-5">
+                    <div class="card-container">
+                        <div class="card">
+                            <div class="row">
+                                <div class="col-sm-12 text-center">CDR Interface</div>
+                            </div> <br>
+                            <div class="row">
+
+                                <div class="col-sm-4">
+                                    En FORCE LEVEL :
+                                </div>
+                                <div class="col-sm-8">
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>En force Level</mat-label>
+                                        <input matInput placeholder="Placeholder" />
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    En LIKELY AIM :
+                                </div>
+                                <div class="col-sm-8">
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>En LIKELY AIM</mat-label>
+                                        <input matInput placeholder="Placeholder" />
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    En LIKELY TGT :
+                                </div>
+                                <div class="col-sm-8">
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>En LIKELY TGT</mat-label>
+                                        <input matInput placeholder="Placeholder" />
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    NEXT ACTION BY EN :
+                                </div>
+                                <div class="col-sm-8">
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>NEXT ACTION BY EN </mat-label>
+                                        <input matInput placeholder="Placeholder" />
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    OWN IMDT ACTION :
+                                </div>
+                                <div class="col-sm-8">
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>OWN IMDT ACTION </mat-label>
+                                        <input matInput placeholder="Placeholder" />
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <button type="button" class="full-width" mat-raised-button color="primary">Save Notes</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-7">
+                    <div class="card-container">
+                        <div class="card">
+                            <div class="row">
+                                <div class="col-sm-12 text-center">NEXT COA : EN</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">Locs To Obsn</div>
+                                <div class="col-sm-4">
+                                    <mat-form-field>
+                                        <mat-label>Sector</mat-label>
+                                        <mat-select [(ngModel)]="filterNew.Sector" (selectionChange)="filternew()">
+                                          <mat-option value="">None</mat-option>
+                                          <mat-option value="PSS">PSS</mat-option>
+                                          <mat-option value="MSS">MSS</mat-option>
+                                          <mat-option value="Cho_La">Cho_La</mat-option>
+                                          <mat-option value="Doka_La">Doka_La</mat-option>
+                                        </mat-select>
+                                      </mat-form-field>
+                                </div>
+                                <div class="col-sm-4">
+                                    <mat-form-field>
+                                        <mat-label>LOC</mat-label>
+                                        <mat-select  (selectionChange)="filternew()">
+                                          <mat-option value="">None</mat-option>
+                                          <mat-option value=""></mat-option>
+                                        </mat-select>
+                                      </mat-form-field>
+                                </div>
+                                <div class="col-sm-4"></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">Fmns To Obsn</div>
+                                <div class="col-sm-4">
+                                    <mat-form-field>
+                                        <mat-label>Corps</mat-label>
+                                        <mat-select [(ngModel)]="filterNew.Sector" (selectionChange)="filternew()">
+                                          <mat-option value="">None</mat-option>
+                                          <mat-option value=""></mat-option>
+                                        </mat-select>
+                                      </mat-form-field>
+                                </div>
+                                <div class="col-sm-4">
+                                    <mat-form-field>
+                                        <mat-label>Div</mat-label>
+                                        <mat-select  (selectionChange)="filternew()">
+                                          <mat-option value="">None</mat-option>
+                                          <mat-option value=""></mat-option>
+                                        </mat-select>
+                                      </mat-form-field>
+                                </div>
+                                <div class="col-sm-4">
+                                    <mat-form-field>
+                                        <mat-label>Bde</mat-label>
+                                        <mat-select  (selectionChange)="filternew()">
+                                          <mat-option value="">None</mat-option>
+                                          <mat-option value=""></mat-option>
+                                        </mat-select>
+                                      </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">Troops to Task</div>
+                                <div class="col-sm-4">
+                                    <mat-form-field>
+                                        <mat-label>Fmns</mat-label>
+                                        <mat-select [(ngModel)]="filterNew.Sector" (selectionChange)="filternew()">
+                                          <mat-option value="">None</mat-option>
+                                          <mat-option value=""></mat-option>
+                                        </mat-select>
+                                      </mat-form-field>
+                                </div>
+                                <div class="col-sm-4">
+                                    <mat-form-field>
+                                        <mat-label>Sect</mat-label>
+                                        <mat-select  (selectionChange)="filternew()">
+                                          <mat-option value="">None</mat-option>
+                                          <mat-option value=""></mat-option>
+                                        </mat-select>
+                                      </mat-form-field>
+                                </div>
+                                <div class="col-sm-4">
+                                    <mat-form-field>
+                                        <mat-label>Tps</mat-label>
+                                        <mat-select  (selectionChange)="filternew()">
+                                          <mat-option value="">None</mat-option>
+                                          <mat-option value=""></mat-option>
+                                        </mat-select>
+                                      </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <mat-form-field>
+                                        <mat-label>RESO</mat-label>
+                                        <mat-select  (selectionChange)="filternew()">
+                                          <mat-option value="">None</mat-option>
+                                          <mat-option value=""></mat-option>
+                                        </mat-select>
+                                      </mat-form-field>
+                                </div>
+                                <div class="col-sm-4">
+                                    <mat-form-field>
+                                        <mat-label>Task</mat-label>
+                                        <mat-select  (selectionChange)="filternew()">
+                                          <mat-option value="">None</mat-option>
+                                          <mat-option value=""></mat-option>
+                                        </mat-select>
+                                      </mat-form-field>
+                                </div>
+                                
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6"><button type="button" class="full-width" mat-raised-button color="primary" style="margin:1px">Print</button></div>
+                                <div class="col-sm-6"><button type="button" class="full-width" mat-raised-button color="primary" style="margin:1px">Save </button></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </mat-card-content>
+</mat-card>

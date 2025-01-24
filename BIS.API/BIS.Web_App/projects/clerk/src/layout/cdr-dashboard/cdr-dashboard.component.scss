@@ -1,0 +1,35 @@
+.card-container {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .card {
+    width: 100%;
+    padding: 16px;
+    border: 1px solid #ccc;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .chart-container {
+    height: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .card-footer ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .card-footer li {
+    font-size: 14px;
+    margin: 4px 0;
+  }
+  .custom-btn{
+    display: flex;
+    align-items: center;
+  }
+  .adjust-height{
+    height: 200px;
+  }

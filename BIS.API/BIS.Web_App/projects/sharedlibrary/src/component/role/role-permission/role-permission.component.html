@@ -1,0 +1,60 @@
+<div mat-dialog-title>Permission</div>
+<form [formGroup]="roleform" (ngSubmit)="Saveroles()">
+  <mat-dialog-content>
+    <div class="row">
+      <div class="col-sm-4">
+          <mat-form-field><mat-label>Role Name</mat-label>
+
+          <input matInput  type="text" [ngModelOptions]="{standalone:true}"
+            [(ngModel)]="role.name" required type="text" readonly/>
+        </mat-form-field>
+      </div>
+      <div class="col-sm-6">
+          <mat-form-field><mat-label>Active Or Deactive</mat-label>
+
+          <input matInput  type="text" [ngModelOptions]="{standalone:true}"
+            [(ngModel)]="role.status" readonly/>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <mat-divider></mat-divider>
+    <table style="width: 100%;" formArrayName="access">
+      <thead>
+          <tr>
+              <th>Menu name</th>
+              <th>Have view</th>
+              <th>Have Add</th>
+              <th>Have Edit</th>
+              <th>Have Delete</th>
+          </tr>
+      </thead>
+      <tbody>
+          <tr *ngFor="let item of getrows.controls;let i=index" [formGroupName]="i">
+              <td>{{item.value.menucode}}</td>
+              <td>
+                  <mat-checkbox formControlName="haveview"></mat-checkbox>
+              </td>
+              <td>
+                  <mat-checkbox formControlName="haveadd"></mat-checkbox>
+              </td>
+              <td>
+                  <mat-checkbox formControlName="haveedit"></mat-checkbox>
+              </td>
+              <td>
+                  <mat-checkbox formControlName="havedelete"></mat-checkbox>
+              </td>
+
+          </tr>
+      </tbody>
+
+  </table>
+
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button class="btn  btn-success btn-sm" type="submit" >Save</button>
+    <!-- <button type="button" class="btn btn-outline-danger btn-sm" (click)="resetObj()"
+      *ngIf="!dataObject.isView && !(dataObject.id>0)">Reset</button> -->
+    <button type="button" class="btn btn-outline-info btn-sm" (click)="closeDialog()">Close</button>
+  </mat-dialog-actions>  
+</form>

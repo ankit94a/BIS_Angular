@@ -1,0 +1,34 @@
+<mat-toolbar color="primary" class="app-header">
+    <mat-toolbar-row>
+        <div fxShow="true">
+            <button mat-icon-button (click)="toggleSideBar()">
+                <mat-icon>menu</mat-icon>
+            </button>
+        </div>
+        <span> {{facilityName}} </span>
+        <span class="example-spacer"></span>
+        <div class="user">
+                <app-notification></app-notification>
+        </div>
+        <div>
+            <button mat-button [matMenuTriggerFor]="settingMenu">
+                <mat-icon>settings</mat-icon>
+            </button>
+            <mat-menu #settingMenu="matMenu">
+                <a mat-menu-item routerLinkActive="list-item-active" routerLink="/user-list">
+                    <mat-icon>label</mat-icon>
+                    User
+                </a>
+                <a mat-menu-item routerLinkActive="list-item-active" routerLink="/roles">
+                    <mat-icon>label</mat-icon>
+                    Role & Permission
+                </a>
+                <button mat-menu-item (click)="onLoggedout()">
+                    <mat-icon>exit_to_app</mat-icon>
+                    Sign out
+                </button>
+            </mat-menu>
+        </div>
+    </mat-toolbar-row>
+
+</mat-toolbar>

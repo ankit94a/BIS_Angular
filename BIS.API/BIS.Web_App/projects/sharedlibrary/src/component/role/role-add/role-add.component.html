@@ -1,0 +1,52 @@
+<form #userForm="ngForm" (ngSubmit)="userForm.valid && onSubmit()" novalidate>
+    <div mat-dialog-title>
+      Role Add
+    </div>
+    <mat-dialog-content>
+      <div class="row">
+        <div class="col-sm-4">
+            <mat-form-field><mat-label>Role Name</mat-label>
+  
+            <input matInput  type="text" name="roleName" #roleName="ngModel"
+              [(ngModel)]="role.roleName"  minlength="5" required nfNoSpaces  [ngClass]="{ 'is-invalid':  roleName.errors }"  [readonly]="role.isView"/>
+            <mat-error *ngIf="roleName.errors" class="invalid-feedback">
+              <span *ngIf="roleName.errors.required">RoleName is required</span>
+              <span *ngIf="roleName.errors.minlength"> RoleName must be at least 5 characters</span>
+              <span *ngIf="roleName.errors.whitespace"> RoleName cannot contain space.</span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-sm-4">
+            <mat-form-field><mat-label>Description</mat-label>
+            <input matInput  type="text" [ngModelOptions]="{standalone:true}"
+              [(ngModel)]="role.roleDescription" required [readonly]="role.isView"/>
+          </mat-form-field>
+        </div>
+        </div>
+        <div class="col-sm-6">
+          <mat-form-field><mat-label>Select Corps</mat-label>
+            <mat-select [(ngModel)]="role.corpsId" name="corpsId" #corpsId="ngModel">
+              <mat-option *ngFor="let cor of corps" [value]="cor.id" required>
+                {{cor.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-sm-6">
+          <mat-form-field><mat-label>Select Division</mat-label>
+            <mat-select [(ngModel)]="role.divisionId" name="divisionId" #divisionId="ngModel">
+              <mat-option *ngFor="let div of divison" [value]="div.id" required>
+                {{div.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+        <button class="btn  btn-success btn-sm" type="submit" *ngIf="!role.isView">Save</button>
+        <!-- <button type="button" class="btn btn-outline-danger btn-sm" (click)="resetObj()"
+          *ngIf="!dataObject.isView && !(dataObject.id>0)">Reset</button> -->
+        <button type="button" class="btn btn-outline-info btn-sm" (click)="closeDialog()">Close</button>
+      </mat-dialog-actions>
+  </form>
+  

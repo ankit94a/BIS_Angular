@@ -1,0 +1,55 @@
+<form #facilityForm="ngForm" (ngSubmit)="facilityForm.form.valid && onSubmit()" novalidate>
+    <div mat-dialog-title>
+        Add
+    </div>
+    <mat-dialog-content>
+        <div class="row">
+            <div class="col-sm-4">
+                <mat-form-field><mat-label>Registered Name</mat-label>
+                    <input matInput type="text" [ngModelOptions]="{standalone:true}"
+                        [(ngModel)]="facility.registeredName" required [readonly]="facility.isView"/>
+                    <mat-error>This field is <strong>required</strong></mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-sm-4">
+                <mat-form-field><mat-label>Registered Address</mat-label>
+                    <input matInput type="text" [ngModelOptions]="{standalone:true}"
+                        [(ngModel)]="facility.registeredAddress" [readonly]="facility.isView"/>
+                </mat-form-field>
+            </div>
+            <div class="col-sm-4">
+                <input #file name="imageUpload" id="imageUpload" type="file" accept='image/*' [hidden]="true"
+                    (change)="preview(file.files,$event)" />
+                <div *ngIf="!facility.logoUrl">
+                    <label for="imageUpload" class="image-size"
+                        style="text-align: center;padding-top: 15px;  cursor: pointer;">
+                        <span>Upload Logo</span> </label>
+                </div>
+                <div *ngIf="facility.logoUrl && facility.logoUrl !== ''">
+                    <img [src]="facility.logoUrl" class="image-size">
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-4">
+                <mat-form-field><mat-label> Type</mat-label>
+                    <input matInput type="number" [ngModelOptions]="{standalone:true}"
+                        [(ngModel)]="facility.facilityType" [readonly]="facility.isView"/>
+                </mat-form-field>
+            </div>
+            <div class="col-sm-4">
+                <mat-form-field><mat-label> Contact</mat-label>
+                    <input matInput type="number" [ngModelOptions]="{standalone:true}"
+                        [(ngModel)]="facility.primaryContactNumber" [readonly]="facility.isView"/>
+                </mat-form-field>
+            </div>
+        </div>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+        <button class="btn  btn-success btn-sm" type="submit">Save</button>
+        <button type="button" class="btn btn-outline-danger btn-sm" *ngIf="!facility.isView" (click)="reset()">Reset</button>
+        <button type="button" class="btn btn-outline-info btn-sm" (click)="close()">Close</button>
+    </mat-dialog-actions>
+
+</form>

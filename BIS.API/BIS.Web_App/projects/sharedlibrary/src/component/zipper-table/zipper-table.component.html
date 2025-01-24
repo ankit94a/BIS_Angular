@@ -1,0 +1,136 @@
+<section class="example-container mat-elevation-z8" tabindex="0" style="overflow: auto;" style="width: auto;">   
+    <mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+        <ng-container *ngFor="let column of sqColumnDefinition" matColumnDef="{{column.name}}" sticky="true">
+            <ng-container *ngIf="column.name ==='select';then checkbox else nocheckbox"></ng-container>
+            <ng-template #checkbox>
+                <mat-header-cell class="zipper-checkbox" *matHeaderCellDef>
+                    <mat-checkbox (change)="$event ? masterToggle() : null"
+                        [checked]="selection.hasValue() && isAllSelected()"
+                        [indeterminate]="selection.hasValue() && !isAllSelected()">
+                    </mat-checkbox>
+                </mat-header-cell>
+                <mat-cell class="zipper-checkbox" *matCellDef="let row">
+                    <mat-checkbox (click)="$event.stopPropagation()"
+                        (change)="$event ? selection.toggle(row) : null; rowSelect()"
+                        [checked]="selection.isSelected(row)">
+                    </mat-checkbox>
+                </mat-cell>
+            </ng-template>
+            <ng-template #nocheckbox>
+                <mat-header-cell *matHeaderCellDef >
+                    <div class="column-header-content zipper-width">
+                        <span> {{column.displayName}}</span>
+                        <div *ngIf="isSearchEnabled(column)" [ngSwitch]="column.type"
+                            (click)="$event.stopPropagation()">
+                            <div *ngSwitchCase="'number'">
+                                <mat-form-field>
+                                    <input matInput type="number" value=""
+                                        (keyup)="applyInsyncFilter($event.target,column.name,column.type)" />
+                                </mat-form-field>
+                            </div>
+                            <div *ngSwitchCase="'date'">
+                                <mat-form-field>
+                                    <input #filterName name="filterName" matInput [matDatepicker]="startDate"
+                                        placeholder="Select date"
+                                        (dateChange)="applyInsyncFilter($event.target.value,column.name,column.type)">
+                                    <mat-datepicker-toggle matSuffix [for]="startDate"></mat-datepicker-toggle>
+                                    <mat-datepicker #startDate></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+                            <!-- <div *ngSwitchCase="'dropdown'">
+                                <mat-form-field>
+                                    <mat-select placeholder="{{'Select'}}" #filterName name="filterName"
+                                        (selectionChange)="applyInsyncFilter($event,column.name,column.type)">
+                                        <mat-option *ngFor="let item of column?.dropDownList"
+                                            value={{item.key}}>{{item.value}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div> -->
+                            <div *ngSwitchDefault>
+                                <mat-form-field class="example-form-field">
+                                    <input matInput type="text" placeholder="Search"
+                                        (keyup)="applyInsyncFilter($event.target,column.name,column.type)">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+                </mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    <div [ngSwitch]="column.valueType">
+                        <div *ngSwitchCase="'custom'">
+                            <custom-view-component [column]="column" [element]="element"></custom-view-component>
+                        </div>
+
+                        <div *ngSwitchCase="'html'" [innerHtml]="getValues(element,column)"></div>
+                        <div *ngSwitchDefault>{{getValues(element,column)}}</div>
+                    </div>
+
+                </mat-cell>
+            </ng-template>
+        </ng-container>
+
+        <ng-container *ngIf="tablePaginationSettings.enableAction" matColumnDef="action">
+            <mat-header-cell *matHeaderCellDef style="margin-top:-1%;">
+                <div class="column-header-content">
+                    <button class="btn btn-link" type="button" 
+                        *ngIf="tablePaginationSettings.enableColumn;else actionTemplate" #menuTrigger="matMenuTrigger"
+                        [matMenuTriggerFor]="mainMenuButton"> <mat-icon matTooltip="Add More Columns">filter_list</mat-icon> </button>
+
+
+                    <ng-template #actionTemplate>Action</ng-template>
+                    <br>
+                    <mat-menu #mainMenuButton="matMenu">
+                        <span (click)="$event.stopPropagation()"
+                            *ngFor="let menuColumn of sqColumnDefinition;index as i">
+                            <span *ngIf="menuColumn.displayName!=''"><mat-slide-toggle color="primary"
+                                    style="margin:3px" [checked]="!menuColumn.hide"
+                                    (change)="toggleColumn($event,menuColumn)">
+                                </mat-slide-toggle>
+                                {{menuColumn.displayName}}
+                                <br></span>
+                        </span>
+                    </mat-menu>
+                    <button *ngIf="sqColumnDefinition[0].isSearchEnabled" type="button" class="btn table-reset-btn btn-outline-danger btn-sm"
+                        (click)="resetFilters()">Reset</button>
+                </div>
+            </mat-header-cell>
+            <mat-cell *matCellDef="let element;let i = index;">
+                <button mat-icon-button color="primary" *ngIf="element!=null && tablePaginationSettings.enableAdd"
+                    type="button" (click)="addObj(element)" matTooltip="add"> <mat-icon>add</mat-icon>
+                </button>
+                <button mat-icon-button color="basic" *ngIf="element!=null && tablePaginationSettings.enableDownload"
+                    type="button" (click)="downloadFile(i,element)" matTooltip="download"> <mat-icon>download</mat-icon>
+                </button>
+                <button mat-icon-button color="accent" *ngIf="element!=null && tablePaginationSettings.enableUpload"
+                    type="button" (click)="uploadFile(element)" matTooltip="upload"> <mat-icon>upload</mat-icon>
+                </button>
+                <button mat-icon-button color="basic" *ngIf="element!=null && tablePaginationSettings.enableEdit"
+                    type="button" (click)="editObj(element)" matTooltip="edit"> <mat-icon>edit</mat-icon></button>
+                <button mat-icon-button color="accent" *ngIf="element!=null && tablePaginationSettings.enableView"
+                    type="button" (click)="viewObj(element)" matTooltip="view"> <mat-icon>remove_red_eye</mat-icon>
+                </button>
+                <button mat-icon-button color="warn" *ngIf="element!=null && tablePaginationSettings.enableDelete"
+                    type="button" (click)="deleteObj(i,element)" matTooltip="delete">
+                    <mat-icon>delete_outline</mat-icon>
+                </button>
+                <button mat-icon-button color="basic"
+                    *ngIf="element!=null && tablePaginationSettings.enablemarkAsDelivered" type="button"
+                    (click)="markAsDeliveredObj(element)" matTooltip="delivered"> <mat-icon>local_shipping</mat-icon>
+                </button>
+            </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="getVisibleColumns(); sticky: true"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: getVisibleColumns();"
+            [ngClass]="{'highlight': selectedRowIndex == row.position}"
+            (click)="enableCheckbox==false && allowMultiSelect==false ? highlight(row) : false ;">
+        </mat-row>
+    </mat-table>
+    <ng-container>
+        <mat-paginator class="mat-paginator-sticky" [pageSize]="tablePaginationSettings.pageSize"
+            [pageSizeOptions]="tablePaginationSettings.pageSizeOptions" (page)="getChangedPageValue($event)"
+            [showFirstLastButtons]="tablePaginationSettings.showFirstLastButtons">
+        </mat-paginator>
+    </ng-container>
+</section>

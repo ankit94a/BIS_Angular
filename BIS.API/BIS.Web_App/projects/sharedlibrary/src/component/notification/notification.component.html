@@ -1,0 +1,26 @@
+<div class="bell-container" (click)="openNotifications()">
+  <i class="fa-solid fa-bell fa-1x" style="color:#fff;"  [@bounce]="animState" (@bounce.done)="animDone($event)"></i>
+  <span class="badge" *ngIf="notifications.length>0"> {{notifications.length}}</span>
+</div>
+<div class="popup" *ngIf="dropdownVisible">
+  <div class="header">
+    <span>Notifications</span>
+  </div>
+  <div class="notification-list" id="notificationList" *ngFor="let notification of notifications;">
+    <div class="notification-item"  (click)="openNotification(notification)">
+      <i class="fa-solid fa-envelope"></i>
+      <div class="notification-content">
+        <div class="notification-type">{{ notification.title }}</div>
+        <div class="notification-message" [ngClass]="{'unread': !notification.isReaded}">{{ notification.content }}</div>
+        <div class="notification-timestamp">{{ notification.createdOn | timeDifference}}</div>
+      </div>
+    </div>
+    <mat-divider></mat-divider>
+  </div>
+  <!-- <div class="spinner" *ngIf="loading">
+    <mat-spinner diameter="40"></mat-spinner>
+  </div> -->
+  <!-- <div *ngIf="!hasMore && !loading" class="end-message">
+    No more notifications.
+  </div> -->
+</div>

@@ -1,0 +1,363 @@
+@import "@angular/material/prebuilt-themes/indigo-pink.css";
+@import "@ng-select/ng-select/themes/material.theme.css";
+@import "bootstrap.css";
+
+html,
+body {
+	margin: 0;
+	font-family: "Open Sans", sans-serif !important;
+	font-weight: 400;
+	height: 100% !important;
+}
+
+* {
+	box-sizing: border-box;
+}
+.full-width{
+	display: flex;
+	width: 100%;
+}
+.mat-content {
+    max-height: calc(100vh - 115px); 
+    overflow-y: auto; 
+    overflow-x: hidden; 
+    padding: 1rem; 
+    box-sizing: border-box; 
+  }
+.mat-mdc-form-field,
+.mat-mdc-card,
+.mat-body,
+.mat-body-2,
+.mat-typography {
+	font-family: "Open Sans", sans-serif !important;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-family: "Archivo", sans-serif !important;
+	font-weight: 400;
+	margin: 0;
+}
+
+.content {
+	padding: 5px;
+}
+
+.mat-step {
+	.mat-vertical-content-container {
+		margin-left: 0px !important;
+	}
+
+	.mat-vertical-content {
+		padding: 5px 10px 10px 10px !important;
+	}
+
+	.mat-vertical-stepper-header {
+		padding: 10px 10px !important;
+	}
+}
+.mat-drawer-content {
+    position: relative !important;
+    z-index: 1 !important;
+    display: block !important;
+    overflow: auto !important;
+}
+
+.popover {
+	max-width: 100% !important;
+	max-height: 100% !important;
+}
+
+.popover-body {
+	padding: 3px !important;
+}
+
+.mat-mdc-card {
+	border-radius: 0.25rem;
+	padding: 0% !important;
+}
+
+.insync-header {
+	background-color: white;
+	color: #3f51b5;
+	padding: 0.25rem !important;
+	font-weight: 500;
+	font-size: 16px;
+	border: 1px solid #3f51b5;
+
+	.btn-link {
+		color: #3f51b5;
+		padding: 0%;
+		margin: 0%;
+	}
+
+	position: sticky;
+  position: -webkit-sticky; /* For macOS/iOS Safari */
+  top: 0; /* Ensures the header is at the top of the mat-card */
+  z-index: 1000; /* Ensure the header stays above content */
+}
+
+/* TODO(mdc-migration): The following rule targets internal classes of card that may no longer apply for the MDC version. */
+.mat-card-header-text,
+.mat-dialog-title {
+	margin: 0px !important;
+}
+.mat-typography h2 {
+	margin: 0px !important;
+	padding: 0px 24px !important;
+}
+.mat-mdc-dialog-content{
+	padding: 10px 24px 10px 24px !important;
+}
+.mdc-dialog__surface{
+	overflow-y: hidden;
+}
+.mat-mdc-card-content {
+	padding: 10px !important;
+	margin-bottom: 5px !important;
+}
+
+.content-heading {
+	padding-left: 5px !important;
+}
+
+.border-content {
+	border: 1px solid #3f51b5;
+}
+
+
+.mat-mdc-icon-button.mat-mdc-button-base {
+    width: 36px;
+    height: 36px;
+    padding: 4px;
+}
+.mat-mdc-card-actions {
+	text-align: right !important;
+	position: sticky;
+	position: -webkit-sticky;
+}
+.mat-mdc-dialog-actions {
+    justify-content: end !important;
+}
+.mat-mdc-header-cell{
+	font-weight: bold;
+	color: #36336e;
+  }
+  .edusynk-mat-mdc-table .mat-mdc-cell,
+.edusynk-mat-mdc-table .mat-mdc-header-cell {
+    word-wrap: initial;
+    display: table-cell;
+    padding: 0px 10px;
+    line-break: unset;
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    vertical-align: middle;
+    border: 1px solid #d8dbe0;
+}
+.edusynk-input{
+	border-width: 0px !important;
+	border-block-end-width: 2px !important;
+  
+  }
+.form-actions {
+	text-align: right !important;
+}
+
+.example-spacer {
+	flex: 1 1 auto;
+}
+
+.mat-mdc-form-field {
+	display: inherit !important;
+}
+
+
+// .horizontal-scrollable {
+// 	overflow-x: auto;
+// 	white-space: nowrap;
+// }
+
+
+.insync-row {
+	flex-wrap: nowrap;
+}
+
+.insync-select {
+	.mat-mdc-text-field-wrapper:not(.mdc-text-field--outlined) .mat-mdc-form-field-infix {
+		padding-bottom: 2px !important;
+	}
+}
+
+.insync-mat-input-hide {
+	display: none;
+}
+
+.btn {
+	margin: 3px;
+}
+
+.without-label {
+	padding-top: 5%;
+}
+
+.link-btn {
+	cursor: pointer;
+}
+
+.insync-label {
+	align-items: center;
+	display: grid;
+}
+
+
+
+
+::ng-deep .cdk-global-overlay-wrapper {
+	z-index: 1100 !important;
+}
+
+
+
+.cdk-overlay-container,
+.cdk-overlay-pane {
+	z-index: 9999 !important;
+}
+
+.modal-content {
+	padding: 5px;
+}
+
+.example-headers-align .mat-expansion-panel-header-title,
+.example-headers-align .mat-expansion-panel-header-description {
+	flex-basis: 0;
+}
+
+.example-headers-align .mat-expansion-panel-header-description {
+	justify-content: space-between;
+	align-items: center;
+}
+
+.table-popover {
+	margin: 1px !important;
+}
+
+.table {
+	border-color: black;
+	font-family: "Open Sans", sans-serif !important;
+}
+
+.table-sm-insync> :not(caption)>*>* {
+	vertical-align: middle !important;
+	padding: 0.1rem 0.1rem !important;
+	text-align: center;
+}
+
+.insync-smaller {
+	font-size: smaller;
+}
+
+.mix {
+	color: #3f51b5;
+}
+
+.header-row {
+	font-weight: bold;
+	color: orange;
+}
+
+.variation-row {
+	padding-left: 5%;
+}
+
+.first-col-sticky {
+	z-index: 1000;
+	position: sticky;
+	left: 0;
+	background-color: white;
+}
+
+.image-size {
+	width: 75px;
+	height: 75px;
+	border: 1px solid black;
+	text-align: center;
+	margin: 2px !important;
+}
+
+.outer {
+	position: relative;
+}
+
+.fix {
+	position: fixed;
+
+}
+
+.inner {
+	overflow-x: scroll;
+	overflow-y: visible;
+}
+
+.Created {
+	color: blue;
+}
+
+.Shipped,
+.Completed {
+	color: green;
+}
+
+.Canceled,.Required {
+	color: red;
+}
+
+.Processing {
+	color: coral;
+}
+
+.mat-mdc-row:nth-child(odd) {
+	background: rgba(0, 0, 0, 0.025);
+}
+
+.mat-mdc-header-cell,
+mat-header-row,
+.mat-header-cell-def {
+
+
+	font-weight: bold;
+	color: #3f51b5;
+}
+
+.mat-col-width {
+	max-width: 5% !important;
+}
+
+
+.mdc-text-field {
+	padding: 0px !important;
+}
+
+.mat-mdc-text-field-wrapper:not(.mdc-text-field--outlined) .mat-mdc-form-field-infix {
+	background: white;
+}
+
+.mat-mdc-form-field-infix {
+	min-height: 46px !important;
+	line-height: 1.0 !important;
+}
+
+.mdc-data-table__cell,
+.mdc-data-table__header-cell {
+	padding: 0 6px 0 6px !important;
+}
+.column-header-content {
+    text-align: left !important;}
+	
+.insync-row{
+		margin:0px !important;
+	  }

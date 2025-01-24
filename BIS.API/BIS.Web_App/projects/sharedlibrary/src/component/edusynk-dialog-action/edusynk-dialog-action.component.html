@@ -1,0 +1,6 @@
+<mat-dialog-actions align="end">
+    <button class="btn action-button  btn-primary btn-sm" type="submit" *ngIf="!dataObject.isView">{{'Save' | translate}}</button>
+    <button type="button" class="btn action-button btn-outline-danger btn-sm" (click)="resetObj()"
+      *ngIf="!dataObject.isView && !(dataObject.id>0)">{{'Reset'|translate}}</button>
+    <button type="button" class="btn action-button btn-outline-warning btn-sm" (click)="closedialog()">{{'Close' | translate}}</button>
+  </mat-dialog-actions>

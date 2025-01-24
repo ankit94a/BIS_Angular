@@ -1,0 +1,8 @@
+<button class="btn btn-outline-primary" [matMenuTriggerFor]="dropdownMenuOne">{{'Action' |translate}}
+  <mat-icon class="edu-mat-icon">arrow_drop_down</mat-icon>
+</button>
+<mat-menu #dropdownMenuOne="matMenu" xPosition="before">
+  <button mat-menu-item (click)="download(true)">{{'ExportSample' | translate}}</button>
+  <button mat-menu-item (click)="download(false)">{{'ExportData' | translate}}</button>
+  <button mat-menu-item (click)="import()">{{'ImportData' | translate}}</button>
+</mat-menu>

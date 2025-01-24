@@ -1,0 +1,7 @@
+.table-container {
+    height: 80vh; /* Adjust the height as needed */
+    overflow-y: auto;
+    border: 1px solid #ccc; /* Optional: Add a border for better visibility */
+    border-radius: 4px; /* Optional: Add rounded corners */
+  }
+  

@@ -1,0 +1,39 @@
+<mat-card appearance="outlined">
+    <mat-card-header class="insync-header">
+        Role List
+        <span class="example-spacer"></span>
+        <button type="button" (click)="add()" class="btn btn-link">{{'+ Add New Role'}}</button>
+    </mat-card-header>
+    <mat-card-content>
+        <div class="table-container">
+            <table class="table table-hover table-sm">
+                <thead class="thead-light">
+                    <tr>
+                        <th>Name</th>
+                        <th>Code</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let role of roleList; let i = index;">
+                        <td>{{role.name}}</td>
+                        <td>{{role.code}}</td>
+                        <td>{{role.status}}</td>
+                        <td>
+                            <button mat-icon-button color="primary" (click)="permision(role)" matTooltip="Permission">
+                                <mat-icon>person_add</mat-icon>
+                            </button>
+                            <button mat-icon-button color="primary" *ngIf="role.name != 'Admin'" (click)="edit(role)" matTooltip="Edit Role">
+                                <mat-icon>edit</mat-icon>
+                            </button>
+                            <button mat-icon-button color="primary" (click)="view(role)" matTooltip="View Role">
+                                <mat-icon>remove_red_eye</mat-icon>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </mat-card-content>
+</mat-card>

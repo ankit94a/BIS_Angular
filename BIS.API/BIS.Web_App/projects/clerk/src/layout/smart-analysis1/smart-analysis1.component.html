@@ -1,0 +1,50 @@
+<mat-card appearance="outlined">
+    <mat-card-header class="insync-header">
+        DETAILED ANALYSIS : EN PATTERN OF ACTIVITIES
+    </mat-card-header>
+    <mat-card-content>
+        <div class="row">
+            <div class="col-sm-3">
+                <ng-select [(ngModel)]="filters.Frmn" appendTo="ng-select" [items]="fmnList" [multiple]="false" bindLabel="name"
+                (change)="onFilterChange1('fmn', $event)" bindValue="name" placeholder="Fmn" [searchable]="true"
+                    (keydown.enter)="onFilterChange1('fmn', $event)">
+                    <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                        <div class="ng-value" *ngFor="let item of items">
+                            <span class="ng-value-label">{{item}}</span>
+                        </div>
+                    </ng-template>
+                </ng-select>
+            </div>
+            <div class="col-sm-3">
+                <ng-select appendTo="ng-select" [items]="sectorList" [multiple]="false" bindLabel="name"
+                    bindValue="name" placeholder="Sector" [searchable]="true">
+                    <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                        <div class="ng-value" *ngFor="let item of items">
+                            <span class="ng-value-label">{{item}}</span>
+                        </div>
+                    </ng-template>
+                </ng-select>
+            </div>
+            <div class="col-sm-3">
+                <ng-select appendTo="ng-select" [items]="aspectList" [multiple]="false" bindLabel="name"
+                    bindValue="name" placeholder="Aspect" [searchable]="true">
+                    <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                        <div class="ng-value" *ngFor="let item of items">
+                            <span class="ng-value-label">{{item}}</span>
+                        </div>
+                    </ng-template>
+                </ng-select>
+            </div>
+            <div class="col-sm-3">
+                <ng-select appendTo="ng-select" [items]="indicatorList" [multiple]="false" bindLabel="name"
+                    bindValue="name" placeholder="Indicators" [searchable]="true">
+                    <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                        <div class="ng-value" *ngFor="let item of items">
+                            <span class="ng-value-label">{{item}}</span>
+                        </div>
+                    </ng-template>
+                </ng-select>
+            </div>
+        </div>
+    </mat-card-content>
+</mat-card>

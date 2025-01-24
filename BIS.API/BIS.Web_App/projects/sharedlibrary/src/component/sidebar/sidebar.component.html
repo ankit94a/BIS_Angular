@@ -1,0 +1,31 @@
+<mat-nav-list>
+
+    <a class="navbar-brand" href="/dashboard">
+    </a>
+    <span *ngFor="let menu of sideBarMenus">
+  
+      <a  mat-list-item (click)="addExpandClass(menu.text)"
+        routerLink="{{menu.code}}" routerLinkActive="active">
+        <mat-icon>{{menu.icon}}</mat-icon><span class="nav-caption">
+          {{menu.name}}
+        </span>
+      </a>
+      <div >
+        <!-- <a mat-list-item (click)="addExpandClass(menu.text)" routerLinkActive="active">
+          <mat-icon class="menu-button" [ngClass]="{'rotated' : showMenu === menu.text}">{{menu.icon}}</mat-icon><span
+            class="nav-caption">{{menu.text }}</span>
+        </a>
+        <ul class="submenu " [ngClass]="{'expanded':showMenu === menu.text}">
+          <li *ngFor="let subMenu of menu.children" class="nav-item"
+            >
+            <a mat-list-item routerLink="{{subMenu.routerLink}}" [queryParams]="subMenu.queryParams"
+              routerLinkActive="active" x>
+              <mat-icon>{{subMenu.icon}}</mat-icon><span class="nav-caption">{{subMenu.text}}</span>
+            </a>
+          </li>
+        </ul> -->
+      </div>
+    </span>
+  </mat-nav-list>
+ 
+  

@@ -1,0 +1,39 @@
+:host {
+    .mat-icon {
+      vertical-align: middle;
+      margin-right: 2px;
+    }
+    .mat-mdc-list-base .mat-mdc-list-item,
+    .mat-list-base .mat-list-option,
+    .mat-list-base .mat-mdc-subheader {
+      height: 46px;
+  
+    }
+  }
+  .mat-mdc-subheader {
+  
+    margin-bottom: 0px !important;
+    margin-left: 5px;
+  }
+  
+  .menu-button {
+    transition: 300ms ease-in-out;
+    transform: rotate(0deg);
+  }
+  .menu-button.rotated {
+    transform: rotate(180deg);
+  }
+  .submenu {
+    display: none;
+    overflow-y: hidden;
+    transition: transform 300ms ease;
+    transform: scaleY(0);
+    transform-origin: top;
+    padding-left: 20px;
+    list-style: none;
+  }
+  .submenu.expanded {
+    display: block;
+    transform: scaleY(1);
+  }
+  

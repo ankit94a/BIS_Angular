@@ -1,0 +1,65 @@
+<form #userForm="ngForm" (ngSubmit)="userForm.valid && onSubmit()" novalidate>
+  <div mat-dialog-title>
+    User Add
+  </div>
+  <mat-dialog-content>
+    <div class="row">
+      <div class="col-sm-4">
+          <mat-form-field><mat-label>UserName</mat-label>
+
+          <input matInput  type="text" name="userName" #userName="ngModel"
+            [(ngModel)]="user.username"  minlength="5" required nfNoSpaces  [ngClass]="{ 'is-invalid':  userName.errors }"  [readonly]="user.id > 0"/>
+          <mat-error *ngIf="userName.errors" class="invalid-feedback">
+            <span *ngIf="userName.errors.required">UserName is required</span>
+            <span *ngIf="userName.errors.minlength"> UserName must be at least 5 characters</span>
+            <span *ngIf="userName.errors.whitespace"> UserName cannot contain space.</span>
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-sm-4">
+          <mat-form-field><mat-label>Name</mat-label>
+          <input matInput  type="text" [ngModelOptions]="{standalone:true}"
+            [(ngModel)]="user.name" required />
+        </mat-form-field>
+      </div>
+      <div class="col-sm-4">
+        <mat-form-field><mat-label>Email</mat-label>
+        <input matInput  type="email" [ngModelOptions]="{standalone:true}"
+          [(ngModel)]="user.email" />
+      </mat-form-field>
+    </div>
+    </div>
+    <div class="row">  
+      <div class="col-sm-4">
+          <mat-form-field><mat-label>Phone</mat-label>
+          <input matInput  type="number" [ngModelOptions]="{standalone:true}"
+            [(ngModel)]="user.phone" />
+        </mat-form-field>
+      </div>
+      <div class="col-sm-4">
+          <mat-form-field><mat-label>Facility</mat-label>
+          <mat-select [(ngModel)]="user.facilityId" name="facilityId" #facilityId="ngModel">
+            <mat-option *ngFor="let facility of facilityList" [value]="facility.id" required>
+              {{facility.registeredName}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="col-sm-4">
+        <mat-form-field><mat-label>Role</mat-label>
+        <mat-select [(ngModel)]="user.roleId" name="roleId" #roleId="ngModel">
+          <mat-option *ngFor="let role of roleList" [value]="role.id" required>
+            {{role.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    </div>
+  </mat-dialog-content>
+</form>
+<mat-dialog-actions align="end">
+  <button class="btn  btn-success btn-sm" type="submit" >Save</button>
+  <!-- <button type="button" class="btn btn-outline-danger btn-sm" (click)="resetObj()"
+    *ngIf="!dataObject.isView && !(dataObject.id>0)">Reset</button> -->
+  <button type="button" class="btn btn-outline-info btn-sm" (click)="closeDialog()">Close</button>
+</mat-dialog-actions>

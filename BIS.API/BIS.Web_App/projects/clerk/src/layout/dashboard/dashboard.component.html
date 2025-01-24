@@ -1,0 +1,370 @@
+<mat-card appearance="outlined">
+  <mat-card-header class="insync-header">
+    Dashboard
+  </mat-card-header>
+  <mat-card-content class="mat-content">
+
+    <div class="row">
+      <div class="col-sm-4">
+        <mat-card>
+          <mat-card-title class="totals">Total Inputs : {{ dashboardCount.totalInputCount }}</mat-card-title>
+        </mat-card>
+      </div>
+      <div class="col-sm-4">
+        <mat-card>
+          <mat-card-title class="totals">Total Today : {{ dashboardCount.todayCount }}</mat-card-title>
+        </mat-card>
+      </div>
+      <div class="col-sm-4">
+        <mat-card>
+          <mat-card-title class="totals">Total (07 Days) : {{ dashboardCount.last7DaysCount }}</mat-card-title>
+        </mat-card>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-sm-5">
+        <ng-select appendTo="ng-select" [items]="frmnList" [multiple]="true" (change)="onFilterChange($event)"
+          [closeOnSelect]="false" placeholder="Fmn" [searchable]="true" [(ngModel)]="filterModel.frmn"
+          (keydown.enter)="onFilterChange($event)">
+          <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+            <div class="ng-value" *ngFor="let item of items">
+              <span class="ng-value-label">{{item}}</span>
+              <span class="ng-value-icon right px-1" (click)="clear(item)" aria-hidden="true">×</span>
+            </div>
+          </ng-template>
+        </ng-select>
+
+      </div>
+      <div class="col-sm-5">
+        <ng-select appendTo="ng-select" [items]="sectorList" [multiple]="true" bindLabel="name" bindValue="name"
+          [closeOnSelect]="false" [(ngModel)]="filterModel.sector" placeholder="Sector" [searchable]="true">
+          <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+            <div class="ng-value" *ngFor="let item of items">
+              <span class="ng-value-label">{{item}}</span>
+              <span class="ng-value-icon right px-1" (click)="clear(item)" aria-hidden="true">×</span>
+            </div>
+          </ng-template>
+        </ng-select>
+      </div>
+      <div class="col-sm-1 btn-float-down">
+        <button class="btn btn-sm btn-outline-primary btn-height" (click)="getFrmAndAspect()">Search</button>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-4 offset-md-8" *ngIf="isAnyCheckboxSelected()">
+        <button type="button" class="gradient-button" (click)="downloadSelectedGraphs()">
+          Click to download selected graphs
+        </button>
+      </div>
+    </div>
+    
+    <!-- Sector Graph -->
+    <div class="card-container">
+      <mat-card class="card card-small">
+        <section class="card-title">
+          <mat-checkbox [(ngModel)]="selectedCharts['chart0']"></mat-checkbox>
+          <h3 class="card-heading">Sector wise Inputs</h3>
+          <button class="download-icon mt-2" (click)="download('chart0')">
+            <mat-icon class="icon-display" matTooltip="download">arrow_downward</mat-icon>
+          </button>
+        </section>
+        <div class="chart-container">
+          <canvas baseChart [data]="frmInputChartData" type="pie" [options]="ChartOptions"></canvas>
+        </div>
+      </mat-card>
+    
+      <mat-card class="card card-small">
+        <section class="card-title">
+          <mat-checkbox [(ngModel)]="selectedCharts['chart1']"></mat-checkbox>
+          <h3 class="card-title adjust-font">Sector wise (Last 30 Days)</h3>
+          <button class="download-icon mt-2" (click)="download('chart1')">
+            <mat-icon class="icon-display" matTooltip="download">arrow_downward</mat-icon>
+          </button>
+        </section>
+        <div class="chart-container">
+          <canvas baseChart [data]="frm30DaysChartData" type="pie" [options]="ChartOptions"></canvas>
+        </div>
+      </mat-card>
+    
+      <mat-card class="card card-small">
+        <section class="card-title">
+          <mat-checkbox [(ngModel)]="selectedCharts['chart2']"></mat-checkbox>
+          <h3 class="card-heading">Sector wise (Today)</h3>
+          <button class="download-icon mt-2" (click)="download('chart2')">
+            <mat-icon class="icon-display" matTooltip="download">arrow_downward</mat-icon>
+          </button>
+        </section>
+        <div class="chart-container">
+          <canvas baseChart [data]="frmTodayChartData" type="pie" [options]="ChartOptions"></canvas>
+        </div>
+      </mat-card>
+    
+      <mat-card class="card card-large">
+        <section class="card-title lg">
+          <mat-checkbox [(ngModel)]="selectedCharts['chart3']"></mat-checkbox>
+          <h3 class="card-heading">Sector wise (Last 12 Months)</h3>
+          <button class="download-icon lg-height" (click)="download('chart3')">
+            <mat-icon class="icon-display" matTooltip="download">arrow_downward</mat-icon>
+          </button>
+        </section>
+        <div class="chart-container">
+          <canvas baseChart [data]="frm12MonthsChartData" [options]="lineChartOptions" [type]="'line'"></canvas>
+        </div>
+      </mat-card>
+    </div>
+    
+    <br>
+    <!-- Frmn Graph -->
+    <div class="card-container">
+      <mat-card class="card card-small">     
+        <section class="card-title">
+          <mat-checkbox [(ngModel)]="selectedCharts['chart4']"></mat-checkbox>
+          <h3 class="card-heading">Fmn wise Inputs</h3>
+          <button class="download-icon mt-2" (click)="download('chart4')">
+            <mat-icon class="icon-display" matTooltip="download">arrow_downward</mat-icon>
+          </button>
+        </section>
+        <div class="chart-container">
+          <canvas baseChart [data]="frmInputChartData" type="pie" [options]="ChartOptions"></canvas>
+        </div>
+        <!-- <div class="card-footer">
+                <ul>
+                  <li> 1 : 10</li>
+                </ul>
+              </div> -->
+      </mat-card>
+      <mat-card class="card card-small">      
+        <section class="card-title">
+          <mat-checkbox [(ngModel)]="selectedCharts['chart5']"></mat-checkbox>
+          <h3 class="card-title adjust-font">Fmn wise (Last 30 Days)</h3>
+          <button class="download-icon mt-2" (click)="download('chart5')">
+            <mat-icon class="icon-display" matTooltip="download">arrow_downward</mat-icon>
+          </button>
+        </section>
+        <div class="chart-container">
+          <canvas baseChart [data]="frm30DaysChartData" type='pie' [options]="ChartOptions"></canvas>
+        </div>
+        <!-- <div class="card-footer">
+                  <ul>
+                    <li> 1 : 10</li>
+                  </ul>
+                </div> -->
+      </mat-card>
+
+      <mat-card class="card card-small">        
+        <section class="card-title">
+          <mat-checkbox [(ngModel)]="selectedCharts['chart6']"></mat-checkbox>
+          <h3 class="card-heading">Fmn wise (Today)</h3>
+          <button class="download-icon mt-2" (click)="download('chart6')">
+            <mat-icon class="icon-display" matTooltip="download">arrow_downward</mat-icon>
+          </button>
+        </section>
+        <div class="chart-container">
+          <canvas baseChart [data]="frmTodayChartData" type='pie' [options]="ChartOptions"></canvas>
+        </div>
+        <!-- <div class="card-footer">
+                  <ul>
+                    <li> 1 : 10</li>
+                  </ul>
+                </div> -->
+      </mat-card>
+      <mat-card class="card card-large">       
+        <section class="card-title lg">
+          <mat-checkbox [(ngModel)]="selectedCharts['chart7']"></mat-checkbox>
+          <h3 class="card-heading">Fmn wise (Last 12 Months)</h3>
+          <button class="download-icon lg-height" (click)="download('chart7')">
+            <mat-icon class="icon-display" matTooltip="download">arrow_downward</mat-icon>
+          </button>
+        </section>
+        <div class="chart-container">
+          <canvas baseChart [data]="frm12MonthsChartData" [options]="lineChartOptions" [type]="'line'"></canvas>
+        </div>
+        <!-- <div class="card-footer">
+                <ul>
+                  <li>val : val2</li>
+                </ul>
+              </div> -->
+      </mat-card>
+    </div>
+    <br>
+    <!-- Aspect Graph -->
+    <div class="card-container">
+      <mat-card class="card card-small">       
+        <section class="card-title">
+          <mat-checkbox [(ngModel)]="selectedCharts['chart8']"></mat-checkbox>
+          <h3 class="card-heading">All Aspect</h3>
+          <button class="download-icon mt-2" (click)="download('chart8')">
+            <mat-icon class="icon-display" matTooltip="download">arrow_downward</mat-icon>
+          </button>
+        </section>
+        <div class="chart-container">
+          <canvas baseChart [data]="aspectAllChartData" type="pie" [options]="ChartOptions"></canvas>
+        </div>
+        <!-- <div class="card-footer">
+              <ul *ngIf="aspectAllChartData?.labels?.length > 0">
+                <li *ngFor="let label of aspectAllChartData.labels | slice: 0:3; let i = index">
+                  <span
+                    class="color-box"
+                    [style.color]="aspectAllChartData.datasets[0]?.backgroundColor?.[i]"
+                  > {{ label }}</span>
+                  
+                </li>
+              </ul>
+              <span *ngIf="aspectAllChartData?.labels?.length > 3" class="more-labels">
+                &#x2026;
+              </span>
+            </div> -->
+      </mat-card>
+
+      <mat-card class="card card-small">       
+        <section class="card-title">
+          <mat-checkbox [(ngModel)]="selectedCharts['chart9']"></mat-checkbox>
+          <h3 class="card-title adjust-font">Aspect (Last 30 Days)</h3>
+          <button class="download-icon mt-2" (click)="download('chart9')">
+            <mat-icon class="icon-display" matTooltip="download">arrow_downward</mat-icon>
+          </button>
+        </section>
+        <div class="chart-container">
+          <canvas baseChart [data]="aspect30DaysChartData" type='pie' [options]="ChartOptions"></canvas>
+        </div>
+        <!-- <div class="card-footer">
+                  <ul>
+                    <li> 1 : 10</li>
+                  </ul>
+                </div> -->
+      </mat-card>
+
+      <mat-card class="card card-small">     
+        <section class="card-title">
+          <mat-checkbox [(ngModel)]="selectedCharts['chart10']"></mat-checkbox>
+          <h3 class="card-heading">Aspect Today</h3>
+          <button class="download-icon mt-2" (click)="download('chart10')">
+            <mat-icon class="icon-display" matTooltip="download">arrow_downward</mat-icon>
+          </button>
+        </section>
+        <div class="chart-container">
+          <canvas baseChart [data]="aspectTodayChartData" type='pie' [options]="ChartOptions"></canvas>
+        </div>
+        <!-- <div class="card-footer">
+                  <ul>
+                    <li> 1 : 10</li>
+                  </ul>
+                </div> -->
+      </mat-card>
+
+      <mat-card class="card card-large">     
+        <section class="card-title">
+          <mat-checkbox [(ngModel)]="selectedCharts['chart11']"></mat-checkbox>
+          <h3 class="card-heading">Aspect (Last 12 Months)</h3>
+          <button class="download-icon mt-2" (click)="download('chart11')">
+            <mat-icon class="icon-display" matTooltip="download">arrow_downward</mat-icon>
+          </button>
+        </section>
+        <div class="chart-container">
+          <canvas baseChart [data]="aspect12MonthsChartData" [options]="lineChartOptions" [type]="'line'"></canvas>
+        </div>
+        <!-- <div class="card-footer">
+                <ul>
+                  <li>val : val2</li>
+                </ul>
+              </div> -->
+      </mat-card>
+    </div>
+    <br>
+
+    <hr>
+    <div class="row">
+      <div class="col-sm-10">
+        <ng-select appendTo="ng-select" [items]="sectorList" [multiple]="true" [(ngModel)]="indicatorFilter.sector"
+          placeholder="Sector" [searchable]="true" [closeOnSelect]="false">
+          <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+            <div class="ng-value" *ngFor="let item of items">
+              <span class="ng-value-label">{{item}}</span>
+            </div>
+          </ng-template>
+        </ng-select>
+      </div>
+      <div class="col-sm-1 btn-float-down">
+        <button class="btn btn-sm btn-outline-primary btn-height" (click)="getIndicatorAndLocation()">Search</button>
+      </div>
+    </div>
+
+    <!-- Indicator Graph -->
+    <div class="card-container">
+      <mat-card class="card card-equal">      
+        <section class="card-title">
+          <mat-checkbox [(ngModel)]="selectedCharts['chart12']"></mat-checkbox>
+          <h3 class="card-heading">Top 10 Indicators</h3>
+          <button class="download-icon mt-2" (click)="download('chart12')">
+            <mat-icon class="icon-display" matTooltip="download">arrow_downward</mat-icon>
+          </button>
+        </section>
+        <div class="chart-container">
+          <canvas baseChart [data]="indicatorData" type='pie' [options]="ChartOptions"></canvas>
+        </div>
+        <!-- <div class="card-footer">
+                <ul>
+                  <li> 1 : 10</li>
+                </ul>
+              </div> -->
+      </mat-card>
+
+      <mat-card class="card card-equal">
+        <section class="card-title">
+          <mat-checkbox [(ngModel)]="selectedCharts['chart13']"></mat-checkbox>
+          <h3 class="card-heading adjust-font">Top 5 Indicators (Last 7 Days)</h3>
+          <button class="download-icon mt-2" (click)="download('chart13')">
+            <mat-icon class="icon-display" matTooltip="download">arrow_downward</mat-icon>
+          </button>
+        </section>
+        <div class="chart-container">
+          <canvas baseChart [data]="indicatorTop5Data" type='pie' [options]="ChartOptions"></canvas>
+        </div>
+        <!-- <div class="card-footer">
+                  <ul>
+                    <li> 1 : 10</li>
+                  </ul>
+                </div> -->
+      </mat-card>
+
+      <mat-card class="card card-equal">
+        <section class="card-title">
+          <mat-checkbox [(ngModel)]="selectedCharts['chart14']"></mat-checkbox>
+          <h3 class="card-heading">Top 5 Location</h3>
+          <button class="download-icon mt-2" (click)="download('chart14')">
+            <mat-icon class="icon-display" matTooltip="download">arrow_downward</mat-icon>
+          </button>
+        </section>
+        <div class="chart-container">
+          <canvas baseChart [data]="enLocationData" type='pie' [options]="ChartOptions"></canvas>
+        </div>
+        <!-- <div class="card-footer">
+                  <ul>
+                    <li> 1 : 10</li>
+                  </ul>
+                </div> -->
+      </mat-card>
+
+      <mat-card class="card card-equal">
+        <section class="card-title">
+          <mat-checkbox [(ngModel)]="selectedCharts['chart15']"></mat-checkbox>
+          <h3 class="card-heading">Top 5 Loc (7 Days)</h3>
+          <button class="download-icon mt-2" (click)="download('chart15')">
+            <mat-icon class="icon-display" matTooltip="download">arrow_downward</mat-icon>
+          </button>
+        </section>
+        <div class="chart-container">
+          <canvas baseChart [data]="enLocationData7Days" type='pie' [options]="ChartOptions"></canvas>
+        </div>
+        <!-- <div class="card-footer">
+                  <ul>
+                    <li> 1 : 10</li>
+                  </ul>
+                </div> -->
+      </mat-card>
+    </div>
+  </mat-card-content>
+
+</mat-card>

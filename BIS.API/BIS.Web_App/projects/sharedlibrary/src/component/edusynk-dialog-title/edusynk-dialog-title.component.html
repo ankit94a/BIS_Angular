@@ -1,0 +1,4 @@
+<h2 mat-dialog-title>
+    <span *ngIf="!dataObject.isView"> {{dataObject.id>0 ? ('Update'|translate ):( 'Add'|translate)}} {{dataObject.labelTitle|translate}}</span>
+    <span *ngIf="dataObject.isView"> {{'View'|translate}} {{dataObject.labelTitle|translate}}</span>
+</h2>
