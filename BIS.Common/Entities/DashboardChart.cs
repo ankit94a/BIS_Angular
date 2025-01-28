@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static BIS.Common.Enum.Enum;
 
 namespace BIS.Common.Entities
 {
@@ -17,6 +18,10 @@ namespace BIS.Common.Entities
         public List<int>? Count { get; set; } = new List<int>();
         public List<string>? Name { get; set; } = new List<string>();
     }
+    public class MeanValueModel : DashboardChart
+    {
+        public List<double> MeanValue { get; set; } = new List<double>();
+    }
     public class FilterModel
     {
         public List<string>? Frmn { get; set; }
@@ -26,5 +31,9 @@ namespace BIS.Common.Entities
         public List<string>? Indicator { get; set; } 
         public DateTime? startDate { get; set; }
         public DateTime? endDate { get; set; }
+    }
+    public class FilterModelEntries : FilterModel
+    {
+        public FilterType FilterType { get; set; }
     }
 }

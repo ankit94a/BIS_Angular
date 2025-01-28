@@ -7,10 +7,13 @@ using System.Threading.Tasks;
 
 namespace BIS.Manager.Interfaces
 {
-    public interface IAttributeManager
-    {
-        public List<Aspect> GetAllAspect();
-        public List<Indicator> GetIndicatorByAspect(int aspectId);
-        public List<IndicatorSubFields> GetIndicatorSubfield(int indicatortId);
-    }
+	public interface IAttributeManager
+	{
+		public List<Aspect> GetAllAspect();
+		public List<Indicator> GetIndicatorByAspect(int aspectId);
+		public List<Indicator> GetIndicators(List<Aspect> aspect);
+		public List<IndicatorSubFields> GetIndicatorSubfield(int indicatortId);
+		public List<MasterSector> GetSectorByCorpsId(int corpsId);
+
+	}
 }

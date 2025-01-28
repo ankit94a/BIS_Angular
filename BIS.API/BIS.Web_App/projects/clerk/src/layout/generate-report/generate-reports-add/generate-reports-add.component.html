@@ -1,12 +1,12 @@
 <form [formGroup]="reportForm" (ngSubmit)="save()">
-<div mat-dialog-title>
+  <div mat-dialog-title>
     Add Report
-</div>
-<mat-dialog-content>
+  </div>
+  <mat-dialog-content>
     <div class="row">
-        <div class="col">
-            Report Date : {{currentDate | bisdefaultDate}}
-        </div>
+      <div class="col">
+        Report Date : {{currentDate | bisdefaultDate}}
+      </div>
     </div>
     <div class="row">
       <div class="col-md-4">
@@ -30,7 +30,8 @@
           <mat-label>Date Range</mat-label>
           <mat-date-range-input [rangePicker]="picker">
             <input matStartDate formControlName="startDate" placeholder="Start date" #dateRangeStart>
-            <input matEndDate formControlName="endDate" placeholder="End date" #dateRangeEnd (dateChange)="onDateChange(dateRangeStart, dateRangeEnd)">
+            <input matEndDate formControlName="endDate" placeholder="End date" #dateRangeEnd
+              (dateChange)="onDateChange(dateRangeStart, dateRangeEnd)">
           </mat-date-range-input>
           <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
           <mat-date-range-picker #picker></mat-date-range-picker>
@@ -54,10 +55,8 @@
             <tr *ngFor="let item of masterDataList; let i = index">
               <!-- Checkbox for individual rows -->
               <td>
-                <mat-checkbox
-                [(ngModel)]="item.selected"
-                [ngModelOptions]="{standalone: true}">
-              </mat-checkbox>
+                <mat-checkbox [(ngModel)]="item.selected" [ngModelOptions]="{standalone: true}">
+                </mat-checkbox>
               </td>
               <td *ngFor="let header of tableHeader">{{ item[header] }}</td>
             </tr>
@@ -77,27 +76,31 @@
             <h6 style="margin: 0px;">Upload Images</h6>
           </label>
         </div>
-
-        <div class="image-preview-container">
-          <div *ngFor="let image of selectedImages" class="image-preview">
-            <img [src]="image.url" [alt]="image.name" />
-            <span class="image-name">{{ image.name }}</span>
-          </div>
+      </div>
+    </div>
+    <div class="">
+      <div class="image-preview-container row">
+        <div *ngFor="let image of selectedImages" class="image-preview  col-md-6">
+          <img [src]="image.url" [alt]="image.name" />
+          <span class="image-name">{{ image.name }}</span>
         </div>
       </div>
-      <br>
-        <div class="col-md-12">
-            <mat-form-field class="example-full-width">
-                <mat-label>Leave a comment</mat-label>
-                <textarea matInput placeholder="Ex. About the Report..." class="text-area" formControlName="notes"></textarea>
-              </mat-form-field>
-        </div>
     </div>
-</mat-dialog-content>
-<mat-dialog-actions align="end">
-    <button class="btn  btn-success btn-sm" type="submit" >Save</button>
-    <button type="button" class="btn btn-outline-danger btn-sm" (click)="resetObj()"
-      >Reset</button>
+
+    <br>
+    <div class="row">
+      <div class="col-md-12">
+        <mat-form-field class="example-full-width">
+          <mat-label>Leave a comment</mat-label>
+          <textarea matInput placeholder="Ex. About the Report..." class="text-area" formControlName="notes"></textarea>
+        </mat-form-field>
+      </div>
+    </div>
+
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button class="btn  btn-success btn-sm" type="submit">Save</button>
+    <button type="button" class="btn btn-outline-danger btn-sm" (click)="resetObj()">Reset</button>
     <button type="button" class="btn btn-outline-info btn-sm" (click)="closedialog()">Close</button>
   </mat-dialog-actions>
-  </form>
+</form>

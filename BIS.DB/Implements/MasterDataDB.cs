@@ -67,7 +67,7 @@ namespace BIS.DB.Implements
         }
         public List<MasterSector> GetSectorByCorpsId(int corpsId)
         {
-            return _dbContext.MasterSectors.Where(ms => ms.CorpsId == corpsId).ToList();
+            return _dbContext.Sector.Where(ms => ms.CorpsId == corpsId).ToList();
         }
         public List<MasterInputLevel> GetInputLevels()
         {

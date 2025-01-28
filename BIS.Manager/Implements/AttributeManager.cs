@@ -11,27 +11,36 @@ using BIS.DB.Implements;
 
 namespace BIS.Manager.Implements
 {
-    public class AttributeManager : IAttributeManager
-    {
-        private readonly IAttributeDB _attributeDB;
-        public AttributeManager(IAttributeDB attributeDB)
-        {
-            _attributeDB = attributeDB;
-        }
+	public class AttributeManager : IAttributeManager
+	{
+		private readonly IAttributeDB _attributeDB;
+		public AttributeManager(IAttributeDB attributeDB)
+		{
+			_attributeDB = attributeDB;
+		}
 
-        public List<Aspect> GetAllAspect()
-        {
-            return _attributeDB.GetAllAspect();
-        }
+		public List<Aspect> GetAllAspect()
+		{
+			return _attributeDB.GetAllAspect();
+		}
 
-        public List<Indicator> GetIndicatorByAspect(int aspectId)
-        {
-            return _attributeDB.GetIndicatorByAspect(aspectId);
-        }
+		public List<Indicator> GetIndicatorByAspect(int aspectId)
+		{
+			return _attributeDB.GetIndicatorByAspect(aspectId);
+		}
+		public List<Indicator> GetIndicators(List<Aspect> aspect)
+		{
+			return _attributeDB.GetIndicators(aspect);
+		}
 
-        public List<IndicatorSubFields> GetIndicatorSubfield(int indicatortId)
-        {
-            return _attributeDB.GetIndicatorSubField(indicatortId);
-        }
-    }
+		public List<IndicatorSubFields> GetIndicatorSubfield(int indicatortId)
+		{
+			return _attributeDB.GetIndicatorSubField(indicatortId);
+		}
+		public List<MasterSector> GetSectorByCorpsId(int corpsId)
+		{
+			return _attributeDB.GetSectorByCorpsId(corpsId);
+		}
+
+	}
 }

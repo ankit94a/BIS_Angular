@@ -50,5 +50,17 @@ namespace BIS.Manager.Implements
                 return new DashboardChart();
             }
         }
-    }
+		public async Task<MeanValueModel> GetEntries(long corpsId, long divisionId, RoleType roleType, FilterModelEntries filterModel)
+        {
+			if (divisionId > 0)
+			{
+				return await _smartAnalysisDB.GetEntries(corpsId, divisionId, roleType, filterModel);
+			}
+			else
+			{
+				return new MeanValueModel();
+			}
+		}
+
+	}
 }

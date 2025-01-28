@@ -49,7 +49,9 @@ namespace BIS.API
             services.AddControllers().AddJsonOptions(options =>
             {
                 options.JsonSerializerOptions.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter());
-            });
+				//options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+				//options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
+			});
             services.AddDbContext<AppDBContext>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("BISDbConn"));

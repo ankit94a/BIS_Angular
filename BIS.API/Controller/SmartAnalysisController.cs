@@ -64,5 +64,14 @@ namespace BIS.API.Controller
             RoleType roleType = HttpContext.GetRoleType();
             return Ok(_smartAnalysisManager.Get30DaysIndicatorData(corpsId, divisionId, roleType, filterModel, true));
         }
-    }
+
+        [HttpPost,Route("getentries")]
+		public async Task<IActionResult> GetEntries([FromBody] FilterModelEntries filterModel)
+		{
+			long corpsId = HttpContext.GetCorpsId();
+			long divisionId = HttpContext.GetDivisionId();
+			RoleType roleType = HttpContext.GetRoleType();
+			return Ok(await _smartAnalysisManager.GetEntries(corpsId, divisionId, roleType, filterModel));
+		}
+	}
 }

@@ -1,3 +1,4 @@
+import { Indicator } from './../../../../sharedlibrary/src/model/attribute.model';
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { ApiService } from 'projects/sharedlibrary/src/services/api.service';
 import { SharedLibraryModule } from 'projects/sharedlibrary/src/shared-library.module';
@@ -6,7 +7,9 @@ import { BaseChartDirective } from 'ng2-charts';
 import { Subject, takeUntil } from 'rxjs';
 import { DatePipe } from '@angular/common';
 import { AuthService } from 'projects/sharedlibrary/src/services/auth.service';
-import { FilterModel } from 'projects/sharedlibrary/src/model/dashboard.model';
+import { FilterModel, FilterModel4 } from 'projects/sharedlibrary/src/model/dashboard.model';
+import { Aspect, Sector } from 'projects/sharedlibrary/src/model/attribute.model';
+import { FilterType } from 'projects/sharedlibrary/src/model/enum';
 
 @Component({
   selector: 'app-smart-analysis',
@@ -18,35 +21,45 @@ import { FilterModel } from 'projects/sharedlibrary/src/model/dashboard.model';
 export class SmartAnalysisComponent implements OnInit, OnDestroy {
   // savedNotes: IsavedNotes[] = [];
   fmnList = [];
+  sectorList: Sector[] = [];
+  aspectList: Aspect[] = [];
+  indicatorList: Indicator[] = [];
+  indicatorList4: Indicator[] = [];
   filterModel: FilterModel = new FilterModel();
+  filterModel4: FilterModel4 = new FilterModel4();
   //chart variables
-  input30Days:ChartData<'line'>;
-  inputLastYear:ChartData<'line'>;
-  aspect30Days:ChartData<'line'>;
-  aspectLastYear:ChartData<'line'>;
-  indicator30Days:ChartData<'line'>;
-  indicatorLastYear:ChartData<'line'>;
-
+  input30Days: ChartData<'line'>;
+  inputLastYear: ChartData<'line'>;
+  aspect30Days: ChartData<'line'>;
+  aspectLastYear: ChartData<'line'>;
+  indicator30Days: ChartData<'line'>;
+  indicatorLastYear: ChartData<'line'>;
+  entriesChart: ChartData<'line'>;
   @ViewChildren(BaseChartDirective) charts!: QueryList<BaseChartDirective>;
-    // Map to track selected charts by their IDs
-    selectedCharts: { [key: string]: boolean } = {
-      chart0: false,
-      chart1: false,
-      chart2: false,
-      chart3: false,
-    };
+  // Map to track selected charts by their IDs
+  selectedCharts: { [key: string]: boolean } = {
+    chart0: false,
+    chart1: false,
+    chart2: false,
+    chart3: false,
+  };
 
   // fmnList: string[] = ["33 Corps", "27 Mtn Div", "17 Mtn Div", "111 Sub Area", "20 Mtn Div", "3 Corps", "2 Mtn Div", "56 Mtn Div", "57 Mtn Div", "4 Corps", "5 Mtn Div", "21 Mtn Div", "71 Mtn Div", "17 Corps", "59 Mtn Div", "23 Mtn Div"];
-  sectorList: string[] = ['None', 'PSS', 'MSS', 'Cho_la', 'Doka_la'];
-  aspectList: string[] = ['None', 'Svl / Counter Svl', 'Friction / Belligerence', 'Ae Activity', 'Conc of Tps', 'Armr / Arty / AD / Engrs Indn', 'Mob', 'Infra Devp', 'Dumping of WLS', 'Heightened Diplomatic Eng', 'Collapse of Diplomatic Ties', 'Propoganda', 'Internal Issues', 'Cyber', 'Def', 'Interactions'];
-  indicatorList: string[] = ['None', 'Placement of addl Svl Eqpt', 'Incr Recce', 'Incr in OP loc', 'Jamming', 'Enhanced Tourist Influx']
+  //sectorList: string[] = ['None', 'PSS', 'MSS', 'Cho_la', 'Doka_la'];
+  //aspectList: string[] = ['None', 'Svl / Counter Svl', 'Friction / Belligerence', 'Ae Activity', 'Conc of Tps', 'Armr / Arty / AD / Engrs Indn', 'Mob', 'Infra Devp', 'Dumping of WLS', 'Heightened Diplomatic Eng', 'Collapse of Diplomatic Ties', 'Propoganda', 'Internal Issues', 'Cyber', 'Def', 'Interactions'];
+  // indicatorList: string[] = ['None', 'Placement of addl Svl Eqpt', 'Incr Recce', 'Incr in OP loc', 'Jamming', 'Enhanced Tourist Influx']
   chartList: string[] = ['Monthly', 'Daily', 'Weekly']
-  constructor(private apiService: ApiService, private datePipe: DatePipe,private authService:AuthService) {
+  constructor(private apiService: ApiService, private datePipe: DatePipe, private authService: AuthService) {
     var divisionName = this.authService.getDivisionName();
-    if(divisionName != undefined && divisionName != '' && divisionName != null){
+    if (divisionName != undefined && divisionName != '' && divisionName != null) {
       this.fmnList.push(divisionName);
       this.filterModel.frmn = this.fmnList;
+      this.filterModel4.frmn = this.fmnList;
     }
+    this.filterModel4.filterType = FilterType.Daily;
+    this.getSector();
+    this.getAspect();
+    this.getEntries();
   }
   isAnyCheckboxSelected(): boolean {
     return Object.values(this.selectedCharts).some(selected => selected);
@@ -61,26 +74,26 @@ export class SmartAnalysisComponent implements OnInit, OnDestroy {
   }
   download(chartId: string): void {
     let index = 0;
-    switch(chartId){
-      case 'chart0' :index = 0; break;
+    switch (chartId) {
+      case 'chart0': index = 0; break;
       case 'chart1': index = 1; break;
-      case 'chart2' : index = 2; break;
-      case 'chart3' : index = 3; break;
+      case 'chart2': index = 2; break;
+      case 'chart3': index = 3; break;
       // fmn chart
-      case 'chart4' :index = 4; break;
+      case 'chart4': index = 4; break;
       case 'chart5': index = 5; break;
-      case 'chart6' : index = 6; break;
-      case 'chart7' : index = 7; break;
+      case 'chart6': index = 6; break;
+      case 'chart7': index = 7; break;
       // aspect chart
-      case 'chart8' : index = 8; break;
-      case 'chart9' : index = 9; break;
-      case 'chart10' : index = 10; break;
-      case 'chart11' : index = 11; break;
+      case 'chart8': index = 8; break;
+      case 'chart9': index = 9; break;
+      case 'chart10': index = 10; break;
+      case 'chart11': index = 11; break;
       // indicator chart
-      case 'chart12' : index = 12; break;
-      case 'chart13' : index = 13; break;
-      case 'chart14' : index = 14; break;
-      case 'chart15' : index = 15; break;
+      case 'chart12': index = 12; break;
+      case 'chart13': index = 13; break;
+      case 'chart14': index = 14; break;
+      case 'chart15': index = 15; break;
     }
     const chartDirective = this.charts.toArray()[index];
 
@@ -94,13 +107,16 @@ export class SmartAnalysisComponent implements OnInit, OnDestroy {
       console.error(`Chart instance not found or not ready for ${chartId}`);
     }
   }
-  ngOnInit(): void {
+  getAllData() {
     this.get30DaysInput();
     this.get30DaysAspect();
     this.get30DaysIndicator();
     this.getlastYearInput();
     this.getlastYearAspect();
     this.getlastYearIndicator();
+  }
+  ngOnInit(): void {
+    this.getAllData();
     // this.getFrmnDataAll();
     // this.getFrmnDataAll30();
     // this.getAspect30();
@@ -173,40 +189,63 @@ export class SmartAnalysisComponent implements OnInit, OnDestroy {
       },
     },
   };
-  
-  get30DaysInput() {
-    this.apiService.postWithHeader('smartanalysis/30days', this.filterModel).subscribe(res => {
+  getEntries() {
+    this.apiService.postWithHeader('smartanalysis/getentries', this.filterModel4).subscribe(res => {
       if (res) {
-        // Set the data dynamically
-        this.input30Days = {
+        this.entriesChart = {
           labels: res.name,
           datasets: [
             {
               data: res.count,
-              label: 'Inputs', // Dataset label
-              backgroundColor: 'rgba(151, 126, 201, 0.5)', // Semi-transparent purple
-              borderColor: 'rgba(150, 68, 150, 0.5)', // Solid purple
+              label: 'Inputs',
+              backgroundColor: 'rgba(151, 126, 201, 0.5)',
+              borderColor: 'rgba(150, 68, 150, 0.5)',
+              borderWidth: 1.2,
+              fill: true,
+              tension: 0.4,
+            },
+            {
+              data: res.meanValue,
+              label: 'Inputs',
+              backgroundColor: 'rgba(20, 199, 65, 0.5)',
+              borderColor: 'rgba(143, 92, 35, 0.5)',
               borderWidth: 1.2,
               fill: true,
               tension: 0.4,
             },
           ],
         };
-  
-        // Update the chart title dynamically
-        // this.lineChartOptions.plugins.title.display = true;
-        // this.lineChartOptions.plugins.title.text = `Abcdedfasdkfjkflsajflk`;
+      }
+    })
+  }
+  get30DaysInput() {
+    this.apiService.postWithHeader('smartanalysis/30days', this.filterModel).subscribe(res => {
+      if (res) {
+        this.input30Days = {
+          labels: res.name,
+          datasets: [
+            {
+              data: res.count,
+              label: 'Inputs',
+              backgroundColor: 'rgba(151, 126, 201, 0.5)',
+              borderColor: 'rgba(150, 68, 150, 0.5)',
+              borderWidth: 1.2,
+              fill: true,
+              tension: 0.4,
+            },
+          ],
+        };
       }
     });
   }
-  
-  getlastYearInput(){
-    this.apiService.postWithHeader('smartanalysis/30days/lastyear',this.filterModel).subscribe(res =>{
-      if(res){
+  getlastYearInput() {
+    this.apiService.postWithHeader('smartanalysis/30days/lastyear', this.filterModel).subscribe(res => {
+      if (res) {
         this.inputLastYear = {
           labels: res.name,
           datasets: [
-            { data: res.count, label: res.name,
+            {
+              data: res.count, label: res.name,
               backgroundColor: 'rgba(151, 126, 201, 0.5)', // Semi-transparent blue
               borderColor: 'rgba(150, 68, 150, 0.5)', // Solid blue
               borderWidth: 1.2,
@@ -215,19 +254,20 @@ export class SmartAnalysisComponent implements OnInit, OnDestroy {
             },
           ],
         };
-         // Update the chart title dynamically
+        // Update the chart title dynamically
         //  this.lineChartOptions.plugins.title.display = true;
         //  this.lineChartOptions.plugins.title.text = `ankit`;
       }
     })
   }
-  get30DaysAspect(){
-    this.apiService.postWithHeader('smartanalysis/aspect/30days',this.filterModel).subscribe(res =>{
-      if(res){
+  get30DaysAspect() {
+    this.apiService.postWithHeader('smartanalysis/aspect/30days', this.filterModel).subscribe(res => {
+      if (res) {
         this.aspect30Days = {
           labels: res.name,
           datasets: [
-            { data: res.count, label: res.name,
+            {
+              data: res.count, label: res.name,
               backgroundColor: 'rgba(151, 126, 201, 0.5)', // Semi-transparent blue
               borderColor: 'rgba(150, 68, 150, 0.5)', // Solid blue
               borderWidth: 1.2,
@@ -239,13 +279,14 @@ export class SmartAnalysisComponent implements OnInit, OnDestroy {
       }
     })
   }
-  getlastYearAspect(){
-    this.apiService.postWithHeader('smartanalysis/aspect/30days/lastyear',this.filterModel).subscribe(res =>{
-      if(res){
+  getlastYearAspect() {
+    this.apiService.postWithHeader('smartanalysis/aspect/30days/lastyear', this.filterModel).subscribe(res => {
+      if (res) {
         this.aspectLastYear = {
           labels: res.name,
           datasets: [
-            { data: res.count, label: res.name,
+            {
+              data: res.count, label: res.name,
               backgroundColor: 'rgba(151, 126, 201, 0.5)', // Semi-transparent blue
               borderColor: 'rgba(150, 68, 150, 0.5)', // Solid blue
               borderWidth: 1.2,
@@ -257,13 +298,14 @@ export class SmartAnalysisComponent implements OnInit, OnDestroy {
       }
     })
   }
-  get30DaysIndicator(){
-    this.apiService.postWithHeader('smartanalysis/indicator/30days',this.filterModel).subscribe(res =>{
-      if(res){
+  get30DaysIndicator() {
+    this.apiService.postWithHeader('smartanalysis/indicator/30days', this.filterModel).subscribe(res => {
+      if (res) {
         this.indicator30Days = {
           labels: res.name,
           datasets: [
-            { data: res.count, label: res.name,
+            {
+              data: res.count, label: res.name,
               backgroundColor: 'rgba(151, 126, 201, 0.5)', // Semi-transparent blue
               borderColor: 'rgba(150, 68, 150, 0.5)', // Solid blue
               borderWidth: 1.2,
@@ -275,13 +317,14 @@ export class SmartAnalysisComponent implements OnInit, OnDestroy {
       }
     })
   }
-  getlastYearIndicator(){
-    this.apiService.postWithHeader('smartanalysis/indicator/30days/lastyear',this.filterModel).subscribe(res =>{
-      if(res){
+  getlastYearIndicator() {
+    this.apiService.postWithHeader('smartanalysis/indicator/30days/lastyear', this.filterModel).subscribe(res => {
+      if (res) {
         this.indicatorLastYear = {
           labels: res.name,
           datasets: [
-            { data: res.count, label: res.name,
+            {
+              data: res.count, label: res.name,
               backgroundColor: 'rgba(151, 126, 201, 0.5)', // Semi-transparent blue
               borderColor: 'rgba(150, 68, 150, 0.5)', // Solid blue
               borderWidth: 1.2,
@@ -292,19 +335,72 @@ export class SmartAnalysisComponent implements OnInit, OnDestroy {
         };
       }
     })
+  }
+  getSector() {
+    this.apiService.getWithHeaders('attribute/sector').subscribe(res => {
+      if (res) {
+        this.sectorList = res;
+      }
+    })
+  }
+  getAspect() {
+    this.apiService.getWithHeaders('attribute/AllAspect').subscribe(res => {
+      if (res) {
+        this.aspectList = res;
+      }
+    })
+  }
+  getIndicator(event) {
+    if (event != undefined && event != null) {
+      this.onFilterChange1('aspect')
+      this.apiService.postWithHeader('attribute/indicatorlist', event).subscribe(res => {
+        if (res) {
+          this.indicatorList = res;
+        }
+      })
+    }
+  }
+  getIndicatorForEntries(event) {
+    if (event != undefined && event != null) {
+      this.getEntries()
+      this.apiService.postWithHeader('attribute/indicatorlist', event).subscribe(res => {
+        if (res) {
+          this.indicatorList4 = res;
+        }
+      })
+    }
+  }
+  removeIndicator() {
+    this.indicatorList = []
   }
   onFilterChange($event) {
 
   }
-  onFilterChange1(filterKey: string, event: any): void {
-    this.filters[filterKey] = event;
-    this.getFrmnDataAll();
-    this.getNoOfInputChart();
-    this.getNoOfInputChartLY();
-    this.getAspectChart();
-    this.getAspectChartLY();
-    this.getIndicatorChart();
-    this.getIndicatorChartLY();
+  onFilterChange1(filterKey: string): void {
+    debugger
+    // this.filters[filterKey] = event;
+    // this.getFrmnDataAll();
+    // this.getNoOfInputChart();
+    // this.getNoOfInputChartLY();
+    // this.getAspectChart();
+    // this.getAspectChartLY();
+    // this.getIndicatorChart();
+    // this.getIndicatorChartLY();
+    switch (filterKey) {
+      case 'sector':
+        this.getAllData();
+        break;
+      case 'aspect':
+        this.get30DaysAspect();
+        this.getlastYearAspect();
+        this.get30DaysIndicator();
+        this.getlastYearIndicator();
+        break;
+      case 'indicator':
+        this.get30DaysIndicator();
+        this.getlastYearIndicator();
+        break;
+    }
 
   }
   onFilterChange2(filterKey: string, event: any): void {
@@ -438,7 +534,7 @@ export class SmartAnalysisComponent implements OnInit, OnDestroy {
   //FOR CHARTSN AP
   private unsubscribe$ = new Subject<void>();
 
- 
+
   // public lineChartOptions: ChartOptions<'line'> = {
   //   responsive: true,
   //   maintainAspectRatio: false,
@@ -477,7 +573,7 @@ export class SmartAnalysisComponent implements OnInit, OnDestroy {
   //     },
   //   },
   // };
-  
+
 
   ngOnDestroy(): void {
     this.unsubscribe$.next();
@@ -1781,92 +1877,92 @@ export class SmartAnalysisComponent implements OnInit, OnDestroy {
   //   row.appendChild(cell2);
   //   meanTableBody.appendChild(row);
   // }
-createDataTable(): void {
-  const tableBody = document.getElementById('data-table-body');
-  const meanTableBody = document.getElementById('mean-table-body');
-  const meanTable = document.getElementById('mean-table');
+  createDataTable(): void {
+    const tableBody = document.getElementById('data-table-body');
+    const meanTableBody = document.getElementById('mean-table-body');
+    const meanTable = document.getElementById('mean-table');
 
-  if (!tableBody || !meanTableBody || !meanTable) {
-    console.error('Table body element not found.');
-    return;
-  }
+    if (!tableBody || !meanTableBody || !meanTable) {
+      console.error('Table body element not found.');
+      return;
+    }
 
-  // Clear previous rows
-  tableBody.innerHTML = '';
-  meanTableBody.innerHTML = '';
+    // Clear previous rows
+    tableBody.innerHTML = '';
+    meanTableBody.innerHTML = '';
 
-  const meanValue = this.chartDataDEntry.data2[0] || 'N/A'; // Replace with actual mean calculation if needed
+    const meanValue = this.chartDataDEntry.data2[0] || 'N/A'; // Replace with actual mean calculation if needed
 
-  // Update the Mean header value (optional if dynamic)
-  const meanHeader = document.getElementById('mean-header');
-  if (meanHeader) {
-    meanHeader.textContent = `Mean: ${meanValue}`; // Show the mean value only once in the header
-  }
+    // Update the Mean header value (optional if dynamic)
+    const meanHeader = document.getElementById('mean-header');
+    if (meanHeader) {
+      meanHeader.textContent = `Mean: ${meanValue}`; // Show the mean value only once in the header
+    }
 
-  // Populate the table with labels and data
-  this.chartDataDEntry.labels.forEach((label: string, index: number) => {
-    const row = document.createElement('tr');
-    const cell1 = document.createElement('td');
-    const cell2 = document.createElement('td');
-    const cell3 = document.createElement('td');
+    // Populate the table with labels and data
+    this.chartDataDEntry.labels.forEach((label: string, index: number) => {
+      const row = document.createElement('tr');
+      const cell1 = document.createElement('td');
+      const cell2 = document.createElement('td');
+      const cell3 = document.createElement('td');
 
-    row.style.backgroundColor = this.chartDataDEntry.alerts[index];
+      row.style.backgroundColor = this.chartDataDEntry.alerts[index];
 
-    cell1.textContent = label; // Label
-    cell2.textContent = this.chartDataDEntry.data[index]; // Data
+      cell1.textContent = label; // Label
+      cell2.textContent = this.chartDataDEntry.data[index]; // Data
 
-    const icon = document.createElement('span');
-    icon.classList.add('arrow-icon'); // Apply arrow icon styling
-    icon.textContent = '>>';  // Use a down arrow (Unicode character)
+      const icon = document.createElement('span');
+      icon.classList.add('arrow-icon'); // Apply arrow icon styling
+      icon.textContent = '>>';  // Use a down arrow (Unicode character)
 
-    icon.addEventListener('click', () => {
-      event.stopPropagation();
-      const relatedIds = this.chartDataDEntry.id[index];
-      const queryParams = relatedIds.map(id => `ids=${id}`).join('&');
-      console.log("Icon clicked: ", label, meanValue,relatedIds);
-      // Pass the count along with the label to update the mean table with multiple rows
-      // this.updateMeanTable(label, this.chartDataDEntry.data2[index], this.chartDataDEntry.data[index],relatedIds); 
-      this.apiService.getWithHeaders(`MasterData/by-ids?${queryParams}`).subscribe(data => {
-        console.log('Data from API:', data);
-        const frmn = data.map(item => item.frmn);   // Adjust based on the actual response structure
-        const sector = data.map(item => item.sector); // Adjust based on the actual response structure
-        const aspect = data.map(item => item.aspect); 
-        this.updateMeanTable(label, meanValue, this.chartDataDEntry.data[index], frmn,sector,aspect); 
-        meanTable.style.display = 'table';
+      icon.addEventListener('click', () => {
+        event.stopPropagation();
+        const relatedIds = this.chartDataDEntry.id[index];
+        const queryParams = relatedIds.map(id => `ids=${id}`).join('&');
+        console.log("Icon clicked: ", label, meanValue, relatedIds);
+        // Pass the count along with the label to update the mean table with multiple rows
+        // this.updateMeanTable(label, this.chartDataDEntry.data2[index], this.chartDataDEntry.data[index],relatedIds);
+        this.apiService.getWithHeaders(`MasterData/by-ids?${queryParams}`).subscribe(data => {
+          console.log('Data from API:', data);
+          const frmn = data.map(item => item.frmn);   // Adjust based on the actual response structure
+          const sector = data.map(item => item.sector); // Adjust based on the actual response structure
+          const aspect = data.map(item => item.aspect);
+          this.updateMeanTable(label, meanValue, this.chartDataDEntry.data[index], frmn, sector, aspect);
+          meanTable.style.display = 'table';
+        });
       });
+
+      cell3.appendChild(icon);
+
+      row.appendChild(cell1);
+      row.appendChild(cell2);
+      row.appendChild(cell3);
+
+      tableBody.appendChild(row);
     });
+  }
 
-    cell3.appendChild(icon);
-
-    row.appendChild(cell1);
-    row.appendChild(cell2);
-    row.appendChild(cell3);
-
-    tableBody.appendChild(row);
-  });
-}
-
-  updateMeanTable(label: string, meanValue: number, count: number, frmn: string[],sector:string,aspect:string,): void {
+  updateMeanTable(label: string, meanValue: number, count: number, frmn: string[], sector: string, aspect: string,): void {
     const meanTableBody = document.getElementById('mean-table-body');
     if (!meanTableBody) {
       console.error('Mean table body element not found.');
       return;
     }
-  
+
     // Clear previous rows
     meanTableBody.innerHTML = '';
-  
+
     // Loop through the count for that label and populate the table with each entry's details
     for (let i = 0; i < count; i++) {
       const row = document.createElement('tr');
-  
+
       // Add the label and mean value for each entry
       const cell1 = document.createElement('td');
       const cell2 = document.createElement('td');
       const cell3 = document.createElement('td');
       const cell4 = document.createElement('td'); // Frmn
       const cell5 = document.createElement('td');
-  
+
       // Add the data you need for each entry (example: Frmns, Sectors, Aspects)
       cell1.textContent = label; // Label
       cell2.textContent = meanValue.toString(); // Mean Value
@@ -1879,13 +1975,13 @@ createDataTable(): void {
       row.appendChild(cell3);
       row.appendChild(cell4);
       row.appendChild(cell5);
-  
+
       meanTableBody.appendChild(row);
     }
   }
-  
 
-  //Dropdown for chart 
+
+  //Dropdown for chart
   selected11: string = '';
   selectedType11 = '';
   onChange1(event: any) {
@@ -1923,7 +2019,7 @@ createDataTable(): void {
   }
 
 
-  // FOR CHARTS 
+  // FOR CHARTS
 
   chartDataInput: ChartData<'line', number[], string | string[]> = {
     labels: [],
@@ -2362,10 +2458,10 @@ createDataTable(): void {
     this.filters.startDate = null;
     this.filters.endDate = null;
 
-    this.onFilterChange1('fmn', null);  // Resetting Fmn dropdown filter
-    this.onFilterChange1('sector', null);  // Resetting Sector dropdown filter
-    this.onFilterChange1('aspects', null);  // Resetting Aspects dropdown filter
-    this.onFilterChange1('indicator', null);
+    // this.onFilterChange1('fmn', null);  // Resetting Fmn dropdown filter
+    // this.onFilterChange1('sector', null);  // Resetting Sector dropdown filter
+    // this.onFilterChange1('aspects', null);  // Resetting Aspects dropdown filter
+    // this.onFilterChange1('indicator', null);
   }
 
   // Method to empty the chart

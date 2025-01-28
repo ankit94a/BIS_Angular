@@ -43,15 +43,15 @@ export enum PermissionItem {
     InventoryTransfer = 'InventoryTransfer',
     Attribute = 'Attribute'
   }
-  
-  
+
+
   export enum PermissionAction {
     Read = 'Read',
     Create = 'Create',
     Update = 'Update',
     ReadAll = 'ReadAll',
     Delete = 'Delete',
-  
+
   }
 
   export enum RoleType
@@ -66,4 +66,9 @@ export enum PermissionItem {
       Goc = "Goc",
       Admin = "Admin",
       SuperAdmin = "SuperAdmin"
+  }
+  export enum FilterType{
+    Daily = "Daily",
+    Weekly = "Weekly",
+    Monthly = "Monthly"
   }

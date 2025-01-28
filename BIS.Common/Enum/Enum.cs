@@ -79,5 +79,11 @@ namespace BIS.Common.Enum
             Today,
             Months12
         }
+        public enum FilterType
+        {
+            Daily = 1,
+            Weekly,
+            Monthly
+        }
     }
 }
