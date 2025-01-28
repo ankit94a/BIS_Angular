@@ -88,5 +88,15 @@ namespace BIS.API.Controller
         {
             return Ok(_masterDataManager.GetAllEnemyLocation());
         }
+
+        // Ansh - smart-analysis
+        //[HttpGet("by-ids")]
+        //public async Task<ActionResult> GetDataByIds([FromQuery] List<int> ids)
+        //{
+        //    var data = await _masterDataManager.GetByIds(ids);
+        //    return Ok(data);
+        //}
+        
+
     }
 }

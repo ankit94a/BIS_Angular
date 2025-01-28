@@ -1,36 +1,325 @@
-import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { ApiService } from 'projects/sharedlibrary/src/services/api.service';
 import { SharedLibraryModule } from 'projects/sharedlibrary/src/shared-library.module';
 import { Chart, ChartData, ChartOptions } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
 import { Subject, takeUntil } from 'rxjs';
-import { ChartListModel } from 'projects/sharedlibrary/src/model/smart-analysis.model';
+import { DatePipe } from '@angular/common';
+import { AuthService } from 'projects/sharedlibrary/src/services/auth.service';
+import { FilterModel } from 'projects/sharedlibrary/src/model/dashboard.model';
 
 @Component({
   selector: 'app-smart-analysis',
-  imports: [SharedLibraryModule,BaseChartDirective],
+  imports: [SharedLibraryModule, BaseChartDirective],
+  providers: [DatePipe],
   templateUrl: './smart-analysis.component.html',
   styleUrl: './smart-analysis.component.scss'
 })
 export class SmartAnalysisComponent implements OnInit, OnDestroy {
   // savedNotes: IsavedNotes[] = [];
-  fmnList: string[] = ["33 Corps", "27 Mtn Div", "17 Mtn Div", "111 Sub Area", "20 Mtn Div", "3 Corps", "2 Mtn Div", "56 Mtn Div", "57 Mtn Div", "4 Corps", "5 Mtn Div", "21 Mtn Div", "71 Mtn Div", "17 Corps", "59 Mtn Div", "23 Mtn Div"];
-  sectorList:string[]=['None','PSS','MSS','Cho_la','Doka_la'];
-  aspectList:string[]=['None','Svl / Counter Svl','Friction / Belligerence','Ae Activity','Conc of Tps','Armr / Arty / AD / Engrs Indn','Mob','Infra Devp','Dumping of WLS','Heightened Diplomatic Eng','Collapse of Diplomatic Ties','Propoganda','Internal Issues','Cyber','Def','Interactions'];
-  indicatorList:string[]=['None','Placement of addl Svl Eqpt','Incr Recce','Incr in OP loc','Jamming','Enhanced Tourist Influx']
-  chartList:string[] = ['Monthly','Daily','Weekly']
-  chartListModel:ChartListModel=new ChartListModel()
-  constructor(private apiService:ApiService){
+  fmnList = [];
+  filterModel: FilterModel = new FilterModel();
+  //chart variables
+  input30Days:ChartData<'line'>;
+  inputLastYear:ChartData<'line'>;
+  aspect30Days:ChartData<'line'>;
+  aspectLastYear:ChartData<'line'>;
+  indicator30Days:ChartData<'line'>;
+  indicatorLastYear:ChartData<'line'>;
 
-    this.getDEntries();
+  @ViewChildren(BaseChartDirective) charts!: QueryList<BaseChartDirective>;
+    // Map to track selected charts by their IDs
+    selectedCharts: { [key: string]: boolean } = {
+      chart0: false,
+      chart1: false,
+      chart2: false,
+      chart3: false,
+    };
+
+  // fmnList: string[] = ["33 Corps", "27 Mtn Div", "17 Mtn Div", "111 Sub Area", "20 Mtn Div", "3 Corps", "2 Mtn Div", "56 Mtn Div", "57 Mtn Div", "4 Corps", "5 Mtn Div", "21 Mtn Div", "71 Mtn Div", "17 Corps", "59 Mtn Div", "23 Mtn Div"];
+  sectorList: string[] = ['None', 'PSS', 'MSS', 'Cho_la', 'Doka_la'];
+  aspectList: string[] = ['None', 'Svl / Counter Svl', 'Friction / Belligerence', 'Ae Activity', 'Conc of Tps', 'Armr / Arty / AD / Engrs Indn', 'Mob', 'Infra Devp', 'Dumping of WLS', 'Heightened Diplomatic Eng', 'Collapse of Diplomatic Ties', 'Propoganda', 'Internal Issues', 'Cyber', 'Def', 'Interactions'];
+  indicatorList: string[] = ['None', 'Placement of addl Svl Eqpt', 'Incr Recce', 'Incr in OP loc', 'Jamming', 'Enhanced Tourist Influx']
+  chartList: string[] = ['Monthly', 'Daily', 'Weekly']
+  constructor(private apiService: ApiService, private datePipe: DatePipe,private authService:AuthService) {
+    var divisionName = this.authService.getDivisionName();
+    if(divisionName != undefined && divisionName != '' && divisionName != null){
+      this.fmnList.push(divisionName);
+      this.filterModel.frmn = this.fmnList;
+    }
+  }
+  isAnyCheckboxSelected(): boolean {
+    return Object.values(this.selectedCharts).some(selected => selected);
   }
 
-  onFilterChange($event){
+  downloadSelectedGraphs(): void {
+    Object.keys(this.selectedCharts).forEach(chartId => {
+      if (this.selectedCharts[chartId]) {
+        this.download(chartId);
+      }
+    });
+  }
+  download(chartId: string): void {
+    let index = 0;
+    switch(chartId){
+      case 'chart0' :index = 0; break;
+      case 'chart1': index = 1; break;
+      case 'chart2' : index = 2; break;
+      case 'chart3' : index = 3; break;
+      // fmn chart
+      case 'chart4' :index = 4; break;
+      case 'chart5': index = 5; break;
+      case 'chart6' : index = 6; break;
+      case 'chart7' : index = 7; break;
+      // aspect chart
+      case 'chart8' : index = 8; break;
+      case 'chart9' : index = 9; break;
+      case 'chart10' : index = 10; break;
+      case 'chart11' : index = 11; break;
+      // indicator chart
+      case 'chart12' : index = 12; break;
+      case 'chart13' : index = 13; break;
+      case 'chart14' : index = 14; break;
+      case 'chart15' : index = 15; break;
+    }
+    const chartDirective = this.charts.toArray()[index];
+
+    if (chartDirective?.chart) {
+      const base64Image = chartDirective.chart.toBase64Image();
+      const link = document.createElement('a');
+      link.href = base64Image;
+      link.download = `${chartId}.png`;
+      link.click();
+    } else {
+      console.error(`Chart instance not found or not ready for ${chartId}`);
+    }
+  }
+  ngOnInit(): void {
+    this.get30DaysInput();
+    this.get30DaysAspect();
+    this.get30DaysIndicator();
+    this.getlastYearInput();
+    this.getlastYearAspect();
+    this.getlastYearIndicator();
+    // this.getFrmnDataAll();
+    // this.getFrmnDataAll30();
+    // this.getAspect30();
+    // this.getAspect30LY();
+    // this.getIndicators30Day();
+    // this.getIndicators30DaysLY();
+    // this.getFrmnAll();
+    // this.getFrmnAll2();
+    // this.getMeanWeek();
+    // this.getMeanMonth();
+    // this.getWeeklyEntries();
+    // this.getMEntries();
+    // this.getDEntries();
+    // this.onChange1('');
+
+    // this.getNoOfInputChart();
+    // this.getNoOfInputChartLY();
+    // this.getAspectChart();
+    // this.getAspectChartLY();
+    // this.getIndicatorChart();
+    // this.getIndicatorChartLY();
+    // this.getVariationChart1();
+    // this.getVariationChart2();
+
+  }
+
+  public lineChartOptions: ChartOptions<'line'> = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        display: false,
+        position: 'top',
+      },
+      tooltip: {
+        callbacks: {
+          label: function (tooltipItem) {
+            const dataValue = tooltipItem.raw;
+            return ` ${dataValue}`;
+          },
+        },
+      },
+      title: {
+        display: false, // Initially hidden; will be set dynamically
+        text: '',       // Placeholder text
+        font: {
+          size: 16,
+        },
+        align: 'center',
+      },
+    },
+    scales: {
+      x: {
+        title: {
+          display: true,
+          text: '',
+        },
+        ticks: {
+          autoSkip: false,
+          maxRotation: 60,
+          minRotation: 60,
+        },
+      },
+      y: {
+        title: {
+          display: true,
+          text: 'Values',
+        },
+        beginAtZero: true,
+      },
+    },
+  };
+  
+  get30DaysInput() {
+    this.apiService.postWithHeader('smartanalysis/30days', this.filterModel).subscribe(res => {
+      if (res) {
+        // Set the data dynamically
+        this.input30Days = {
+          labels: res.name,
+          datasets: [
+            {
+              data: res.count,
+              label: 'Inputs', // Dataset label
+              backgroundColor: 'rgba(151, 126, 201, 0.5)', // Semi-transparent purple
+              borderColor: 'rgba(150, 68, 150, 0.5)', // Solid purple
+              borderWidth: 1.2,
+              fill: true,
+              tension: 0.4,
+            },
+          ],
+        };
+  
+        // Update the chart title dynamically
+        // this.lineChartOptions.plugins.title.display = true;
+        // this.lineChartOptions.plugins.title.text = `Abcdedfasdkfjkflsajflk`;
+      }
+    });
+  }
+  
+  getlastYearInput(){
+    this.apiService.postWithHeader('smartanalysis/30days/lastyear',this.filterModel).subscribe(res =>{
+      if(res){
+        this.inputLastYear = {
+          labels: res.name,
+          datasets: [
+            { data: res.count, label: res.name,
+              backgroundColor: 'rgba(151, 126, 201, 0.5)', // Semi-transparent blue
+              borderColor: 'rgba(150, 68, 150, 0.5)', // Solid blue
+              borderWidth: 1.2,
+              fill: true, // Fill area under the line
+              tension: 0.4, // Adds smoothness to the line
+            },
+          ],
+        };
+         // Update the chart title dynamically
+        //  this.lineChartOptions.plugins.title.display = true;
+        //  this.lineChartOptions.plugins.title.text = `ankit`;
+      }
+    })
+  }
+  get30DaysAspect(){
+    this.apiService.postWithHeader('smartanalysis/aspect/30days',this.filterModel).subscribe(res =>{
+      if(res){
+        this.aspect30Days = {
+          labels: res.name,
+          datasets: [
+            { data: res.count, label: res.name,
+              backgroundColor: 'rgba(151, 126, 201, 0.5)', // Semi-transparent blue
+              borderColor: 'rgba(150, 68, 150, 0.5)', // Solid blue
+              borderWidth: 1.2,
+              fill: true, // Fill area under the line
+              tension: 0.4, // Adds smoothness to the line
+            },
+          ],
+        };
+      }
+    })
+  }
+  getlastYearAspect(){
+    this.apiService.postWithHeader('smartanalysis/aspect/30days/lastyear',this.filterModel).subscribe(res =>{
+      if(res){
+        this.aspectLastYear = {
+          labels: res.name,
+          datasets: [
+            { data: res.count, label: res.name,
+              backgroundColor: 'rgba(151, 126, 201, 0.5)', // Semi-transparent blue
+              borderColor: 'rgba(150, 68, 150, 0.5)', // Solid blue
+              borderWidth: 1.2,
+              fill: true, // Fill area under the line
+              tension: 0.4, // Adds smoothness to the line
+            },
+          ],
+        };
+      }
+    })
+  }
+  get30DaysIndicator(){
+    this.apiService.postWithHeader('smartanalysis/indicator/30days',this.filterModel).subscribe(res =>{
+      if(res){
+        this.indicator30Days = {
+          labels: res.name,
+          datasets: [
+            { data: res.count, label: res.name,
+              backgroundColor: 'rgba(151, 126, 201, 0.5)', // Semi-transparent blue
+              borderColor: 'rgba(150, 68, 150, 0.5)', // Solid blue
+              borderWidth: 1.2,
+              fill: true, // Fill area under the line
+              tension: 0.4, // Adds smoothness to the line
+            },
+          ],
+        };
+      }
+    })
+  }
+  getlastYearIndicator(){
+    this.apiService.postWithHeader('smartanalysis/indicator/30days/lastyear',this.filterModel).subscribe(res =>{
+      if(res){
+        this.indicatorLastYear = {
+          labels: res.name,
+          datasets: [
+            { data: res.count, label: res.name,
+              backgroundColor: 'rgba(151, 126, 201, 0.5)', // Semi-transparent blue
+              borderColor: 'rgba(150, 68, 150, 0.5)', // Solid blue
+              borderWidth: 1.2,
+              fill: true, // Fill area under the line
+              tension: 0.4, // Adds smoothness to the line
+            },
+          ],
+        };
+      }
+    })
+  }
+  onFilterChange($event) {
 
   }
   onFilterChange1(filterKey: string, event: any): void {
     this.filters[filterKey] = event;
     this.getFrmnDataAll();
+    this.getNoOfInputChart();
+    this.getNoOfInputChartLY();
+    this.getAspectChart();
+    this.getAspectChartLY();
+    this.getIndicatorChart();
+    this.getIndicatorChartLY();
+
+  }
+  onFilterChange2(filterKey: string, event: any): void {
+    this.filters[filterKey] = event;
+    this.getVariationChart2();
+
+  }
+  onFilterChange3(filterKey: string, event: any): void {
+    this.filters[filterKey] = event;
+    this.getDEntries();
+    this.getVariationChart1();
+
+  }
+  onFilterChange4(filterKey: string, event: any): void {
+    this.filters[filterKey] = event;
 
   }
 
@@ -55,7 +344,7 @@ export class SmartAnalysisComponent implements OnInit, OnDestroy {
     maintainAspectRatio: false,
     plugins: {
       legend: {
-        display: true,
+        display: false,
         position: 'top', // Show the legend at the top
       },
     },
@@ -81,8 +370,8 @@ export class SmartAnalysisComponent implements OnInit, OnDestroy {
     },
   };
 
-   // Chart Data - Complete data
-   completeChartData: ChartData<'line', number[], string | string[]> = {
+  // Chart Data - Complete data
+  completeChartData: ChartData<'line', number[], string | string[]> = {
     labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
     datasets: [
       {
@@ -147,29 +436,53 @@ export class SmartAnalysisComponent implements OnInit, OnDestroy {
 
 
   //FOR CHARTSN AP
-   private unsubscribe$ = new Subject<void>();
+  private unsubscribe$ = new Subject<void>();
 
-   ngOnInit(): void {
-     this.getFrmnDataAll();
-     this.getFrmnDataAll30();
-     this.getAspect30();
-     this.getAspect30LY();
-     this.getIndicators30Day();
-     this.getIndicators30DaysLY();
-     this.getFrmnAll();
-     this.getFrmnAll2();
-     this.getMeanWeek();
-     this.getMeanMonth();
-     this.getWeeklyEntries();
-     this.getMEntries();
-     this.onChange1('');
+ 
+  // public lineChartOptions: ChartOptions<'line'> = {
+  //   responsive: true,
+  //   maintainAspectRatio: false,
+  //   plugins: {
+  //     legend: {
+  //       display: false,
+  //       position: 'top',
+  //     },
+  //     tooltip: {
+  //       callbacks: {
+  //         label: function (tooltipItem) {
+  //           const dataValue = tooltipItem.raw;
+  //           return ` ${dataValue}`;
+  //         }
+  //       }
+  //     }
+  //   },
+  //   scales: {
+  //     x: {
+  //       title: {
+  //         display: true,
+  //         text: 'Dates',
+  //       },
+  //       ticks: {
+  //         autoSkip: false,
+  //         maxRotation: 60,
+  //         minRotation: 60,
+  //       },
+  //     },
+  //     y: {
+  //       title: {
+  //         display: true,
+  //         text: 'Values',
+  //       },
+  //       beginAtZero: true,
+  //     },
+  //   },
+  // };
+  
 
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
-
-      ngOnDestroy(): void {
-        this.unsubscribe$.next();
-        this.unsubscribe$.complete();
-      }
 
 
   chartDataLineFrmn: any = null;
@@ -213,33 +526,48 @@ export class SmartAnalysisComponent implements OnInit, OnDestroy {
   @ViewChild('myChartMeanW') myChartMeanW!: ElementRef<HTMLCanvasElement>;
   @ViewChild('myChartMeanMo') myChartMeanMo!: ElementRef<HTMLCanvasElement>;
 
-  filters: { Sector?: string, Aspects?: string, Source?: string, Indicator?: string, Frmn?: string,} = {};
+  filters: {
+    Sector?: string, Aspects?: string, Source?: string, Indicator?: string, Frmn?: string, startDate?: string,
+    endDate?: string
+  } = {};
 
+  filters1: {
+    Sector?: string, Aspects?: string, Source?: string, Indicator?: string, Frmn?: string, startDate?: string,
+    endDate?: string
+  } = {};
+  filters2: {
+    Sector?: string, Aspects?: string, Source?: string, Indicator?: string, Frmn?: string, startDate?: string,
+    endDate?: string
+  } = {};
+  filters3: {
+    Sector?: string, Aspects?: string, Source?: string, Indicator?: string, Frmn?: string, startDate?: string,
+    endDate?: string
+  } = {};
   getFrmnDataAll(): void {
     const queryParams = Object.entries(this.filters)
-    .filter(([key, value]) => value) // Include only non-empty filters
-    .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
-    .join('&');
+      .filter(([key, value]) => value) // Include only non-empty filters
+      .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
+      .join('&');
 
-  // Base URL
-  const baseUrl = "Rpt/getfrmn30Days?last30Days=true";
+    // Base URL
+    const baseUrl = "Rpt/getfrmn30Days?last30Days=true";
 
-  // Full URL with query parameters
-  const fullUrl = queryParams ? `${baseUrl}&${queryParams}` : baseUrl;
-  this.apiService.getWithHeaders(fullUrl)
-    // this.apiService.getWithHeaders("Rpt/getfrmn30Days?last30Days=true")
-    .pipe(takeUntil(this.unsubscribe$)).subscribe({
-      next: (data) => {
-        // console.log('Filtered data from API:', data);
-        this.chartDataLineFrmn = data;
-        this.renderPieChartFrmn();
-        // console.log('Filtered data:', this.chartDataLineFrmn);
-      },
-      error: (error) => {
-        console.error('Error fetching data:', error);
-      }
+    // Full URL with query parameters
+    const fullUrl = queryParams ? `${baseUrl}&${queryParams}` : baseUrl;
+    this.apiService.getWithHeaders(fullUrl)
+      // this.apiService.getWithHeaders("Rpt/getfrmn30Days?last30Days=true")
+      .pipe(takeUntil(this.unsubscribe$)).subscribe({
+        next: (data) => {
+          // console.log('Filtered data from API:', data);
+          this.chartDataLineFrmn = data;
+          this.renderPieChartFrmn();
+          // console.log('Filtered data:', this.chartDataLineFrmn);
+        },
+        error: (error) => {
+          console.error('Error fetching data:', error);
+        }
 
-    });
+      });
   }
   renderPieChartFrmn(): void {
     if (!this.chartDataLineFrmn || !this.myChartLineFrmn) {
@@ -792,15 +1120,14 @@ export class SmartAnalysisComponent implements OnInit, OnDestroy {
       console.error('Canvas context is null.');
       return;
     }
-debugger
+
     this.chartFrmn = new Chart(ctx, {
       type: 'line',
       data: {
-        // labels: this.chartDataFrmn.labels,
-        labels:this.chartDataDEntry.labels,
+        labels: this.chartDataFrmn.labels,
         datasets: [{
-          label: 'Variation',
-          data: this.chartDataDEntry.data,
+          label: 'Fmn',
+          data: this.chartDataFrmn.datasets[0].data,
           backgroundColor: [
             'rgba(255, 99, 132, 1)',
             'rgba(54, 162, 235, 1)',
@@ -887,10 +1214,10 @@ debugger
     this.chartFrmn2 = new Chart(ctx, {
       type: 'line',
       data: {
-        labels: this.chartDataDEntry.labels,
+        labels: this.chartDataFrmn2.labels,
         datasets: [{
           label: 'Fmn',
-          data: this.chartDataDEntry.data,
+          data: this.chartDataFrmn2.datasets[0].data,
           backgroundColor: [
             'rgba(255, 99, 132, 1)',
             'rgba(54, 162, 235, 1)',
@@ -944,19 +1271,15 @@ debugger
 
   //             FOR WEEKLY,Monthly,DailyCharts
   getWeeklyEntries(): void {
-
-
-    this.apiService.postWithHeader("Rpt/weekly-entries-test",this.chartListModel)
+    this.apiService.getWithHeaders("Rpt/weekly-entries-test")
       .pipe(
         takeUntil(this.unsubscribe$) // Unsubscribe when `unsubscribe$` emits
       ).subscribe({
         next: (data) => {
-
-          console.log('Filtered data from API:', data);
+          // console.log('Filtered data from API:', data);
           this.chartDataWeeklyEntry = data;
-          this.chartDataDEntry = data;
           this.renderChartWeeklyEntry();
-          console.log('Filtered data:', this.chartDataWeeklyEntry);
+          // console.log('Filtered data:', this.chartDataWeeklyEntry);
         },
         error: (error) => {
           console.error('Error fetching data:', error);
@@ -965,14 +1288,13 @@ debugger
       });
   }
   getMEntries(): void {
-    this.apiService.postWithHeader("Rpt/monthly-entries-test",this.chartListModel)
+    this.apiService.getWithHeaders("Rpt/monthly-entries-test")
       .pipe(
         takeUntil(this.unsubscribe$) // Unsubscribe when `unsubscribe$` emits
       ).subscribe({
         next: (data) => {
           // console.log('Filtered data from API:', data);
           this.chartDataMEntry = data;
-          this.chartDataDEntry = data;
           this.renderChartMEntry();
           // console.log('Filtered data:', this.chartDataMEntry);
         },
@@ -983,11 +1305,12 @@ debugger
       });
   }
   getDEntries(): void {
-    this.apiService.postWithHeader("Rpt/daily-entries-chart",this.chartListModel)
+    this.apiService.getWithHeaders("Rpt/daily-entries-chart")
       .pipe(
         takeUntil(this.unsubscribe$) // Unsubscribe when `unsubscribe$` emits
       ).subscribe({
         next: (data) => {
+          // console.log('Filtered data from API:', data);
           this.chartDataDEntry = data;
           this.renderChartDEntry(
 
@@ -1001,7 +1324,7 @@ debugger
       });
   }
   getMeanWeek(): void {
-    this.apiService.postWithHeader("Rpt/weekly-entries-test",this.chartListModel)
+    this.apiService.getWithHeaders("Rpt/weekly-entries-test")
       .pipe(
         takeUntil(this.unsubscribe$) // Unsubscribe when `unsubscribe$` emits
       ).subscribe({
@@ -1018,7 +1341,7 @@ debugger
       });
   }
   getMeanMonth(): void {
-    this.apiService.postWithHeader("Rpt/monthly-entries-test",this.chartListModel)
+    this.apiService.getWithHeaders("Rpt/monthly-entries-test")
       .pipe(
         takeUntil(this.unsubscribe$) // Unsubscribe when `unsubscribe$` emits
       ).subscribe({
@@ -1143,7 +1466,6 @@ debugger
   }
 
   renderChartWeeklyEntry(): void {
-
     if (!this.chartDataWeeklyEntry || !this.myChartWeeklyEntry) {
       // this.renderEmptyPieChart(this.myChart111);
       return;
@@ -1387,49 +1709,192 @@ debugger
     this.createDataTable();
 
   }
-  createDataTable(): void {
+  // createDataTable(): void {
+  //   const tableBody = document.getElementById('data-table-body');
+  //   const meanTableBody = document.getElementById('mean-table-body');
 
-    const tableBody = document.getElementById('data-table-body');
-    if (!tableBody) {
-      console.error('Table body element not found.');
+  //   if (!tableBody || !meanTableBody) {
+  //     console.error('Table body element not found.');
+  //     return;
+  //   }
+
+  //   // Clear previous rows
+  //   tableBody.innerHTML = '';
+  //   meanTableBody.innerHTML = '';
+
+  //   const meanValue = this.chartDataDEntry.data2[0] || 'N/A'; // Replace with actual mean calculation if needed
+
+  //   // Update the Mean header value (optional if dynamic)
+  //   const meanHeader = document.getElementById('mean-header');
+  //   if (meanHeader) {
+  //     meanHeader.textContent = `Mean: ${meanValue}`; // Show the mean value only once in the header
+  //   }
+
+  //   // Populate the table with labels and data
+  //   this.chartDataDEntry.labels.forEach((label: string, index: number) => {
+  //     const row = document.createElement('tr');
+  //     const cell1 = document.createElement('td');
+  //     const cell2 = document.createElement('td');
+  //     const cell3 = document.createElement('td');
+
+  //     row.style.backgroundColor = this.chartDataDEntry.alerts[index];
+
+  //     cell1.textContent = label; // Label
+  //     cell2.textContent = this.chartDataDEntry.data[index]; // Data
+  //     // cell3.textContent = ''; // Mean (if applicable)
+
+  //     const icon = document.createElement('span');
+  //     icon.classList.add('arrow-icon'); // Apply arrow icon styling
+  //     icon.textContent = '>>';  // Use a down arrow (Unicode character)
+
+  //     icon.addEventListener('click', () => {
+  //       event.stopPropagation();
+  //       console.log("Icon clicked: ", label, meanValue);
+  //       this.updateMeanTable(label, this.chartDataDEntry.data2[index]);  // Update the right table with the mean value
+  //     });
+
+  //     cell3.appendChild(icon);
+
+  //     row.appendChild(cell1);
+  //     row.appendChild(cell2);
+  //     row.appendChild(cell3);
+
+  //     tableBody.appendChild(row);
+  //   });
+  // }
+  // updateMeanTable(label: string, meanValue: number): void {
+  //   const meanTableBody = document.getElementById('mean-table-body');
+  //   if (!meanTableBody) {
+  //     console.error('Mean table body element not found.');
+  //     return;
+  //   }
+
+  //   // Create a new row for the mean value
+  //   const row = document.createElement('tr');
+  //   const cell1 = document.createElement('td');
+  //   const cell2 = document.createElement('td');
+
+  //   cell1.textContent = label; // Label
+  //   cell2.textContent = meanValue.toString(); // Mean value
+
+  //   row.appendChild(cell1);
+  //   row.appendChild(cell2);
+  //   meanTableBody.appendChild(row);
+  // }
+createDataTable(): void {
+  const tableBody = document.getElementById('data-table-body');
+  const meanTableBody = document.getElementById('mean-table-body');
+  const meanTable = document.getElementById('mean-table');
+
+  if (!tableBody || !meanTableBody || !meanTable) {
+    console.error('Table body element not found.');
+    return;
+  }
+
+  // Clear previous rows
+  tableBody.innerHTML = '';
+  meanTableBody.innerHTML = '';
+
+  const meanValue = this.chartDataDEntry.data2[0] || 'N/A'; // Replace with actual mean calculation if needed
+
+  // Update the Mean header value (optional if dynamic)
+  const meanHeader = document.getElementById('mean-header');
+  if (meanHeader) {
+    meanHeader.textContent = `Mean: ${meanValue}`; // Show the mean value only once in the header
+  }
+
+  // Populate the table with labels and data
+  this.chartDataDEntry.labels.forEach((label: string, index: number) => {
+    const row = document.createElement('tr');
+    const cell1 = document.createElement('td');
+    const cell2 = document.createElement('td');
+    const cell3 = document.createElement('td');
+
+    row.style.backgroundColor = this.chartDataDEntry.alerts[index];
+
+    cell1.textContent = label; // Label
+    cell2.textContent = this.chartDataDEntry.data[index]; // Data
+
+    const icon = document.createElement('span');
+    icon.classList.add('arrow-icon'); // Apply arrow icon styling
+    icon.textContent = '>>';  // Use a down arrow (Unicode character)
+
+    icon.addEventListener('click', () => {
+      event.stopPropagation();
+      const relatedIds = this.chartDataDEntry.id[index];
+      const queryParams = relatedIds.map(id => `ids=${id}`).join('&');
+      console.log("Icon clicked: ", label, meanValue,relatedIds);
+      // Pass the count along with the label to update the mean table with multiple rows
+      // this.updateMeanTable(label, this.chartDataDEntry.data2[index], this.chartDataDEntry.data[index],relatedIds); 
+      this.apiService.getWithHeaders(`MasterData/by-ids?${queryParams}`).subscribe(data => {
+        console.log('Data from API:', data);
+        const frmn = data.map(item => item.frmn);   // Adjust based on the actual response structure
+        const sector = data.map(item => item.sector); // Adjust based on the actual response structure
+        const aspect = data.map(item => item.aspect); 
+        this.updateMeanTable(label, meanValue, this.chartDataDEntry.data[index], frmn,sector,aspect); 
+        meanTable.style.display = 'table';
+      });
+    });
+
+    cell3.appendChild(icon);
+
+    row.appendChild(cell1);
+    row.appendChild(cell2);
+    row.appendChild(cell3);
+
+    tableBody.appendChild(row);
+  });
+}
+
+  updateMeanTable(label: string, meanValue: number, count: number, frmn: string[],sector:string,aspect:string,): void {
+    const meanTableBody = document.getElementById('mean-table-body');
+    if (!meanTableBody) {
+      console.error('Mean table body element not found.');
       return;
     }
-
+  
     // Clear previous rows
-    tableBody.innerHTML = '';
-
-    // Populate the table with labels and data
-    this.chartDataDEntry.labels.forEach((label: string, index: number) => {
+    meanTableBody.innerHTML = '';
+  
+    // Loop through the count for that label and populate the table with each entry's details
+    for (let i = 0; i < count; i++) {
       const row = document.createElement('tr');
+  
+      // Add the label and mean value for each entry
       const cell1 = document.createElement('td');
       const cell2 = document.createElement('td');
       const cell3 = document.createElement('td');
-
-      row.style.backgroundColor = this.chartDataDEntry.alerts[index];
-
+      const cell4 = document.createElement('td'); // Frmn
+      const cell5 = document.createElement('td');
+  
+      // Add the data you need for each entry (example: Frmns, Sectors, Aspects)
       cell1.textContent = label; // Label
-      cell2.textContent = this.chartDataDEntry.data[index]; // Data
-      cell3.textContent = this.chartDataDEntry.data2[index]; // Mean (if applicable)
+      cell2.textContent = meanValue.toString(); // Mean Value
+      cell3.textContent = frmn[i] || 'N/A';  // Add Frmns data
+      cell4.textContent = sector[i] || 'N/A'; // Set the Frmn value
+      cell5.textContent = aspect[i] || 'N/A';
 
       row.appendChild(cell1);
       row.appendChild(cell2);
       row.appendChild(cell3);
-      tableBody.appendChild(row);
-    });
+      row.appendChild(cell4);
+      row.appendChild(cell5);
+  
+      meanTableBody.appendChild(row);
+    }
   }
+  
 
-  //Dropdown for chart
+  //Dropdown for chart 
   selected11: string = '';
   selectedType11 = '';
   onChange1(event: any) {
-
     this.selected11 = event.value;
     console.log(`Dropdown changed: ${this.selected11}`); // Debugging statement
     this.renderChart();
 
   }
   renderChart(): void {
-
     console.log(`Rendering chart for: ${this.selected11}`);
 
     // Destroy existing charts to avoid memory leaks
@@ -1456,4 +1921,465 @@ debugger
         console.warn('Unknown chart type selected.');
     }
   }
+
+
+  // FOR CHARTS 
+
+  chartDataInput: ChartData<'line', number[], string | string[]> = {
+    labels: [],
+    datasets: [{ data: [] }]
+  };
+  chartDataInputLY: ChartData<'line', number[], string | string[]> = {
+    labels: [],
+    datasets: [{ data: [] }]
+  };
+  chartDataAspect: ChartData<'line', number[], string | string[]> = {
+    labels: [],
+    datasets: [{ data: [] }]
+  };
+  chartDataAspectLY: ChartData<'line', number[], string | string[]> = {
+    labels: [],
+    datasets: [{ data: [] }]
+  };
+  chartDataIndicator: ChartData<'line', number[], string | string[]> = {
+    labels: [],
+    datasets: [{ data: [] }]
+  };
+  chartDataIndicatorLY: ChartData<'line', number[], string | string[]> = {
+    labels: [],
+    datasets: [{ data: [] }]
+  };
+  chartDataVariation1: ChartData<'line', number[], string | string[]> = {
+    labels: [],
+    datasets: [{ data: [] }]
+  };
+  chartDataVariation2: ChartData<'line', number[], string | string[]> = {
+    labels: [],
+    datasets: [{ data: [] }]
+  };
+
+  isLoadingPie: boolean = false;
+
+  getNoOfInputChart(): void {
+    const queryParams = Object.entries(this.filters)
+      .filter(([key, value]) => value) // Include only non-empty filters
+      .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
+      .join('&');
+
+    // Base URL
+    const baseUrl = "Rpt/getfrmn30Days?last30Days=true";
+
+    // Full URL with query parameters
+    const fullUrl = queryParams ? `${baseUrl}&${queryParams}` : baseUrl;
+    this.isLoadingPie = true;
+    this.apiService.getWithHeaders(fullUrl)  // API 1 for Pie Chart
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe({
+        next: (data) => {
+          const updatedData = data.datasets[0].data;
+          this.chartDataInput = {
+            labels: data.labels,  // Assuming the API returns an array of labels
+            datasets: [
+              {
+                data: updatedData,  // Assuming the API returns an array of values
+                backgroundColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)'],
+                borderColor: ['rgba(0, 0, 0, 1)'],
+                borderWidth: 1.2,
+              },
+            ],
+          };
+          this.isLoadingPie = false;
+        },
+        error: (error) => {
+          console.error('Error fetching pie chart data:', error);
+          this.isLoadingPie = false;
+        },
+      });
+  }
+  getNoOfInputChartLY(): void {
+    const queryParams = Object.entries(this.filters)
+      .filter(([key, value]) => value) // Include only non-empty filters
+      .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
+      .join('&');
+
+    // Base URL
+    // const baseUrl = "Rpt/getfrmn30Dayslastyear?last30Days=true";
+    const baseUrl = "Rpt/getfrmn30Dayslastyear?last30Days=true";
+
+    // Full URL with query parameters
+    const fullUrl = queryParams ? `${baseUrl}&${queryParams}` : baseUrl;
+    this.isLoadingPie = true;
+    this.apiService.getWithHeaders(fullUrl)  // API 1 for Pie Chart
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe({
+        next: (data) => {
+          const updatedData = data.datasets[0].data;
+          this.chartDataInputLY = {
+            labels: data.labels,  // Assuming the API returns an array of labels
+            datasets: [
+              {
+                data: updatedData,  // Assuming the API returns an array of values
+                backgroundColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)'],
+                borderColor: ['rgba(0, 0, 0, 1)'],
+                borderWidth: 1.2,
+              },
+            ],
+          };
+          this.isLoadingPie = false;
+        },
+        error: (error) => {
+          console.error('Error fetching pie chart data:', error);
+          this.isLoadingPie = false;
+        },
+      });
+  }
+  getAspectChart(): void {
+    const queryParams = Object.entries(this.filters)
+      .filter(([key, value]) => value) // Include only non-empty filters
+      .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
+      .join('&');
+
+    // Base URL
+    const baseUrl = "Rpt/getaspect30?last30Days=true";
+
+    // Full URL with query parameters
+    const fullUrl = queryParams ? `${baseUrl}&${queryParams}` : baseUrl;
+    this.isLoadingPie = true;
+    this.apiService.getWithHeaders(fullUrl)  // API 1 for Pie Chart
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe({
+        next: (data) => {
+          const updatedData = data.datasets[0].data;
+          this.chartDataAspect = {
+            labels: data.labels,  // Assuming the API returns an array of labels
+            datasets: [
+              {
+                data: updatedData,  // Assuming the API returns an array of values
+                backgroundColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)'],
+                borderColor: ['rgba(255, 99, 132, 1)'],
+                borderWidth: 1.2,
+              },
+            ],
+          };
+          this.isLoadingPie = false;
+        },
+        error: (error) => {
+          console.error('Error fetching pie chart data:', error);
+          this.isLoadingPie = false;
+        },
+      });
+  }
+  getAspectChartLY(): void {
+    const queryParams = Object.entries(this.filters)
+      .filter(([key, value]) => value) // Include only non-empty filters
+      .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
+      .join('&');
+
+    // Base URL
+    const baseUrl = "Rpt/getaspect30LY?last30Days=true";
+
+    // Full URL with query parameters
+    const fullUrl = queryParams ? `${baseUrl}&${queryParams}` : baseUrl;
+    this.isLoadingPie = true;
+    this.apiService.getWithHeaders(fullUrl)  // API 1 for Pie Chart
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe({
+        next: (data) => {
+          const updatedData = data.datasets[0].data;
+          this.chartDataAspectLY = {
+            labels: data.labels,  // Assuming the API returns an array of labels
+            datasets: [
+              {
+                data: updatedData,  // Assuming the API returns an array of values
+                backgroundColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)'],
+                borderColor: ['rgba(255, 99, 132, 1)'],
+                borderWidth: 1.2,
+              },
+            ],
+          };
+          this.isLoadingPie = false;
+        },
+        error: (error) => {
+          console.error('Error fetching pie chart data:', error);
+          this.isLoadingPie = false;
+        },
+      });
+  }
+  getIndicatorChart(): void {
+    const queryParams = Object.entries(this.filters)
+      .filter(([key, value]) => value) // Include only non-empty filters
+      .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
+      .join('&');
+
+    // Base URL
+    const baseUrl = "Rpt/gettoptenindicators30?last30Days=true";
+
+    // Full URL with query parameters
+    const fullUrl = queryParams ? `${baseUrl}&${queryParams}` : baseUrl;
+    this.isLoadingPie = true;
+    this.apiService.getWithHeaders(fullUrl)  // API 1 for Pie Chart
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe({
+        next: (data) => {
+          const updatedData = data.datasets[0].data;
+          this.chartDataIndicator = {
+            labels: data.labels,  // Assuming the API returns an array of labels
+            datasets: [
+              {
+                data: updatedData,  // Assuming the API returns an array of values
+                backgroundColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)'],
+                borderColor: ['rgba(0, 0, 0, 1)'],
+                borderWidth: 1.2,
+              },
+            ],
+          };
+          this.isLoadingPie = false;
+        },
+        error: (error) => {
+          console.error('Error fetching pie chart data:', error);
+          this.isLoadingPie = false;
+        },
+      });
+  }
+  getIndicatorChartLY(): void {
+    const queryParams = Object.entries(this.filters)
+      .filter(([key, value]) => value) // Include only non-empty filters
+      .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
+      .join('&');
+
+    // Base URL
+    const baseUrl = "Rpt/gettoptenindicators30LY?last30Days=true";
+
+    // Full URL with query parameters
+    const fullUrl = queryParams ? `${baseUrl}&${queryParams}` : baseUrl;
+    this.isLoadingPie = true;
+    this.apiService.getWithHeaders(fullUrl)  // API 1 for Pie Chart
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe({
+        next: (data) => {
+          const updatedData = data.datasets[0].data;
+          this.chartDataIndicatorLY = {
+            labels: data.labels,  // Assuming the API returns an array of labels
+            datasets: [
+              {
+                data: updatedData,  // Assuming the API returns an array of values
+                backgroundColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)'],
+                borderColor: ['rgba(54, 162, 235, 1)'],
+                borderWidth: 1.2,
+              },
+            ],
+          };
+          this.isLoadingPie = false;
+        },
+        error: (error) => {
+          console.error('Error fetching pie chart data:', error);
+          this.isLoadingPie = false;
+        },
+      });
+  }
+  getVariationChart1(): void {
+    const queryParams = Object.entries(this.filters2)
+      .filter(([key, value]) => value) // Include only non-empty filters
+      .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
+      .join('&');
+
+    // Base URL
+    const baseUrl = "Rpt/daily-entries-chart";
+
+    // Full URL with query parameters
+    const fullUrl = queryParams ? `${baseUrl}?${queryParams}` : baseUrl;
+    console.log('Request URL:', fullUrl);
+    this.isLoadingPie = true;
+    this.apiService.getWithHeaders(fullUrl)  // API 1 for Pie Chart
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe({
+        next: (data) => {
+          if (!data || !data.data || data.data.length === 0) {
+            console.error('Invalid data format:', data);
+            this.emptyChart();
+            this.isLoadingPie = false;
+            return;
+          }
+          const updatedData = data.data;
+          this.chartDataVariation1 = {
+            labels: data.labels || [],  // Assuming the API returns an array of labels
+            datasets: [
+              {
+                data: updatedData,  // Assuming the API returns an array of values
+                backgroundColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)'],
+                borderColor: ['rgba(54, 162, 235, 1)'],
+                borderWidth: 1.2,
+              },
+            ],
+          };
+          this.isLoadingPie = false;
+        },
+        error: (error) => {
+          console.error('Error fetching pie chart data:', error);
+          console.error('Full URL causing error:', fullUrl);
+          this.isLoadingPie = false;
+        },
+      });
+  }
+  getVariationChart2(): void {
+    const queryParams = Object.entries(this.filters1)
+      .filter(([key, value]) => value) // Include only non-empty filters
+      .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
+      .join('&');
+
+    // Base URL
+    const baseUrl = "Rpt/daily-entries-chart";
+
+    // Full URL with query parameters
+    const fullUrl = queryParams ? `${baseUrl}?${queryParams}` : baseUrl;
+    this.isLoadingPie = true;
+    this.apiService.getWithHeaders(fullUrl)  // API 1 for Pie Chart
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe({
+        next: (data) => {
+          if (!data || !data.data || data.data.length === 0) {
+            console.error('Invalid data format:', data);
+            this.emptyChart1();
+            this.isLoadingPie = false;
+            return;
+          }
+          const updatedData = data.data;
+          this.chartDataVariation2 = {
+            labels: data.labels,  // Assuming the API returns an array of labels
+            datasets: [
+              {
+                data: updatedData,  // Assuming the API returns an array of values
+                backgroundColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)'],
+                borderColor: ['rgba(255, 99, 132, 1)'],
+                borderWidth: 1.2,
+              },
+            ],
+          };
+          this.isLoadingPie = false;
+        },
+        error: (error) => {
+          console.error('Error fetching pie chart data:', error);
+          this.isLoadingPie = false;
+        },
+      });
+  }
+  // onDateRangeChange(): void {
+  //   if (this.filters.startDate && this.filters.endDate) {
+  //     // Print the final URL to the console
+  //     const queryParams = Object.entries(this.filters)
+  //       .filter(([key, value]) => value)
+  //       .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
+  //       .join('&');
+  //     console.log('Generated API URL:', `Rpt/daily-entries-chart?${queryParams}`);
+
+  //     // Call the API to fetch the chart data based on the selected date range
+  //     this.getVariationChart1();
+  //   }
+  // }
+  onDateRangeChange(): void {
+    console.log('Date range changed:', this.filters2.startDate, this.filters2.endDate);
+    if (this.filters2.startDate && this.filters2.endDate) {
+      // Format dates for the API
+      const formattedStartDate = this.datePipe.transform(this.filters2.startDate, 'yyyy-MM-ddTHH:mm:ss.SSSSSSS');
+      const formattedEndDate = this.datePipe.transform(this.filters2.endDate, 'yyyy-MM-ddTHH:mm:ss.SSSSSSS');
+
+      if (formattedStartDate && formattedEndDate) {
+        this.filters2.startDate = formattedStartDate;
+        this.filters2.endDate = formattedEndDate;
+
+        console.log('Filters with formatted dates:', this.filters2);
+
+        // Call the API to update the chart
+        this.getVariationChart1();
+      } else {
+        console.error('Invalid date format for start or end date.');
+      }
+    }
+  }
+  onDateRangeChange2(): void {
+    console.log('Date range changed:', this.filters1.startDate, this.filters1.endDate);
+    if (this.filters1.startDate && this.filters1.endDate) {
+      // Format dates for the API
+      const formattedStartDate = this.datePipe.transform(this.filters1.startDate, 'yyyy-MM-ddTHH:mm:ss.SSSSSSS');
+      const formattedEndDate = this.datePipe.transform(this.filters1.endDate, 'yyyy-MM-ddTHH:mm:ss.SSSSSSS');
+
+      if (formattedStartDate && formattedEndDate) {
+        this.filters1.startDate = formattedStartDate;
+        this.filters1.endDate = formattedEndDate;
+
+        console.log('Filters with formatted dates:', this.filters1);
+
+        // Call the API to update the chart
+        this.getVariationChart2();
+      } else {
+        console.error('Invalid date format for start or end date.');
+      }
+    }
+  }
+
+  //For Resetting the Filters and Charts
+
+  resetFilters() {
+    // Reset ng-select values
+    this.filters1.Frmn = null;
+    this.filters1.Sector = null;
+    this.filters1.Aspects = null;
+    this.filters1.Indicator = null;
+
+    // Reset date range picker values
+    this.filters1.startDate = null;
+    this.filters1.endDate = null;
+
+    this.onFilterChange2('fmn', null);  // Resetting Fmn dropdown filter
+    this.onFilterChange2('sector', null);  // Resetting Sector dropdown filter
+    this.onFilterChange2('aspects', null);  // Resetting Aspects dropdown filter
+    this.onFilterChange2('indicator', null);
+  }
+  resetFilters1() {
+    // Reset ng-select values
+    this.filters2.Frmn = null;
+    this.filters2.Sector = null;
+    this.filters2.Aspects = null;
+    this.filters2.Indicator = null;
+
+    // Reset date range picker values
+    this.filters2.startDate = null;
+    this.filters2.endDate = null;
+
+    this.onFilterChange3('fmn', null);  // Resetting Fmn dropdown filter
+    this.onFilterChange3('sector', null);  // Resetting Sector dropdown filter
+    this.onFilterChange3('aspects', null);  // Resetting Aspects dropdown filter
+    this.onFilterChange3('indicator', null);
+  }
+  resetFilters2() {
+    // Reset ng-select values
+    this.filters.Frmn = null;
+    this.filters.Sector = null;
+    this.filters.Aspects = null;
+    this.filters.Indicator = null;
+
+    // Reset date range picker values
+    this.filters.startDate = null;
+    this.filters.endDate = null;
+
+    this.onFilterChange1('fmn', null);  // Resetting Fmn dropdown filter
+    this.onFilterChange1('sector', null);  // Resetting Sector dropdown filter
+    this.onFilterChange1('aspects', null);  // Resetting Aspects dropdown filter
+    this.onFilterChange1('indicator', null);
+  }
+
+  // Method to empty the chart
+  emptyChart(): void {
+    this.chartDataVariation1 = {
+      labels: [],
+      datasets: [],
+    };
+  }
+  emptyChart1(): void {
+    this.chartDataVariation2 = {
+      labels: [],
+      datasets: [],
+    };
+  }
+
 }

@@ -138,5 +138,11 @@ namespace BIS.Manager.Implements
             return _masterDataDB.GetBy(Id, CorpsId);
         }
 
+        // ansh smart-analysis
+        public async Task<(List<List<int>> Id, List<string> Labels, List<double> Data, List<double> Data2, List<string> Alerts, List<List<string>> FrmnsList, List<List<string>> SectorsList, List<List<string>> AspectsList, List<List<string>> IndicatorsList)> GetDailyAverageEntriesAsync(string frmn = null,string sector = null,string Aspects = null,string Indicator = null,DateTime? filterStartDate = null,DateTime? filterEndDate = null,int? Id = null)
+        {
+            return await _masterDataDB.GetDailyAverageEntriesAsync(frmn,sector, Aspects,Indicator, filterStartDate,filterEndDate,Id);
+        }
+
     }
 }
