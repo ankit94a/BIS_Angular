@@ -13,6 +13,8 @@ namespace BIS.Manager.Interfaces
         public DashboardChart Get30DaysFmnData(long corpsId, long divisionId, RoleType roleType, FilterModel filterModel, bool isLastYear = false);
         public DashboardChart Get30DaysAspectData(long corpsId, long divisionId, RoleType roleType, FilterModel filterModel, bool isLastYear = false);
         public DashboardChart Get30DaysIndicatorData(long corpsId, long divisionId, RoleType roleType, FilterModel filterModel, bool isLastYear = false);
+        public Task<MeanValueModel> GetEntries(long corpsId, long divisionId, RoleType roleType, FilterModelEntries filterModel);
 
-    }
+
+	}
 }

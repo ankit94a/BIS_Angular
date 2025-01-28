@@ -19,7 +19,7 @@ namespace BIS.DB
         public DbSet<Aspect> Aspect { get; set; }
         public DbSet<Indicator> Indicator { get; set; }
         public DbSet<IndicatorSubFields> IndicatorSubField { get; set; }
-        public DbSet<MasterSector> MasterSectors { get; set; }
+        public DbSet<MasterSector> Sector { get; set; }
         public DbSet<MasterInputLevel> MasterInputLevels { get; set; }
         public DbSet<Source> MasterSources { get; set; }
         public DbSet<MasterLocation> MasterLocations { get; set; }

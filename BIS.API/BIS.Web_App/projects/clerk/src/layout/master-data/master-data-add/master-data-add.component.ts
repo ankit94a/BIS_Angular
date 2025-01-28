@@ -30,7 +30,7 @@ export class MasterDataAddComponent implements OnInit {
   isEdit = false;
   // fmnList: string[] = ["33 Corps", "27 Mtn Div", "17 Mtn Div", "111 Sub Area", "20 Mtn Div", "3 Corps", "2 Mtn Div", "56 Mtn Div", "57 Mtn Div", "4 Corps", "5 Mtn Div", "21 Mtn Div", "71 Mtn Div", "17 Corps", "59 Mtn Div", "23 Mtn Div"];
   fmnList: string[] = []
-  
+
   sectorList = [];
   formBuilder = inject(FormBuilder);
   toastr = inject(ToastrService);
@@ -66,10 +66,8 @@ export class MasterDataAddComponent implements OnInit {
     })
   }
   getIndicator(event){
-    debugger
-    this.apiService.getWithHeaders('attribute/allIndicator/' + event.value).subscribe(res =>{
+    this.apiService.getWithHeaders('attribute/indicator/' + event.value).subscribe(res =>{
       if(res){
-        debugger
         this.indicators = res;
       }
     })
@@ -570,11 +568,11 @@ export class MasterDataAddComponent implements OnInit {
     });
     if (this.authService.getDivisionName()) {
       const divisionName = this.authService.getDivisionName();
-      this.fmnList.push(divisionName); 
+      this.fmnList.push(divisionName);
       this.createData.get('frmn')?.setValue(divisionName);
     }
     this.getData();
-    
+
   }
   getData(){
     this.getAspect();
@@ -625,7 +623,7 @@ export class MasterDataAddComponent implements OnInit {
     })
   }
 
-  save() { 
+  save() {
     const masterData = {
       reportedDate: this.datePipe.transform(this.createData.value.reportedDate, 'yyyy-MM-dd'),
       inputLevel: this.createData.value.inputLevel!,
@@ -1097,9 +1095,9 @@ export class MasterDataAddComponent implements OnInit {
     this.apiService.postWithHeader('masterData',masterData).subscribe(res =>{
       if (res) {
         this.toastr.success("Record Saved");
-        this.dialogref.close(true);     
+        this.dialogref.close(true);
       }
-      
+
       // this.router.navigateByUrl("")
     })
 
@@ -2048,6 +2046,6 @@ export class MasterDataAddComponent implements OnInit {
     // Additional configurations for other indicators
   };
 
-  
+
 
 }
