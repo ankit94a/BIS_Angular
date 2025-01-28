@@ -1,0 +1,156 @@
+.card-container {
+    display: flex;
+    gap: 1rem;
+  }
+  .totals{
+    text-align: center;
+  }
+  .card {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: center;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+  }
+  
+  .card-small {
+    width: 20%;
+    height: 300px;
+  }
+  .card-equal {
+    width: 25%;
+    height: 300px;
+  } 
+  .card-large {
+    width: 50%;
+    height: 300px;
+  }
+  .card-extralarge {
+    width: 100%;
+    height: 300px;
+  }
+  
+  .card-title {
+    font-size: 1.2rem;
+    margin-bottom: 0em;
+    display: flex;
+    justify-content: space-around;
+    height: calc(100% - 90%);
+    button{
+      outline: none;
+      border: none;
+    }
+  }
+  .card-heading{
+    margin-top: 8px;
+    font-size: 1.1rem;
+    margin-right: 12px;
+  }
+  .download-icon{
+    box-shadow: rgba(94, 101, 104, 0.3) 0px 1px 2px 0px, rgba(75, 78, 84, 0.15) 0px 1px 3px 1px;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+   
+  }
+  .icon-display{
+    transform: scale(0.7);
+  }
+  .download-icon:hover{
+    cursor: pointer;
+    box-shadow: rgba(206, 206, 210, 0.25) 0px 30px 60px -12px inset, rgba(226, 223, 223, 0.3) 0px 18px 36px -18px inset;
+  }
+  .adjust-font{
+    font-size: 1rem !important;
+  }
+  .chart-container {
+    flex-grow: 1;
+    align-self: center;
+    width: 100%;
+    height: calc(100% - 80px); /* Subtract the space occupied by the title and footer */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden; /* Prevent overflowing content */
+  }
+  
+  .chart-container canvas {
+    max-width: 100%;
+    max-height: 100%; /* Ensure the chart doesn't exceed the container height */
+    object-fit: contain;
+  }
+  
+  .card-footer {
+    margin-top: 1rem;
+    height: 40px;
+  }
+  
+  .card-footer ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .card-footer ul li {
+    font-size: 0.9rem;
+  }
+  
+
+  //freshly added 
+  /* Add space between columns */
+table {
+  border-collapse: separate; 
+  border-spacing: 10px;  /* Adjust the spacing between cells */
+  width: 50%;
+  table-layout: fixed;   /* Ensure the table width is fixed and cells are distributed evenly */
+}
+.table2 {
+  border-collapse: separate; 
+  border-spacing: 10px;  /* Adjust the spacing between cells */
+  width: 70%;
+  table-layout: fixed;   /* Ensure the table width is fixed and cells are distributed evenly */
+}
+/* Initially hide the mean-table */
+#mean-table {
+  display: none;
+}
+
+
+/* Add padding inside each table cell */
+th, td {
+  padding: 10px;  /* Adjust the padding to create space inside each cell */
+  text-align: center; /* Center the text in cells (optional) */
+  border: 1px solid #ccc;  /* Optional: Add borders to table cells */
+}
+
+/* Arrow icon style */
+.arrow-icon {
+  cursor: pointer;
+  font-size: 20px;
+  color: #007bff;
+  margin-left: 5px;
+}
+
+/* Tooltip styling */
+.tooltip {
+  position: absolute;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  padding: 5px;
+  z-index: 10;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+  font-size: 14px;
+  display: none;  /* Initially hide the tooltip */
+}
+
+
+.arrow-icon {
+  cursor: pointer;
+  font-size: 20px;
+  color: #007bff;
+  margin-left: 5px;
+  user-select: none; /* Prevent text selection */
+}

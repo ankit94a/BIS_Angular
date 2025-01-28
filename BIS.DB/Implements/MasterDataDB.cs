@@ -7,6 +7,7 @@ using BIS.DB;
 using BIS.Common.Entities;
 using BIS.DB.Interfaces;
 using static BIS.Common.Enum.Enum;
+using Microsoft.EntityFrameworkCore;
 
 namespace BIS.DB.Implements
 {
@@ -111,6 +112,123 @@ namespace BIS.DB.Implements
         public MasterData GetBy(long Id, long CorpsId)
         {
             return _dbContext.MasterDatas.Where(ms => ms.ID == Id && ms.CorpsId == CorpsId).FirstOrDefault();
+        }
+
+        // Ansh - Smart Analysis
+        public async Task<(List<List<int>> Id, List<string> Labels, List<double> Data, List<double> Data2, List<string> Alerts, List<List<string>> FrmnsList, List<List<string>> SectorsList, List<List<string>> AspectsList, List<List<string>> IndicatorsList)> GetDailyAverageEntriesAsync(string frmn = null, string sector = null, string Aspects = null, string Indicator = null, DateTime? filterStartDate = null, DateTime? filterEndDate = null, int? Id = null)
+        {
+            // Step 1: Find the earliest and latest dates from the database
+            var earliestEntryDate = await _dbContext.MasterDatas
+                //.Where(m => m.Frmn == frmn)
+                .OrderBy(m => m.ReportedDate)
+                .Select(m => m.ReportedDate)
+                .FirstOrDefaultAsync();
+
+            var latestEntryDate = await _dbContext.MasterDatas
+            //.Where(m => m.Frmn == frmn)
+            .OrderByDescending(m => m.ReportedDate)
+            .Select(m => m.ReportedDate)
+            .FirstOrDefaultAsync();
+
+            // If there are no entries, return empty results
+            if (earliestEntryDate == default || latestEntryDate == default)
+            {
+                return (new List<List<int>>(), new List<string>(), new List<double>(), new List<double>(), new List<string>(), new List<List<string>>(), new List<List<string>>(), new List<List<string>>(), new List<List<string>>());
+            }
+
+            // Determine the startDate and endDate based on the earliest and latest dates, respectively
+            var startDate = filterStartDate ?? earliestEntryDate;
+            var endDate = filterEndDate ?? latestEntryDate;
+
+            // Ensure endDate is not before startDate
+            if (endDate < startDate)
+            {
+                throw new ArgumentException("End date must be after or equal to the start date.");
+            }
+
+            // Step 2: Fetch the entries within the date range
+
+            var query = _dbContext.MasterDatas.AsQueryable();
+
+            if (!string.IsNullOrEmpty(sector))
+            {
+                query = query.Where(m => m.Sector == sector);
+            }
+            if (!string.IsNullOrEmpty(Aspects))
+            {
+                query = query.Where(m => m.Aspect == Aspects);
+            }
+            if (!string.IsNullOrEmpty(Indicator))
+            {
+                query = query.Where(m => m.Indicator == Indicator);
+            }
+            if (!string.IsNullOrEmpty(frmn)) // Apply the frmn filter
+            {
+                query = query.Where(m => m.Frmn == frmn);
+            }
+
+            var dailyData = await query
+                .Where(m => m.ReportedDate >= startDate && m.ReportedDate <= endDate)
+                .GroupBy(e => e.ReportedDate.Date)  // Group by date part of DateTime
+                .OrderBy(g => g.Key)
+                .Select(g => new
+                {
+                    Date = g.Key.ToString("yyyy-MM-dd"),  // Format as YYYY-MM-DD
+                    Count = g.Count(),
+                    Frmns = g.Select(e => e.Frmn).Distinct().ToList(),
+                    Sectors = g.Select(e => e.Sector).Distinct().ToList(),
+                    Aspects = g.Select(e => e.Aspect).Distinct().ToList(),
+                    Indicators = g.Select(e => e.Indicator).Distinct().ToList(),
+                    Id = g.Select(e => e.ID).ToList()
+
+                    //Id = g.Select(e => e.ID).Distinct().ToList()
+                })
+                .ToListAsync();
+
+            var totalEntries = await query.CountAsync();
+            var totalDays = await query.Select(m => m.ReportedDate.Date).Distinct().CountAsync();
+
+            if (totalDays == 0)
+            {
+                // Prevent division by zero
+                throw new ArgumentException("Total days cannot be zero.");
+            }
+
+            var meanValue = (double)totalEntries / totalDays;
+
+            // Step 3: Prepare results
+            var labels = dailyData.Select(d => d.Date).ToList();
+            var data = dailyData.Select(d => (double)d.Count).ToList();
+            var data2 = dailyData.Select(d => meanValue).ToList();
+            var alerts = new List<string>();
+            var frmnsList = dailyData.Select(d => d.Frmns).ToList();
+            var sectorsList = dailyData.Select(d => d.Sectors).ToList();
+            var aspectsList = dailyData.Select(d => d.Aspects).ToList();
+            var indicatorsList = dailyData.Select(d => d.Indicators).ToList();
+            var id = dailyData.Select(d => d.Id).ToList();
+
+            foreach (var entry in dailyData)
+            {
+                double percentageOfMean = (double)entry.Count / meanValue * 100;
+
+                if (percentageOfMean <= 100)
+                {
+                    alerts.Add("green");
+                }
+                else if (percentageOfMean <= 200)
+                {
+                    alerts.Add("yellow");
+                }
+                else if (percentageOfMean <= 400)
+                {
+                    alerts.Add("orange");
+                }
+                else
+                {
+                    alerts.Add("red");
+                }
+            }
+            return (id, labels, data, data2, alerts, frmnsList, sectorsList, aspectsList, indicatorsList);
         }
     }
 }
