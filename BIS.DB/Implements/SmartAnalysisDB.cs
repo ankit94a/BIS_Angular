@@ -288,6 +288,48 @@ namespace BIS.DB.Implements
 			return (dayOfYear / 7) + 1;  // Calculate week of year
 		}
 
+		public DashboardChart GetVariationData(long corpsId, long divisionId, RoleType roleType, FilterModel filterModel)
+		{
+			var chart = new DashboardChart();
+
+			var query = _dbContext.MasterDatas.Where(ms => ms.CorpsId == corpsId && ms.DivisionId == divisionId);
+
+			// handling filter arrays 
+			if (filterModel != null && filterModel.Sector?.Count > 0)
+			{
+				query = query.Where(ms => filterModel.Sector.Contains(ms.Sector));
+			}
+			if (filterModel != null && filterModel.Aspects?.Count > 0)
+			{
+				query = query.Where(ms => filterModel.Aspects.Contains(ms.Aspect));
+			}
+			if (filterModel != null && filterModel.Indicator?.Count > 0)
+			{
+				query = query.Where(ms => filterModel.Indicator.Contains(ms.Indicator));
+			}
+			if (filterModel != null && filterModel.startDate.HasValue && filterModel.endDate.HasValue && filterModel.endDate >= filterModel.startDate)
+			{
+				query = query.Where(ms =>
+					ms.CreatedOn.Value.Date >= filterModel.startDate.Value.Date &&
+					ms.CreatedOn.Value.Date <= filterModel.endDate.Value.Date
+				);
+			}
+
+
+			var result = query.GroupBy(ms => ms.CreatedOn.Value.Date).Select(group => new
+			{
+				Date = group.Key,
+				Count = group.Count()
+			}).ToList();
+
+			foreach (var item in result)
+			{
+				chart.Name.Add(item.Date.ToString("dd-MM-yyyy"));
+				chart.Count.Add(item.Count);
+			}
+			return chart;
+		}
+
 
 	}
 }
