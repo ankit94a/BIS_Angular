@@ -1,7 +1,11 @@
-import { Component } from '@angular/core';
-import { ChartConfiguration, ChartOptions, ChartType } from 'chart.js';
+import { Component, QueryList, ViewChildren } from '@angular/core';
+import { ChartConfiguration, ChartData, ChartOptions, ChartType } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
+import { Aspect, Indicator, Sector } from 'projects/sharedlibrary/src/model/attribute.model';
+import { FilterModel, FilterModel4 } from 'projects/sharedlibrary/src/model/dashboard.model';
+import { FilterType } from 'projects/sharedlibrary/src/model/enum';
 import { ApiService } from 'projects/sharedlibrary/src/services/api.service';
+import { AuthService } from 'projects/sharedlibrary/src/services/auth.service';
 import { SharedLibraryModule } from 'projects/sharedlibrary/src/shared-library.module';
 
 @Component({
@@ -11,62 +15,162 @@ import { SharedLibraryModule } from 'projects/sharedlibrary/src/shared-library.m
   styleUrl: './cdr-dashboard.component.scss'
 })
 export class CdrDashboardComponent {
-  fmnList: string[] = ["33 Corps", "27 Mtn Div", "17 Mtn Div", "111 Sub Area", "20 Mtn Div", "3 Corps", "2 Mtn Div", "56 Mtn Div", "57 Mtn Div", "4 Corps", "5 Mtn Div", "21 Mtn Div", "71 Mtn Div", "17 Corps", "59 Mtn Div", "23 Mtn Div"];
-  sectorList:string[]=['None','PSS','MSS','Cho_la','Doka_la'];
-  aspectList:string[]=['None','Svl / Counter Svl','Friction / Belligerence','Ae Activity','Conc of Tps','Armr / Arty / AD / Engrs Indn','Mob','Infra Devp','Dumping of WLS','Heightened Diplomatic Eng','Collapse of Diplomatic Ties','Propoganda','Internal Issues','Cyber','Def','Interactions'];
-  indicatorList:string[]=['None','Placement of addl Svl Eqpt','Incr Recce','Incr in OP loc','Jamming','Enhanced Tourist Influx']
+  filterModel:FilterModel4 = new FilterModel4();
+  entriesChart: ChartData<'line'>;
+  fmnList = [];
+  sectorList: Sector[] = [];
+  aspectList: Aspect[] = [];
+  indicatorList: Indicator[] = [];
+  meanChartList;
+  @ViewChildren(BaseChartDirective) charts!: QueryList<BaseChartDirective>;
+
+  // fmnList: string[] = ["33 Corps", "27 Mtn Div", "17 Mtn Div", "111 Sub Area", "20 Mtn Div", "3 Corps", "2 Mtn Div", "56 Mtn Div", "57 Mtn Div", "4 Corps", "5 Mtn Div", "21 Mtn Div", "71 Mtn Div", "17 Corps", "59 Mtn Div", "23 Mtn Div"];
+  // sectorList:string[]=['None','PSS','MSS','Cho_la','Doka_la'];
+  // aspectList:string[]=['None','Svl / Counter Svl','Friction / Belligerence','Ae Activity','Conc of Tps','Armr / Arty / AD / Engrs Indn','Mob','Infra Devp','Dumping of WLS','Heightened Diplomatic Eng','Collapse of Diplomatic Ties','Propoganda','Internal Issues','Cyber','Def','Interactions'];
+  // indicatorList:string[]=['None','Placement of addl Svl Eqpt','Incr Recce','Incr in OP loc','Jamming','Enhanced Tourist Influx']
   staffList = ['Staff1','Staff2','Staff3']
   notesList = ['None','temp1','temp2','temp3']
   selected11: string = 'Monthly';
   selectedType11 = 'Daily';
   filterNew :{Sector?: string, Aspects?: string, Indicator?: string,startDate?: Date, endDate?: Date} ={};
   selectedNew = 'any';
-  constructor(private apiService:ApiService){
+  constructor(private apiService:ApiService, private authService: AuthService){
+    var divisionName = this.authService.getDivisionName();
+    if (divisionName != undefined && divisionName != '' && divisionName != null) {
+      this.fmnList.push(divisionName);
+      this.filterModel.frmn = this.fmnList;
+    }
+    this.filterModel.filterType = FilterType.Daily;
+    this.getSector();
+    this.getAspect();
+    this.getEntries();
+  }
+  getIndicatorForEntries(event) {
+    if (event != undefined && event != null) {
+      this.getEntries()
+      this.apiService.postWithHeader('attribute/indicatorlist', event).subscribe(res => {
+        if (res) {
+          this.indicatorList = res;
+        }
+      })
+    }
+  }
+  getEntries() {
+    this.apiService.postWithHeader('smartanalysis/getentries', this.filterModel).subscribe(res => {
+      if (res) {
+        this.meanChartList = res;
+        console.log(this.meanChartList)
+        this.entriesChart = {
+          labels: res.name,
+          datasets: [
+            {
+              data: res.count,
+              label: 'Inputs',
+              backgroundColor: 'rgba(151, 126, 201, 0.5)',
+              borderColor: 'rgba(150, 68, 150, 0.5)',
+              borderWidth: 1.2,
+              fill: true,
+              tension: 0.4,
+            },
+            {
+              data: res.meanValue,
+              label: 'Inputs',
+              backgroundColor: 'rgba(20, 199, 65, 0.5)',
+              borderColor: 'rgba(143, 92, 35, 0.5)',
+              borderWidth: 1.2,
+              fill: true,
+              tension: 0.4,
+            },
+          ],
+        };
+      }
+    })
+  }
+  getSector() {
+    this.apiService.getWithHeaders('attribute/sector').subscribe(res => {
+      if (res) {
+        this.sectorList = res;
+      }
+    })
+  }
+  getAspect() {
+    this.apiService.getWithHeaders('attribute/AllAspect').subscribe(res => {
+      if (res) {
+        this.aspectList = res;
+      }
+    })
+  }
+  getIndicator(event) {
+    if (event != undefined && event != null) {
+      this.onFilterChange1('aspect')
+      this.apiService.postWithHeader('attribute/indicatorlist', event).subscribe(res => {
+        if (res) {
+          this.indicatorList = res;
+        }
+      })
+    }
+  }
+  onFilterChange1(filterKey: string): void {
+    // this.filters[filterKey] = event;
+    // this.getFrmnDataAll();
+    // this.getNoOfInputChart();
+    // this.getNoOfInputChartLY();
+    // this.getAspectChart();
+    // this.getAspectChartLY();
+    // this.getIndicatorChart();
+    // this.getIndicatorChartLY();
+    switch (filterKey) {
+      case 'sector':
+        // this.getAllData();
+        break;
+      case 'aspect':
+        // this.get30DaysAspect();
+        // this.getlastYearAspect();
+        // this.get30DaysIndicator();
+        // this.getlastYearIndicator();
+        break;
+      case 'indicator':
+        // this.get30DaysIndicator();
+        // this.getlastYearIndicator();
+        break;
+    }
 
   }
-
-  public lineChartData: ChartConfiguration<'line'>['data'] = {
-    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-    datasets: [
-      {
-        data: [65, 59, 80, 81, 56, 55, 40],
-        label: 'Dataset 1',
-        fill: true,
-        tension: 0.5,
-        borderColor: '#42A5F5',
-        backgroundColor: 'rgba(66,165,245,0.2)',
-      },
-      {
-        data: [28, 48, 40, 19, 86, 27, 90],
-        label: 'Dataset 2',
-        fill: true,
-        tension: 0.5,
-        borderColor: '#FF6384',
-        backgroundColor: 'rgba(255,99,132,0.2)',
-      },
-    ],
-  };
-
-  // Line Chart Options
   public lineChartOptions: ChartOptions<'line'> = {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
       legend: {
-        display: true,
-        position: 'top', // Show the legend at the top
+        display: false,
+        position: 'top',
+      },
+      tooltip: {
+        callbacks: {
+          label: function (tooltipItem) {
+            const dataValue = tooltipItem.raw;
+            return ` ${dataValue}`;
+          },
+        },
+      },
+      title: {
+        display: false,
+        text: '',
+        font: {
+          size: 16,
+        },
+        align: 'center',
       },
     },
     scales: {
       x: {
         title: {
           display: true,
-          text: 'Months',
+          text: '',
         },
         ticks: {
           autoSkip: false,
-          maxRotation: 90,
-          minRotation: 90,
+          maxRotation: 60,
+          minRotation: 60,
         },
       },
       y: {
@@ -78,9 +182,24 @@ export class CdrDashboardComponent {
       },
     },
   };
+  download(chartId: string): void {
+    let index = 0;
+    switch (chartId) {
+      case 'chart0': index = 0; break;
+    }
+    const chartDirective = this.charts.toArray()[index];
 
-  // Chart Type
-  public lineChartType: ChartType = 'line';
+    if (chartDirective?.chart) {
+      const base64Image = chartDirective.chart.toBase64Image();
+      const link = document.createElement('a');
+      link.href = base64Image;
+      link.download = `${chartId}.png`;
+      link.click();
+    } else {
+      console.error(`Chart instance not found or not ready for ${chartId}`);
+    }
+  }
+
   filternew():void{
     if(this.filterNew.startDate != null && this.filterNew.endDate !=null){
     this.getWeeklyEntries();
@@ -105,11 +224,11 @@ export class CdrDashboardComponent {
     if (filterNew.Aspects) {
       params = params.set('Aspects', filterNew.Aspects);
     }
-    
+
     if (filterNew.Indicator) {
       params = params.set('Indicator', filterNew.Indicator);
     }
-  
+
     this.apiService.getWithHeaders('Rpt/weekly-entries-test'+params).subscribe(res =>{
       if(res){
         return res;
@@ -130,7 +249,7 @@ export class CdrDashboardComponent {
     //   error: (error) => {
     //     console.error('Error fetching data:', error);
     //   }
-      
+
     // });
   }
   getMEntries(): void{
@@ -147,7 +266,7 @@ export class CdrDashboardComponent {
     //   error: (error) => {
     //     console.error('Error fetching data:', error);
     //   }
-      
+
     // });
   }
   getDEntries(): void{
@@ -164,7 +283,7 @@ export class CdrDashboardComponent {
     //   error: (error) => {
     //     console.error('Error fetching data:', error);
     //   }
-      
+
     // });
   }
   onFilterChange(event){
