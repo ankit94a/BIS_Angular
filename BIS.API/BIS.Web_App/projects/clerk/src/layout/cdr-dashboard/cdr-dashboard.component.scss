@@ -65,3 +65,78 @@
     cursor: pointer;
     box-shadow: rgba(206, 206, 210, 0.25) 0px 30px 60px -12px inset, rgba(226, 223, 223, 0.3) 0px 18px 36px -18px inset;
   }
+
+
+  // mean chart
+  .mean-table-container{
+    display: flex;
+    gap: 10px;
+  }
+  .table-container {
+    max-height: 400px; /* Adjust the height as needed */
+    overflow: auto;    /* Enable both x and y axis scrolling */
+    width: 100%;       /* Ensure it takes full width */
+    border: 1px solid #ccc;  /* Optional, just for visual appearance */
+    border-radius: 12px;
+
+  }
+  // .table-container {
+  //   display: flex;
+  //   flex-direction: column;
+  //   justify-content: center;  /* Center content vertically */
+  //   align-items: center;      /* Center content horizontally */
+  //   height: 100%;             /* Full height to allow vertical centering */
+  //   padding: 20px;
+  //   height: 400px; /* Adjust the height as needed */
+  //   overflow: auto;    /* Enable both x and y axis scrolling */
+  //   width: 100%;       /* Ensure it takes full width */
+  //   border: 1px solid #ccc;  /* Optional, just for visual appearance */
+  //   border-radius: 12px;
+  // }
+  .no-data{
+    h1 {
+      margin-top: 12%;
+      margin-left: 30%;
+      font-size: 52px;
+      background: -webkit-radial-gradient(#68f5af,#3a499e);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+  }
+  /* Add styles to the table to ensure it behaves responsively */
+  table {
+    width: 100%;       /* Ensure the table takes the full width */
+    border-collapse: collapse; /* Optional, makes table borders collapse */
+  }
+
+  th, td {
+    padding: 10px;
+    text-align: left;
+    border: 1px solid #ddd;
+  }
+
+  thead {
+    position: sticky;
+    top: 0;
+    background-color: #f1f1f1;  /* Optional: for better visibility */
+    z-index: 1; /* Ensures the header stays on top while scrolling */
+  }
+
+  /* Optional: Adjust table header size and font */
+  th {
+    font-weight: bold;
+    background-color: #f1f1f1;
+  }
+  .mean{
+    width: 35%;
+    table{
+      height: 400px;
+
+    }
+
+  }
+  .arrow-icon{
+    display: flex;
+    align-items: center;
+    transform: scale(1.5);
+  }

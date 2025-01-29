@@ -1,16 +1,20 @@
 import { Component, QueryList, ViewChildren } from '@angular/core';
 import { ChartConfiguration, ChartData, ChartOptions, ChartType } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
+import { GetMeanvalueColorDirective } from 'projects/sharedlibrary/src/directives/get-meanvalue-color.directive';
 import { Aspect, Indicator, Sector } from 'projects/sharedlibrary/src/model/attribute.model';
 import { FilterModel, FilterModel4 } from 'projects/sharedlibrary/src/model/dashboard.model';
 import { FilterType } from 'projects/sharedlibrary/src/model/enum';
+import { masterData } from 'projects/sharedlibrary/src/model/masterdata.model';
 import { ApiService } from 'projects/sharedlibrary/src/services/api.service';
 import { AuthService } from 'projects/sharedlibrary/src/services/auth.service';
+import { MasterDataFilterService } from 'projects/sharedlibrary/src/services/master-data-filter.service';
 import { SharedLibraryModule } from 'projects/sharedlibrary/src/shared-library.module';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-cdr-dashboard',
-  imports: [SharedLibraryModule,BaseChartDirective],
+  imports: [SharedLibraryModule,BaseChartDirective,GetMeanvalueColorDirective],
   templateUrl: './cdr-dashboard.component.html',
   styleUrl: './cdr-dashboard.component.scss'
 })
@@ -22,6 +26,11 @@ export class CdrDashboardComponent {
   aspectList: Aspect[] = [];
   indicatorList: Indicator[] = [];
   meanChartList;
+   // Using BehaviorSubject for reactivity
+  private tableHeaderSubject = new BehaviorSubject<string[]>([]);
+  private masterDataListSubject = new BehaviorSubject<masterData[]>([]);
+  tableHeader$ = this.tableHeaderSubject.asObservable();
+  masterDataList$ = this.masterDataListSubject.asObservable();
   @ViewChildren(BaseChartDirective) charts!: QueryList<BaseChartDirective>;
 
   // fmnList: string[] = ["33 Corps", "27 Mtn Div", "17 Mtn Div", "111 Sub Area", "20 Mtn Div", "3 Corps", "2 Mtn Div", "56 Mtn Div", "57 Mtn Div", "4 Corps", "5 Mtn Div", "21 Mtn Div", "71 Mtn Div", "17 Corps", "59 Mtn Div", "23 Mtn Div"];
@@ -34,7 +43,7 @@ export class CdrDashboardComponent {
   selectedType11 = 'Daily';
   filterNew :{Sector?: string, Aspects?: string, Indicator?: string,startDate?: Date, endDate?: Date} ={};
   selectedNew = 'any';
-  constructor(private apiService:ApiService, private authService: AuthService){
+  constructor(private apiService:ApiService, private authService: AuthService,private masterDataService:MasterDataFilterService){
     var divisionName = this.authService.getDivisionName();
     if (divisionName != undefined && divisionName != '' && divisionName != null) {
       this.fmnList.push(divisionName);
@@ -44,6 +53,16 @@ export class CdrDashboardComponent {
     this.getSector();
     this.getAspect();
     this.getEntries();
+  }
+  getMeanData(date){
+    let filterDate = new FilterModel()
+    filterDate.startDate = date;
+    filterDate.endDate = date;
+    this.apiService.postWithHeader('masterdata/dateRange',filterDate).subscribe(res =>{
+      const {Header,DataList} = this.masterDataService.getMasterData(res);
+      this.tableHeaderSubject.next(Header);
+       this.masterDataListSubject.next(DataList);
+    })
   }
   getIndicatorForEntries(event) {
     if (event != undefined && event != null) {

@@ -5,47 +5,34 @@ import { masterData } from '../model/masterdata.model';
   providedIn: 'root'
 })
 export class MasterDataFilterService {
-
   constructor() { }
-
-  // getTableHeader(masterDataList: masterData[]) {
-  //   // holds unique header;
-  //   let uniqueHeader = new Set();
-  //   masterDataList.forEach(item => {
-  //     const keys = Object.keys(item);
-  //     keys.forEach(key => {
-  //       if (item[key] != null && item[key] !== "") {
-  //         uniqueHeader.add(key);
-  //       }
-  //     });
-  //   });
-  //   this.tableHeader = [...uniqueHeader];
-  //   return this.tableHeader;
-  // }
-  // getTableData(masterDataList: masterData[]) {
-  //   this.masterDataList = masterDataList.map(item => {
-  //     let reorderedItem = {};
-  //     this.tableHeader.forEach(key => {
-  //       if (item[key] != null && item[key] !== "") {
-  //         reorderedItem[key] = item[key];
-  //       }
-  //     });
-  //     return reorderedItem;
-  //   });
-  // }
 
   getMasterData(masterDataList: masterData[]): { Header: string[], DataList: any[] } {
     const uniqueHeader = new Set<string>();
+
+    // Reorder data and capture unique headers
     const filteredData = masterDataList.map(item => {
       const reorderedItem: any = {};
+
       Object.keys(item).forEach(key => {
         if (item[key] != null && item[key] !== '') {
-          reorderedItem[key] = item[key];
-          uniqueHeader.add(key);
+          // Capitalize the first letter of the key and use it in the reorderedItem
+          const capitalizedKey = this.capitalizeFirstLetter(key);
+          reorderedItem[capitalizedKey] = item[key];
+          uniqueHeader.add(capitalizedKey);
         }
       });
+
       return reorderedItem;
     });
-    return { Header:  Array.from(uniqueHeader), DataList: filteredData };
+
+    // Return the header (with capitalized first letter) and the filtered data
+    return { Header: Array.from(uniqueHeader), DataList: filteredData };
   }
+
+  // Function to capitalize the first letter of a string
+  capitalizeFirstLetter(str: string): string {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  }
+
 }

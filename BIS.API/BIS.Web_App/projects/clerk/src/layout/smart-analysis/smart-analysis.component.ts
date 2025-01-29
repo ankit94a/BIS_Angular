@@ -28,8 +28,12 @@ export class SmartAnalysisComponent implements OnInit, OnDestroy {
   sectorList: Sector[] = [];
   aspectList: Aspect[] = [];
   indicatorList: Indicator[] = [];
+  indicatorList2: Indicator[] = [];
+  indicatorList3: Indicator[] = [];
   indicatorList4: Indicator[] = [];
   filterModel: FilterModel = new FilterModel();
+  filterModel2: FilterModel = new FilterModel();
+  filterModel3: FilterModel = new FilterModel();
   filterModel4: FilterModel4 = new FilterModel4();
   //chart variables
   input30Days: ChartData<'line'>;
@@ -38,6 +42,8 @@ export class SmartAnalysisComponent implements OnInit, OnDestroy {
   aspectLastYear: ChartData<'line'>;
   indicator30Days: ChartData<'line'>;
   indicatorLastYear: ChartData<'line'>;
+  variation:ChartData<'line'>;
+  variation2:ChartData<'line'>;
   entriesChart: ChartData<'line'>;
   meanChartList;
 
@@ -66,6 +72,8 @@ export class SmartAnalysisComponent implements OnInit, OnDestroy {
     if (divisionName != undefined && divisionName != '' && divisionName != null) {
       this.fmnList.push(divisionName);
       this.filterModel.frmn = this.fmnList;
+      this.filterModel2.frmn = this.fmnList;
+      this.filterModel3.frmn = this.fmnList;
       this.filterModel4.frmn = this.fmnList;
     }
     this.filterModel4.filterType = FilterType.Daily;
@@ -77,7 +85,6 @@ export class SmartAnalysisComponent implements OnInit, OnDestroy {
     return Object.values(this.selectedCharts).some(selected => selected);
   }
   getMeanData(date){
-    debugger
     let filterDate = new FilterModel()
     filterDate.startDate = date;
     filterDate.endDate = date;
@@ -136,6 +143,58 @@ export class SmartAnalysisComponent implements OnInit, OnDestroy {
     this.getlastYearInput();
     this.getlastYearAspect();
     this.getlastYearIndicator();
+    this.getvariation();
+    this.getvariation2();
+  }
+  getvariation() {
+    this.apiService.postWithHeader('smartanalysis/variation', this.filterModel2).subscribe(res => {
+      if (res) {
+        // Set the data dynamically
+        this.variation = {
+          labels: res.name,
+          datasets: [
+            {
+              data: res.count,
+              label: 'Inputs', // Dataset label
+              backgroundColor: 'rgba(54, 162, 235, 0.8)', // Semi-transparent purple
+              borderColor: 'rgba(17, 114, 179, 0.8)', // Solid purple
+              borderWidth: 1.2,
+              fill: true,
+              tension: 0.4,
+            },
+          ],
+        };
+
+        // Update the chart title dynamically
+        // this.lineChartOptions.plugins.title.display = true;
+        // this.lineChartOptions.plugins.title.text = `Abcdedfasdkfjkflsajflk`;
+      }
+    });
+  }
+  getvariation2() {
+    this.apiService.postWithHeader('smartanalysis/variation', this.filterModel3).subscribe(res => {
+      if (res) {
+        // Set the data dynamically
+        this.variation2 = {
+          labels: res.name,
+          datasets: [
+            {
+              data: res.count,
+              label: 'Inputs', // Dataset label
+              backgroundColor: 'rgba(255, 159, 64, 0.8)', // Semi-transparent purple
+              borderColor: 'rgba(173, 93, 13, 0.8)', // Solid purple
+              borderWidth: 1.2,
+              fill: true,
+              tension: 0.4,
+            },
+          ],
+        };
+
+        // Update the chart title dynamically
+        // this.lineChartOptions.plugins.title.display = true;
+        // this.lineChartOptions.plugins.title.text = `Abcdedfasdkfjkflsajflk`;
+      }
+    });
   }
   ngOnInit(): void {
     this.getAllData();
@@ -224,8 +283,8 @@ export class SmartAnalysisComponent implements OnInit, OnDestroy {
             {
               data: res.count,
               label: 'Inputs',
-              backgroundColor: 'rgba(151, 126, 201, 0.5)',
-              borderColor: 'rgba(150, 68, 150, 0.5)',
+              backgroundColor: 'rgba(112, 128, 144, 0.7)',
+              borderColor: 'rgba(70, 79, 88, 0.7)',
               borderWidth: 1.2,
               fill: true,
               tension: 0.4,
@@ -382,6 +441,26 @@ export class SmartAnalysisComponent implements OnInit, OnDestroy {
       this.apiService.postWithHeader('attribute/indicatorlist', event).subscribe(res => {
         if (res) {
           this.indicatorList = res;
+        }
+      })
+    }
+  }
+  getIndicatorForVarition1(event) {
+    if (event != undefined && event != null) {
+      this.getvariation()
+      this.apiService.postWithHeader('attribute/indicatorlist', event).subscribe(res => {
+        if (res) {
+          this.indicatorList2 = res;
+        }
+      })
+    }
+  }
+  getIndicatorForVarition2(event) {
+    if (event != undefined && event != null) {
+      this.getvariation2()
+      this.apiService.postWithHeader('attribute/indicatorlist', event).subscribe(res => {
+        if (res) {
+          this.indicatorList3 = res;
         }
       })
     }
