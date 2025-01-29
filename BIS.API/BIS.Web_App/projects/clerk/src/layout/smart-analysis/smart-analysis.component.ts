@@ -4,17 +4,21 @@ import { ApiService } from 'projects/sharedlibrary/src/services/api.service';
 import { SharedLibraryModule } from 'projects/sharedlibrary/src/shared-library.module';
 import { Chart, ChartData, ChartOptions } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
-import { Subject, takeUntil } from 'rxjs';
+import { BehaviorSubject, Subject, takeUntil } from 'rxjs';
 import { DatePipe } from '@angular/common';
 import { AuthService } from 'projects/sharedlibrary/src/services/auth.service';
 import { FilterModel, FilterModel4 } from 'projects/sharedlibrary/src/model/dashboard.model';
 import { Aspect, Sector } from 'projects/sharedlibrary/src/model/attribute.model';
 import { FilterType } from 'projects/sharedlibrary/src/model/enum';
+import { GetMeanvalueColorDirective } from 'projects/sharedlibrary/src/directives/get-meanvalue-color.directive';
+import { BisdefaultDatePipe } from 'projects/sharedlibrary/src/pipe/bisdefault-date.pipe';
+import { MasterDataFilterService } from 'projects/sharedlibrary/src/services/master-data-filter.service';
+import { masterData } from 'projects/sharedlibrary/src/model/masterdata.model';
 
 @Component({
   selector: 'app-smart-analysis',
-  imports: [SharedLibraryModule, BaseChartDirective],
-  providers: [DatePipe],
+  imports: [SharedLibraryModule, BaseChartDirective,GetMeanvalueColorDirective],
+  providers: [BisdefaultDatePipe],
   templateUrl: './smart-analysis.component.html',
   styleUrl: './smart-analysis.component.scss'
 })
@@ -35,6 +39,14 @@ export class SmartAnalysisComponent implements OnInit, OnDestroy {
   indicator30Days: ChartData<'line'>;
   indicatorLastYear: ChartData<'line'>;
   entriesChart: ChartData<'line'>;
+  meanChartList;
+
+  // Using BehaviorSubject for reactivity
+  private tableHeaderSubject = new BehaviorSubject<string[]>([]);
+  private masterDataListSubject = new BehaviorSubject<masterData[]>([]);
+  tableHeader$ = this.tableHeaderSubject.asObservable();
+  masterDataList$ = this.masterDataListSubject.asObservable();
+
   @ViewChildren(BaseChartDirective) charts!: QueryList<BaseChartDirective>;
   // Map to track selected charts by their IDs
   selectedCharts: { [key: string]: boolean } = {
@@ -49,7 +61,7 @@ export class SmartAnalysisComponent implements OnInit, OnDestroy {
   //aspectList: string[] = ['None', 'Svl / Counter Svl', 'Friction / Belligerence', 'Ae Activity', 'Conc of Tps', 'Armr / Arty / AD / Engrs Indn', 'Mob', 'Infra Devp', 'Dumping of WLS', 'Heightened Diplomatic Eng', 'Collapse of Diplomatic Ties', 'Propoganda', 'Internal Issues', 'Cyber', 'Def', 'Interactions'];
   // indicatorList: string[] = ['None', 'Placement of addl Svl Eqpt', 'Incr Recce', 'Incr in OP loc', 'Jamming', 'Enhanced Tourist Influx']
   chartList: string[] = ['Monthly', 'Daily', 'Weekly']
-  constructor(private apiService: ApiService, private datePipe: DatePipe, private authService: AuthService) {
+  constructor(private apiService: ApiService, private datePipe: DatePipe, private authService: AuthService,private masterDataService:MasterDataFilterService) {
     var divisionName = this.authService.getDivisionName();
     if (divisionName != undefined && divisionName != '' && divisionName != null) {
       this.fmnList.push(divisionName);
@@ -64,7 +76,17 @@ export class SmartAnalysisComponent implements OnInit, OnDestroy {
   isAnyCheckboxSelected(): boolean {
     return Object.values(this.selectedCharts).some(selected => selected);
   }
-
+  getMeanData(date){
+    debugger
+    let filterDate = new FilterModel()
+    filterDate.startDate = date;
+    filterDate.endDate = date;
+    this.apiService.postWithHeader('masterdata/dateRange',filterDate).subscribe(res =>{
+      const {Header,DataList} = this.masterDataService.getMasterData(res);
+      this.tableHeaderSubject.next(Header);
+       this.masterDataListSubject.next(DataList);
+    })
+  }
   downloadSelectedGraphs(): void {
     Object.keys(this.selectedCharts).forEach(chartId => {
       if (this.selectedCharts[chartId]) {
@@ -190,8 +212,12 @@ export class SmartAnalysisComponent implements OnInit, OnDestroy {
     },
   };
   getEntries() {
+    this.tableHeaderSubject.next([]);
+    this.masterDataListSubject.next([]);
     this.apiService.postWithHeader('smartanalysis/getentries', this.filterModel4).subscribe(res => {
       if (res) {
+        this.meanChartList = res;
+        console.log(this.meanChartList)
         this.entriesChart = {
           labels: res.name,
           datasets: [
