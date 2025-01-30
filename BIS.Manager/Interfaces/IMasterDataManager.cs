@@ -15,8 +15,8 @@ namespace BIS.Manager.Interfaces
         public List<MasterData> GetAllMasterData(int corpsId, RoleType roleType, int divisionId = 0);
         public List<MasterData> GetByIds(string idsList);
 
-        public List<MasterData> GetBetweenDateRange(FilterModel model, int corpsId,int divisionId = 0);
-        public List<MasterSector> GetSectorByCorpsId(int corpsId);
+        public List<MasterData> GetBetweenDateRange(FilterModelEntries model, int corpsId,int divisionId = 0);
+		public List<MasterSector> GetSectorByCorpsId(int corpsId);
         public List<MasterInputLevel> GetInputLevels();
         public List<Source> GetSources();
         public List<MasterLocation> GetLocation(bool isSourceLoc = true);

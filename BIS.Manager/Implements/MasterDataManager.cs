@@ -58,11 +58,15 @@ namespace BIS.Manager.Implements
         }
         public List<MasterData> GetByIds(string idsList)
         {
-            var idsArray = idsList.Trim('[', ']').Split(',')  .Select(id => int.Parse(id)).ToList();
-            return _masterDataDB.GetByIds(idsArray);
+            if(idsList.Length > 2)
+            {
+				var idsArray = idsList.Trim('[', ']').Split(',').Select(id => int.Parse(id)).ToList();
+				return _masterDataDB.GetByIds(idsArray);
+			}
+            return new List<MasterData>();         
         }
 
-        public List<MasterData> GetBetweenDateRange(FilterModel model,int corpsId, int divisionId = 0)
+        public List<MasterData> GetBetweenDateRange(FilterModelEntries model,int corpsId, int divisionId = 0)
         {
             // for division roles
             if(divisionId > 0)

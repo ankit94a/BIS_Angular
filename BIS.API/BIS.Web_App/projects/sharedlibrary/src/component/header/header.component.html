@@ -7,10 +7,16 @@
         </div>
         <span> {{facilityName}} </span>
         <span class="example-spacer"></span>
-        <div class="user">
+        <div class="user mx-4" *ngIf="roleType != '1'">
                 <app-notification></app-notification>
         </div>
-        <div>
+        <div class="user-profile" *ngIf="roleType != '7' && roleType != '8' && roleType != '9'">
+          <mat-icon class="py-1">person</mat-icon> &nbsp;{{userName}}
+          <button mat-button (click)="onLoggedout()">
+            <mat-icon matTooltip="logout" style="color: #fff;">exit_to_app</mat-icon>
+        </button>
+        </div>
+        <div *ngIf="roleType == '7' || roleType == '8' || roleType == '9'">
             <button mat-button [matMenuTriggerFor]="settingMenu">
                 <mat-icon>settings</mat-icon>
             </button>

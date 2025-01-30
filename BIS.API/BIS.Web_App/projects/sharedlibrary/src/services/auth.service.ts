@@ -25,12 +25,6 @@ export class AuthService {
   getToken(){
     return localStorage.getItem("BIS_TOKEN");
   }
-  // setUserName(name:string){
-  //   localStorage.setItem("BIS_UserName",name);
-  // }
-  // setUserRole(name:string){
-  //   localStorage.setItem("BIS_UserRole",name);
-  // }
   getUserName(){
     return localStorage.getItem("BIS_UserName");
   }
@@ -48,14 +42,11 @@ export class AuthService {
     localStorage.removeItem('BIS_RoleType');
     localStorage.removeItem('BIS_CorpsName');
     localStorage.removeItem('BIS_DivisionName');
+    localStorage.removeItem('BIS_UserName');
     this.navigateToLogin(this.router.routerState.snapshot.url);
-    
+
   }
   public navigateToLogin(stateUrl) {
-
-    //   this._injector.get(ValidatepermissionService).set();
-
-       this.router.navigate(['/login'], { queryParams: { queryParams: { returnUrl: stateUrl } } });
-
-   }
+    this.router.navigate(['/login'], { queryParams: { queryParams: { returnUrl: stateUrl } } });
+  }
 }

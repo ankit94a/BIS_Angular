@@ -42,17 +42,20 @@ namespace BIS.DB.Implements
             _dbContext.SaveChanges();
             return masterData.ID;
         }
-        public List<MasterData> GetBetweenDateRange(FilterModel model, int corpsId, int divisionId = 0)
+        public List<MasterData> GetBetweenDateRange(FilterModelEntries model, int corpsId, int divisionId = 0)
         {
             if (model.startDate == null || model.endDate == null)
             {
                 throw new ArgumentException("StartDate and EndDate must be provided.");
             }
-
+            
             var startDate = model.startDate.Value.Date; // Truncate time for the start date
             var endDate = model.endDate.Value.Date.AddDays(1).AddTicks(-1); // End of the day for end date
-
-            var query = _dbContext.MasterDatas
+			if (model.FilterType == FilterType.Monthly)
+			{
+                endDate = model.startDate.Value.AddMonths(1).AddDays(-1);
+			}
+			var query = _dbContext.MasterDatas
                 .Where(ms => ms.CorpsId == corpsId
                           && ms.CreatedOn >= startDate
                           && ms.CreatedOn <= endDate);

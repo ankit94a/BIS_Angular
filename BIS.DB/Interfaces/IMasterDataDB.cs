@@ -13,7 +13,7 @@ namespace BIS.DB.Interfaces
         public List<MasterData> GetByUserId(int userId);
         public List<MasterData> GetByIds(List<int> idsList);
 
-        public List<MasterData> GetBetweenDateRange(FilterModel model, int corpsId, int divisionId = 0);
+        public List<MasterData> GetBetweenDateRange(FilterModelEntries model, int corpsId, int divisionId = 0);
         public List<MasterSector> GetSectorByCorpsId(int corpsId);
         public List<MasterInputLevel> GetInputLevels();
         public List<Source> GetSources();

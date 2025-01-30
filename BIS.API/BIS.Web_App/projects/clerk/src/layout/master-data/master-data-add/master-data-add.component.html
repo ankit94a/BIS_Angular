@@ -20,9 +20,8 @@
           </div>
           <div class="col-md-4">
             <mat-form-field>
-              <mat-label>Select date</mat-label>
-              <input matInput [matDatepicker]="picker" formControlName="reportedDate">
-              <mat-hint>(MM/DD/YYYY)</mat-hint>
+              <mat-label>Input date</mat-label>
+              <input matInput [matDatepicker]="picker" formControlName="reportedDate" [disabled]="true">
               <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
               <mat-datepicker #picker></mat-datepicker>
             </mat-form-field>
@@ -98,7 +97,7 @@
             <mat-form-field>
               <mat-label>Aspect</mat-label>
               <mat-select (selectionChange)="getIndicator($event)" formControlName="aspect">
-                <mat-option *ngFor="let option of aspectList" [value]="option.id">
+                <mat-option *ngFor="let option of aspectList" [value]="option.name">
                   {{ option.name }}
                 </mat-option>
               </mat-select>
@@ -107,9 +106,9 @@
         </div>
         <div align="end">
           <button mat-button matStepperNext type="button">Next</button>
-        </div> 
+        </div>
       </mat-step>
-    
+
       <mat-step *ngIf="indicators.length > 0" [stepControl]="createData">
         <div class="row">
           <div class="col-md-12">
@@ -134,7 +133,6 @@
               <mat-form-field *ngIf="field.type === 'date'">
                 <mat-label>{{ field.label }}</mat-label>
                 <input matInput [matDatepicker]="picker" [formControlName]="field.name" >
-                <mat-hint>(MM/DD/YYYY)</mat-hint>
                 <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
               </mat-form-field>
@@ -150,7 +148,7 @@
             </div>
           </div>
         </div>
-        
+
         <div *ngIf="dynamicDropdownOptions.length > 0">
           <div class="row">
             <div class="col-md-4">
@@ -178,7 +176,9 @@
               </mat-form-field>
               <mat-form-field *ngIf="field.type === 'time'">
                 <mat-label>{{ field.label }}</mat-label>
-                <input type="time" matInput [formControlName]="field.name">
+                <input matInput [owlDateTimeTrigger]="dt1" [owlDateTime]="dt1">
+                <owl-date-time [hour12Timer]="true" [pickerType]="'timer'" #dt1></owl-date-time>
+                <!-- <input type="time" matInput [formControlName]="field.name"> -->
               </mat-form-field>
             </div>
           </div>
