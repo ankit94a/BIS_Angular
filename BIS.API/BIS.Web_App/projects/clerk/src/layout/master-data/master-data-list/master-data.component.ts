@@ -32,13 +32,13 @@ export class MasterDataComponent extends TablePaginationSettingsConfig implement
   }
   add(){
    const dialogRef = this.dialogService.open(MasterDataAddComponent,null);
-   
+
   }
   view($event){
 
   }
   edit(event){
-    
+
   }
   getMoreSameples($event){
 
@@ -59,25 +59,25 @@ export class MasterDataComponent extends TablePaginationSettingsConfig implement
       name: 'sector', displayName: 'Sector', isSearchable: true
     },
     {
-      name: 'masterSectorID', displayName: 'Sector Master', isSearchable: false
+      name: 'masterSectorID', displayName: 'Sector Master', isSearchable: true
     },
     {
-      name: 'frmn', displayName: 'Frmn', isSearchable: false
+      name: 'frmn', displayName: 'Frmn', isSearchable: true
     },
     {
-      name: 'source', displayName: 'Source', isSearchable: false
+      name: 'source', displayName: 'Source', isSearchable: true
     },
     {
-      name: 'sourceLoc', displayName: 'SourceLoc', isSearchable: false
+      name: 'sourceLoc', displayName: 'SourceLoc', isSearchable: true
     },
     {
-      name: 'typeOfLoc', displayName: 'TypeOfLoc', isSearchable: false
+      name: 'typeOfLoc', displayName: 'TypeOfLoc', isSearchable: true
     },
     {
-      name: 'enLocName', displayName: 'EnLocName', isSearchable: false
+      name: 'enLocName', displayName: 'EnLocName', isSearchable: true
     },
     {
-      name: 'aspect', displayName: 'Aspect', isSearchable: false
+      name: 'aspect', displayName: 'Aspect', isSearchable: true
     },
     {
       name: 'aGenda', displayName: 'AGenda', isSearchable: false,hide: true,

@@ -13,7 +13,7 @@ export const routes: Routes = [
                 path: '',
                 redirectTo: 'dashboard',
                 pathMatch:'full'
-        
+
               },
               {
                 path: 'dashboard',
@@ -35,7 +35,7 @@ export const routes: Routes = [
                 loadChildren:() => import('../app/forgotpassword/forgotpassword.component').then(m => m.ForgotpasswordComponent)
               },
               {
-                path:'analysis',
+                path:'smart-analysis',
                 loadComponent: ()=> import('./smart-analysis/smart-analysis.component').then(m => m.SmartAnalysisComponent),
                 canActivate: [AuthGuard],
               },
@@ -72,6 +72,12 @@ export const routes: Routes = [
               {
                 path:'facility',
                 loadComponent : () =>import('projects/sharedlibrary/src/component/facility/facility-list/facility-list.component').then(m => m.FacilityListComponent),
+                // canActivate: [AuthGuard],
+              }
+              ,
+              {
+                path:'master-data-form',
+                loadComponent : () =>import('projects/clerk/src/layout/master-data/master-data-form/master-data-form.component').then(m => m.MasterDataFormComponent),
                 // canActivate: [AuthGuard],
               }
         ]

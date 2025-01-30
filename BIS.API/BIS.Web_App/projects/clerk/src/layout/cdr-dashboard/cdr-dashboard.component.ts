@@ -55,9 +55,10 @@ export class CdrDashboardComponent {
     this.getEntries();
   }
   getMeanData(date){
-    let filterDate = new FilterModel()
+    let filterDate = new FilterModel4()
     filterDate.startDate = date;
     filterDate.endDate = date;
+    filterDate.filterType = this.filterModel.filterType
     this.apiService.postWithHeader('masterdata/dateRange',filterDate).subscribe(res =>{
       const {Header,DataList} = this.masterDataService.getMasterData(res);
       this.tableHeaderSubject.next(Header);

@@ -57,7 +57,6 @@ export enum PermissionItem {
   export enum RoleType
   {
       Staff1 = "Staff1",
-      Staff2 = "Staff2",
       G1Int = "G1Int",
       Colgs = "Colgs",
       ColInt = "ColInt",

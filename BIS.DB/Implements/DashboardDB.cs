@@ -32,8 +32,8 @@ namespace BIS.DB.Implements
             var counts = query
                 .GroupBy(ms => new
                 {
-                    IsToday = ms.CreatedOn >= currentTime,
-                    IsLast7Days = ms.CreatedOn >= last7Days
+                    IsToday = ms.CreatedOn.Value.Date >= currentTime.Date,
+                    IsLast7Days = ms.CreatedOn.Value.Date >= last7Days.Date
                 })
                 .Select(g => new
                 {

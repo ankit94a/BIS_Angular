@@ -52,15 +52,14 @@ namespace BIS.API.Controller
             return Ok(_masterDataManager.GetByIds(idsList));
         }
         [HttpPost,Route("dateRange")]
-        public IActionResult GetBetweenDateRange(FilterModel filterModel)
+        public IActionResult GetBetweenDateRange(FilterModelEntries filterModel)
         {
             int CorpsId = HttpContext.GetCorpsId();
             int DivisionId = HttpContext.GetDivisionId();
             return Ok(_masterDataManager.GetBetweenDateRange(filterModel,CorpsId,DivisionId));
         }
-
-        // Common Fields for MasterData
-        [HttpGet, Route("inputlevels")]
+		// Common Fields for MasterData
+		[HttpGet, Route("inputlevels")]
         public IActionResult GetInputLevels ()
         {
             return Ok(_masterDataManager.GetInputLevels());
