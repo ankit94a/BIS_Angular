@@ -207,7 +207,7 @@
     <hr>
     <br>
     <div class="row">
-      <div class="col-sm-4">
+      <!-- <div class="col-sm-4">
         <mat-form-field>
           <mat-label>Start Date</mat-label>
           <input matInput [matDatepicker]="startDatePickerV" [(ngModel)]="filterNew.startDate"
@@ -215,27 +215,18 @@
           <mat-datepicker-toggle matSuffix [for]="startDatePickerV"></mat-datepicker-toggle>
           <mat-datepicker #startDatePickerV></mat-datepicker>
         </mat-form-field>
-      </div>
+      </div> -->
       <div class="col-sm-4">
-        <ng-select appendTo="ng-select" [items]="staffList" [multiple]="false" bindLabel="name" bindValue="name"
-          placeholder="Sector" [searchable]="true">
-          <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-            <div class="ng-value" *ngFor="let item of items">
-              <span class="ng-value-label">{{item}}</span>
-            </div>
-          </ng-template>
-        </ng-select>
-      </div>
-      <div class="col-sm-4">
-        <ng-select appendTo="ng-select" [items]="notesList" [multiple]="false" bindLabel="name" bindValue="name"
-          placeholder="Sector" [searchable]="true">
-          <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-            <div class="ng-value" *ngFor="let item of items">
-              <span class="ng-value-label">{{item}}</span>
-            </div>
-          </ng-template>
-        </ng-select>
-      </div>
+        <mat-form-field>
+            <mat-label>Enter a date range</mat-label>
+            <mat-date-range-input [rangePicker]="picker1"  >
+                <input matStartDate placeholder="Start date" [(ngModel)]="filterModel2.startDate">
+                <input matEndDate placeholder="End date" (dateChange)="getReportByDate()" [(ngModel)]="filterModel2.endDate">
+            </mat-date-range-input>
+            <mat-datepicker-toggle matIconSuffix [for]="picker1"></mat-datepicker-toggle>
+            <mat-date-range-picker #picker1></mat-date-range-picker>
+        </mat-form-field>
+    </div>
     </div>
     <div class="row">
       <!-- <div class="col-sm-12">

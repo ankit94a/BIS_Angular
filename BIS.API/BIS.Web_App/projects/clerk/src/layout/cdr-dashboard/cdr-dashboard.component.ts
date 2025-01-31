@@ -20,12 +20,14 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class CdrDashboardComponent {
   filterModel:FilterModel4 = new FilterModel4();
+  filterModel2:FilterModel = new FilterModel();
   entriesChart: ChartData<'line'>;
   fmnList = [];
   sectorList: Sector[] = [];
   aspectList: Aspect[] = [];
   indicatorList: Indicator[] = [];
   meanChartList;
+  allReports = [];
    // Using BehaviorSubject for reactivity
   private tableHeaderSubject = new BehaviorSubject<string[]>([]);
   private masterDataListSubject = new BehaviorSubject<masterData[]>([]);
@@ -50,9 +52,19 @@ export class CdrDashboardComponent {
       this.filterModel.frmn = this.fmnList;
     }
     this.filterModel.filterType = FilterType.Daily;
+    this.filterModel2.startDate = new Date();
+    this.filterModel2.endDate = new Date();
     this.getSector();
     this.getAspect();
     this.getEntries();
+    this.getReportByDate();
+  }
+  getReportByDate(){
+    this.apiService.postWithHeader('cdrdashboard',this.filterModel2).subscribe(res =>{
+      if(res){
+        this.allReports = res;
+      }
+    })
   }
   getMeanData(date){
     let filterDate = new FilterModel4()

@@ -4,8 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BIS.Common.Entities;
+using BIS.DB.Implements;
 using BIS.DB.Interfaces;
 using BIS.Manager.Interfaces;
+using static BIS.Common.Enum.Enum;
 
 namespace BIS.Manager.Implements
 {
@@ -16,14 +18,28 @@ namespace BIS.Manager.Implements
 		{
 			_cdrDashboardDB = cdrDashboardDB;
 		}
-		public List<GenerateReport> GetReportByDate(FilterModel filterModel, int corpsId, int roleId, int divisionId = 0)
+		public List<GenerateReport> GetReportByDate(FilterModel filterModel, int corpsId, RoleType roleType, int divisionId = 0)
 		{
+			var roleId = 0;
 			if (divisionId > 0)
 			{
-				if (filterModel.startDate == null && filterModel.endDate == null)
+
+				foreach (var item in Enum.GetValues(typeof(RoleType)).Cast<RoleType>().OrderByDescending(e => (int)e))
 				{
-					filterModel.startDate = DateTime.UtcNow;
-					filterModel.endDate = DateTime.UtcNow;
+					if ((int)item == (int)roleType + 1)
+					{
+						//notification.ReceiverId = _userDB.GetUserIdByRoleType(item);
+						//notification.ReceiverEntityType = item;
+						//notification.NotificationType = NotificationType.MasterData;
+						//notification.Title = "Master Form Submitted";
+						//notification.Content = $"Input filled by {roleType}. Please review and respond!";
+						//notification.CreatedBy = masterData.CreatedBy;
+						//notification.CreatedOn = DateTime.UtcNow;
+						//notification.CorpsId = masterData.CorpsId;
+						//notification.DivisionId = masterData.DivisionId;
+						//notification.DataId = Convert.ToInt32(id);
+						//return _notificationDB.AddNotification(notification);
+					}
 				}
 				return _cdrDashboardDB.GetReportByDate(filterModel, corpsId, roleId, divisionId);
 			}
@@ -33,5 +49,9 @@ namespace BIS.Manager.Implements
 			}
 		}
 
+		private long GetUserIdByDivisonOrCorps(int corpsId,int divisionId,RoleType roleType)
+		{
+			return _cdrDashboardDB.GetUserIdByDivisonOrCorps(corpsId,roleType, divisionId);
+		}
 	}
 }

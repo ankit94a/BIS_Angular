@@ -56,20 +56,42 @@ namespace BIS.Manager.Implements
                 notification.SenderEntityType = roleType;
                 foreach (var item in Enum.GetValues(typeof(RoleType)).Cast<RoleType>().OrderByDescending(e => (int)e))
                 {
-                    if ((int)item == (int)roleType + 1)
+                    // also check for user is belonging from division or not ------------>   ToDo
+                    if(roleType != RoleType.Colgs)
                     {
-                        notification.ReceiverId = _userDB.GetUserIdByRoleType(item);
-                        notification.ReceiverEntityType = item;
-                        notification.NotificationType = NotificationType.GenerateReport;
-                        notification.Title = "Generate Report Submitted";
-                        notification.Content = $"{roleType} just filled out the report. Please review and respond!";
-                        notification.CreatedBy = generateReport.CreatedBy;
-                        notification.CreatedOn = DateTime.UtcNow;
-                        notification.CorpsId = generateReport.CorpsId;
-                        notification.DivisionId = generateReport.DivisionId;
-                        notification.DataId = Convert.ToInt32(reportId);
-                        return _notificationDB.AddNotification(notification);
+						if ((int)item == (int)roleType + 1)
+						{
+							notification.ReceiverId = _userDB.GetUserIdByRoleType(item);
+							notification.ReceiverEntityType = item;
+							notification.NotificationType = NotificationType.GenerateReport;
+							notification.Title = "Generate Report Submitted";
+							notification.Content = $"{roleType} just filled out the report. Please review and respond!";
+							notification.CreatedBy = generateReport.CreatedBy;
+							notification.CreatedOn = DateTime.UtcNow;
+							notification.CorpsId = generateReport.CorpsId;
+							notification.DivisionId = generateReport.DivisionId;
+							notification.DataId = Convert.ToInt32(reportId);
+							return _notificationDB.AddNotification(notification);
+						}
                     }
+                    else
+                    {
+						if ((int)item == (int)roleType + 4)
+						{
+							notification.ReceiverId = _userDB.GetUserIdByRoleType(item);
+							notification.ReceiverEntityType = item;
+							notification.NotificationType = NotificationType.GenerateReport;
+							notification.Title = "Generate Report Submitted";
+							notification.Content = $"{roleType} just filled out the report. Please review and respond!";
+							notification.CreatedBy = generateReport.CreatedBy;
+							notification.CreatedOn = DateTime.UtcNow;
+							notification.CorpsId = generateReport.CorpsId;
+							notification.DivisionId = generateReport.DivisionId;
+							notification.DataId = Convert.ToInt32(reportId);
+							return _notificationDB.AddNotification(notification);
+						}
+					}
+                    
                 }
             }
             return reportId;
