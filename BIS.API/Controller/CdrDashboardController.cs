@@ -19,7 +19,8 @@ namespace BIS.API.Controller
 			int CorpsId = HttpContext.GetCorpsId();
 			int DivisionId = HttpContext.GetDivisionId();
 			int userId = HttpContext.GetUserId();
-			return Ok(_cdrDashboardManager.GetReportByDate(filterModel, CorpsId, userId, DivisionId));
+			var roleType = HttpContext.GetRoleType();
+			return Ok(_cdrDashboardManager.GetReportByDate(filterModel, CorpsId, roleType, DivisionId));
 		}
 	}
 }

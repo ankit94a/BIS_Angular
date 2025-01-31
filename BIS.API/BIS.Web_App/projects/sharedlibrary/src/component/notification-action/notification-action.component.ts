@@ -10,20 +10,23 @@ import { MasterDataFilterService } from '../../services/master-data-filter.servi
 import { BehaviorSubject } from 'rxjs';
 import { BisdefaultDatePipe } from '../../pipe/bisdefault-date.pipe';
 import { CommonModule } from '@angular/common';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'lib-notification-action',
-  imports: [SharedLibraryModule,CommonModule],
+  imports: [SharedLibraryModule, CommonModule],
   templateUrl: './notification-action.component.html',
   styleUrl: './notification-action.component.css',
-  providers:[BisdefaultDatePipe]
+  providers: [BisdefaultDatePipe]
 })
 export class NotificationActionComponent extends EnumBase {
   selectedImages: { url: string; name: string }[] = []; // Array to store selected images
 
-  masterData:masterData;
-  notify:NotificationModel=new NotificationModel();
-  report:GenerateReport;
+  masterData: masterData;
+  notify: NotificationModel = new NotificationModel();
+  report: GenerateReport;
+  // for handling ColGs new report attached G1 reportId
+  report2: GenerateReport;
   // handling unique table header & master Data;
   tableHeader = [];
   masterDataList = [];
@@ -36,14 +39,16 @@ export class NotificationActionComponent extends EnumBase {
   tableHeader$ = this.tableHeaderSubject.asObservable();
   masterDataList$ = this.masterDataListSubject.asObservable();
   chartImages$ = this.chartImagesSubject.asObservable();
-  constructor(private cdr: ChangeDetectorRef,private masterDataService:MasterDataFilterService, @Inject(MAT_DIALOG_DATA) data,private apiService:ApiService,private dialogRef:MatDialogRef<NotificationActionComponent>){
+  constructor(private toastr: ToastrService, private cdr: ChangeDetectorRef, private masterDataService: MasterDataFilterService, @Inject(MAT_DIALOG_DATA) data, private apiService: ApiService, private dialogRef: MatDialogRef<NotificationActionComponent>) {
     super();
+    debugger
     this.notify = data;
     this.masterData = new masterData();
-    if(this.notify.notificationType == NotificationType.MasterData){
+    if (this.notify.notificationType == NotificationType.MasterData) {
       this.getMasterData(this.notify.dataId)
-    }else{
+    } else {
       this.report = new GenerateReport();
+      this.report2 = new GenerateReport();
       this.getReport();
     }
 
@@ -63,23 +68,46 @@ export class NotificationActionComponent extends EnumBase {
         };
         reader.readAsDataURL(file);
       });
-      console.log(this.selectedImages)
     }
   }
 
-  getReport(){
-    this.apiService.postWithHeader('notification/report',this.notify).subscribe(res =>{
-      if(res){
-        this.report = res;
-        this.getMasterList();
-        if(this.report.graphIds != undefined && this.report.graphIds != null && this.report.graphIds != ''){
-          this.getGraphs();
+  getReport() {
+    this.apiService.postWithHeader('notification/report', this.notify).subscribe(res => {
+      if (res) {
+        debugger
+        if (res.rptId != null && res.rptId != undefined && res?.rptId > 0) {
+          this.report2 = res;
+          this.getG1Report(this.report.rptId)
+          if (this.report2.graphIds != undefined && this.report2.graphIds != null && this.report2.graphIds != '') {
+            this.getGraphs(this.report2.graphIds);
+          }
+        } else {
+          this.report = res;
+          this.getMasterList();
+          if (this.report.graphIds != undefined && this.report.graphIds != null && this.report.graphIds != '') {
+            this.getGraphs(this.report.graphIds);
+          }
         }
       }
     })
   }
-  getGraphs(){
-    this.apiService.getWithHeaders('generatereport/graph'+this.report.graphIds).subscribe(res =>{
+
+  getG1Report(reportId:number) {
+    let rpt = new GenerateReport();
+    rpt.id = reportId;
+    this.apiService.postWithHeader('notification/report', rpt).subscribe(res => {
+      if (res) {
+        debugger
+        this.report = res;
+        this.getMasterList();
+        if (this.report.graphIds != undefined && this.report.graphIds != null && this.report.graphIds != '') {
+          this.getGraphs(this.report.graphIds);
+        }
+      }
+    })
+  }
+  getGraphs(graphIds) {
+    this.apiService.getWithHeaders('generatereport/graph' + graphIds).subscribe(res => {
       this.report.graphs = res.map(graph => {
         return {
           ...graph,  // Spread the existing properties of the graph
@@ -87,37 +115,53 @@ export class NotificationActionComponent extends EnumBase {
         };
       });
       console.log(this.report)
-      this.chartImagesSubject.next(this.report.graphs );
+      this.chartImagesSubject.next(this.report.graphs);
     })
   }
-  getMasterList(){
-    this.apiService.getWithHeaders('masterdata/idsList'+this.report.masterDataIds).subscribe(res =>{
-      if(res){
+  getMasterList() {
+    this.apiService.getWithHeaders('masterdata/idsList' + this.report.masterDataIds).subscribe(res => {
+      if (res) {
         this.report.masterData = res;
-       const {Header,DataList} = this.masterDataService.getMasterData(res);
-       this.tableHeaderSubject.next(Header);
-       this.masterDataListSubject.next(DataList);
-      }
-    })
-  }
-  approved(){
-    this.apiService.postWithHeader('notification/updatestatus',this.notify).subscribe(res =>{
-      if(res){
-        this.dialogRef.close(true);
-      }
-    })
-  }
-  getMasterData(masterDataId){
-    this.apiService.getWithHeaders('masterdata/getbyid'+ masterDataId).subscribe(res =>{
-      if(res){
-        this.masterData = res;
-        const {Header,DataList} = this.masterDataService.getMasterData([res])
+        const { Header, DataList } = this.masterDataService.getMasterData(res);
         this.tableHeaderSubject.next(Header);
-       this.masterDataListSubject.next(DataList);
+        this.masterDataListSubject.next(DataList);
       }
     })
   }
-  close(){
+  approved() {
+    this.apiService.postWithHeader('notification/updatestatus', this.notify).subscribe(res => {
+      if (res) {
+        this.toastr.success("Input approved successfully", 'success');
+        this.close();
+      }
+    })
+  }
+  getMasterData(masterDataId) {
+    this.apiService.getWithHeaders('masterdata/getbyid' + masterDataId).subscribe(res => {
+      if (res) {
+        this.masterData = res;
+        const { Header, DataList } = this.masterDataService.getMasterData([res])
+        this.tableHeaderSubject.next(Header);
+        this.masterDataListSubject.next(DataList);
+      }
+    })
+  }
+  close() {
     this.dialogRef.close(true);
+  }
+  submitReport() {
+    this.report2.reportTitle = this.report.reportTitle;
+    this.report2.reportType = this.report.reportType;
+    this.report2.reportDate = this.report.reportDate;
+    this.report2.startDate = this.report.startDate;
+    this.report2.endDate = this.report.endDate;
+    this.report2.graphs = this.selectedImages;
+    this.report2.rptId = this.report.id;
+    this.apiService.postWithHeader('GenerateReport', this.report2).subscribe(res => {
+      if (res) {
+        this.toastr.success("Report saved successfully", 'success');
+        this.close();
+      }
+    })
   }
 }

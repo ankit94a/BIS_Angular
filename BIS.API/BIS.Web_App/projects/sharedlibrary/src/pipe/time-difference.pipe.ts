@@ -9,7 +9,7 @@ export class TimeDifferencePipe implements PipeTransform {
     const targetDate = new Date(value); // Target date in local timezone
 
     // Calculate the difference in milliseconds
-    const offsetMs = 5 * 60 * 60 * 1000; 
+    const offsetMs = (5 * 60 * 60 * 1000) + (30 * 60 * 1000);
     const diffMs = now.getTime() - targetDate.getTime() - offsetMs;
 
     // Convert difference to various time units

@@ -6,29 +6,10 @@
 
     </ng-container>
     <ng-template #data>
-        <!-- <table>
-            <thead>
-                <tr>
-                    <th>Id</th>
-                    <th>Frmn</th>
-                    <th>Aspect</th>
-                    <th>Indicator</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngIf="masterData != null && masterData != undefined">
-                    <td>{{masterData.id}}</td>
-                    <td>{{masterData.frmn}}</td>
-                    <td>{{masterData.aspect}}</td>
-                    <td>{{masterData.indicator}}</td>
-                </tr>
-            </tbody>
-        </table> -->
         <div class="table-container">
             <table>
                 <thead>
                     <tr>
-                        <!-- <th>#</th> -->
                         <ng-container *ngFor="let item of tableHeader$ | async">
                             <th *ngIf="!['id', 'createdBy', 'createdOn', 'isActive', 'isDeleted', 'corpsId', 'divisionId'].includes(item)"
                                 class="space">
@@ -171,7 +152,7 @@
             <div class="col-md-12">
                 <mat-form-field>
                     <mat-label>Add Comment</mat-label>
-                    <textarea matInput class="full-width text-area"></textarea>
+                    <textarea matInput class="full-width text-area" [(ngModel)]="report2.notes"></textarea>
                 </mat-form-field>
             </div>
         </div>
@@ -183,6 +164,6 @@
 <mat-dialog-actions align="end">
     <button class="btn btn-sm btn-warning" (click)="close()">Close</button>
         <button class="btn btn-sm fileUpload" *ngIf="notify.notificationType == NotificationType.MasterData" (click)="approved()">Approved</button>
-        <button class="btn btn-sm fileUpload" *ngIf="notify.notificationType == NotificationType.GenerateReport" (click)="approved()">Submit</button>
+        <button class="btn btn-sm fileUpload" *ngIf="notify.notificationType == NotificationType.GenerateReport" (click)="submitReport()">Submit</button>
 
 </mat-dialog-actions>
