@@ -29,7 +29,7 @@ namespace BIS.DB.Implements
 				startDate = endDate.AddMonths(-1);
 			}
 
-			var query = _dbContext.MasterDatas.Where(ms => ms.CorpsId == corpsId && ms.DivisionId == divisionId && ms.CreatedOn >= startDate.Date && ms.CreatedOn <= endDate.Date);
+			var query = _dbContext.MasterDatas.Where(ms => ms.CorpsId == corpsId && ms.DivisionId == divisionId && ms.CreatedOn.Value.Date >= startDate.Date && ms.CreatedOn.Value.Date <= endDate.Date);
 
 			// handling filter arrays 
 			if (filterModel != null && filterModel.Sector?.Count > 0)
@@ -69,7 +69,7 @@ namespace BIS.DB.Implements
 				startDate = endDate.AddMonths(-1);
 			}
 
-			var query = _dbContext.MasterDatas.Where(ms => ms.CorpsId == corpsId && ms.DivisionId == divisionId && ms.CreatedOn >= startDate.Date && ms.CreatedOn <= endDate.Date);
+			var query = _dbContext.MasterDatas.Where(ms => ms.CorpsId == corpsId && ms.DivisionId == divisionId && ms.CreatedOn.Value.Date >= startDate.Date && ms.CreatedOn.Value.Date <= endDate.Date);
 
 			// handling filter arrays 
 			if (filterModel != null && filterModel.Sector?.Count > 0)
@@ -109,7 +109,7 @@ namespace BIS.DB.Implements
 				startDate = endDate.AddMonths(-1);
 			}
 
-			var query = _dbContext.MasterDatas.Where(ms => ms.CorpsId == corpsId && ms.DivisionId == divisionId && ms.CreatedOn >= startDate.Date && ms.CreatedOn <= endDate.Date);
+			var query = _dbContext.MasterDatas.Where(ms => ms.CorpsId == corpsId && ms.DivisionId == divisionId && ms.CreatedOn.Value.Date >= startDate.Date && ms.CreatedOn.Value.Date <= endDate.Date);
 
 			// handling filter arrays 
 			if (filterModel != null && filterModel.Sector?.Count > 0)

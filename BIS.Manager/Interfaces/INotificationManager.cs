@@ -7,9 +7,9 @@ using BIS.Common.Entities;
 
 namespace BIS.Manager.Interfaces
 {
-    public interface INotificationManager
-    {
-        public List<Notification> GetNotificationByUserId(int userId);
-        public long UpdateStatus(Notification notify);
-    }
+	public interface INotificationManager
+	{
+		public List<Notification> GetNotificationByUserId(int userId);
+		public long UpdateStatus(Notification notify, bool isApproved);
+	}
 }

@@ -34,6 +34,7 @@ export class GenerateReportsListComponent extends TablePaginationSettingsConfig 
   getReportData() {
     this.apiService.getWithHeaders('GenerateReport').subscribe(res =>{
       if(res){
+        res.sort((a,b) => b.id - a.id)
         this.generateReportList = res;
       }
     })
@@ -60,22 +61,28 @@ export class GenerateReportsListComponent extends TablePaginationSettingsConfig 
   edit($event){
 
   }
-  
+
   columns = [
-    {
-      name: 'reportGenId', displayName: 'Report Id', isSearchable: false
-    },
     {
       name: 'reportType', displayName: 'Report Type', isSearchable: false
     },
     {
       name: 'reportDate', displayName: 'Report Date', isSearchable: false
+      , valuePrepareFunction : (row =>{
+        return this.datePipe.transform(row.reportDate)
+      })
     },
     {
       name: 'startDate', displayName: 'Start Date', isSearchable: false
+      ,valuePrepareFunction : (row =>{
+        return this.datePipe.transform(row.startDate)
+      })
     },
     {
       name: 'endDate', displayName: 'End Date', isSearchable: false
+      ,valuePrepareFunction : (row =>{
+        return this.datePipe.transform(row.endDate)
+      })
     },
     {
       name: 'reportTitle', displayName: 'Report Title', isSearchable: false

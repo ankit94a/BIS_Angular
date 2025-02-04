@@ -93,8 +93,8 @@ export class NotificationActionComponent extends EnumBase {
   }
 
   getG1Report(reportId:number) {
-    let rpt = new GenerateReport();
-    rpt.id = reportId;
+    let rpt = new NotificationModel();
+    rpt.dataId = reportId;
     this.apiService.postWithHeader('notification/report', rpt).subscribe(res => {
       if (res) {
         debugger
@@ -128,14 +128,15 @@ export class NotificationActionComponent extends EnumBase {
       }
     })
   }
-  approved() {
-    this.apiService.postWithHeader('notification/updatestatus', this.notify).subscribe(res => {
+  changeStatus(isApproved) {
+    this.apiService.postWithHeader(`notification/updatestatus?isApproved=${isApproved}`, this.notify).subscribe(res => {
       if (res) {
         this.toastr.success("Input approved successfully", 'success');
-        this.close();
+        this.close(true);
       }
     })
   }
+
   getMasterData(masterDataId) {
     this.apiService.getWithHeaders('masterdata/getbyid' + masterDataId).subscribe(res => {
       if (res) {
@@ -146,9 +147,10 @@ export class NotificationActionComponent extends EnumBase {
       }
     })
   }
-  close() {
-    this.dialogRef.close(true);
+  close(status) {
+    this.dialogRef.close(status);
   }
+
   submitReport() {
     this.report2.reportTitle = this.report.reportTitle;
     this.report2.reportType = this.report.reportType;
@@ -160,7 +162,7 @@ export class NotificationActionComponent extends EnumBase {
     this.apiService.postWithHeader('GenerateReport', this.report2).subscribe(res => {
       if (res) {
         this.toastr.success("Report saved successfully", 'success');
-        this.close();
+        this.close(true);
       }
     })
   }
