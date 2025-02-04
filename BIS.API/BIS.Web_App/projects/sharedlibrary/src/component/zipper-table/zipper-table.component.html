@@ -1,4 +1,4 @@
-<section class="example-container mat-elevation-z8" tabindex="0" style="overflow: auto;" style="width: auto;">   
+<section class="example-container mat-elevation-z8" tabindex="0" style="overflow: auto;" style="width: auto;">
     <mat-table [dataSource]="dataSource" class="mat-elevation-z8">
         <ng-container *ngFor="let column of sqColumnDefinition" matColumnDef="{{column.name}}" sticky="true">
             <ng-container *ngIf="column.name ==='select';then checkbox else nocheckbox"></ng-container>
@@ -63,7 +63,7 @@
                         </div>
 
                         <div *ngSwitchCase="'html'" [innerHtml]="getValues(element,column)"></div>
-                        <div *ngSwitchDefault>{{getValues(element,column)}}</div>
+                        <div *ngSwitchDefault >{{getValues(element,column) }}</div>
                     </div>
 
                 </mat-cell>
@@ -73,7 +73,7 @@
         <ng-container *ngIf="tablePaginationSettings.enableAction" matColumnDef="action">
             <mat-header-cell *matHeaderCellDef style="margin-top:-1%;">
                 <div class="column-header-content">
-                    <button class="btn btn-link" type="button" 
+                    <button class="btn btn-link" type="button"
                         *ngIf="tablePaginationSettings.enableColumn;else actionTemplate" #menuTrigger="matMenuTrigger"
                         [matMenuTriggerFor]="mainMenuButton"> <mat-icon matTooltip="Add More Columns">filter_list</mat-icon> </button>
 
@@ -124,6 +124,7 @@
         <mat-header-row *matHeaderRowDef="getVisibleColumns(); sticky: true"></mat-header-row>
         <mat-row *matRowDef="let row; columns: getVisibleColumns();"
             [ngClass]="{'highlight': selectedRowIndex == row.position}"
+            [ngClass]="isRowBackgroundColor ? {'blue': row.status == 1, 'green': row.status == 3, 'orange': row.status == 2,'red': row.status == 4 } : {}"
             (click)="enableCheckbox==false && allowMultiSelect==false ? highlight(row) : false ;">
         </mat-row>
     </mat-table>
@@ -133,4 +134,6 @@
             [showFirstLastButtons]="tablePaginationSettings.showFirstLastButtons">
         </mat-paginator>
     </ng-container>
+    <!-- <h1 [libGetRowBackgroundColor]="isRowBackgroundColor ? 'approved' : null"></h1> -->
+
 </section>

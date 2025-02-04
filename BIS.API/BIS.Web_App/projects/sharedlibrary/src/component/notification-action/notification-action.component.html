@@ -11,7 +11,7 @@
                 <thead>
                     <tr>
                         <ng-container *ngFor="let item of tableHeader$ | async">
-                            <th *ngIf="!['id', 'createdBy', 'createdOn', 'isActive', 'isDeleted', 'corpsId', 'divisionId'].includes(item)"
+                            <th *ngIf="!['Id', 'CreatedBy', 'CreatedOn', 'IsActive', 'IsDeleted', 'CorpsId', 'DivisionId','Status','Fmn','UserId'].includes(item)"
                                 class="space">
                                 {{ item }}
                             </th>
@@ -21,7 +21,7 @@
                 <tbody>
                     <tr *ngFor="let item of masterDataList$ | async; let i = index">
                         <ng-container *ngFor="let header of tableHeader$ | async">
-                            <td *ngIf="!['id', 'createdBy', 'createdOn', 'isActive', 'isDeleted', 'corpsId', 'divisionId'].includes(header)"
+                            <td *ngIf="!['Id', 'CreatedBy', 'CreatedOn', 'IsActive', 'IsDeleted', 'CorpsId', 'DivisionId','Status','Fmn','UserId'].includes(header)"
                                 class="space">
                                 {{ item[header] }}
                             </td>
@@ -162,8 +162,8 @@
 
 </mat-dialog-content>
 <mat-dialog-actions align="end">
-    <button class="btn btn-sm btn-warning" (click)="close()">Close</button>
-        <button class="btn btn-sm fileUpload" *ngIf="notify.notificationType == NotificationType.MasterData" (click)="approved()">Approved</button>
-        <button class="btn btn-sm fileUpload" *ngIf="notify.notificationType == NotificationType.GenerateReport" (click)="submitReport()">Submit</button>
-
+      <button class="btn btn-sm btn-warning" (click)="close(false)">Close</button>
+      <button class="btn btn-sm btn-outline-danger" *ngIf="notify.notificationType == NotificationType.MasterData" (click)="changeStatus(false)">Rejected</button>
+      <button class="btn btn-sm fileUpload" *ngIf="notify.notificationType == NotificationType.MasterData" (click)="changeStatus(true)">Approved</button>
+      <button class="btn btn-sm fileUpload" *ngIf="notify.notificationType == NotificationType.GenerateReport" (click)="submitReport()">Submit</button>
 </mat-dialog-actions>

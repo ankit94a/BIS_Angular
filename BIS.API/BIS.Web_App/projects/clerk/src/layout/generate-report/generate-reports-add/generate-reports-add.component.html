@@ -29,9 +29,9 @@
         <mat-form-field>
           <mat-label>Date Range</mat-label>
           <mat-date-range-input [rangePicker]="picker">
-            <input matStartDate formControlName="startDate" placeholder="Start date" #dateRangeStart>
+            <input matStartDate formControlName="startDate" placeholder="Start date" #dateRangeStart [max]="currentDate">
             <input matEndDate formControlName="endDate" placeholder="End date" #dateRangeEnd
-              (dateChange)="onDateChange(dateRangeStart, dateRangeEnd)">
+              (dateChange)="onDateChange(dateRangeStart, dateRangeEnd)" [max]="currentDate">
           </mat-date-range-input>
           <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
           <mat-date-range-picker #picker></mat-date-range-picker>
@@ -45,21 +45,36 @@
         <table>
           <thead>
             <tr>
-              <!-- Add checkbox in the first column for master checkbox -->
-              <!-- <th><mat-checkbox [(ngModel)]="isAllChecked" (change)="toggleAllCheckboxes()"  [ngModelOptions]="{standalone: true}"></mat-checkbox></th> -->
               <th>#</th>
-              <th *ngFor="let item of tableHeader">{{ item }}</th>
+              <!-- <th *ngFor="let item of tableHeader">{{ item }}</th> -->
+              <ng-container *ngFor="let item of tableHeader">
+                <th *ngIf="!['Id', 'CreatedBy', 'CreatedOn', 'IsActive', 'IsDeleted', 'CorpsId', 'DivisionId','Status','Fmn','UserId'].includes(item)"
+                    class="space">
+                    {{ item }}
+                </th>
+            </ng-container>
             </tr>
           </thead>
           <tbody formArrayName="masterData">
-            <tr *ngFor="let item of masterDataList; let i = index">
-              <!-- Checkbox for individual rows -->
+            <!-- <tr *ngFor="let item of masterDataList; let i = index">
               <td>
                 <mat-checkbox [(ngModel)]="item.selected" [ngModelOptions]="{standalone: true}">
                 </mat-checkbox>
               </td>
               <td *ngFor="let header of tableHeader">{{ item[header] }}</td>
-            </tr>
+            </tr> -->
+            <tr *ngFor="let item of masterDataList">
+              <td>
+                <mat-checkbox [(ngModel)]="item.selected" [ngModelOptions]="{standalone: true}">
+                </mat-checkbox>
+              </td>
+              <ng-container *ngFor="let header of tableHeader">
+                  <td *ngIf="!['Id', 'CreatedBy', 'CreatedOn', 'IsActive', 'IsDeleted', 'CorpsId', 'DivisionId','Status','Fmn','UserId'].includes(header)"
+                      class="space">
+                      {{ item[header] }}
+                  </td>
+              </ng-container>
+          </tr>
           </tbody>
         </table>
       </div>

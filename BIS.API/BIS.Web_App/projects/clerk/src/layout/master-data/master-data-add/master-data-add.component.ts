@@ -35,7 +35,6 @@ export class MasterDataAddComponent implements OnInit {
 
   sectorList = [];
   formBuilder = inject(FormBuilder);
-  toastr = inject(ToastrService);
   selectedValue: string = '';  // To hold the selected value from the dropdown
   // sectordropdownItems: any[] = [];
   // sourcedropdownItems: any[] = [];
@@ -56,7 +55,7 @@ export class MasterDataAddComponent implements OnInit {
   sourceLoc:MasterLoc[] = [];
   typeOfLoc:MasterLoc[] = [];
   enemyLocations:EnemyLocation[] = [];
-  constructor(private authService:AuthService, private apiService: ApiService,private datePipe: DatePipe,private dialogref:MatDialogRef<MasterDataAddComponent>) {
+  constructor(private authService:AuthService,private toastr: ToastrService,  private apiService: ApiService,private datePipe: DatePipe,private dialogref:MatDialogRef<MasterDataAddComponent>) {
     this.indicators = [];
   }
 
@@ -1087,7 +1086,7 @@ export class MasterDataAddComponent implements OnInit {
       this.apiService.postWithHeader('masterData',this.createData.value).subscribe(res =>{
         debugger
         if (res) {
-          this.toastr.success("Record saved successfully");
+          this.toastr.success("Record saved successfully",'success');
           this.dialogref.close(true);
         }else{
           this.toastr.error("Some issue in saving input")

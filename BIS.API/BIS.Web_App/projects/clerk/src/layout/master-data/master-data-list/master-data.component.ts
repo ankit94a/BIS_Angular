@@ -46,8 +46,9 @@ export class MasterDataComponent extends TablePaginationSettingsConfig implement
   getDataFromServer(){
     this.apiService.getWithHeaders('MasterData').subscribe(res => {
       if(res){
+        res.sort((a,b) => b.id - a.id)
         this.DataList = res;
-        console.log('d',this.DataList)
+
       }
     })
   }

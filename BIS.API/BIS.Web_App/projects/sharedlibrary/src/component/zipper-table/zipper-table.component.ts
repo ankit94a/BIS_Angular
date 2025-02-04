@@ -16,23 +16,22 @@ import { FormsModule } from '@angular/forms';
   selector: 'app-table',
   templateUrl: './zipper-table.component.html',
   styleUrls: ['./zipper-table.component.scss'],
-  imports:[CustomViewComponent,MatPaginatorModule,SharedLibraryModule , NgSelectModule,
-      FormsModule,CommonModule],
+  imports:[CustomViewComponent,MatPaginatorModule,SharedLibraryModule , NgSelectModule,FormsModule,CommonModule],
   standalone:true,
-  providers: [
-        { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
-        
-          {
-            provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
-            useValue: { subscriptSizing: 'dynamic' },
-          },
-         
-        
-      ]
+  // providers: [
+  //       { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
+
+  //         {
+  //           provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
+  //           useValue: { subscriptSizing: 'dynamic' },
+  //         },
+
+
+  //     ]
 })
 export class ZipperTableComponent extends TablePaginationSettingsConfig implements OnInit, OnChanges {
 
-
+  @Input() isRowBackgroundColor:boolean = false;
   selectedRowIndex = -1;
 
   @Input() isRefresh: boolean;
@@ -96,6 +95,7 @@ export class ZipperTableComponent extends TablePaginationSettingsConfig implemen
   @Input() override tablePaginationSettings?: TablePaginationSettingsModel;
   columnNames: string[] = [];
   filterName: string;
+
   constructor(private cdr: ChangeDetectorRef, private elementRef: ElementRef) {
     super();
 

@@ -8,10 +8,13 @@
         </div>
     </mat-card-header>
     <mat-card-content>
-        <app-table [rowData]="DataList" [tablePaginationSettings]="tablePaginationSettings" [enableCheckbox]="true"
+        <app-table *ngIf="DataList.length > 0" [rowData]="DataList" [tablePaginationSettings]="tablePaginationSettings" [enableCheckbox]="true" [isRowBackgroundColor]="true"
         [isRefresh]="isRefresh" [allowMultiSelect]="true" (edit)="edit($event)" (view)="view($event)"
          [sqColumnDefinition]="columns"
         (pageChanged)="getMoreSameples($event)">
       </app-table>
+      <div class="span" *ngIf="DataList.length == 0">
+        <h4>NO Data Found</h4>
+      </div>
     </mat-card-content>
 </mat-card>

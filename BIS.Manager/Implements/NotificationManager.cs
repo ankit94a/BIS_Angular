@@ -10,29 +10,29 @@ using static BIS.Common.Enum.Enum;
 
 namespace BIS.Manager.Implements
 {
-    public class NotificationManager : INotificationManager
-    {
-        private readonly INotificationDB _notificationDB;
-        private readonly IMasterDataDB _masterDataDB;
-        public NotificationManager(INotificationDB notificationDB,IMasterDataDB masterDataDB)
-        { 
-            _notificationDB = notificationDB;
-            _masterDataDB = masterDataDB;
-        }
-        public List<Notification> GetNotificationByUserId(int userId)
-        {
-            return _notificationDB.GetNotificationByUserId(userId);
+	public class NotificationManager : INotificationManager
+	{
+		private readonly INotificationDB _notificationDB;
+		private readonly IMasterDataDB _masterDataDB;
+		public NotificationManager(INotificationDB notificationDB, IMasterDataDB masterDataDB)
+		{
+			_notificationDB = notificationDB;
+			_masterDataDB = masterDataDB;
+		}
+		public List<Notification> GetNotificationByUserId(int userId)
+		{
+			return _notificationDB.GetNotificationByUserId(userId);
 
-        }
-        public long UpdateStatus(Notification notify)
-        {
+		}
+		public long UpdateStatus(Notification notify, bool isApproved)
+		{
 
-            var masterId = _masterDataDB.UpdateStatus(notify.DataId);
-            if(masterId > 0)
-            {
-              return  _notificationDB.UpdateStatus(notify);
-            }
-            return 0;
-        }
-    }
+			var masterId = _masterDataDB.UpdateStatus(notify.DataId, isApproved);
+			if (masterId > 0)
+			{
+				return _notificationDB.UpdateStatus(notify);
+			}
+			return 0;
+		}
+	}
 }

@@ -4,9 +4,12 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { FilterModel } from 'projects/sharedlibrary/src/model/dashboard.model';
 import { GenerateReport, GraphImages } from 'projects/sharedlibrary/src/model/generatereport.model';
+import { masterData } from 'projects/sharedlibrary/src/model/masterdata.model';
 import { BisdefaultDatePipe } from 'projects/sharedlibrary/src/pipe/bisdefault-date.pipe';
 import { ApiService } from 'projects/sharedlibrary/src/services/api.service';
+import { MasterDataFilterService } from 'projects/sharedlibrary/src/services/master-data-filter.service';
 import { SharedLibraryModule } from 'projects/sharedlibrary/src/shared-library.module';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-generate-reports-add',
@@ -16,7 +19,7 @@ import { SharedLibraryModule } from 'projects/sharedlibrary/src/shared-library.m
   providers: [BisdefaultDatePipe]
 })
 export class GenerateReportsAddComponent implements OnInit {
-  selectedImages: GraphImages[] = []; // Array to store selected images
+  selectedImages: GraphImages[] = [];
   reportForm: FormGroup;
   report: GenerateReport;
   currentDate = new Date()
@@ -25,7 +28,7 @@ export class GenerateReportsAddComponent implements OnInit {
   tableHeader = [];
   isAllChecked = false;
   filterModel: FilterModel = new FilterModel();
-  constructor(@Inject(MAT_DIALOG_DATA) data, private apiService: ApiService, private toastr: ToastrService, private _formBuilder: FormBuilder, private dialogRef: MatDialogRef<GenerateReportsAddComponent>) {
+  constructor(@Inject(MAT_DIALOG_DATA) data,private masterDataService: MasterDataFilterService, private apiService: ApiService, private toastr: ToastrService, private _formBuilder: FormBuilder, private dialogRef: MatDialogRef<GenerateReportsAddComponent>) {
     // if(data.id > 0){
     //   this.report = data;
     //   this.getReportById(data.masterDataIds);
@@ -70,7 +73,6 @@ export class GenerateReportsAddComponent implements OnInit {
 
   // Handle individual row checkbox change event
   onRowCheckboxChange(item: any, i: number) {
-    debugger
     const control = this.masterData.controls[i]; // Get the control corresponding to the current row
     control.setValue(item.selected); // Update the control with the current selected state
   }
@@ -98,26 +100,10 @@ export class GenerateReportsAddComponent implements OnInit {
       this.apiService.postWithHeader('masterdata/dateRange', this.filterModel).subscribe(res => {
         if (res) {
           this.masterDataList = res;
-          let uniqueHeader = new Set();
-          this.masterDataList.forEach(item => {
-            const keys = Object.keys(item);
-            keys.forEach(key => {
-              if (item[key] != null && item[key] !== "") {
-                uniqueHeader.add(key);
-              }
-            });
-          });
-          this.tableHeader = [...uniqueHeader];
-          this.masterDataList = this.masterDataList.map(item => {
-            let reorderedItem = {};
-            this.tableHeader.forEach(key => {
-              if (item[key] != null && item[key] !== "") {
-                reorderedItem[key] = item[key];
-              }
-            });
-            this.isNoDataFoundAlert = false;
-            return reorderedItem;
-          });
+          const { Header, DataList } = this.masterDataService.getMasterData(res);
+          this.tableHeader = Header;
+          this.masterDataList = DataList;
+          this.isNoDataFoundAlert = false;
         } else {
           this.isNoDataFoundAlert = true;
         }
@@ -128,8 +114,9 @@ export class GenerateReportsAddComponent implements OnInit {
     // You can perform additional logic here, like updating other form values, making API calls, etc.
   }
   save() {
+    debugger
     var selected = this.masterDataList.filter(item => item.selected)
-    var idsString = JSON.stringify(selected.map(item => item.id));
+    var idsString = JSON.stringify(selected.map(item => item.Id));
     this.selectedImages.map(item =>{
       item.url = item.url.split(',')[1];
     })
@@ -160,7 +147,7 @@ export class GenerateReportsAddComponent implements OnInit {
     const input = event.target as HTMLInputElement;
     if (input?.files) {
       Array.from(input.files).forEach((file) => {
-        if (file.type.startsWith('image/')) {  // Ensure it's an image
+        if (file.type.startsWith('image/')) {
           const reader = new FileReader();
           reader.onload = (e: ProgressEvent<FileReader>) => {
             if (e.target?.result) {
