@@ -24,23 +24,24 @@ namespace BIS.Manager.Implements
 			if (divisionId > 0)
 			{
 
-				foreach (var item in Enum.GetValues(typeof(RoleType)).Cast<RoleType>().OrderByDescending(e => (int)e))
-				{
-					if ((int)item == (int)roleType + 1)
-					{
-						//notification.ReceiverId = _userDB.GetUserIdByRoleType(item);
-						//notification.ReceiverEntityType = item;
-						//notification.NotificationType = NotificationType.MasterData;
-						//notification.Title = "Master Form Submitted";
-						//notification.Content = $"Input filled by {roleType}. Please review and respond!";
-						//notification.CreatedBy = masterData.CreatedBy;
-						//notification.CreatedOn = DateTime.UtcNow;
-						//notification.CorpsId = masterData.CorpsId;
-						//notification.DivisionId = masterData.DivisionId;
-						//notification.DataId = Convert.ToInt32(id);
-						//return _notificationDB.AddNotification(notification);
-					}
-				}
+				//foreach (var item in Enum.GetValues(typeof(RoleType)).Cast<RoleType>().OrderByDescending(e => (int)e))
+				//{
+				//if ((int)item == (int)roleType + 1)
+				//{
+				//notification.ReceiverId = _userDB.GetUserIdByRoleType(item);
+				//notification.ReceiverEntityType = item;
+				//notification.NotificationType = NotificationType.MasterData;
+				//notification.Title = "Master Form Submitted";
+				//notification.Content = $"Input filled by {roleType}. Please review and respond!";
+				//notification.CreatedBy = masterData.CreatedBy;
+				//notification.CreatedOn = DateTime.UtcNow;
+				//notification.CorpsId = masterData.CorpsId;
+				//notification.DivisionId = masterData.DivisionId;
+				//notification.DataId = Convert.ToInt32(id);
+				//return _notificationDB.AddNotification(notification);
+				//}
+				//}
+				roleId = GetUserIdByDivisonOrCorps(corpsId, divisionId, RoleType.Colgs);
 				return _cdrDashboardDB.GetReportByDate(filterModel, corpsId, roleId, divisionId);
 			}
 			else
@@ -49,9 +50,9 @@ namespace BIS.Manager.Implements
 			}
 		}
 
-		private long GetUserIdByDivisonOrCorps(int corpsId,int divisionId,RoleType roleType)
+		private int GetUserIdByDivisonOrCorps(int corpsId, int divisionId, RoleType roleType)
 		{
-			return _cdrDashboardDB.GetUserIdByDivisonOrCorps(corpsId,roleType, divisionId);
+			return _cdrDashboardDB.GetUserIdByDivisonOrCorps(corpsId, roleType, divisionId);
 		}
 	}
 }

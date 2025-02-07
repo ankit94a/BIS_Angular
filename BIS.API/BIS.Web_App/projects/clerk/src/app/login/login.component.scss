@@ -6,14 +6,14 @@
     padding: 20px;
     background-color: #f6fcff;
   }
-  
+
   mat-card {
     width: 100%;
     max-width: 750px;
     border-radius: 16px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   }
-  
+
   mat-card-header {
     display: flex;
     flex-direction: column;
@@ -22,62 +22,62 @@
     border-radius: 16px 16px 0 0;
     padding: 20px 0;
   }
-  
+
   .brand-logo-container {
     text-align: center;
   }
-  
+
   .brand-logo {
     width: 150px;
     height: 150px;
   }
-  
+
   .brand-name {
     font-size: 25px;
     font-weight: bold;
     color: #270944;
   }
-  
+
   .login-card-content {
     padding: 20px;
   }
-  
+
   .row {
     margin-bottom: 20px;
   }
-  
+
   mat-form-field {
     width: 100%;
   }
-  
+
   .password-field {
     position: relative;
   }
-  
+
   mat-icon {
     color: #0ac57e;
     font-size: 20px;
   }
-  
+
   .forgot-password-link {
     text-align: right;
   }
-  
+
   mat-card-actions {
     display: flex;
     justify-content: space-between;
   }
-  
+
   mat-card-footer {
     padding: 20px 0;
     text-align: center;
   }
-  
+
   .register-link {
     font-size: 14px;
     color: #707070;
   }
-  
+
   .register-link a {
     color: #0da0f7;
     text-decoration: underline;
@@ -99,9 +99,9 @@
   }
   .login-image {
     width: 100%;
-    height: 100%; 
-    object-fit: cover; 
-    border-radius: 20px 0 0 20px; 
+    height: 100%;
+    object-fit: cover;
+    border-radius: 20px 0 0 20px;
   }.logo-focused{
     color: #A31D1D;
   }
@@ -112,4 +112,11 @@
     flex-direction: column;
     justify-content: center;
   }
-  
+  button[mat-raised-button]{
+    background-color: #3f51b5;
+    color: #ffff;
+    padding: 12px 24px;
+    font-size: 16px;
+    border-radius: 4px;
+    width: 320px;
+  }

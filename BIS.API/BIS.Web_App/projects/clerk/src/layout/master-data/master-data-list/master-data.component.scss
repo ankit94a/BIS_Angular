@@ -1,0 +1,32 @@
+.layout{
+  display: flex;
+  gap: 20px;
+  margin-bottom: 10px;
+}
+
+.chip-container {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  width: 100px;
+  .background{
+    width: 10px;
+    height: 10px;
+
+    border-radius: 50%;
+  }
+  .green{
+    background-color: #28a745;
+  }
+  .blue{
+    background-color: #5ba0eb;
+  }
+  .red{
+    background-color: #ce4755;
+  }
+  .orange{
+    background-color: #fd7e14;
+  }
+}
+

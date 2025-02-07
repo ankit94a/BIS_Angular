@@ -19,13 +19,13 @@ namespace BIS.DB.Implements
 		public List<GenerateReport> GetReportByDate(FilterModel filterModel, int corpsId, int roleId, int divisionId = 0)
 		{
 			var roleType = new RoleType();
-			var query = _dBContext.GenerateReports.Where(g => g.CorpsId == corpsId && g.CreatedOn >= filterModel.startDate && g.CreatedOn <= filterModel.endDate);
+			var query = _dBContext.GenerateReports.Where(g => g.CorpsId == corpsId && g.CreatedOn.Value.Date >= filterModel.startDate.Value.Date && g.CreatedOn.Value.Date <= filterModel.endDate.Value.Date && g.CreatedBy == roleId);
 			return query.ToList();
 		}
-		public long GetUserIdByDivisonOrCorps(int corpsId, RoleType roleType, int divisonId = 0)
+		public int GetUserIdByDivisonOrCorps(int corpsId, RoleType roleType, int divisonId = 0)
 		{
 			var query = _dBContext.UserDetails.Where(us => us.RoleType == roleType && us.CorpsId == corpsId);
-			if(divisonId > 0)
+			if (divisonId > 0)
 			{
 				query.Where(us => us.DivisionId == divisonId);
 			}

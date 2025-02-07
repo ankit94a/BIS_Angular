@@ -7,6 +7,7 @@ import { ZipperTableComponent } from '../../../../../sharedlibrary/src/component
 import { BISMatDialogService, } from 'projects/sharedlibrary/src/services/insync-mat-dialog.service';
 import { MasterDataAddComponent } from '../master-data-add/master-data-add.component';
 import { BisdefaultDatePipe } from 'projects/sharedlibrary/src/pipe/bisdefault-date.pipe';
+import { Status } from 'projects/sharedlibrary/src/model/enum';
 
 @Component({
   selector: 'app-master-data',
@@ -17,6 +18,7 @@ import { BisdefaultDatePipe } from 'projects/sharedlibrary/src/pipe/bisdefault-d
 export class MasterDataComponent extends TablePaginationSettingsConfig implements OnInit {
   DataList:masterData[] = [];
   isRefresh=false;
+  sortedData = [];
   constructor(private apiService:ApiService,private dialogService:BISMatDialogService){
     super();
     this.tablePaginationSettings.enableAction = true;
@@ -43,10 +45,24 @@ export class MasterDataComponent extends TablePaginationSettingsConfig implement
   getMoreSameples($event){
 
   }
+  filterType = ['Created','Processing','Approved','Rejected']
+  filterData($event){
+    debugger;
+    if($event == 'Created'){
+      this.DataList = this.sortedData.filter(item => item.status == Status.Created)
+    }else if($event == 'Processing'){
+      this.DataList = this.sortedData.filter(item => item.status == Status.Progress)
+    }else if($event == 'Approved'){
+      this.DataList = this.sortedData.filter(item => item.status == Status.Approved)
+    }else{
+      this.DataList = this.sortedData.filter(item => item.status == Status.Rejected)
+    }
+  }
   getDataFromServer(){
     this.apiService.getWithHeaders('MasterData').subscribe(res => {
       if(res){
-        res.sort((a,b) => b.id - a.id)
+        res.sort((a,b) => b.id - a.id);
+        this.sortedData = res;
         this.DataList = res;
 
       }

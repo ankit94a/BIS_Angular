@@ -86,25 +86,25 @@ export class DashboardComponent implements OnInit {
   download(chartId: string): void {
     let index = 0;
     switch(chartId){
-      case 'chart0' :index = 0; break;
-      case 'chart1': index = 1; break;
-      case 'chart2' : index = 2; break;
-      case 'chart3' : index = 3; break;
+      case 'Sector_wise_Inputs':index = 0; break;
+      case 'Sector_wise(Last_30_Days)': index = 1; break;
+      case 'Sector_wise(Today)' : index = 2; break;
+      case 'Sector_wise(Last_12_Months)' : index = 3; break;
       // fmn chart
-      case 'chart4' :index = 4; break;
-      case 'chart5': index = 5; break;
-      case 'chart6' : index = 6; break;
-      case 'chart7' : index = 7; break;
+      case 'Fmn_wise_Inputs' :index = 4; break;
+      case 'Fmn_wise(Last_30_Days)': index = 5; break;
+      case 'Fmn_wise(Today)' : index = 6; break;
+      case 'Fmn_wise_(Last_12_Months)' : index = 7; break;
       // aspect chart
-      case 'chart8' : index = 8; break;
-      case 'chart9' : index = 9; break;
-      case 'chart10' : index = 10; break;
-      case 'chart11' : index = 11; break;
+      case 'All_Aspect' : index = 8; break;
+      case 'Aspect (Last_30_Days)': index = 9; break;
+      case 'Aspect_Today' : index = 10; break;
+      case 'Aspect (Last_12_Months)' : index = 11; break;
       // indicator chart
-      case 'chart12' : index = 12; break;
-      case 'chart13' : index = 13; break;
-      case 'chart14' : index = 14; break;
-      case 'chart15' : index = 15; break;
+      case 'Top_10_Indicators(Last_7_Days)': index = 12; break;
+      case 'Top_5_Indicators': index = 13; break;
+      case 'Top_5_Location' : index = 14; break;
+      case 'Top_5_Loc(7_Days)' : index = 15; break;
     }
     const chartDirective = this.charts.toArray()[index];
 

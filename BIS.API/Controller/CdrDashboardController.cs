@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BIS.API.Controller
 {
+	[Route("api/[controller]")]
 	public class CdrDashboardController : ControllerBase
 	{
 		private readonly ICdrDashboardManager _cdrDashboardManager;
@@ -14,7 +15,7 @@ namespace BIS.API.Controller
 			_cdrDashboardManager = cdrDashboardManager;
 		}
 		[HttpPost]
-		public IActionResult GetReportByDate(FilterModel filterModel)
+		public IActionResult GetReportByDate([FromBody] FilterModel filterModel)
 		{
 			int CorpsId = HttpContext.GetCorpsId();
 			int DivisionId = HttpContext.GetDivisionId();

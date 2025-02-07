@@ -11,6 +11,6 @@ namespace BIS.DB.Interfaces
 	public interface ICdrDashboardDB
 	{
 		public List<GenerateReport> GetReportByDate(FilterModel filterModel, int corpsId, int roleId, int divisionId = 0);
-		public long GetUserIdByDivisonOrCorps(int corpsId, RoleType roleType, int divisonId = 0);
+		public int GetUserIdByDivisonOrCorps(int corpsId, RoleType roleType, int divisonId = 0);
 	}
 }

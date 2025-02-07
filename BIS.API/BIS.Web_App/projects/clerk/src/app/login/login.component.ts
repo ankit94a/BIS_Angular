@@ -1,7 +1,6 @@
 import { Component, inject, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
 import { SharedLibraryModule } from '../../../../sharedlibrary/src/shared-library.module';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ApiService } from 'projects/sharedlibrary/src/services/api.service';
@@ -10,7 +9,7 @@ import { AuthService } from 'projects/sharedlibrary/src/services/auth.service';
 
 @Component({
   selector: 'app-login',
-  imports: [ReactiveFormsModule,SharedLibraryModule,MatProgressSpinnerModule,RouterLink],
+  imports: [ReactiveFormsModule,SharedLibraryModule,MatProgressSpinnerModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
@@ -24,7 +23,7 @@ export class LoginComponent implements OnInit{
     password: ['', [Validators.required]],
   });}
   ngOnInit(): void {
-  
+
   }
 
   get formControls() {
@@ -53,7 +52,7 @@ export class LoginComponent implements OnInit{
         }else{
           this.router.navigateByUrl('/dashboard');
         }
-        
+
       }else{
         this.router.navigateByUrl('/');
       }

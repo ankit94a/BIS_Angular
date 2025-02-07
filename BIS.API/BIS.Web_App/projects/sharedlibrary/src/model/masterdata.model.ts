@@ -1,6 +1,8 @@
 import { BaseEntity, CommonModel } from "./base.model"
+import { Status } from "./enum"
 
 export class masterData extends BaseEntity {
+  status:Status
   inputLevel: string
   sector: string
   frmn: string
