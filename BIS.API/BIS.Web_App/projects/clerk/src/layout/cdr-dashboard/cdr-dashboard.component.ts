@@ -1,10 +1,12 @@
 import { Component, QueryList, ViewChildren } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import { ChartConfiguration, ChartData, ChartOptions, ChartType } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
 import { GetMeanvalueColorDirective } from 'projects/sharedlibrary/src/directives/get-meanvalue-color.directive';
 import { Aspect, Indicator, Sector } from 'projects/sharedlibrary/src/model/attribute.model';
 import { FilterModel, FilterModel4 } from 'projects/sharedlibrary/src/model/dashboard.model';
 import { FilterType } from 'projects/sharedlibrary/src/model/enum';
+import { GenerateReport } from 'projects/sharedlibrary/src/model/generatereport.model';
 import { masterData } from 'projects/sharedlibrary/src/model/masterdata.model';
 import { ApiService } from 'projects/sharedlibrary/src/services/api.service';
 import { AuthService } from 'projects/sharedlibrary/src/services/auth.service';
@@ -14,7 +16,7 @@ import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-cdr-dashboard',
-  imports: [SharedLibraryModule,BaseChartDirective,GetMeanvalueColorDirective],
+  imports: [SharedLibraryModule,BaseChartDirective,GetMeanvalueColorDirective,RouterModule],
   templateUrl: './cdr-dashboard.component.html',
   styleUrl: './cdr-dashboard.component.scss'
 })
@@ -27,7 +29,7 @@ export class CdrDashboardComponent {
   aspectList: Aspect[] = [];
   indicatorList: Indicator[] = [];
   meanChartList;
-  allReports = [];
+  allReports:GenerateReport[] = [];
    // Using BehaviorSubject for reactivity
   private tableHeaderSubject = new BehaviorSubject<string[]>([]);
   private masterDataListSubject = new BehaviorSubject<masterData[]>([]);
@@ -59,12 +61,18 @@ export class CdrDashboardComponent {
     this.getEntries();
     this.getReportByDate();
   }
+  viewObj(item){
+
+  }
   getReportByDate(){
-    this.apiService.postWithHeader('cdrdashboard',this.filterModel2).subscribe(res =>{
+    debugger
+    if(this.filterModel2.endDate != null && this.filterModel2.endDate != undefined){
+      this.apiService.postWithHeader('cdrdashboard',this.filterModel2).subscribe(res =>{
       if(res){
         this.allReports = res;
       }
     })
+    }
   }
   getMeanData(date){
     let filterDate = new FilterModel4()

@@ -18,7 +18,7 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     overflow: hidden;
   }
-  
+
   .card-small {
     width: 20%;
     height: 300px;
@@ -26,12 +26,12 @@
   .card-equal {
     width: 25%;
     height: 300px;
-  } 
+  }
   .card-large {
     width: 40%;
     height: 300px;
   }
-  
+
   .card-title {
     font-size: 1.2rem;
     margin-bottom: 0em;
@@ -70,7 +70,7 @@
     align-items: center;
     overflow: hidden; /* Prevent overflowing content */
   }
-  
+
   .chart-container canvas {
     max-width: 100%;
     height: 100% !important; /* Ensure the chart doesn't exceed the container height */
@@ -81,7 +81,7 @@
     align-items: center;
     display: flex;
     justify-content: center;
-   
+
   }
   .icon-display{
     transform: scale(0.7);
@@ -94,12 +94,12 @@
     margin-top: 1rem;
     height: 40px;
   }
-  
+
   .card-footer ul {
     list-style: none;
     padding: 0;
   }
-  
+
   .card-footer ul li {
     font-size: 0.9rem;
   }
@@ -117,7 +117,8 @@
 
 
   .gradient-button {
-    background: linear-gradient(to right, rgba(255, 165, 0, 0.8), rgba(0, 123, 255, 0.8)); /* Orange to Blue */
+    // background: linear-gradient(to right, rgba(255, 165, 0, 0.8), rgba(0, 123, 255, 0.8)); /* Orange to Blue */
+    background-color: #3f51b5;
     border: none;
     color: white;
     font-size: 14px;
@@ -128,15 +129,15 @@
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
     margin-left: 93px;
   }
-  
+
   .gradient-button:hover {
-    background: linear-gradient(to right, rgba(255, 140, 0, 1), rgba(30, 144, 255, 1)); /* Brighter gradient on hover */
+    // background: linear-gradient(to right, rgba(255, 140, 0, 1), rgba(30, 144, 255, 1)); /* Brighter gradient on hover */
+    background-color: #ff9800;
     transform: scale(1.05); /* Slightly enlarge button */
     box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15); /* Enhance shadow on hover */
   }
-  
+
   .gradient-button:active {
     transform: scale(0.98); /* Slight press effect */
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1); /* Reduced shadow */
   }
-  

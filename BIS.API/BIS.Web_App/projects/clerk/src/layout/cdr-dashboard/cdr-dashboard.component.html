@@ -171,7 +171,7 @@
         </table>
       </div>
       <div class="arrow-icon"><mat-icon>compare_arrows</mat-icon></div>
-      <div class="table-container">
+      <div class="card">
         <table>
           <thead>
             <tr>
@@ -218,52 +218,75 @@
       </div> -->
       <div class="col-sm-4">
         <mat-form-field>
-            <mat-label>Enter a date range</mat-label>
-            <mat-date-range-input [rangePicker]="picker1"  >
-                <input matStartDate placeholder="Start date" [(ngModel)]="filterModel2.startDate">
-                <input matEndDate placeholder="End date" (dateChange)="getReportByDate()" [(ngModel)]="filterModel2.endDate">
-            </mat-date-range-input>
-            <mat-datepicker-toggle matIconSuffix [for]="picker1"></mat-datepicker-toggle>
-            <mat-date-range-picker #picker1></mat-date-range-picker>
-        </mat-form-field>
+          <mat-label>Enter a date range</mat-label>
+          <mat-date-range-input [rangePicker]="picker1">
+              <input matStartDate placeholder="Start date" [(ngModel)]="filterModel2.startDate">
+              <input matEndDate placeholder="End date" [(ngModel)]="filterModel2.endDate" (dateChange)="getReportByDate()">
+          </mat-date-range-input>
+          <mat-datepicker-toggle matIconSuffix [for]="picker1"></mat-datepicker-toggle>
+          <mat-date-range-picker #picker1></mat-date-range-picker>
+      </mat-form-field>
+
     </div>
     </div>
     <div class="row">
-      <!-- <div class="col-sm-12">
-        <mat-card class="card adjust-height">
-          <mat-card-header>
-            <h6>SAVED NOTES</h6>
-          </mat-card-header>
-          <mat-card-content>
+      <div class="col-md-12">
+        <div class="card">
+          <div class="d-flex justify-content-between mb-4">
+              <h5 class="h5 font-weight-bold text-dark">Latest Reports</h5>
+              <a class="text-primary btn-link" [routerLink]="'/gen-report'">
+                View all
+            </a>
 
-          </mat-card-content>
-        </mat-card>
+          </div>
+
+          <table class="table table-striped table-bordered">
+              <thead>
+                  <tr>
+                      <th scope="col">Report Title</th>
+                      <th scope="col">Report Type</th>
+                      <th scope="col">Date</th>
+                      <th scope="col">Remarks</th>
+                      <th scope="col">Action</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr *ngFor="let item of allReports">
+                    <td>{{item.reportTitle}}</td>
+                    <td>{{item.reportType}}</td>
+                    <td>{{item.createdOn | bisdefaultDate}}</td>
+                    <td>{{item.notes}}</td>
+                    <td>
+                      <button mat-icon-button color="accent"
+                    type="button" (click)="viewObj(item)" matTooltip="view"> <mat-icon>remove_red_eye</mat-icon>
+                </button>
+                    </td>
+                      <!-- <td><img class="w-8 h-8 rounded-circle" src="/docs/images/people/profile-picture-1.jpg" alt="Neil image"></td>
+                      <td>
+                          <p class="mb-1 text-dark font-weight-medium">Neil Sims</p>
+                      </td>
+                      <td class="font-weight-semibold text-dark">$320</td> -->
+                  </tr>
+                  <!-- <tr>
+                      <td><img class="w-8 h-8 rounded-circle" src="/docs/images/people/profile-picture-3.jpg" alt="Bonnie image"></td>
+                      <td>
+                          <p class="mb-1 text-dark font-weight-medium">Bonnie Green</p>
+
+                      </td>
+                      <td class="font-weight-semibold text-dark">$3467</td>
+                  </tr> -->
+
+              </tbody>
+          </table>
       </div>
-      <div class="col-sm-12">
-        <mat-card class="card adjust-height">
-          <mat-card-header>
-            <h6>SAVED ALERT GRAPH</h6>
-          </mat-card-header>
-          <mat-card-content>
 
-          </mat-card-content>
-        </mat-card>
-      </div> -->
+
+      </div>
     </div>
     <br> <br>
+
     <div class="row">
-      <div class="col-sm-11">
-        <mat-form-field>
-          <mat-label>REMARKS (By Cdr) : </mat-label>
-          <textarea matInput class="remarks"></textarea>
-        </mat-form-field>
-      </div>
-      <div class="col-sm-1 custom-btn">
-        <button type="button" mat-raised-button color="primary">Save</button>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-sm-5">
+      <div class="col-sm-4">
         <div class="card-container">
           <div class="card">
             <div class="row">
@@ -325,136 +348,115 @@
                 </mat-form-field>
               </div>
             </div>
-            <div class="row">
-              <div class="col-sm-12">
-                <button type="button" class="full-width" mat-raised-button color="primary">Save Notes</button>
-              </div>
-            </div>
           </div>
         </div>
       </div>
-      <div class="col-sm-7">
+      <div class="col-sm-4">
         <div class="card-container">
-          <div class="card">
-            <div class="row">
-              <div class="col-sm-12 text-center">NEXT COA : EN</div>
+            <div class="card">
+                <div class="row">
+                    <div class="col-sm-12 text-center">NEXT COA : EN</div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-sm-12">Locs To Obsn</div>
+                    <div class="col-sm-6">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Sector</mat-label>
+                            <input matInput placeholder="Enter Sector" >
+                        </mat-form-field>
+                    </div>
+                    <div class="col-sm-6">
+                        <mat-form-field appearance="outline">
+                            <mat-label>LOC</mat-label>
+                            <input matInput placeholder="Enter LOC">
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">Fmns To Obsn</div>
+                    <div class="col-sm-4">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Corps</mat-label>
+                            <input matInput placeholder="Enter Corps" >
+                        </mat-form-field>
+                    </div>
+                    <div class="col-sm-4">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Div</mat-label>
+                            <input matInput placeholder="Enter Division" >
+                        </mat-form-field>
+                    </div>
+                    <div class="col-sm-4">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Bde</mat-label>
+                            <input matInput placeholder="Enter Brigade">
+                        </mat-form-field>
+                    </div>
+                </div>
             </div>
-            <div class="row">
-              <div class="col-sm-12">Locs To Obsn</div>
-              <div class="col-sm-4">
-                <mat-form-field>
-                  <mat-label>Sector</mat-label>
-                  <mat-select [(ngModel)]="filterNew.Sector" (selectionChange)="filternew()">
-                    <mat-option value="">None</mat-option>
-                    <mat-option value="PSS">PSS</mat-option>
-                    <mat-option value="MSS">MSS</mat-option>
-                    <mat-option value="Cho_La">Cho_La</mat-option>
-                    <mat-option value="Doka_La">Doka_La</mat-option>
-                  </mat-select>
-                </mat-form-field>
-              </div>
-              <div class="col-sm-4">
-                <mat-form-field>
-                  <mat-label>LOC</mat-label>
-                  <mat-select (selectionChange)="filternew()">
-                    <mat-option value="">None</mat-option>
-                    <mat-option value=""></mat-option>
-                  </mat-select>
-                </mat-form-field>
-              </div>
-              <div class="col-sm-4"></div>
-            </div>
-            <div class="row">
-              <div class="col-sm-12">Fmns To Obsn</div>
-              <div class="col-sm-4">
-                <mat-form-field>
-                  <mat-label>Corps</mat-label>
-                  <mat-select [(ngModel)]="filterNew.Sector" (selectionChange)="filternew()">
-                    <mat-option value="">None</mat-option>
-                    <mat-option value=""></mat-option>
-                  </mat-select>
-                </mat-form-field>
-              </div>
-              <div class="col-sm-4">
-                <mat-form-field>
-                  <mat-label>Div</mat-label>
-                  <mat-select (selectionChange)="filternew()">
-                    <mat-option value="">None</mat-option>
-                    <mat-option value=""></mat-option>
-                  </mat-select>
-                </mat-form-field>
-              </div>
-              <div class="col-sm-4">
-                <mat-form-field>
-                  <mat-label>Bde</mat-label>
-                  <mat-select (selectionChange)="filternew()">
-                    <mat-option value="">None</mat-option>
-                    <mat-option value=""></mat-option>
-                  </mat-select>
-                </mat-form-field>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-sm-12">Troops to Task</div>
-              <div class="col-sm-4">
-                <mat-form-field>
-                  <mat-label>Fmns</mat-label>
-                  <mat-select [(ngModel)]="filterNew.Sector" (selectionChange)="filternew()">
-                    <mat-option value="">None</mat-option>
-                    <mat-option value=""></mat-option>
-                  </mat-select>
-                </mat-form-field>
-              </div>
-              <div class="col-sm-4">
-                <mat-form-field>
-                  <mat-label>Sect</mat-label>
-                  <mat-select (selectionChange)="filternew()">
-                    <mat-option value="">None</mat-option>
-                    <mat-option value=""></mat-option>
-                  </mat-select>
-                </mat-form-field>
-              </div>
-              <div class="col-sm-4">
-                <mat-form-field>
-                  <mat-label>Tps</mat-label>
-                  <mat-select (selectionChange)="filternew()">
-                    <mat-option value="">None</mat-option>
-                    <mat-option value=""></mat-option>
-                  </mat-select>
-                </mat-form-field>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-sm-4">
-                <mat-form-field>
-                  <mat-label>RESO</mat-label>
-                  <mat-select (selectionChange)="filternew()">
-                    <mat-option value="">None</mat-option>
-                    <mat-option value=""></mat-option>
-                  </mat-select>
-                </mat-form-field>
-              </div>
-              <div class="col-sm-4">
-                <mat-form-field>
-                  <mat-label>Task</mat-label>
-                  <mat-select (selectionChange)="filternew()">
-                    <mat-option value="">None</mat-option>
-                    <mat-option value=""></mat-option>
-                  </mat-select>
-                </mat-form-field>
-              </div>
-
-            </div>
-            <div class="row">
-              <div class="col-sm-6"><button type="button" class="full-width" mat-raised-button color="primary"
-                  style="margin:1px">Print</button></div>
-              <div class="col-sm-6"><button type="button" class="full-width" mat-raised-button color="primary"
-                  style="margin:1px">Save </button></div>
-            </div>
-          </div>
         </div>
-      </div>
     </div>
 
+    <div class="col-sm-4">
+        <div class="card-container">
+            <div class="card">
+                <div class="row">
+                    <div class="col-sm-12 text-center">Troops to Task</div>
+                </div>
+                  <br>
+                  <div class="row">
+
+                    <div class="col-sm-4">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Fmns</mat-label>
+                            <input matInput placeholder="Enter Fmns">
+                        </mat-form-field>
+                    </div>
+                    <div class="col-sm-4">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Sect</mat-label>
+                            <input matInput placeholder="Enter Sect" >
+                        </mat-form-field>
+                    </div>
+                    <div class="col-sm-4">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Tps</mat-label>
+                            <input matInput placeholder="Enter Tps">
+                        </mat-form-field>
+                    </div>
+                  </div>
+                <!-- </div> -->
+                <div class="row">
+                    <div class="col-sm-6">
+                        <mat-form-field appearance="outline">
+                            <mat-label>RESO</mat-label>
+                            <input matInput placeholder="Enter RESO" >
+                        </mat-form-field>
+                    </div>
+                    <div class="col-sm-6">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Task</mat-label>
+                            <input matInput placeholder="Enter Task" >
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    </div>
+
+    <div class="row">
+      <div class="col-sm-11">
+        <mat-form-field>
+          <mat-label>REMARKS (By Cdr) : </mat-label>
+          <textarea matInput class="remarks"></textarea>
+        </mat-form-field>
+      </div>
+      <div class="col-sm-1 custom-btn">
+        <button type="button" mat-raised-button color="primary">Save</button>
+      </div>
+    </div>
   </mat-card-content>
 </mat-card>

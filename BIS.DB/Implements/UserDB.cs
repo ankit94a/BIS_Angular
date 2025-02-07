@@ -58,11 +58,8 @@ namespace BIS.DB.Implements
 		{
 			try
 			{
-				var query = dbContext.UserDetails.Where(us => us.RoleType == roleType && corpsId == corpsId);
-				if (divisionId > 0)
-				{
-					query=query.Where(d => d.DivisionId == divisionId);
-				}
+				var query = dbContext.UserDetails.Where(us => us.RoleType == roleType && corpsId == corpsId && us.DivisionId == divisionId);
+				
 				var user = query.FirstOrDefault();
 
 				return user?.Id ?? 0;
