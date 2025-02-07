@@ -32,7 +32,7 @@
             <div class="row">
               <mat-form-field class="password-field">
                 <mat-label>Password</mat-label>
-                <input formControlName="password" [type]="showPassword ? 'text' : 'password'" matInput 
+                <input formControlName="password" [type]="showPassword ? 'text' : 'password'" matInput
                   placeholder="Enter your password" required/>
                 <button mat-icon-button matSuffix (click)="togglePasswordVisibility()"  type="button">
                   <mat-icon>{{ showPassword ? 'visibility' : 'visibility_off' }}</mat-icon>
@@ -43,9 +43,6 @@
               </mat-form-field>
             </div>
 
-            <div class="forgot-password-link">
-              <a routerLink="forgotpassword" mat-button>Forgot password?</a>
-            </div>
           </mat-card-content>
 
           <mat-card-actions>
@@ -53,19 +50,11 @@
               <mat-spinner *ngIf="loginLoading" diameter="24"></mat-spinner>
               <span *ngIf="!loginLoading">Login</span>
             </button>
-            <a routerLink="/auth/register" mat-raised-button color="accent">Sign Up</a>
           </mat-card-actions>
 
-          <mat-card-footer>
-            <p class="register-link">
-              Don’t have an account? 
-              <a routerLink="/auth/register" class="font-bold text-primary">Register now!</a>
-            </p>
-          </mat-card-footer>
         </div>
       </div>
     </mat-card>
   </form>
 </div>
 
-  

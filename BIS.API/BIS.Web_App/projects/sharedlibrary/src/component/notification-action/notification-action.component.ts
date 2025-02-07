@@ -131,7 +131,7 @@ export class NotificationActionComponent extends EnumBase {
   changeStatus(isApproved) {
     this.apiService.postWithHeader(`notification/updatestatus?isApproved=${isApproved}`, this.notify).subscribe(res => {
       if (res) {
-        this.toastr.success("Input approved successfully", 'success');
+        isApproved ? this.toastr.success("Input approved successfully", 'success') : this.toastr.success("Input rejected successfully", 'success');
         this.close(true);
       }
     })

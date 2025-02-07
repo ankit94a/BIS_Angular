@@ -10,39 +10,39 @@ using static BIS.Common.Enum.Enum;
 
 namespace BIS.DB.Implements
 {
-    public class NotificationDB : INotificationDB
-    {
-        private AppDBContext _dbContext;
-        public NotificationDB(AppDBContext appDBContext)
-        {
-            _dbContext = appDBContext;
-        }
-        public List<Notification> GetNotificationByUserId(int userId)
-        {
-            var result = _dbContext.Notification
-                .Where(n => n.ReceiverId ==  userId && !n.IsRead)
-                .ToList();
-            return result;
-        }
+	public class NotificationDB : INotificationDB
+	{
+		private AppDBContext _dbContext;
+		public NotificationDB(AppDBContext appDBContext)
+		{
+			_dbContext = appDBContext;
+		}
+		public List<Notification> GetNotificationByUserId(int userId)
+		{
+			var result = _dbContext.Notification
+				.Where(n => n.ReceiverId == userId && !n.IsRead)
+				.ToList();
+			return result;
+		}
 
-        public long AddNotification(Notification notification)
-        {
-            _dbContext.Notification.Add(notification);
-            _dbContext.SaveChanges();
-            return notification.Id;
-        }
-        public long UpdateStatus(Notification notification)
-        {
-            var result = _dbContext.Notification.Where(n => n.Id == notification.Id).FirstOrDefault();
+		public long AddNotification(Notification notification)
+		{
+			_dbContext.Notification.Add(notification);
+			_dbContext.SaveChanges();
+			return notification.Id;
+		}
+		public long UpdateStatus(Notification notification)
+		{
+			var result = _dbContext.Notification.Where(n => n.Id == notification.Id).FirstOrDefault();
 
-            if (result != null)
-            {
-                result.IsRead = true;
-                _dbContext.SaveChanges();
-            }
+			if (result != null)
+			{
+				result.IsRead = true;
+				_dbContext.SaveChanges();
+			}
 
-            return result?.Id ?? 0;
-        }
-        
-    }
+			return result?.Id ?? 0;
+		}
+
+	}
 }

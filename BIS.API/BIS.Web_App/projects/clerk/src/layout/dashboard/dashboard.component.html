@@ -59,14 +59,14 @@
         </button>
       </div>
     </div>
-    
+
     <!-- Sector Graph -->
     <div class="card-container">
       <mat-card class="card card-small">
         <section class="card-title">
-          <mat-checkbox [(ngModel)]="selectedCharts['chart0']"></mat-checkbox>
+          <mat-checkbox [(ngModel)]="selectedCharts['Sector_wise_Inputs']"></mat-checkbox>
           <h3 class="card-heading">Sector wise Inputs</h3>
-          <button class="download-icon mt-2" (click)="download('chart0')">
+          <button class="download-icon mt-2" (click)="download('Sector_wise_Inputs')">
             <mat-icon class="icon-display" matTooltip="download">arrow_downward</mat-icon>
           </button>
         </section>
@@ -74,12 +74,12 @@
           <canvas baseChart [data]="frmInputChartData" type="pie" [options]="ChartOptions"></canvas>
         </div>
       </mat-card>
-    
+
       <mat-card class="card card-small">
         <section class="card-title">
-          <mat-checkbox [(ngModel)]="selectedCharts['chart1']"></mat-checkbox>
+          <mat-checkbox [(ngModel)]="selectedCharts['Sector_wise(Last_30_Days)']"></mat-checkbox>
           <h3 class="card-title adjust-font">Sector wise (Last 30 Days)</h3>
-          <button class="download-icon mt-2" (click)="download('chart1')">
+          <button class="download-icon mt-2" (click)="download('Sector_wise(Last_30_Days)')">
             <mat-icon class="icon-display" matTooltip="download">arrow_downward</mat-icon>
           </button>
         </section>
@@ -87,12 +87,12 @@
           <canvas baseChart [data]="frm30DaysChartData" type="pie" [options]="ChartOptions"></canvas>
         </div>
       </mat-card>
-    
+
       <mat-card class="card card-small">
         <section class="card-title">
-          <mat-checkbox [(ngModel)]="selectedCharts['chart2']"></mat-checkbox>
+          <mat-checkbox [(ngModel)]="selectedCharts['Sector_wise(Today)']"></mat-checkbox>
           <h3 class="card-heading">Sector wise (Today)</h3>
-          <button class="download-icon mt-2" (click)="download('chart2')">
+          <button class="download-icon mt-2" (click)="download('Sector_wise(Today)')">
             <mat-icon class="icon-display" matTooltip="download">arrow_downward</mat-icon>
           </button>
         </section>
@@ -100,12 +100,12 @@
           <canvas baseChart [data]="frmTodayChartData" type="pie" [options]="ChartOptions"></canvas>
         </div>
       </mat-card>
-    
+
       <mat-card class="card card-large">
         <section class="card-title lg">
-          <mat-checkbox [(ngModel)]="selectedCharts['chart3']"></mat-checkbox>
+          <mat-checkbox [(ngModel)]="selectedCharts['Sector_wise(Last_12_Months)']"></mat-checkbox>
           <h3 class="card-heading">Sector wise (Last 12 Months)</h3>
-          <button class="download-icon lg-height" (click)="download('chart3')">
+          <button class="download-icon lg-height" (click)="download('Sector_wise(Last_12_Months)')">
             <mat-icon class="icon-display" matTooltip="download">arrow_downward</mat-icon>
           </button>
         </section>
@@ -114,15 +114,15 @@
         </div>
       </mat-card>
     </div>
-    
+
     <br>
     <!-- Frmn Graph -->
     <div class="card-container">
-      <mat-card class="card card-small">     
+      <mat-card class="card card-small">
         <section class="card-title">
-          <mat-checkbox [(ngModel)]="selectedCharts['chart4']"></mat-checkbox>
+          <mat-checkbox [(ngModel)]="selectedCharts['Fmn_wise_Inputs']"></mat-checkbox>
           <h3 class="card-heading">Fmn wise Inputs</h3>
-          <button class="download-icon mt-2" (click)="download('chart4')">
+          <button class="download-icon mt-2" (click)="download('Fmn_wise_Inputs')">
             <mat-icon class="icon-display" matTooltip="download">arrow_downward</mat-icon>
           </button>
         </section>
@@ -135,11 +135,11 @@
                 </ul>
               </div> -->
       </mat-card>
-      <mat-card class="card card-small">      
+      <mat-card class="card card-small">
         <section class="card-title">
-          <mat-checkbox [(ngModel)]="selectedCharts['chart5']"></mat-checkbox>
+          <mat-checkbox [(ngModel)]="selectedCharts['Fmn_wise(Last_30_Days)']"></mat-checkbox>
           <h3 class="card-title adjust-font">Fmn wise (Last 30 Days)</h3>
-          <button class="download-icon mt-2" (click)="download('chart5')">
+          <button class="download-icon mt-2" (click)="download('Fmn_wise(Last_30_Days)')">
             <mat-icon class="icon-display" matTooltip="download">arrow_downward</mat-icon>
           </button>
         </section>
@@ -153,11 +153,11 @@
                 </div> -->
       </mat-card>
 
-      <mat-card class="card card-small">        
+      <mat-card class="card card-small">
         <section class="card-title">
-          <mat-checkbox [(ngModel)]="selectedCharts['chart6']"></mat-checkbox>
+          <mat-checkbox [(ngModel)]="selectedCharts['Fmn_wise(Today)']"></mat-checkbox>
           <h3 class="card-heading">Fmn wise (Today)</h3>
-          <button class="download-icon mt-2" (click)="download('chart6')">
+          <button class="download-icon mt-2" (click)="download('Fmn_wise(Today)')">
             <mat-icon class="icon-display" matTooltip="download">arrow_downward</mat-icon>
           </button>
         </section>
@@ -170,11 +170,11 @@
                   </ul>
                 </div> -->
       </mat-card>
-      <mat-card class="card card-large">       
+      <mat-card class="card card-large">
         <section class="card-title lg">
-          <mat-checkbox [(ngModel)]="selectedCharts['chart7']"></mat-checkbox>
+          <mat-checkbox [(ngModel)]="selectedCharts['Fmn_wise_(Last_12_Months)']"></mat-checkbox>
           <h3 class="card-heading">Fmn wise (Last 12 Months)</h3>
-          <button class="download-icon lg-height" (click)="download('chart7')">
+          <button class="download-icon lg-height" (click)="download('Fmn_wise_(Last_12_Months) ')">
             <mat-icon class="icon-display" matTooltip="download">arrow_downward</mat-icon>
           </button>
         </section>
@@ -191,11 +191,11 @@
     <br>
     <!-- Aspect Graph -->
     <div class="card-container">
-      <mat-card class="card card-small">       
+      <mat-card class="card card-small">
         <section class="card-title">
-          <mat-checkbox [(ngModel)]="selectedCharts['chart8']"></mat-checkbox>
+          <mat-checkbox [(ngModel)]="selectedCharts['All_Aspect']"></mat-checkbox>
           <h3 class="card-heading">All Aspect</h3>
-          <button class="download-icon mt-2" (click)="download('chart8')">
+          <button class="download-icon mt-2" (click)="download('All_Aspect')">
             <mat-icon class="icon-display" matTooltip="download">arrow_downward</mat-icon>
           </button>
         </section>
@@ -209,7 +209,7 @@
                     class="color-box"
                     [style.color]="aspectAllChartData.datasets[0]?.backgroundColor?.[i]"
                   > {{ label }}</span>
-                  
+
                 </li>
               </ul>
               <span *ngIf="aspectAllChartData?.labels?.length > 3" class="more-labels">
@@ -218,11 +218,11 @@
             </div> -->
       </mat-card>
 
-      <mat-card class="card card-small">       
+      <mat-card class="card card-small">
         <section class="card-title">
-          <mat-checkbox [(ngModel)]="selectedCharts['chart9']"></mat-checkbox>
+          <mat-checkbox [(ngModel)]="selectedCharts['Aspect (Last_30_Days)']"></mat-checkbox>
           <h3 class="card-title adjust-font">Aspect (Last 30 Days)</h3>
-          <button class="download-icon mt-2" (click)="download('chart9')">
+          <button class="download-icon mt-2" (click)="download('Aspect (Last_30_Days)')">
             <mat-icon class="icon-display" matTooltip="download">arrow_downward</mat-icon>
           </button>
         </section>
@@ -236,11 +236,11 @@
                 </div> -->
       </mat-card>
 
-      <mat-card class="card card-small">     
+      <mat-card class="card card-small">
         <section class="card-title">
-          <mat-checkbox [(ngModel)]="selectedCharts['chart10']"></mat-checkbox>
+          <mat-checkbox [(ngModel)]="selectedCharts['Aspect_Today']"></mat-checkbox>
           <h3 class="card-heading">Aspect Today</h3>
-          <button class="download-icon mt-2" (click)="download('chart10')">
+          <button class="download-icon mt-2" (click)="download('Aspect_Today')">
             <mat-icon class="icon-display" matTooltip="download">arrow_downward</mat-icon>
           </button>
         </section>
@@ -254,11 +254,11 @@
                 </div> -->
       </mat-card>
 
-      <mat-card class="card card-large">     
+      <mat-card class="card card-large">
         <section class="card-title">
-          <mat-checkbox [(ngModel)]="selectedCharts['chart11']"></mat-checkbox>
+          <mat-checkbox [(ngModel)]="selectedCharts['Aspect (Last_12_Months)']"></mat-checkbox>
           <h3 class="card-heading">Aspect (Last 12 Months)</h3>
-          <button class="download-icon mt-2" (click)="download('chart11')">
+          <button class="download-icon mt-2" (click)="download('Aspect (Last_12_Months)')">
             <mat-icon class="icon-display" matTooltip="download">arrow_downward</mat-icon>
           </button>
         </section>
@@ -293,11 +293,11 @@
 
     <!-- Indicator Graph -->
     <div class="card-container">
-      <mat-card class="card card-equal">      
+      <mat-card class="card card-equal">
         <section class="card-title">
-          <mat-checkbox [(ngModel)]="selectedCharts['chart12']"></mat-checkbox>
+          <mat-checkbox [(ngModel)]="selectedCharts['Top_10_Indicators']"></mat-checkbox>
           <h3 class="card-heading">Top 10 Indicators</h3>
-          <button class="download-icon mt-2" (click)="download('chart12')">
+          <button class="download-icon mt-2" (click)="download('Top_10_Indicators')">
             <mat-icon class="icon-display" matTooltip="download">arrow_downward</mat-icon>
           </button>
         </section>
@@ -313,9 +313,9 @@
 
       <mat-card class="card card-equal">
         <section class="card-title">
-          <mat-checkbox [(ngModel)]="selectedCharts['chart13']"></mat-checkbox>
+          <mat-checkbox [(ngModel)]="selectedCharts['Top_5_Indicators(Last_7_Days)']"></mat-checkbox>
           <h3 class="card-heading adjust-font">Top 5 Indicators (Last 7 Days)</h3>
-          <button class="download-icon mt-2" (click)="download('chart13')">
+          <button class="download-icon mt-2" (click)="download('Top_5_Indicators(Last_7_Days)')">
             <mat-icon class="icon-display" matTooltip="download">arrow_downward</mat-icon>
           </button>
         </section>
@@ -331,9 +331,9 @@
 
       <mat-card class="card card-equal">
         <section class="card-title">
-          <mat-checkbox [(ngModel)]="selectedCharts['chart14']"></mat-checkbox>
+          <mat-checkbox [(ngModel)]="selectedCharts['Top_5_Location']"></mat-checkbox>
           <h3 class="card-heading">Top 5 Location</h3>
-          <button class="download-icon mt-2" (click)="download('chart14')">
+          <button class="download-icon mt-2" (click)="download('Top_5_Location')">
             <mat-icon class="icon-display" matTooltip="download">arrow_downward</mat-icon>
           </button>
         </section>
@@ -349,9 +349,9 @@
 
       <mat-card class="card card-equal">
         <section class="card-title">
-          <mat-checkbox [(ngModel)]="selectedCharts['chart15']"></mat-checkbox>
+          <mat-checkbox [(ngModel)]="selectedCharts['Top_5_Loc(7_Days)']"></mat-checkbox>
           <h3 class="card-heading">Top 5 Loc (7 Days)</h3>
-          <button class="download-icon mt-2" (click)="download('chart15')">
+          <button class="download-icon mt-2" (click)="download('Top_5_Loc(7_Days)')">
             <mat-icon class="icon-display" matTooltip="download">arrow_downward</mat-icon>
           </button>
         </section>

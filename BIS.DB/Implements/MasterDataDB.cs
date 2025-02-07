@@ -43,6 +43,7 @@ namespace BIS.DB.Implements
 			_dbContext.SaveChanges();
 			return masterData.ID;
 		}
+		// when creating report than fetching master data between daterange and isapproved
 		public List<MasterData> GetBetweenDateRange(FilterModelEntries model, int corpsId, int divisionId = 0)
 		{
 			if (model.startDate == null || model.endDate == null)
