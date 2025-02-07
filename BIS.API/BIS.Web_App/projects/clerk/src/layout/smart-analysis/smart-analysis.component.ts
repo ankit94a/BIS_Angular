@@ -147,6 +147,7 @@ export class SmartAnalysisComponent implements OnInit, OnDestroy {
     this.getvariation2();
   }
   getvariation() {
+    if(this.filterModel2.endDate != null && this.filterModel2.endDate != undefined){
     this.apiService.postWithHeader('smartanalysis/variation', this.filterModel2).subscribe(res => {
       if (res) {
         // Set the data dynamically
@@ -171,7 +172,9 @@ export class SmartAnalysisComponent implements OnInit, OnDestroy {
       }
     });
   }
+  }
   getvariation2() {
+    if(this.filterModel3.endDate != null && this.filterModel3.endDate != undefined){
     this.apiService.postWithHeader('smartanalysis/variation', this.filterModel3).subscribe(res => {
       if (res) {
         // Set the data dynamically
@@ -195,6 +198,7 @@ export class SmartAnalysisComponent implements OnInit, OnDestroy {
         // this.lineChartOptions.plugins.title.text = `Abcdedfasdkfjkflsajflk`;
       }
     });
+  }
   }
   ngOnInit(): void {
     this.getAllData();

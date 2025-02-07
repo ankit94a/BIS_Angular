@@ -24,7 +24,12 @@ export class HeaderComponent implements OnInit {
   constructor(private authService:AuthService) { }
 
   ngOnInit(): void {
-    this.facilityName = this.authService.getDivisionName() ? this.authService.getDivisionName() : this.authService.getCorpsName();
+    if(this.authService.getDivisionName() != null && this.authService.getDivisionName() != 'null'){
+      this.facilityName = this.authService.getDivisionName();
+    }else{
+      this.facilityName = this.authService.getCorpsName();
+    }
+    // this.facilityName = this.authService.getDivisionName()?.trim() ? this.authService.getDivisionName() : this.authService.getCorpsName();
     this.roleType = this.authService.getRoleType();
     if(this.roleType != '7' && this.roleType != '8' && this.roleType != '9')
       this.userName = this.authService.getUserName()

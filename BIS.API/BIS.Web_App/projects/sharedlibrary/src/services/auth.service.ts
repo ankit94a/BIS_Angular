@@ -37,6 +37,12 @@ export class AuthService {
   getDivisionName(){
     return localStorage.getItem("BIS_DivisionName");
   }
+  isDivisionUser(){
+    if(this.getDivisionName() != 'null'){
+      return true;
+    }
+    return false;
+  }
   clear() {
     localStorage.removeItem('BIS_TOKEN');
     localStorage.removeItem('BIS_RoleType');
