@@ -97,7 +97,6 @@ export class NotificationComponent implements OnInit {
     // }
   }
   getUnreadNotification() {
-    debugger
     this.apiService.getWithHeaders('notification/unread').subscribe(res => {
       if (res) {
         this.notifications = res;

@@ -20,7 +20,7 @@ namespace BIS.Common.Entities
     }
     public class CommonModel
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
         public int? CreatedBy { get; set; }
         public int? UpdatedBy { get; set; }
         public DateTime CreatedOn { get; set; }

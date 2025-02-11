@@ -10,48 +10,55 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BIS.DB.Implements
 {
-    public class CorpsDB : ICorpsDB
-    {
-        private readonly AppDBContext _dbContext;
-        public CorpsDB(AppDBContext dbContext) 
-        { 
-            _dbContext = dbContext;
-        }
-        public List<Corps> GetAll()
-        {
-            return _dbContext.Corps.ToList();
-        }
-        public List<Divisons> GetDivisonByCorps(long corpsId) 
-        {
-            return _dbContext.Divisions.Where(d => d.CorpsId == corpsId).ToList();
-        }
+	public class CorpsDB : ICorpsDB
+	{
+		private readonly AppDBContext _dbContext;
+		public CorpsDB(AppDBContext dbContext)
+		{
+			_dbContext = dbContext;
+		}
+		public List<Corps> GetAll()
+		{
+			return _dbContext.Corps.ToList();
+		}
+		public Corps GetCorpsById(int corpsId)
+		{
+			return _dbContext.Corps.Where(c => c.Id == corpsId).FirstOrDefault();
+		}
+		public List<Divisons> GetDivisonByCorps(long corpsId)
+		{
+			return _dbContext.Divisions
+							 .Where(d => d.CorpsId == corpsId)
+							 .ToList();
+		}
 
-        public string GetNameByCorpsId(long corpsId)
-        {
-            try
-            {
-                var CorpsName = _dbContext.Corps.Where(us => us.Id == corpsId).Select(us => us.Name).FirstOrDefault();
-                return CorpsName;
-            }
-            catch (Exception ex)
-            {
-                BISLogger.Error(ex, "Getting user list error in for CorpsId = " + corpsId);
-                throw;
-            }
-        }
 
-        public string GetNameByDivisionId(int? divisionId)
-        {
-            try
-            {
-                var DivisionName = _dbContext.Divisions.Where(us => us.Id == divisionId).Select(us => us.Name).FirstOrDefault();
-                return DivisionName;
-            }
-            catch (Exception ex)
-            {
-                BISLogger.Error(ex, "Getting user list error in for CorpsId = " + divisionId);
-                throw;
-            }
-        }
-    }
+		public string GetNameByCorpsId(long corpsId)
+		{
+			try
+			{
+				var CorpsName = _dbContext.Corps.Where(us => us.Id == corpsId).Select(us => us.Name).FirstOrDefault();
+				return CorpsName;
+			}
+			catch (Exception ex)
+			{
+				BISLogger.Error(ex, "Getting user list error in for CorpsId = " + corpsId);
+				throw;
+			}
+		}
+
+		public string GetNameByDivisionId(int? divisionId)
+		{
+			try
+			{
+				var DivisionName = _dbContext.Divisions.Where(us => us.Id == divisionId).Select(us => us.Name).FirstOrDefault();
+				return DivisionName;
+			}
+			catch (Exception ex)
+			{
+				BISLogger.Error(ex, "Getting user list error in for CorpsId = " + divisionId);
+				throw;
+			}
+		}
+	}
 }
