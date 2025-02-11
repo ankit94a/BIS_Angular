@@ -7,11 +7,11 @@ using BIS.Common.Entities;
 
 namespace BIS.Manager.Interfaces
 {
-    public interface ICorpsManager
-    {
-        public List<Corps> GetAll();
-        public List<Divisons> GetDivisonByCorps(long corpsId);
-        public string GetNameByCorpsId(long CorpsId);
-        public string GetNameByDivisionId(int? DivisionId);
-    }
+	public interface ICorpsManager
+	{
+		public List<Corps> GetAll();
+		public List<Divisons> GetDivisonByCorps(int corpsId);
+		public string GetNameByCorpsId(long CorpsId);
+		public string GetNameByDivisionId(int? DivisionId);
+	}
 }

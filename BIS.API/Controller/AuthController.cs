@@ -35,8 +35,9 @@ namespace BIS.API.Controller
                     corpsName = _corpsManager.GetNameByCorpsId(Convert.ToInt64(user.CorpsId)),
                     divisionName = _corpsManager.GetNameByDivisionId(user.DivisionId),
                     userName = user.Name,
-                    roleType = user.RoleType
-
+                    roleType = user.RoleType,
+                    corpsId = user.CorpsId,
+                    divisionId = user.DivisionId
 
                 };
                 response = Ok(new { token = jwtToken, user = model });

@@ -6,6 +6,7 @@ import { ChartData, ChartOptions } from 'chart.js';
 import { DashboardFmnAspect } from 'projects/sharedlibrary/src/model/dashboard-fmn-aspect';
 import { DasboardChart, DashboardInputCount, FilterModel } from 'projects/sharedlibrary/src/model/dashboard.model';
 import { AuthService } from 'projects/sharedlibrary/src/services/auth.service';
+import { Division } from 'projects/sharedlibrary/src/model/base.model';
 
 @Component({
   selector: 'app-dashboard',
@@ -24,7 +25,7 @@ export class DashboardComponent implements OnInit {
     chart3: false,
   };
 
-  frmnList:string[]=[];
+  frmnList:any[]=[];
   sectorList: any = [];
   filterModel: FilterModel = new FilterModel();
   indicatorFilter:FilterModel = new FilterModel();
@@ -57,12 +58,19 @@ export class DashboardComponent implements OnInit {
   enLocationData7Days:ChartData<'pie'>;
   constructor(private apiService: ApiService,private authService:AuthService) {
     let divisionName = this.authService.getDivisionName();
-    if(divisionName != undefined && divisionName != ''){
-      this.frmnList.push(divisionName);
-      this.filterModel.frmn = this.frmnList;
-      this.onFilterChange(this.frmnList[0])
+    if(divisionName != undefined && divisionName != 'null'){
+      let div = new Division();
+      div.id = parseInt(this.authService.getDivisionId(), 10);
+      div.name = divisionName;
+      this.frmnList.push(div);
+      this.filterModel.frmn.push(div.name);
+      // this.onFilterChange(this.frmnList[0])
       this.getFrmAndAspect();
       this.getIndicatorAndLocation();
+    }else{
+      let corpsId = this.authService.getCorpsId();
+      this.getFrmnList(corpsId);
+      this.getFrmAndAspect();
     }
   }
   ngOnInit(): void {
@@ -71,6 +79,18 @@ export class DashboardComponent implements OnInit {
     // this.getTotalCount();
     // this.getWeekCount();
     // this.getFrmInputData()
+  }
+  getFrmnList(id){
+    this.apiService.getWithHeaders('corps/frmlist/'+id).subscribe(res =>{
+      if(res){
+        debugger
+        this.frmnList = res;
+        this.filterModel.frmn = [];
+        this.filterModel.frmn.push(res[res.length - 1].name)
+        // this.filterModel.frmn = res[res.length - 1].name;
+        console.log('frmn',this.frmnList)
+      }
+    })
   }
   isAnyCheckboxSelected(): boolean {
     return Object.values(this.selectedCharts).some(selected => selected);

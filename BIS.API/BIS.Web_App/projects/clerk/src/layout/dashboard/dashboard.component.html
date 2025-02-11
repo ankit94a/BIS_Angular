@@ -24,12 +24,12 @@
     <br>
     <div class="row">
       <div class="col-sm-5">
-        <ng-select appendTo="ng-select" [items]="frmnList" [multiple]="true" (change)="onFilterChange($event)"
+        <ng-select appendTo="ng-select" [items]="frmnList" [multiple]="true" (change)="onFilterChange($event)" bindLabel="name" bindValue="name"
           [closeOnSelect]="false" placeholder="Fmn" [searchable]="true" [(ngModel)]="filterModel.frmn"
           (keydown.enter)="onFilterChange($event)">
           <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
             <div class="ng-value" *ngFor="let item of items">
-              <span class="ng-value-label">{{item}}</span>
+              <span class="ng-value-label">{{item.name}}</span>
               <span class="ng-value-icon right px-1" (click)="clear(item)" aria-hidden="true">×</span>
             </div>
           </ng-template>

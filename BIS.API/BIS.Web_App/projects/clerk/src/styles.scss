@@ -18,11 +18,11 @@ body {
 	width: 100%;
 }
 .mat-content {
-    max-height: calc(100vh - 115px); 
-    overflow-y: auto; 
-    overflow-x: hidden; 
-    padding: 1rem; 
-    box-sizing: border-box; 
+    max-height: calc(100vh - 165px);
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 1rem;
+    box-sizing: border-box;
   }
 .mat-mdc-form-field,
 .mat-mdc-card,
@@ -162,7 +162,7 @@ h6 {
 .edusynk-input{
 	border-width: 0px !important;
 	border-block-end-width: 2px !important;
-  
+
   }
 .form-actions {
 	text-align: right !important;
@@ -357,7 +357,7 @@ mat-header-row,
 }
 .column-header-content {
     text-align: left !important;}
-	
+
 .insync-row{
 		margin:0px !important;
 	  }

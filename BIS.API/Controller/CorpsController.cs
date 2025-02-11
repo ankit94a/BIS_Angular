@@ -4,25 +4,25 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BIS.API.Controller
 {
-    [Route("api/[controller]")]
-    public class CorpsController : ControllerBase
-    {
-        private readonly ICorpsManager _corpsManager;
-        
-        public CorpsController(ICorpsManager corpsManager)
-        {
-            _corpsManager = corpsManager;
-        }
-        [HttpGet]
-        public IActionResult GetAll()
-        {
-            return Ok(_corpsManager.GetAll());
-        }
-        [HttpGet,Route("division/{corpsId}")]
-        public IActionResult GetAll(long corpsId)
-        {
+	[Route("api/[controller]")]
+	public class CorpsController : ControllerBase
+	{
+		private readonly ICorpsManager _corpsManager;
 
-            return Ok(_corpsManager.GetDivisonByCorps(corpsId));
-        }
-    }
+		public CorpsController(ICorpsManager corpsManager)
+		{
+			_corpsManager = corpsManager;
+		}
+		[HttpGet]
+		public IActionResult GetAll()
+		{
+			return Ok(_corpsManager.GetAll());
+		}
+		[HttpGet, Route("frmlist/{corpsId}")]
+		public IActionResult GetFrmList(int corpsId)
+		{
+
+			return Ok(_corpsManager.GetDivisonByCorps(corpsId));
+		}
+	}
 }
