@@ -20,13 +20,13 @@ namespace BIS.DB.Implements
 		{
 			var roleType = new RoleType();
 			var query = _dBContext.GenerateReports.Where(g => g.CorpsId == corpsId && g.CreatedBy == roleId);
-			if(filterModel.startDate != default(DateTime))
+			if (filterModel.startDate != default(DateTime))
 			{
 				//filterModel.startDate = filterModel.startDate.Value.AddDays(1);
 				//filterModel.endDate = filterModel.endDate.Value.AddDays(1);
 				query = query.Where(g => g.CreatedOn.Value.Date >= filterModel.startDate.Value.Date && g.CreatedOn.Value.Date <= filterModel.endDate.Value.Date);
 			}
-			if(divisionId > 0)
+			if (divisionId > 0)
 			{
 				query = query.Where(g => g.DivisionId == divisionId);
 			}
@@ -37,10 +37,43 @@ namespace BIS.DB.Implements
 			var query = _dBContext.UserDetails.Where(us => us.RoleType == roleType && us.CorpsId == corpsId);
 			if (divisonId > 0)
 			{
-				query.Where(us => us.DivisionId == divisonId);
+				query = query.Where(us => us.DivisionId == divisonId);
 			}
 			var result = query.FirstOrDefault().Id;
 			return result;
 		}
+		public int AddInference(ApprovedReports inference)
+		{
+			try
+			{
+				_dBContext.ApprovedReports.Add(inference);
+				var rowsAffected = _dBContext.SaveChanges();
+				return rowsAffected;
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine(ex.Message);
+				throw ex;
+			}
+		}
+		public List<ApprovedReports> GetInference(int corpsId,int divisionId = 0)
+		{
+			try
+			{
+				var query = _dBContext.ApprovedReports.Where(ap => ap.CorpsId == corpsId);
+				if(divisionId > 0)
+				{
+					query = query.Where(ap => ap.DivisionId == divisionId);
+				}
+				return query.ToList();
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine(ex.Message);
+				throw ex;
+			}
+		}
+
+		
 	}
 }

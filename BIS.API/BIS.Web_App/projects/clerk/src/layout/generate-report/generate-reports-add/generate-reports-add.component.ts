@@ -117,9 +117,9 @@ export class GenerateReportsAddComponent implements OnInit {
     debugger
     var selected = this.masterDataList.filter(item => item.selected)
     var idsString = JSON.stringify(selected.map(item => item.Id));
-    this.selectedImages.map(item =>{
-      item.url = item.url.split(',')[1];
-    })
+    // this.selectedImages.map(item =>{
+    //   item.url = item.url.split(',')[1];
+    // })
     this.report = new GenerateReport();
     this.report.reportType = this.reportForm.value.reportType,
     this.report.notes = this.reportForm.value.notes,

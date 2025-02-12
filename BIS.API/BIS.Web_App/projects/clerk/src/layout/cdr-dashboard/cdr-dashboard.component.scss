@@ -142,4 +142,10 @@
   }
 
 
+  .example-container {
+    // height:  100vh;
+    height: 83vh;
+    overflow-y: auto;
+    overflow-x: hidden;
 
+  }

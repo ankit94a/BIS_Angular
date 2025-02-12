@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using BIS.Common.Entities;
 using BIS.DB.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace BIS.DB.Implements
 {
@@ -68,5 +69,19 @@ namespace BIS.DB.Implements
         {
             throw new NotImplementedException();
         }
-    }
+
+		public Tuple<int, int?> GetUserIdAndRptId(int reportId)
+		{
+			try
+			{
+				var query = _dbContext.GenerateReports.Where(ap => ap.Id == reportId).FirstOrDefault();
+                return new Tuple<int, int?>(query.CreatedBy, query.RptId);
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine(ex.Message);
+				throw ex;
+			}
+		}
+	}
 }

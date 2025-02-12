@@ -80,6 +80,12 @@ export const routes: Routes = [
                 loadComponent : () =>import('projects/clerk/src/layout/master-data/master-data-form/master-data-form.component').then(m => m.MasterDataFormComponent),
                 // canActivate: [AuthGuard],
               }
+              ,
+              {
+                path:'approved-reports',
+                loadComponent : () =>import('projects/clerk/src/layout/approved-report/approved-report-add/approved-reports.component').then(m => m.ApprovedReportsComponent),
+                // canActivate: [AuthGuard],
+              }
         ]
     }
 ];

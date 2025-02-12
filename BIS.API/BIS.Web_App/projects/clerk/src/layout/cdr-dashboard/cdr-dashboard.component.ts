@@ -10,9 +10,12 @@ import { GenerateReport } from 'projects/sharedlibrary/src/model/generatereport.
 import { masterData } from 'projects/sharedlibrary/src/model/masterdata.model';
 import { ApiService } from 'projects/sharedlibrary/src/services/api.service';
 import { AuthService } from 'projects/sharedlibrary/src/services/auth.service';
+import { BISMatDialogService } from 'projects/sharedlibrary/src/services/insync-mat-dialog.service';
 import { MasterDataFilterService } from 'projects/sharedlibrary/src/services/master-data-filter.service';
 import { SharedLibraryModule } from 'projects/sharedlibrary/src/shared-library.module';
 import { BehaviorSubject } from 'rxjs';
+import { CdrInferenceComponent } from './cdr-inference/cdr-inference.component';
+import { GenerateReportViewComponent } from '../generate-report/generate-report-view/generate-report-view.component';
 
 @Component({
   selector: 'app-cdr-dashboard',
@@ -47,7 +50,7 @@ export class CdrDashboardComponent {
   selectedType11 = 'Daily';
   filterNew :{Sector?: string, Aspects?: string, Indicator?: string,startDate?: Date, endDate?: Date} ={};
   selectedNew = 'any';
-  constructor(private apiService:ApiService, private authService: AuthService,private masterDataService:MasterDataFilterService){
+  constructor(private apiService:ApiService, private authService: AuthService,private masterDataService:MasterDataFilterService,private dialogService:BISMatDialogService){
     var divisionName = this.authService.getDivisionName();
     if (divisionName != undefined && divisionName != '' && divisionName != null) {
       this.fmnList.push(divisionName);
@@ -62,12 +65,17 @@ export class CdrDashboardComponent {
     this.getReportByDate();
   }
   viewObj(item){
-
+    this.dialogService.open(GenerateReportViewComponent,item);
+  }
+  addInference(item){
+    debugger
+    this.dialogService.open(CdrInferenceComponent,item);
   }
   getReportByDate(){
     debugger
     if(this.filterModel2.endDate != null && this.filterModel2.endDate != undefined){
       this.apiService.postWithHeader('cdrdashboard',this.filterModel2).subscribe(res =>{
+        debugger
       if(res){
         this.allReports = res;
       }

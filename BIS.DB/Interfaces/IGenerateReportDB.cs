@@ -13,5 +13,6 @@ namespace BIS.DB.Interfaces
         public GenerateReport GetById(int id, int corpsId, int divisionId);
         public string AddGraphs(List<GraphImages> Graphs);
         public List<GraphImages> GetGraphs(List<int> ids);
-    }
+		public Tuple<int,int?> GetUserIdAndRptId(int reportId);
+	}
 }
