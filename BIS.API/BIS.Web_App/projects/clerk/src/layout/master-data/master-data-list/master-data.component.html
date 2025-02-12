@@ -10,35 +10,37 @@
   </mat-card-header>
   <mat-card-content>
     <div class="row">
-    <div class="col-md-6">
-      <div class="layout">
-      <mat-chip>
-        <div class="chip-container">
-          <span>Created</span>
-          <span class="background blue"></span>
+      <div class="col-md-6">
+        <div class="layout">
+          <mat-chip>
+            <div class="chip-container">
+              <span>Created</span>
+              <span class="background blue"></span>
+            </div>
+          </mat-chip>
+          <mat-chip>
+            <div class="chip-container">
+              <span>Processing</span>
+              <span class="background orange"></span>
+            </div>
+          </mat-chip>
+          <mat-chip>
+            <div class="chip-container">
+              <span>Approved</span>
+              <span class="background green"></span>
+            </div>
+          </mat-chip>
+          <mat-chip>
+            <div class="chip-container">
+              <span>Rejected</span>
+              <span class="background red"></span>
+            </div>
+          </mat-chip>
         </div>
-      </mat-chip>
-      <mat-chip>
-        <div class="chip-container">
-          <span>Processing</span>
-          <span class="background orange"></span>
-        </div>
-      </mat-chip>
-      <mat-chip>
-        <div class="chip-container">
-          <span>Approved</span>
-          <span class="background green"></span>
-        </div>
-      </mat-chip>
-      <mat-chip>
-        <div class="chip-container">
-          <span>Rejected</span>
-          <span class="background red"></span>
-        </div>
-      </mat-chip>
-    </div>
-    <!-- <div class="col-md-6">
-      <ng-select appendTo="ng-select" [items]="filterType" [multiple]="false" (change)="filterData($event)"
+
+      </div>
+      <!-- <div class="col-md-6">
+        <ng-select appendTo="ng-select" [items]="filterType" [multiple]="false" (change)="filterData($event)"
           placeholder="Select Filter" [searchable]="true" [closeOnSelect]="true">
           <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
             <div class="ng-value" *ngFor="let item of items">
@@ -46,9 +48,8 @@
             </div>
           </ng-template>
         </ng-select>
-    </div> -->
+      </div> -->
     </div>
-  </div>
 
 
     <app-table *ngIf="DataList.length > 0" [rowData]="DataList" [tablePaginationSettings]="tablePaginationSettings"

@@ -6,7 +6,7 @@
       <!-- <div class="col-sm-2"><button class="btn btn-link" style="margin-left:50px" (click)="add()">+ Add Data</button></div> -->
     </div>
   </mat-card-header>
-  <mat-card-content>
+  <mat-card-content class="example-container">
     <!-- <div class="row">
             <div class="col-sm-3">
                 <mat-form-field>
@@ -178,7 +178,7 @@
               <!-- <th>#</th> -->
               <ng-container *ngFor="let item of tableHeader$ | async">
                 <th
-                  *ngIf="!['Id', 'CreatedBy', 'CreatedOn', 'IsActive', 'IsDeleted', 'CorpsId', 'DivisionId','ReportedDate'].includes(item)"
+                  *ngIf="!['Id', 'CreatedBy', 'CreatedOn', 'IsActive', 'IsDeleted', 'CorpsId', 'DivisionId','ReportedDate','Status','Fmn','UserId'].includes(item)"
                   class="space">
                   {{ item }}
                 </th>
@@ -189,7 +189,7 @@
             <tr *ngFor="let item of masterDataList$ | async; let i = index">
               <ng-container *ngFor="let header of tableHeader$ | async">
                 <td
-                  *ngIf="!['Id', 'CreatedBy', 'CreatedOn', 'IsActive', 'IsDeleted', 'CorpsId', 'DivisionId','ReportedDate'].includes(header)"
+                  *ngIf="!['Id', 'CreatedBy', 'CreatedOn', 'IsActive', 'IsDeleted', 'CorpsId', 'DivisionId','ReportedDate','Status','Fmn','UserId'].includes(header)"
                   class="space">
                   {{ item[header] }}
                 </td>
@@ -260,6 +260,9 @@
                       <button mat-icon-button color="accent"
                     type="button" (click)="viewObj(item)" matTooltip="view"> <mat-icon>remove_red_eye</mat-icon>
                 </button>
+                <button mat-icon-button color="accent"
+                    type="button" (click)="addInference(item)" matTooltip="add inference"> <mat-icon>add</mat-icon>
+                </button>
                     </td>
                       <!-- <td><img class="w-8 h-8 rounded-circle" src="/docs/images/people/profile-picture-1.jpg" alt="Neil image"></td>
                       <td>
@@ -285,12 +288,12 @@
     </div>
     <br> <br>
 
-    <div class="row">
+    <!-- <div class="row">
       <div class="col-sm-4">
         <div class="card-container">
           <div class="card">
             <div class="row">
-              <div class="col-sm-12 text-center">CDR Interface</div>
+              <div class="col-sm-12 text-center">CDR Inference</div>
             </div> <br>
             <div class="row">
 
@@ -426,7 +429,6 @@
                         </mat-form-field>
                     </div>
                   </div>
-                <!-- </div> -->
                 <div class="row">
                     <div class="col-sm-6">
                         <mat-form-field appearance="outline">
@@ -457,6 +459,6 @@
       <div class="col-sm-1 custom-btn">
         <button type="button" mat-raised-button color="primary">Save</button>
       </div>
-    </div>
+    </div> -->
   </mat-card-content>
 </mat-card>

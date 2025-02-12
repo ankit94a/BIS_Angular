@@ -75,10 +75,18 @@ export class DashboardComponent implements OnInit {
   }
   ngOnInit(): void {
     this.getCount();
+    this.getSector();
     // this.getTodayCount();
     // this.getTotalCount();
     // this.getWeekCount();
     // this.getFrmInputData()
+  }
+  getSector() {
+    this.apiService.getWithHeaders('MasterData/sector').subscribe(res => {
+      if (res) {
+        this.sectorList = res;
+      }
+    })
   }
   getFrmnList(id){
     this.apiService.getWithHeaders('corps/frmlist/'+id).subscribe(res =>{

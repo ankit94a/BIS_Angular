@@ -12,5 +12,8 @@ namespace BIS.DB.Interfaces
 	{
 		public List<GenerateReport> GetReportByDate(FilterModel filterModel, int corpsId, int roleId, int divisionId = 0);
 		public int GetUserIdByDivisonOrCorps(int corpsId, RoleType roleType, int divisonId = 0);
+		public int AddInference(ApprovedReports inference);
+		public List<ApprovedReports> GetInference(int corpsId, int divisionId);
+		
 	}
 }

@@ -56,7 +56,8 @@ namespace BIS.Common.Enum
         public enum NotificationType 
         { 
             MasterData = 1,
-            GenerateReport
+            GenerateReport,
+            ApprovedReport
         }
         [JsonConverter(typeof(StringEnumConverter))]
         public enum Status

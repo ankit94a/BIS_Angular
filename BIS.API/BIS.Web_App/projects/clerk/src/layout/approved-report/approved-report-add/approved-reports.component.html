@@ -1,0 +1,16 @@
+<mat-card appearance="outlined">
+  <mat-card-header class="insync-header">Approved Reports</mat-card-header>
+  <mat-card-content>
+    <app-table *ngIf="DataList.length > 0" [rowData]="DataList" [tablePaginationSettings]="tablePaginationSettings"
+      [enableCheckbox]="false" [isRefresh]="isRefresh"
+      (view)="view($event)" [sqColumnDefinition]="columns"
+      >
+    </app-table>
+    <!-- <ul *ngFor="let report of DataList">
+      <li>{{report.comment}}</li>
+      <li>{{report.enForceLevel}}</li>
+      <li>{{report.nextActionByEn}}</li>
+      <li>{{report.sector}}</li>
+    </ul> -->
+  </mat-card-content>
+</mat-card>

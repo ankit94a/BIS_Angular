@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -192,101 +193,248 @@ namespace BIS.DB.Implements
 		public async Task<MeanValueModel> GetEntries(long corpsId, long divisionId, RoleType roleType, FilterModelEntries filterModel)
 		{
 			var chart = new MeanValueModel();
-			var query = _dbContext.MasterDatas.Where(ms => ms.CorpsId == corpsId && ms.DivisionId == divisionId && ms.IsActive);
+			try
+			{
+				var query = _dbContext.MasterDatas.Where(ms => ms.CorpsId == corpsId && ms.DivisionId == divisionId && ms.IsActive);
 
-			// Handling filter arrays
-			if (filterModel != null && filterModel.Sector?.Count > 0)
-			{
-				query = query.Where(ms => filterModel.Sector.Contains(ms.Sector));
-			}
-			if (filterModel != null && filterModel.Aspects?.Count > 0)
-			{
-				query = query.Where(ms => filterModel.Aspects.Contains(ms.Aspect));
-			}
-			if (filterModel != null && filterModel.Indicator?.Count > 0)
-			{
-				query = query.Where(ms => filterModel.Indicator.Contains(ms.Indicator));
-			}
+				// Handling filter arrays
+				if (filterModel != null && filterModel.Sector?.Count > 0)
+				{
+					query = query.Where(ms => filterModel.Sector.Contains(ms.Sector));
+				}
+				if (filterModel != null && filterModel.Aspects?.Count > 0)
+				{
+					query = query.Where(ms => filterModel.Aspects.Contains(ms.Aspect));
+				}
+				if (filterModel != null && filterModel.Indicator?.Count > 0)
+				{
+					query = query.Where(ms => filterModel.Indicator.Contains(ms.Indicator));
+				}
 
-			// Dynamically group by filter type (Daily, Weekly, Monthly)
-			var groupedQuery = new List<GroupedData>();
-			if (filterModel.FilterType == FilterType.Daily)
-			{
-				groupedQuery = await query
-					.GroupBy(ms => ms.CreatedOn.Value.Date)
-					.Select(group => new GroupedData
+				// Dynamically group by filter type (Daily, Weekly, Monthly)
+				var groupedQuery = new List<GroupedData>();
+				if (filterModel.FilterType == FilterType.Daily)
+				{
+					groupedQuery = await query
+						.Where(ms => ms.Status == Status.Approved)
+						.GroupBy(ms => ms.CreatedOn.Value.Date)
+						.Select(group => new GroupedData
+						{
+							Date = group.Key.ToString("yyyy-MM-dd"),
+							Count = group.Count()
+						})
+						.ToListAsync();
+				}
+				else if (filterModel.FilterType == FilterType.Weekly)
+				{
+					var allData = await query
+						.Where(ms => ms.CreatedOn.HasValue && ms.Status == Status.Approved)
+						.ToListAsync(); // Fetch data first
+
+					if (allData.Any())
 					{
-						Date = group.Key.ToString("yyyy-MM-dd"),
-						Count = group.Count()
-					})
-					.ToListAsync();
-			}
-			else if (filterModel.FilterType == FilterType.Weekly)
-			{
-				var week = GetWeekOfYear(DateTime.Now);
-				groupedQuery = await query
-					.GroupBy(ms => new { Year = ms.CreatedOn.Value.Year, Week = GetWeekOfYear(ms.CreatedOn.Value) })
-					.Select(group => new GroupedData
+						groupedQuery = allData
+							.GroupBy(ms => new {
+								Year = ms.CreatedOn.Value.Year,
+								Week = CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(
+									ms.CreatedOn.Value,
+									CalendarWeekRule.FirstFourDayWeek,
+									DayOfWeek.Monday
+								)
+							})
+							.Select(group => new GroupedData
+							{
+								Date = $"{group.Key.Year}-W{group.Key.Week:D2}",
+								Count = group.Count()
+							})
+							.ToList();
+					}
+				}
+				else if (filterModel.FilterType == FilterType.Monthly)
+				{
+					groupedQuery = await query
+						.Where(ms => ms.Status == Status.Approved)
+						.GroupBy(ms => new { Year = ms.CreatedOn.Value.Year, Month = ms.CreatedOn.Value.Month })
+						.Select(group => new GroupedData
+						{
+							Date = $"{group.Key.Year}-{group.Key.Month:D2}",
+							Count = group.Count()
+						})
+						.ToListAsync();
+				}
+
+				var totalEntries = await query.CountAsync();
+				var totalDays = 0;
+				var today = DateTime.Today;
+
+				// Calculate totalDays based on the filter type (Daily, Weekly, Monthly)
+				if (filterModel.FilterType == FilterType.Daily)
+				{
+					totalDays = groupedQuery.Count();
+				}
+				else if (filterModel.FilterType == FilterType.Weekly)
+				{
+					if (groupedQuery.Any()) // ✅ Prevents First() error
 					{
-						Date = $"{group.Key.Year}-W{group.Key.Week:D2}",
-						Count = group.Count()
-					})
-					.ToListAsync();
-			}
-			else if (filterModel.FilterType == FilterType.Monthly)
-			{
-				groupedQuery = await query
-					.GroupBy(ms => new { Year = ms.CreatedOn.Value.Year, Month = ms.CreatedOn.Value.Month })
-					.Select(group => new GroupedData
+						var firstEntry = groupedQuery.First().Date; // Example: "2025-W06"
+						var firstYear = int.Parse(firstEntry.Split('-')[0]); // "2025"
+						var firstWeek = int.Parse(firstEntry.Split('W')[1]); // "06"
+
+						// ✅ Convert Year + Week Number to a Real Date
+						DateTime firstWeekDate = FirstDateOfWeekISO8601(firstYear, firstWeek);
+
+						totalDays = (today - firstWeekDate).Days / 7;
+					}
+					else
 					{
-						Date = $"{group.Key.Year}-{group.Key.Month:D2}",
-						Count = group.Count()
-					})
-					.ToListAsync();
+						totalDays = 1; // Avoid division by zero
+					}
+				}
+
+				else if (filterModel.FilterType == FilterType.Monthly)
+				{
+					// Calculate months difference between today and the first month in the result
+					totalDays = ((today.Year - int.Parse(groupedQuery.First().Date.Split('-')[0])) * 12
+								  + today.Month - int.Parse(groupedQuery.First().Date.Split('-')[1]));
+				}
+
+				// Avoid division by zero in case no valid days are found
+				var meanValue = totalDays > 0 ? (double)totalEntries / totalDays : 0;
+
+				// Add chart data
+				foreach (var item in groupedQuery)
+				{
+					chart.Name.Add(item.Date);
+					chart.Count.Add(item.Count);
+					chart.MeanValue.Add(meanValue);
+				}
+
+				return chart;
 			}
-
-			var totalEntries = await query.CountAsync();
-			var totalDays = 0;
-			var today = DateTime.Today;
-
-			// Calculate totalDays based on the filter type (Daily, Weekly, Monthly)
-			if (filterModel.FilterType == FilterType.Daily)
+			catch (Exception ex)
 			{
-				totalDays = groupedQuery.Count();
+				Console.WriteLine($"ERROR in GetEntries: {ex.Message}");
+				Console.WriteLine($"STACK TRACE: {ex.StackTrace}");
+				throw;
 			}
-			else if (filterModel.FilterType == FilterType.Weekly)
-			{
-				// Calculate weeks difference between today and the first week in the result
-				totalDays = (today - DateTime.Parse(groupedQuery.First().Date.Split('-')[0])).Days / 7;
-			}
-			else if (filterModel.FilterType == FilterType.Monthly)
-			{
-				// Calculate months difference between today and the first month in the result
-				totalDays = ((today.Year - int.Parse(groupedQuery.First().Date.Split('-')[0])) * 12
-							  + today.Month - int.Parse(groupedQuery.First().Date.Split('-')[1]));
-			}
-
-			// Avoid division by zero in case no valid days are found
-			var meanValue = totalDays > 0 ? (double)totalEntries / totalDays : 0;
-
-			// Add chart data
-			foreach (var item in groupedQuery)
-			{
-				chart.Name.Add(item.Date);
-				chart.Count.Add(item.Count);
-				chart.MeanValue.Add(meanValue);
-			}
-
-			return chart;
 		}
 
-		// Helper function to get the week number of the year from a DateTime
-		public int GetWeekOfYear(DateTime date)
+
+
+
+
+
+		private static DateTime FirstDateOfWeekISO8601(int year, int weekNumber)
 		{
-			var calendar = System.Globalization.CultureInfo.CurrentCulture.Calendar;
-			var dayOfYear = calendar.GetDayOfYear(date);
-			return (dayOfYear / 7) + 1;  // Calculate week of year
+			DateTime jan1 = new DateTime(year, 1, 1);
+			int daysOffset = DayOfWeek.Thursday - jan1.DayOfWeek;
+
+			DateTime firstThursday = jan1.AddDays(daysOffset);
+			var calendar = CultureInfo.CurrentCulture.Calendar;
+
+			int firstWeek = calendar.GetWeekOfYear(firstThursday, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
+			int weekNum = (weekNumber == 1 && firstWeek > 1) ? weekNumber - 1 : weekNumber;
+
+			return firstThursday.AddDays((weekNum - 1) * 7 - 3);
 		}
+		//public async Task<MeanValueModel> GetEntries(long corpsId, long divisionId, RoleType roleType, FilterModelEntries filterModel)
+		//{
+		//	var chart = new MeanValueModel();
+		//	var query = _dbContext.MasterDatas.Where(ms => ms.CorpsId == corpsId && ms.DivisionId == divisionId && ms.IsActive);
+
+		//	// Handling filter arrays
+		//	if (filterModel != null && filterModel.Sector?.Count > 0)
+		//	{
+		//		query = query.Where(ms => filterModel.Sector.Contains(ms.Sector));
+		//	}
+		//	if (filterModel != null && filterModel.Aspects?.Count > 0)
+		//	{
+		//		query = query.Where(ms => filterModel.Aspects.Contains(ms.Aspect));
+		//	}
+		//	if (filterModel != null && filterModel.Indicator?.Count > 0)
+		//	{
+		//		query = query.Where(ms => filterModel.Indicator.Contains(ms.Indicator));
+		//	}
+
+		//	// Dynamically group by filter type (Daily, Weekly, Monthly)
+		//	var groupedQuery = new List<GroupedData>();
+		//	if (filterModel.FilterType == FilterType.Daily)
+		//	{
+		//		groupedQuery = await query
+		//			.GroupBy(ms => ms.CreatedOn.Value.Date)
+		//			.Select(group => new GroupedData
+		//			{
+		//				Date = group.Key.ToString("yyyy-MM-dd"),
+		//				Count = group.Count()
+		//			})
+		//			.ToListAsync();
+		//	}
+		//	else if (filterModel.FilterType == FilterType.Weekly)
+		//	{
+		//		var week = GetWeekOfYear(DateTime.Now);
+		//		groupedQuery = await query
+		//			.GroupBy(ms => new { Year = ms.CreatedOn.Value.Year, Week = GetWeekOfYear(ms.CreatedOn.Value) })
+		//			.Select(group => new GroupedData
+		//			{
+		//				Date = $"{group.Key.Year}-W{group.Key.Week:D2}",
+		//				Count = group.Count()
+		//			})
+		//			.ToListAsync();
+		//	}
+		//	else if (filterModel.FilterType == FilterType.Monthly)
+		//	{
+		//		groupedQuery = await query
+		//			.GroupBy(ms => new { Year = ms.CreatedOn.Value.Year, Month = ms.CreatedOn.Value.Month })
+		//			.Select(group => new GroupedData
+		//			{
+		//				Date = $"{group.Key.Year}-{group.Key.Month:D2}",
+		//				Count = group.Count()
+		//			})
+		//			.ToListAsync();
+		//	}
+
+		//	var totalEntries = await query.CountAsync();
+		//	var totalDays = 0;
+		//	var today = DateTime.Today;
+
+		//	// Calculate totalDays based on the filter type (Daily, Weekly, Monthly)
+		//	if (filterModel.FilterType == FilterType.Daily)
+		//	{
+		//		totalDays = groupedQuery.Count();
+		//	}
+		//	else if (filterModel.FilterType == FilterType.Weekly)
+		//	{
+		//		// Calculate weeks difference between today and the first week in the result
+		//		totalDays = (today - DateTime.Parse(groupedQuery.First().Date.Split('-')[0])).Days / 7;
+		//	}
+		//	else if (filterModel.FilterType == FilterType.Monthly)
+		//	{
+		//		// Calculate months difference between today and the first month in the result
+		//		totalDays = ((today.Year - int.Parse(groupedQuery.First().Date.Split('-')[0])) * 12
+		//					  + today.Month - int.Parse(groupedQuery.First().Date.Split('-')[1]));
+		//	}
+
+		//	// Avoid division by zero in case no valid days are found
+		//	var meanValue = totalDays > 0 ? (double)totalEntries / totalDays : 0;
+
+		//	// Add chart data
+		//	foreach (var item in groupedQuery)
+		//	{
+		//		chart.Name.Add(item.Date);
+		//		chart.Count.Add(item.Count);
+		//		chart.MeanValue.Add(meanValue);
+		//	}
+
+		//	return chart;
+		//}
+
+		//// Helper function to get the week number of the year from a DateTime
+		//public int GetWeekOfYear(DateTime date)
+		//{
+		//	var calendar = System.Globalization.CultureInfo.CurrentCulture.Calendar;
+		//	var dayOfYear = calendar.GetDayOfYear(date);
+		//	return (dayOfYear / 7) + 1;  // Calculate week of year
+		//}
 
 		public DashboardChart GetVariationData(long corpsId, long divisionId, RoleType roleType, FilterModel filterModel)
 		{

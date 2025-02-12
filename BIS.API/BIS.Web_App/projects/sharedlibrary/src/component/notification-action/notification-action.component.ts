@@ -108,12 +108,13 @@ export class NotificationActionComponent extends EnumBase {
   }
   getGraphs(graphIds) {
     this.apiService.getWithHeaders('generatereport/graph' + graphIds).subscribe(res => {
-      this.report.graphs = res.map(graph => {
-        return {
-          ...graph,  // Spread the existing properties of the graph
-          url: 'data:image/png;base64,' + graph.url  // Prepend the base64 string
-        };
-      });
+      this.report.graphs = res
+      // .map(graph => {
+      //   return {
+      //     ...graph,  // Spread the existing properties of the graph
+      //     url: 'data:image/png;base64,' + graph.url  // Prepend the base64 string
+      //   };
+      // });
       console.log(this.report)
       this.chartImagesSubject.next(this.report.graphs);
     })
@@ -154,7 +155,7 @@ export class NotificationActionComponent extends EnumBase {
   submitReport() {
     this.report2.reportTitle = this.report.reportTitle;
     this.report2.reportType = this.report.reportType;
-    this.report2.reportDate = this.report.reportDate;
+    this.report2.reportDate = new Date();
     this.report2.startDate = this.report.startDate;
     this.report2.endDate = this.report.endDate;
     this.report2.graphs = this.selectedImages;

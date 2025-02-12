@@ -1,0 +1,103 @@
+<div mat-dialog-title>
+  View Report
+</div>
+<mat-dialog-content>
+  <div class="row">
+    <div class="col">
+      Report Date : {{report.reportDate | bisdefaultDate}}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-4">
+      <mat-form-field>
+        <mat-label>Report Title</mat-label>
+        <input matInput placeholder="Your Report Title" [(ngModel)]="report.reportTitle" readonly>
+      </mat-form-field>
+    </div>
+    <div class="col-md-4">
+      <mat-form-field>
+        <mat-label>Report Type</mat-label>
+        <mat-select [(ngModel)]="report.reportType" readonly>
+          <mat-option value="ISUM">ISUM</mat-option>
+          <mat-option value="DISUM">DISUM</mat-option>
+          <mat-option value="SITREP">SITREP</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="col-md-4">
+      <mat-form-field>
+        <mat-label>Date Range</mat-label>
+        <mat-date-range-input [rangePicker]="picker">
+          <input matStartDate  placeholder="Start date" [(ngModel)]="report.startDate">
+          <input matEndDate  placeholder="End date" [(ngModel)]="report.endDate"
+            >
+        </mat-date-range-input>
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-date-range-picker #picker></mat-date-range-picker>
+      </mat-form-field>
+    </div>
+  </div>
+    <div class="row" *ngIf="(masterDataList$ | async)?.length > 0">
+      <div class="table-container">
+          <table>
+              <thead>
+                  <tr>
+                      <!-- <th>#</th> -->
+                      <ng-container *ngFor="let item of tableHeader$ | async">
+                          <th *ngIf="!['Id','Status','UserId','Fmn', 'CreatedBy', 'CreatedOn', 'IsActive', 'IsDeleted', 'CorpsId', 'DivisionId','ReportedDate'].includes(item)"
+                              class="space">
+                              {{ item }}
+                          </th>
+                      </ng-container>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr *ngFor="let item of masterDataList$ | async; let i = index">
+                      <!-- Checkbox for individual rows -->
+                      <!-- <td>
+                          <mat-checkbox></mat-checkbox>
+                      </td> -->
+                      <ng-container *ngFor="let header of tableHeader$ | async">
+                          <td *ngIf="!['Id','Status','UserId','Fmn', 'CreatedBy', 'CreatedOn', 'IsActive', 'IsDeleted', 'CorpsId', 'DivisionId','ReportedDate'].includes(header)"
+                              class="space">
+                              <!-- <span *ngIf="header == 'ReportedDate'">{{ item[header] | bisdefaultDate }}</span>
+                              <span *ngIf="header != 'ReportedDate'">{{ item[header] }}</span> -->
+                              {{ item[header] }}
+                          </td>
+                      </ng-container>
+                  </tr>
+              </tbody>
+          </table>
+      </div>
+  </div>
+  <br>
+  <div *ngIf="(chartImages$ | async)?.length > 0 " class="row image-preview-container">
+      <div *ngFor="let image of chartImages$ | async; let i = index" class="col-md-6 image-preview">
+        <img [src]="image.url" [alt]="image.name" />
+        <span class="image-name">{{ image.name }}</span>
+      </div>
+    <div class="col-md-12">
+      <mat-form-field>
+          <mat-label>G1 Comment</mat-label>
+          <textarea readonly="{{true}}" matInput class="full-width text-area" [(ngModel)]="report1.notes"></textarea>
+      </mat-form-field>
+  </div>
+   </div>
+
+   <!-- ColGs Charts -->
+   <div *ngIf="(colCharts$ | async)?.length > 0 " class="row image-preview-container">
+    <div *ngFor="let image of colCharts$ | async; let i = index" class="col-md-6 image-preview">
+      <img [src]="image.url" [alt]="image.name" />
+      <span class="image-name">{{ image.name }}</span>
+    </div>
+  <div class="col-md-12">
+    <mat-form-field>
+        <mat-label>Colgs Comment</mat-label>
+        <textarea readonly="{{true}}" matInput class="full-width text-area" [(ngModel)]="report.notes"></textarea>
+    </mat-form-field>
+</div>
+ </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button class="btn btn-sm btn-warning" (click)="close()">Done</button>
+</mat-dialog-actions>
