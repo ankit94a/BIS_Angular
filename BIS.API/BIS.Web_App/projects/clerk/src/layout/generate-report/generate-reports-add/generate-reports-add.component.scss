@@ -34,14 +34,8 @@
 
    /* input images */
 
-  //  .image-preview-container {
-  //   display: flex;
-  //   flex-wrap: wrap;
-  //   margin-top: 20px;
-  //   gap: 15px;
-  // }
-
-  .image-preview {
+   .image-preview {
+    position: relative; /* To position the close icon relative to the image preview */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -49,8 +43,6 @@
     border: 1px solid #ddd;
     border-radius: 5px;
     padding: 10px;
-    // width: 220px;
-    // height: 200px;
     overflow: hidden;
   }
 
@@ -67,6 +59,22 @@
     color: #555;
     word-wrap: break-word;
   }
+
+  .close-icon-container {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background-color: rgba(255, 255, 255, 0.7); /* optional: for better visibility */
+    border-radius: 50%;
+    padding: 5px;
+    cursor: pointer;
+  }
+
+  .close-icon {
+    font-size: 20px; /* Adjust size as needed */
+    color: #555;
+  }
+
   .fileUpload{
     display: inline-flex;
     align-items: center;

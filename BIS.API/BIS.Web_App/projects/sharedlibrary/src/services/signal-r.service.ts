@@ -13,16 +13,18 @@ export class SignalRService {
   constructor(private apiService: ApiService) { }
 
   public startConnection = () => {
-
+debugger
     const token = localStorage.getItem('BIS_TOKEN');
     this.hubConnection = new signalR.HubConnectionBuilder()
-      .withUrl(this.baseUrl + 'edusynknotificationhub', {
+      .withUrl(this.baseUrl + 'notificationhub', {
         skipNegotiation: true,
         transport: signalR.HttpTransportType.WebSockets, // Optional: Use specific transport
 
         accessTokenFactory: () => token,
       }).withAutomaticReconnect().build();
-    this.hubConnection.start();
+    this.hubConnection.start()
+    .then(() => console.log("Connected to Notification Hub"))
+    .catch(err => console.error("Error while connecting: " + err));
   };
   onNotificationReceived(callback: (message: any) => void): void {
     this.hubConnection.on('ReceiveNotification', (msg) => {

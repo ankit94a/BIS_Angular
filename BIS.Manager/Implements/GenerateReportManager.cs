@@ -47,6 +47,7 @@ namespace BIS.Manager.Implements
 				}
 				generateReport.GraphIds = _generateReportDB.AddGraphs(generateReport.Graphs);
 			}
+			generateReport.Status = Status.Created;
 			generateReport.Graphs.Clear();
 			var reportId = _generateReportDB.Add(generateReport);
 			if (reportId > 0)

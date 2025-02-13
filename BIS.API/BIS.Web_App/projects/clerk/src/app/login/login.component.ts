@@ -44,7 +44,6 @@ export class LoginComponent implements OnInit{
 
     this.apiService.postWithHeader('auth/login',loginData).subscribe((res)=>{
       if(res){
-        debugger
         this.authService.setToken(res.token);
         this.authService.setUserDetails(res.user);
         if(this.authService.getRoleType() == '1'){
