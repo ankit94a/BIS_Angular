@@ -13,7 +13,6 @@ export class AuthService {
     return token ? true : false;
   }
   setUserDetails(user){
-    debugger
     localStorage.setItem("BIS_RoleType",user.roleType);
     localStorage.setItem("BIS_UserName",user.userName);
     localStorage.setItem("BIS_CorpsName",user.corpsName);

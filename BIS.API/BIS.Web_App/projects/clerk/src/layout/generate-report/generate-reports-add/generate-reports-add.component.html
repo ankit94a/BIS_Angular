@@ -12,18 +12,22 @@
       <div class="col-md-4">
         <mat-form-field>
           <mat-label>Report Title</mat-label>
-          <input matInput placeholder="Your Report Title" formControlName="reportTitle">
+          <input matInput placeholder="Your Report Title" formControlName="reportTitle" required>
+          <mat-error *ngIf="reportForm.controls['reportTitle'].hasError('required') && reportForm.controls['reportTitle'].touched">
+            Report Title is required.
+          </mat-error>
         </mat-form-field>
       </div>
       <div class="col-md-4">
-        <mat-form-field>
-          <mat-label>Report Type</mat-label>
-          <mat-select formControlName="reportType">
-            <mat-option value="ISUM">ISUM</mat-option>
-            <mat-option value="DISUM">DISUM</mat-option>
-            <mat-option value="SITREP">SITREP</mat-option>
-          </mat-select>
-        </mat-form-field>
+        <ng-select appendTo="ng-select" [items]="reportType" [multiple]="false"
+          [closeOnSelect]="true" formControlName="reportType" placeholder="Report Type" [searchable]="true">
+          <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+            <div class="ng-value" *ngFor="let item of items">
+              <span class="ng-value-label">{{item}}</span>
+              <span class="ng-value-icon right px-1" (click)="clear(item)" aria-hidden="true">×</span>
+            </div>
+          </ng-template>
+        </ng-select>
       </div>
       <div class="col-md-4">
         <mat-form-field>
@@ -35,6 +39,9 @@
           </mat-date-range-input>
           <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
           <mat-date-range-picker #picker></mat-date-range-picker>
+          <mat-error *ngIf="reportForm.controls['startDate'].hasError('required') && reportForm.controls['startDate'].touched">
+            StartDate is required.
+          </mat-error>
         </mat-form-field>
       </div>
     </div>
@@ -94,13 +101,15 @@
       </div>
     </div>
 
-      <div class="image-preview-container row">
-        <div *ngFor="let image of selectedImages" class="image-preview  col-md-6">
-          <img [src]="image.url" [alt]="image.name" />
-          <span class="image-name">{{ image.name }}</span>
+    <div class="row">
+      <div *ngFor="let image of selectedImages; let i = index" class="image-preview col-md-6">
+        <div class="close-icon-container">
+          <mat-icon class="close-icon" (click)="removeImage(i)">close</mat-icon>
         </div>
+        <img [src]="image.url" [alt]="image.name" />
+        <span class="image-name">{{ image.name }}</span>
       </div>
-
+    </div>
 
     <br>
     <div class="row">

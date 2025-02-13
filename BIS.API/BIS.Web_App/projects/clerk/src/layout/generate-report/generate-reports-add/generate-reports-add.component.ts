@@ -22,75 +22,73 @@ export class GenerateReportsAddComponent implements OnInit {
   selectedImages: GraphImages[] = [];
   reportForm: FormGroup;
   report: GenerateReport;
-  currentDate = new Date()
+  currentDate = new Date();
+  tableHeader = [];
   masterDataList = [];
   isNoDataFoundAlert: boolean = false;
-  tableHeader = [];
   isAllChecked = false;
   filterModel: FilterModel = new FilterModel();
+  reportType = ['ISUM','DISUM','SITREP']
   constructor(@Inject(MAT_DIALOG_DATA) data,private masterDataService: MasterDataFilterService, private apiService: ApiService, private toastr: ToastrService, private _formBuilder: FormBuilder, private dialogRef: MatDialogRef<GenerateReportsAddComponent>) {
     // if(data.id > 0){
     //   this.report = data;
     //   this.getReportById(data.masterDataIds);
     // }else{
-    this.createForm()
+
     // }
   }
   ngOnInit(): void {
+    this.createForm()
+  }
+  // getReportById(masterDataIds) {
+  //   this.apiService.getWithHeaders('masterdata/idsList' + masterDataIds).subscribe(res => {
+  //     if (res) {
+  //       this.report.masterData = res;
+  //     }
+  //   })
+  // }
 
-  }
-  getReportById(masterDataIds) {
-    this.apiService.getWithHeaders('masterdata/idsList' + masterDataIds).subscribe(res => {
-      if (res) {
-        debugger
-        this.report.masterData = res;
-      }
-    })
-  }
-  // Create the form
   createForm() {
     this.reportForm = this._formBuilder.group({
-      startDate: ['', Validators.required],
-      endDate: ['', Validators.required],
+      startDate: [this.currentDate, Validators.required],
+      endDate: [this.currentDate, Validators.required],
       reportType: [''],
       reportDate: [this.currentDate, Validators.required],
-      reportTitle: [''],
-      userId: [''],
+      reportTitle: ['',Validators.required],
       notes: [''],
-      masterData: this._formBuilder.array([]) // Initialize as empty FormArray
+      masterData: this._formBuilder.array([])
     });
   }
+
   get masterData(): FormArray {
     return this.reportForm.get('masterData') as FormArray;
   }
 
-  // Populate FormArray with checkboxes (based on the masterDataList)
   setMasterData() {
     this.masterDataList.forEach(item => {
-      this.masterData.push(this._formBuilder.control(item.selected)); // Initialize with selected state
+      this.masterData.push(this._formBuilder.control(item.selected));
     });
   }
 
-  // Handle individual row checkbox change event
   onRowCheckboxChange(item: any, i: number) {
-    const control = this.masterData.controls[i]; // Get the control corresponding to the current row
-    control.setValue(item.selected); // Update the control with the current selected state
+    const control = this.masterData.controls[i];
+    control.setValue(item.selected);
   }
 
-  // Handle the master checkbox toggle (select all/deselect all)
   toggleAllCheckboxes() {
     if (this.isAllChecked) {
       this.masterDataList.forEach((item, i) => {
         item.selected = true;
-        this.masterData.controls[i].setValue(true); // Set the corresponding form control value
+        this.masterData.controls[i].setValue(true);
       });
     } else {
       this.masterDataList.forEach((item, i) => {
         item.selected = false;
-        this.masterData.controls[i].setValue(false); // Set the corresponding form control value
+        this.masterData.controls[i].setValue(false);
       });
     }
   }
+
   onDateChange(startDate, endDate) {
     const start = startDate.value;
     const end = endDate.value;
@@ -108,25 +106,17 @@ export class GenerateReportsAddComponent implements OnInit {
           this.isNoDataFoundAlert = true;
         }
       })
-    } else {
-      this.toastr.error("startdate must be smaller than enddate");
     }
-    // You can perform additional logic here, like updating other form values, making API calls, etc.
   }
   save() {
-    debugger
+    if (this.reportForm.invalid) {
+      this.toastr.error('Please fill all required fields', 'Error');
+      return;
+    }
     var selected = this.masterDataList.filter(item => item.selected)
     var idsString = JSON.stringify(selected.map(item => item.Id));
-    // this.selectedImages.map(item =>{
-    //   item.url = item.url.split(',')[1];
-    // })
     this.report = new GenerateReport();
-    this.report.reportType = this.reportForm.value.reportType,
-    this.report.notes = this.reportForm.value.notes,
-    this.report.reportDate = this.reportForm.value.reportDate,
-    this.report.reportTitle = this.reportForm.value.reportTitle,
-    this.report.startDate = this.reportForm.value.startDate,
-    this.report.endDate = this.reportForm.value.endDate,
+    this.report = this.reportForm.value;
     this.report.masterDataIds = idsString;
     this.report.graphs = this.selectedImages;
     this.apiService.postWithHeader('GenerateReport', this.report).subscribe(res => {
@@ -136,9 +126,11 @@ export class GenerateReportsAddComponent implements OnInit {
       }
     })
   }
+
   resetObj() {
     this.createForm();
   }
+
   closedialog() {
     this.dialogRef.close(true);
   }
@@ -163,6 +155,10 @@ export class GenerateReportsAddComponent implements OnInit {
         }
       });
     }
+  }
+
+  removeImage(index: number): void {
+    this.selectedImages.splice(index, 1);
   }
 
 }

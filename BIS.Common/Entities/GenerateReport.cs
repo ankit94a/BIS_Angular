@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static BIS.Common.Enum.Enum;
 
 namespace BIS.Common.Entities
 {
@@ -23,18 +24,7 @@ namespace BIS.Common.Entities
 		public List<GraphImages>? Graphs { get; set; }
 		public string? GraphIds { get; set; }
 		public int? RptId { get; set; }
-		//public List<MasterData>? MasterData { get; set; }
-		// This property handles serialization/deserialization
-		//[NotMapped]
-		//public List<string>? MasterDataIds
-		//{
-		//    get => string.IsNullOrEmpty(MasterDataIdsSerialized)
-		//        ? new List<string>()
-		//        : MasterDataIdsSerialized.Split(',').ToList();
-		//    set => MasterDataIdsSerialized = value == null
-		//        ? null
-		//        : string.Join(',', value);
-		//}
+		public Status Status { get; set; }
 	}
 	public class GraphImages : BaseEntity
 	{
