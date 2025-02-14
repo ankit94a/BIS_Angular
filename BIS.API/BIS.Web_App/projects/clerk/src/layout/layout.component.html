@@ -1,18 +1,22 @@
 <mat-drawer-container>
     <mat-drawer mode="side" [opened]="sideBarOpen">
       <mat-toolbar>
+        <!-- <img src="/assets/logo.jpeg" class="logo" alt="logo"> -->
+        <img class="logo" src="/assets/comdlogo.webp" alt="CommandLogo"> &nbsp;
         <span class="brand-caption">BIS</span>
       </mat-toolbar>
       <app-sidebar (isloaded)="isLoaded($event)"></app-sidebar>
     </mat-drawer>
-    <mat-drawer-content 
-    class="drawer-container"
+    <mat-drawer-content
+    class="drawer-container" style="margin-left: 188px;"
     >
     <!-- <mat-drawer-content
     style="margin-left: 188px;"
     class="drawer-container"
     > -->
       <app-header (toggleSideBarForMe)="sideBarToggler()"></app-header>
+
+      <!-- <img class="commandlogo" src="/assets/comdlogo1.png" alt="CommandLogo"> -->
       <div class="content" style="height: 87.9vh;">
         <!-- <ngx-spinner  size = "large"  type="ball-scale-multiple" [fullScreen] = "true">
           <p style="color: white" > Loading... </p></ngx-spinner> -->

@@ -92,3 +92,30 @@
   height: 80px !important;
   line-height: 1.5 !important;
 }
+.error-message-container{
+  display: flex;
+  width: 380px;
+  height: 200px;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: bolder;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  background-color: rgba(99, 99, 99, 0.1);
+  border-radius: 10px;
+
+}
+.chart-container{
+
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+  justify-content: space-around;
+}
+.icon-display {
+  background-color: red;
+    color: #fff;
+    transform: scale(2);
+    border-radius: 30px;
+}

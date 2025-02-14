@@ -25,12 +25,13 @@ namespace BIS.DB.Implements
 			return result;
 		}
 
-		public long AddNotification(Notification notification)
+		public async Task<long> AddNotification(Notification notification)
 		{
 			_dbContext.Notification.Add(notification);
-			_dbContext.SaveChanges();
+			await _dbContext.SaveChangesAsync();
 			return notification.Id;
 		}
+
 		public long UpdateStatus(Notification notification)
 		{
 			var result = _dbContext.Notification.Where(n => n.Id == notification.Id).FirstOrDefault();

@@ -7,6 +7,7 @@ import { GenerateReport } from 'projects/sharedlibrary/src/model/generatereport.
 import { ApiService } from 'projects/sharedlibrary/src/services/api.service';
 import { SharedLibraryModule } from 'projects/sharedlibrary/src/shared-library.module';
 import { BisdefaultDatePipe } from 'projects/sharedlibrary/src/pipe/bisdefault-date.pipe';
+import { GenerateReportViewComponent } from '../generate-report-view/generate-report-view.component';
 
 @Component({
   selector: 'app-generate-reports-list',
@@ -20,9 +21,9 @@ export class GenerateReportsListComponent extends TablePaginationSettingsConfig 
   generateReportList: GenerateReport[] = [];
   constructor(private dialogService:BISMatDialogService,private apiService:ApiService ,private datePipe:BisdefaultDatePipe){
     super();
-    debugger
+
     this.tablePaginationSettings.enableAction = true;
-    this.tablePaginationSettings.enableEdit = true;
+    // this.tablePaginationSettings.enableEdit = true;
     this.tablePaginationSettings.enableView = true;
     // this.tablePaginationSettings.enableDelete = true;
     this.tablePaginationSettings.pageSizeOptions = [50, 100];
@@ -51,15 +52,11 @@ export class GenerateReportsListComponent extends TablePaginationSettingsConfig 
 
   }
   view($event){
-    debugger
-    this.dialogService.open(GenerateReportsAddComponent,$event).then(res =>{
-      if(res){
-        this.getReportData()
-      }
-    })
+
+    this.dialogService.open(GenerateReportViewComponent,$event)
   }
   edit($event){
-
+    this.dialogService.open(GenerateReportViewComponent,$event)
   }
 
   columns = [

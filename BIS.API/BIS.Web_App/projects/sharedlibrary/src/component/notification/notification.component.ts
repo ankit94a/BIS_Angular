@@ -32,17 +32,18 @@ export class NotificationComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    debugger
     this.getUnreadNotification();
-    // this.signalRService.startConnection();
-    // this.signalRService.onNotificationReceived((message) => {
+    this.signalRService.startConnection();
+    this.signalRService.onNotificationReceived((message) => {
 
-    //   this.unreadNotificationCount++;
-    //   if (this.notifications == undefined) {
-    //     this.notifications = [];
-    //   }
-    //   this.animate(3);
-    //   this.notifications.unshift(message);
-    // });
+      // this.unreadNotificationCount++;
+      if (this.notifications == undefined) {
+        this.notifications = [];
+      }
+      this.animate(3);
+      this.notifications.unshift(message);
+    });
   }
 
   ngOnDestroy(): void {

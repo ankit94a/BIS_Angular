@@ -39,6 +39,7 @@ export class GenerateReportsAddComponent implements OnInit {
   }
   ngOnInit(): void {
     this.createForm()
+    this.onDateChange(this.reportForm.get('startDate').value, this.reportForm.get('endDate').value);
   }
   // getReportById(masterDataIds) {
   //   this.apiService.getWithHeaders('masterdata/idsList' + masterDataIds).subscribe(res => {
@@ -90,20 +91,22 @@ export class GenerateReportsAddComponent implements OnInit {
   }
 
   onDateChange(startDate, endDate) {
-    const start = startDate.value;
-    const end = endDate.value;
+    const start = new Date(startDate);
+    const end = new Date(endDate);
     if (start <= end) {
-      this.filterModel.startDate = start;
-      this.filterModel.endDate = end;
+      this.filterModel.startDate = startDate;
+      this.filterModel.endDate = endDate;
       this.apiService.postWithHeader('masterdata/dateRange', this.filterModel).subscribe(res => {
-        if (res) {
+        if (res.length > 0) {
           this.masterDataList = res;
           const { Header, DataList } = this.masterDataService.getMasterData(res);
           this.tableHeader = Header;
           this.masterDataList = DataList;
           this.isNoDataFoundAlert = false;
         } else {
+          this.masterDataList = [];
           this.isNoDataFoundAlert = true;
+          this.toastr.warning("No input found for these date range",'warning')
         }
       })
     }
@@ -129,6 +132,8 @@ export class GenerateReportsAddComponent implements OnInit {
 
   resetObj() {
     this.createForm();
+    this.masterDataList = [];
+    this.selectedImages = [];
   }
 
   closedialog() {

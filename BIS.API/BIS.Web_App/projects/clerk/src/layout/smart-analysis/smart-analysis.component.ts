@@ -486,7 +486,7 @@ export class SmartAnalysisComponent implements OnInit, OnDestroy {
 
   }
   onFilterChange1(filterKey: string): void {
-    debugger
+
     // this.filters[filterKey] = event;
     // this.getFrmnDataAll();
     // this.getNoOfInputChart();

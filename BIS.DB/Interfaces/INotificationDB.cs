@@ -7,11 +7,11 @@ using BIS.Common.Entities;
 
 namespace BIS.DB.Interfaces
 {
-    public interface INotificationDB
-    {
-        public List<Notification> GetNotificationByUserId(int userId);
+	public interface INotificationDB
+	{
+		public List<Notification> GetNotificationByUserId(int userId);
 
-        public long AddNotification(Notification notification);
-        public long UpdateStatus(Notification notification);
-    }
+		public Task<long> AddNotification(Notification notification);
+		public long UpdateStatus(Notification notification);
+	}
 }

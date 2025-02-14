@@ -18,7 +18,7 @@ export class GenerateReportViewComponent {
   report:GenerateReport = new GenerateReport();
   report1:GenerateReport = new GenerateReport();
   masterDataList = [];
-
+  reportType = ['ISUM','DISUM','SITREP']
     // Using BehaviorSubject for reactivity
     private tableHeaderSubject = new BehaviorSubject<string[]>([]);
     private masterDataListSubject = new BehaviorSubject<masterData[]>([]);
@@ -30,7 +30,7 @@ export class GenerateReportViewComponent {
     chartImages$ = this.chartImagesSubject.asObservable();
     colCharts$ = this.colImagesSubject.asObservable();
   constructor(@Inject(MAT_DIALOG_DATA) data,private toastr:ToastrService,private apiService:ApiService,private masterDataService: MasterDataFilterService,private dailog:MatDialog){
-    debugger
+
     this.report = data;
     this.getColGraphs(this.report.graphIds);
     if(this.report.rptId != undefined && this.report.rptId != null && this.report.rptId > 0){
@@ -38,18 +38,18 @@ export class GenerateReportViewComponent {
     }
   }
   getG1Report(){
-    debugger
+
     this.apiService.getWithHeaders('generatereport/report'+ this.report.rptId).subscribe(res =>{
-      debugger
+
       this.report1 = res;
       this.getMasterList();
       this.getGraphs(this.report1.graphIds)
     })
   }
   getMasterList() {
-    debugger
+
     this.apiService.getWithHeaders('masterdata/idsList' + this.report1.masterDataIds).subscribe(res => {
-      debugger
+
       if (res) {
         this.report.masterData = res;
 
@@ -78,9 +78,9 @@ export class GenerateReportViewComponent {
     })
   }
   getColGraphs(graphIds) {
-    debugger
+
     this.apiService.getWithHeaders('generatereport/graph' + graphIds).subscribe(res => {
-      debugger
+
       // this.report.graphs = res.map(graph => {
       //   return {
       //     ...graph,  // Spread the existing properties of the graph

@@ -6,11 +6,8 @@
       (view)="view($event)" [sqColumnDefinition]="columns"
       >
     </app-table>
-    <!-- <ul *ngFor="let report of DataList">
-      <li>{{report.comment}}</li>
-      <li>{{report.enForceLevel}}</li>
-      <li>{{report.nextActionByEn}}</li>
-      <li>{{report.sector}}</li>
-    </ul> -->
+    <div class="span" *ngIf="DataList.length == 0">
+      <h4>NO Data Found</h4>
+    </div>
   </mat-card-content>
 </mat-card>

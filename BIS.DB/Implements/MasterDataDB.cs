@@ -105,7 +105,12 @@ namespace BIS.DB.Implements
 
 			return result?.ID ?? 0;
 		}
-
+		public List<MasterData> GetUpto30MinForm()
+		{
+			var befor30Min = DateTime.Now.AddMinutes(-30);
+			var query = _dbContext.MasterDatas.Where(ms => ms.CreatedOn >= befor30Min && ms.Status == Status.Created);
+			return query.ToList();
+		}
 		public List<EnemyLocation> GetAllEnemyLocation()
 		{
 			return _dbContext.MasterEnLocName.Where(ms => ms.IsActive).ToList();

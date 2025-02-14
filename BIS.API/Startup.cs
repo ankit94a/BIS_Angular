@@ -1,106 +1,120 @@
 ﻿using BIS.Api.Extensions;
 using BIS.API.Extensions.BIS.Api.Extensions;
 using BIS.API.Filters;
+using BIS.API.Hubs;
 using BIS.API.IOC;
 using BIS.DB;
+using BIS.DB.Implements;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 
 namespace BIS.API
 {
-    public class Startup
-    {
-        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
-        public IConfiguration Configuration { get; }
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
+	public class Startup
+	{
+		readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+		public IConfiguration Configuration { get; }
+		public Startup(IConfiguration configuration)
+		{
+			Configuration = configuration;
+		}
 
-        public void ConfigureServices(IServiceCollection services)
-        {
+		public void ConfigureServices(IServiceCollection services)
+		{
 
-
-            IoCConfiguration.Configuration(services);
-            services.AddSingleton(Configuration);
-            services.AddCors(options =>
-            {
-                options.AddPolicy("_myAllowSpecificOrigins", builder =>
-                {
-                    builder.WithOrigins("http://localhost:4200")
-                           .AllowAnyMethod()  
-                           .AllowAnyHeader()  
-                           .AllowCredentials(); 
-                });
-            });
-            //services.AddCors(o => o.AddPolicy(MyAllowSpecificOrigins, builder =>
-            //{
-            //    //builder.AllowAnyOrigin()
-            //    builder.WithOrigins("http://localhost:4200")
-            //           .AllowAnyMethod()
-            //           .AllowAnyHeader();
-            //}));
-
-            services.AddResponseCompression(options =>
-            {
-                options.EnableForHttps = true;
-            });
-            services.AddControllers().AddJsonOptions(options =>
-            {
-                options.JsonSerializerOptions.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter());
-				//options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-				//options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
+			services.AddScoped<UserDB>();
+			services.AddScoped<NotificationDB>();
+			IoCConfiguration.Configuration(services);
+			services.AddSingleton(Configuration);
+			services.AddCors(options =>
+			{
+				options.AddPolicy("_myAllowSpecificOrigins", builder =>
+				{
+					builder.WithOrigins("http://localhost:4200")
+						   .AllowAnyMethod()
+						   .AllowAnyHeader()
+						   .AllowCredentials();
+				});
 			});
-            services.AddDbContext<AppDBContext>(options =>
-            {
-                options.UseSqlServer(Configuration.GetConnectionString("BISDbConn"));
-            });
-            JwtTokenConfig.AddJwtTokenAuthentication(services, Configuration);
-            services.AddSwaggerConfiguration();
-            // Configure Newtonsoft.Json settings
-            var nullValueSettings = new JsonSerializerSettings
-            {
-                NullValueHandling = NullValueHandling.Ignore,
-                MissingMemberHandling = MissingMemberHandling.Ignore
-            };
+			//services.AddCors(o => o.AddPolicy(MyAllowSpecificOrigins, builder =>
+			//{
+			//    //builder.AllowAnyOrigin()
+			//    builder.WithOrigins("http://localhost:4200")
+			//           .AllowAnyMethod()
+			//           .AllowAnyHeader();
+			//}));
+			services.AddSignalR();
+			services.AddResponseCompression(options =>
+			{
+				options.EnableForHttps = true;
+			});
+			services.AddControllers().AddJsonOptions(options =>
+			{
+				options.JsonSerializerOptions.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter());
 
-            services.AddMvc(options =>
-            {
-                options.Filters.Add(typeof(ValidateModelFilter));
-            }).AddDataAnnotationsLocalization()
-            .AddNewtonsoftJson();
-        }
+			});
+			services.AddDbContext<AppDBContext>(options =>
+			{
+				options.UseSqlServer(Configuration.GetConnectionString("BISDbConn"));
+			});
+			JwtTokenConfig.AddJwtTokenAuthentication(services, Configuration);
+			services.AddSwaggerConfiguration();
+			var nullValueSettings = new JsonSerializerSettings
+			{
+				NullValueHandling = NullValueHandling.Ignore,
+				MissingMemberHandling = MissingMemberHandling.Ignore
+			};
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-        {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-                app.UseSwaggerSetup();
+			services.AddMvc(options =>
+			{
+				options.Filters.Add(typeof(ValidateModelFilter));
+			}).AddDataAnnotationsLocalization()
+			.AddNewtonsoftJson();
+		}
 
-                app.UseSwagger();  // This enables the Swagger middleware
-                app.UseSwaggerUI(c =>
-                {
-                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "BIS API v1");  // Define the endpoint for Swagger UI
-                    c.RoutePrefix = string.Empty; // This will make Swagger UI available at the root URL, i.e., http://localhost:port/
-                });
+		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+		{
+			if (env.IsDevelopment())
+			{
+				app.UseDeveloperExceptionPage();
+				app.UseSwaggerSetup();
 
-            }
+				app.UseSwagger(); 
+				app.UseSwaggerUI(c =>
+				{
+					c.SwaggerEndpoint("/swagger/v1/swagger.json", "BIS API v1");  
+					c.RoutePrefix = string.Empty; 
+				});
 
-            //app.UseCors(MyAllowSpecificOrigins);
-            app.UseCors("_myAllowSpecificOrigins");
-            //app.UseCors();
-            app.UseRouting();
-            app.UseAuthentication();
-            app.UseHttpsRedirection();
-            app.UseAuthorization();
-            app.UseResponseCompression();
-            app.UseResponseCaching();
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
-        }
-    }
+			}
+			app.UseWebSockets();
+			app.UseRouting();
+			app.UseCors("_myAllowSpecificOrigins");
+			//app.ConfigureExceptionHandler();
+			
+			//app.UseCors(MyAllowSpecificOrigins);
+			
+			
+			
+			//app.UseAuthorization();
+			//app.UseCors();
+			
+			app.UseAuthentication();
+			app.UseAuthorization();
+			app.UseResponseCompression();
+
+			
+			//app.UseHttpsRedirection();
+			
+			//app.UseResponseCaching();
+			app.UseEndpoints(endpoints =>
+			{
+				endpoints.MapControllers();
+				//endpoints.MapHub<NotificationHub>("/notificationhub");
+				endpoints.MapHub<NotificationHub>("/notificationhub");
+
+			});
+		}
+	}
 }
