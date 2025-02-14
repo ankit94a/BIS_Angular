@@ -24,7 +24,7 @@ namespace BIS.Common.Entities
 		public List<GraphImages>? Graphs { get; set; }
 		public string? GraphIds { get; set; }
 		public int? RptId { get; set; }
-		public Status Status { get; set; }
+		public Status? Status { get; set; }
 	}
 	public class GraphImages : BaseEntity
 	{

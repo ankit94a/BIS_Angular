@@ -11,5 +11,6 @@ namespace BIS.Manager.Interfaces
 	{
 		public List<Notification> GetNotificationByUserId(int userId);
 		public long UpdateStatus(Notification notify, bool isApproved);
+		public bool GetNotificationConfig();
 	}
 }

@@ -41,7 +41,7 @@
           [closeOnSelect]="false" [(ngModel)]="filterModel.sector" placeholder="Sector" [searchable]="true">
           <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
             <div class="ng-value" *ngFor="let item of items">
-              <span class="ng-value-label">{{item}}</span>
+              <span class="ng-value-label">{{item.name}}</span>
               <span class="ng-value-icon right px-1" (click)="clear(item)" aria-hidden="true">×</span>
             </div>
           </ng-template>
@@ -71,9 +71,10 @@
           </button>
         </section>
         <div class="chart-container">
-          <canvas baseChart [data]="frmInputChartData" type="pie" [options]="ChartOptions"></canvas>
+          <canvas baseChart [data]="frmInputChartData" type="doughnut" [options]="ChartOptions"></canvas>
         </div>
       </mat-card>
+
 
       <mat-card class="card card-small">
         <section class="card-title">
@@ -84,7 +85,7 @@
           </button>
         </section>
         <div class="chart-container">
-          <canvas baseChart [data]="frm30DaysChartData" type="pie" [options]="ChartOptions"></canvas>
+          <canvas baseChart [data]="frm30DaysChartData" type="doughnut" [options]="ChartOptions"></canvas>
         </div>
       </mat-card>
 
@@ -97,7 +98,7 @@
           </button>
         </section>
         <div class="chart-container">
-          <canvas baseChart [data]="frmTodayChartData" type="pie" [options]="ChartOptions"></canvas>
+          <canvas baseChart [data]="frmTodayChartData" type="doughnut" [options]="ChartOptions"></canvas>
         </div>
       </mat-card>
 
@@ -110,9 +111,10 @@
           </button>
         </section>
         <div class="chart-container">
-          <canvas baseChart [data]="frm12MonthsChartData" [options]="lineChartOptions" [type]="'line'"></canvas>
+          <canvas baseChart [data]="frm12MonthsChartData" [options]="barChartOptions" [type]="'bar'"></canvas>
         </div>
       </mat-card>
+
     </div>
 
     <br>
@@ -127,7 +129,7 @@
           </button>
         </section>
         <div class="chart-container">
-          <canvas baseChart [data]="frmInputChartData" type="pie" [options]="ChartOptions"></canvas>
+          <canvas baseChart [data]="frmInputChartData" type="polarArea" [options]="ChartOptions"></canvas>
         </div>
         <!-- <div class="card-footer">
                 <ul>
@@ -144,7 +146,7 @@
           </button>
         </section>
         <div class="chart-container">
-          <canvas baseChart [data]="frm30DaysChartData" type='pie' [options]="ChartOptions"></canvas>
+          <canvas baseChart [data]="frm30DaysChartData" type='polarArea' [options]="ChartOptions"></canvas>
         </div>
         <!-- <div class="card-footer">
                   <ul>
@@ -162,7 +164,7 @@
           </button>
         </section>
         <div class="chart-container">
-          <canvas baseChart [data]="frmTodayChartData" type='pie' [options]="ChartOptions"></canvas>
+          <canvas baseChart [data]="frmTodayChartData" type='polarArea' [options]="ChartOptions"></canvas>
         </div>
         <!-- <div class="card-footer">
                   <ul>

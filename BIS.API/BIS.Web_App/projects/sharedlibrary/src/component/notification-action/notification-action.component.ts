@@ -41,7 +41,7 @@ export class NotificationActionComponent extends EnumBase {
   chartImages$ = this.chartImagesSubject.asObservable();
   constructor(private toastr: ToastrService, private cdr: ChangeDetectorRef, private masterDataService: MasterDataFilterService, @Inject(MAT_DIALOG_DATA) data, private apiService: ApiService, private dialogRef: MatDialogRef<NotificationActionComponent>) {
     super();
-    debugger
+
     this.notify = data;
     this.masterData = new masterData();
     if (this.notify.notificationType == NotificationType.MasterData) {
@@ -74,7 +74,7 @@ export class NotificationActionComponent extends EnumBase {
   getReport() {
     this.apiService.postWithHeader('notification/report', this.notify).subscribe(res => {
       if (res) {
-        debugger
+
         if (res.rptId != null && res.rptId != undefined && res?.rptId > 0) {
           this.report2 = res;
           this.getG1Report(this.report.rptId)
@@ -97,7 +97,7 @@ export class NotificationActionComponent extends EnumBase {
     rpt.dataId = reportId;
     this.apiService.postWithHeader('notification/report', rpt).subscribe(res => {
       if (res) {
-        debugger
+
         this.report = res;
         this.getMasterList();
         if (this.report.graphIds != undefined && this.report.graphIds != null && this.report.graphIds != '') {

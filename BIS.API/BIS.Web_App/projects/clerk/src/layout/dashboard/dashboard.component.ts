@@ -2,7 +2,7 @@ import { Component, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/
 import { SharedLibraryModule } from '../../../../sharedlibrary/src/shared-library.module';
 import { ApiService } from '../../../../sharedlibrary/src/services/api.service';
 import { BaseChartDirective } from 'ng2-charts';
-import { ChartData, ChartOptions } from 'chart.js';
+import { ChartConfiguration, ChartData, ChartOptions } from 'chart.js';
 import { DashboardFmnAspect } from 'projects/sharedlibrary/src/model/dashboard-fmn-aspect';
 import { DasboardChart, DashboardInputCount, FilterModel } from 'projects/sharedlibrary/src/model/dashboard.model';
 import { AuthService } from 'projects/sharedlibrary/src/services/auth.service';
@@ -81,6 +81,8 @@ export class DashboardComponent implements OnInit {
     // this.getWeekCount();
     // this.getFrmInputData()
   }
+
+
   getSector() {
     this.apiService.getWithHeaders('MasterData/sector').subscribe(res => {
       if (res) {
@@ -91,7 +93,6 @@ export class DashboardComponent implements OnInit {
   getFrmnList(id){
     this.apiService.getWithHeaders('corps/frmlist/'+id).subscribe(res =>{
       if(res){
-        debugger
         this.frmnList = res;
         this.filterModel.frmn = [];
         this.filterModel.frmn.push(res[res.length - 1].name)
@@ -417,6 +418,28 @@ export class DashboardComponent implements OnInit {
           text: 'Values',
         },
         beginAtZero: true,
+      },
+    },
+  };
+  public barChartOptions: ChartOptions = {
+    responsive: true,
+    plugins: {
+      legend: {
+        display:false
+      },
+      tooltip: {
+        callbacks: {
+          label: function (tooltipItem) {
+            const dataLabel = tooltipItem.label;
+            const dataValue = tooltipItem.raw;
+            return ` ${dataValue}`;
+          }
+        }
+      }
+    },
+    elements: {
+      arc: {
+        backgroundColor: this.bgColor
       },
     },
   };

@@ -13,7 +13,7 @@ export class SignalRService {
   constructor(private apiService: ApiService) { }
 
   public startConnection = () => {
-debugger
+
     const token = localStorage.getItem('BIS_TOKEN');
     this.hubConnection = new signalR.HubConnectionBuilder()
       .withUrl(this.baseUrl + 'notificationhub', {

@@ -1,12 +1,14 @@
 <mat-toolbar color="primary" class="app-header">
     <mat-toolbar-row>
+      <div class="contents">
         <div fxShow="true">
             <button mat-icon-button (click)="toggleSideBar()">
                 <mat-icon>menu</mat-icon>
             </button>
         </div>
         <span> {{facilityName}} </span>
-        <span class="example-spacer"></span>
+        <span class="example-spacer">
+        </span>
         <div class="user mx-4" *ngIf="roleType != '1'">
                 <app-notification></app-notification>
         </div>
@@ -35,6 +37,7 @@
                 </button>
             </mat-menu>
         </div>
+      </div>
     </mat-toolbar-row>
 
 </mat-toolbar>
