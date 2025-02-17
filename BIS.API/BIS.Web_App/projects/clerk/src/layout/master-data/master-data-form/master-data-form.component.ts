@@ -14,6 +14,7 @@ import { MasterDataComponent } from '../master-data-list/master-data.component';
 import { MatDialogRef } from '@angular/material/dialog';
 import { AuthService } from 'projects/sharedlibrary/src/services/auth.service';
 import { Aspect, Indicator } from 'projects/sharedlibrary/src/model/attribute.model';
+import { MasterDataService } from 'projects/sharedlibrary/src/services/master-data.service';
 
 @Component({
   selector: 'app-master-data-form',
@@ -42,27 +43,39 @@ export class MasterDataFormComponent {
   typeOfLoc:MasterLoc[] = [];
   enemyLocations:EnemyLocation[] = [];
   indicators: Indicator[] = [];
-
-  constructor(private authService:AuthService, private apiService: ApiService,private datePipe: DatePipe,  private toastr: ToastrService) {
+  masterData;
+  hasNonEmptyParams:boolean=false;
+  constructor(private masterDataService:MasterDataService,private authService:AuthService, private apiService: ApiService,private datePipe: DatePipe,  private toastr: ToastrService) {
     this.indicators = [];
+    this.getData();
   }
 
   getAspect(){
     this.apiService.getWithHeaders('attribute/allaspect').subscribe(res =>{
       if(res){
         this.aspectList = res;
+        debugger
+        if(this.hasNonEmptyParams){
+          let aspect = this.aspectList.find(item => item.name == this.masterData.aspect);    
+          this.createData.controls['aspect'].patchValue(aspect.id);
+          this.getIndicator(aspect.id);
+        }
       }
     })
   }
   getIndicator(event){
-    this.apiService.getWithHeaders('attribute/indicator/' + event.value).subscribe(res =>{
+    this.apiService.getWithHeaders('attribute/indicator/' + event).subscribe(res =>{
       if(res){
         this.indicators = res;
+        if(this.hasNonEmptyParams){
+          this.onChange2(this.createData.controls['indicator'].value)
+        }
       }
     })
   }
 
   ngOnInit(): void {
+    
     this.createData = this.formBuilder.group({
       // reportedDate: ['', Validators.required],
       // masterInputlevelID:[0],
@@ -555,10 +568,28 @@ export class MasterDataFormComponent {
       this.name = this.authService.getCorpsName();
     }
     this.fmnList.push(this.name);
-    this.createData.get('frmn')?.setValue(this.name);
-    this.getData();
+    this.createData.get('frmn')?.setValue(this.name);  
     this.createData.get('reportedDate')?.disable();
+
+    // new work for edit master-form
+    const queryParams = this.route.snapshot.queryParams;
+    this.hasNonEmptyParams = Object.keys(queryParams).some(key => queryParams[key] !== null && queryParams[key] !== undefined && queryParams[key] !== '');
+    if(this.hasNonEmptyParams){
+      this.masterData = this.masterDataService.getMasterData();
+      this.patchFormValues(this.masterData);
+    }
   }
+  patchFormValues(data: any) { 
+    if (this.createData && this.createData.controls) {
+      const formControls = this.createData.controls;
+      Object.keys(data).forEach(key => {
+        if (formControls[key]) {
+          formControls[key].patchValue(data[key] || '');
+        }
+      });    
+    }  
+  }
+
   getData(){
     this.getAspect();
     this.getInputLevel();
@@ -639,7 +670,8 @@ export class MasterDataFormComponent {
   dynamicDropdownLabel: string = '';  // Label for the dynamic dropdown
 
   onChange2($event) {
-    const selectedIndicator = this.subselected;
+    debugger
+    const selectedIndicator = $event;
     const fields = this.fieldConfigurations[selectedIndicator] || [];
 
     this.dynamicFields = fields.filter(field => field.type !== 'dropdown');

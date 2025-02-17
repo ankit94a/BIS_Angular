@@ -8,6 +8,8 @@ import { BISMatDialogService, } from 'projects/sharedlibrary/src/services/insync
 import { MasterDataAddComponent } from '../master-data-add/master-data-add.component';
 import { BisdefaultDatePipe } from 'projects/sharedlibrary/src/pipe/bisdefault-date.pipe';
 import { Status } from 'projects/sharedlibrary/src/model/enum';
+import { Router } from '@angular/router';
+import { MasterDataService } from 'projects/sharedlibrary/src/services/master-data.service';
 
 @Component({
   selector: 'app-master-data',
@@ -19,7 +21,7 @@ export class MasterDataComponent extends TablePaginationSettingsConfig implement
   DataList:masterData[] = [];
   isRefresh=false;
   sortedData = [];
-  constructor(private apiService:ApiService,private dialogService:BISMatDialogService){
+  constructor(private apiService:ApiService,private dialogService:BISMatDialogService,private router:Router,private masterDataService:MasterDataService){
     super();
   this.tablePaginationSettings.enableAction = true;
     this.tablePaginationSettings.enableEdit = true;
@@ -43,15 +45,17 @@ export class MasterDataComponent extends TablePaginationSettingsConfig implement
   view($event){
 
   }
-  edit(event){
-
+  edit(event: masterData) {
+    event.isView = false;
+    this.masterDataService.setMasterData(event);
+    this.router.navigate(['master-data-form'], { queryParams: { id: event.id } });
   }
+  
   getMoreSameples($event){
 
   }
   filterType = ['Created','Processing','Approved','Rejected']
   filterData($event){
-    debugger;
     if($event == 'Created'){
       this.DataList = this.sortedData.filter(item => item.status == Status.Created)
     }else if($event == 'Processing'){

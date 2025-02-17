@@ -105,11 +105,12 @@
                 <button mat-icon-button color="accent" *ngIf="element!=null && tablePaginationSettings.enableUpload"
                     type="button" (click)="uploadFile(element)" matTooltip="upload"> <mat-icon>upload</mat-icon>
                 </button>
-                <button mat-icon-button color="basic" *ngIf="element!=null && tablePaginationSettings.enableEdit"
-                    type="button" (click)="editObj(element)" matTooltip="edit"> <mat-icon>edit</mat-icon></button>
                 <button mat-icon-button color="accent" *ngIf="element!=null && tablePaginationSettings.enableView"
                     type="button" (click)="viewObj(element)" matTooltip="view"> <mat-icon>remove_red_eye</mat-icon>
                 </button>
+                <button mat-icon-button color="basic" *ngIf="element!=null && tablePaginationSettings.enableEdit && element.status == '1'"
+                    type="button" (click)="editObj(element)" matTooltip="edit"> <mat-icon>edit</mat-icon></button>
+                
                 <button mat-icon-button color="warn" *ngIf="element!=null && tablePaginationSettings.enableDelete"
                     type="button" (click)="deleteObj(i,element)" matTooltip="delete">
                     <mat-icon>delete_outline</mat-icon>

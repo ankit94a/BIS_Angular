@@ -134,14 +134,21 @@ namespace BIS.API.Controller
 			return Ok(_masterDataManager.GetAllEnemyLocation());
 		}
 
-		// Ansh - smart-analysis
-		//[HttpGet("by-ids")]
-		//public async Task<ActionResult> GetDataByIds([FromQuery] List<int> ids)
-		//{
-		//    var data = await _masterDataManager.GetByIds(ids);
-		//    return Ok(data);
-		//}
+        [HttpPut]
+        public IActionResult updateMasterData(MasterData masterData)
+        {
+            masterData.UpdatedBy = HttpContext.GetUserId();
+            return Ok(_masterDataManager.Update(masterData));
+        }
+
+        // Ansh - smart-analysis
+        //[HttpGet("by-ids")]
+        //public async Task<ActionResult> GetDataByIds([FromQuery] List<int> ids)
+        //{
+        //    var data = await _masterDataManager.GetByIds(ids);
+        //    return Ok(data);
+        //}
 
 
-	}
+    }
 }
