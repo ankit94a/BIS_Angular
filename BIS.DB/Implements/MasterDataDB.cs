@@ -115,11 +115,19 @@ namespace BIS.DB.Implements
 		{
 			return _dbContext.MasterEnLocName.Where(ms => ms.IsActive).ToList();
 		}
-		public long Update(MasterData masterData)
-		{
-			throw new NotImplementedException();
-		}
-		public MasterData GetBy(long Id, long CorpsId)
+        public long Update(MasterData masterData)
+        {
+            var data = _dbContext.MasterDatas.FirstOrDefault(ms => ms.ID == masterData.ID && ms.Status == Status.Created);
+			
+			if(data != null)
+			{
+				_dbContext.MasterDatas.Update(masterData);
+                var id = _dbContext.SaveChanges();
+                return id;
+            }
+			return 0;
+        }
+        public MasterData GetBy(long Id, long CorpsId)
 		{
 			return _dbContext.MasterDatas.Where(ms => ms.ID == Id && ms.CorpsId == CorpsId).FirstOrDefault();
 		}

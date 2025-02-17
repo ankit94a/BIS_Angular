@@ -155,11 +155,12 @@ namespace BIS.Manager.Implements
 		{
 			throw new NotImplementedException();
 		}
-		public long Update(MasterData masterData)
-		{
-			throw new NotImplementedException();
-		}
-		public MasterData GetBy(int Id, int CorpsId)
+        public long Update(MasterData masterData)
+        {
+            masterData.UpdatedOn = DateTime.Now;
+            return _masterDataDB.Update(masterData);
+        }
+        public MasterData GetBy(int Id, int CorpsId)
 		{
 			return _masterDataDB.GetBy(Id, CorpsId);
 		}
