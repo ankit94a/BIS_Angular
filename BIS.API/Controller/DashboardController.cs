@@ -21,6 +21,14 @@ namespace BIS.API.Controller
             int divisionId = HttpContext.GetDivisionId();
             return Ok(_dashboardManager.GetInputCounts(corpsId,divisionId));
         }
+        [HttpPost, Route("sector")]
+        public IActionResult GetSectorWiseData([FromBody] FilterModel filterModel)
+        {
+            long corpsId = HttpContext.GetCorpsId();
+            long divisionId = HttpContext.GetDivisionId();
+            RoleType roleType = HttpContext.GetRoleType();
+            return Ok(_dashboardManager.GetSectorWiseData(corpsId, divisionId, roleType, filterModel));
+        }
         [HttpPost,Route("fmn")]
         public IActionResult GetFmnWiseData([FromBody] FilterModel filterModel)
         {

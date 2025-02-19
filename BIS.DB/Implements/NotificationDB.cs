@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using BIS.Common.Entities;
 using BIS.DB.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
 using static BIS.Common.Enum.Enum;
 
@@ -44,5 +45,17 @@ namespace BIS.DB.Implements
 
 			return result?.Id ?? 0;
 		}
+        public long NotificationViewed(Notification notification)
+        {
+            var result = _dbContext.Notification.Where(n => n.Id == notification.Id).FirstOrDefault();
+
+            if (result != null)
+            {
+                result.IsRead = true;
+                _dbContext.SaveChanges();
+            }
+
+            return result?.Id ?? 0;
+        }
     }
 }
