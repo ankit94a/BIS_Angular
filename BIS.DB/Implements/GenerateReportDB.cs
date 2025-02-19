@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using BIS.Common.Entities;
 using BIS.DB.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using static BIS.Common.Enum.Enum;
 
 namespace BIS.DB.Implements
 {
@@ -83,5 +84,24 @@ namespace BIS.DB.Implements
 				throw ex;
 			}
 		}
-	}
+        public async Task<long> UpdateStatus(int id, Status status)
+        {
+            try
+            {
+                var result = _dbContext.GenerateReports.Where(ap => ap.Id == id).FirstOrDefault();
+                if (result != null)
+                {
+                    result.Status = status;
+                    _dbContext.SaveChanges();
+                }
+
+                return result?.Id ?? 0;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw ex;
+            }
+        }
+    }
 }

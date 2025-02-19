@@ -1,5 +1,5 @@
 import { BaseEntity } from "./base.model";
-import { NotificationType, RoleType } from "./enum";
+import { NotificationType, RoleType, Status } from "./enum";
 
 export class NotificationModel extends BaseEntity{
    senderEntityId: number;
@@ -12,4 +12,5 @@ export class NotificationModel extends BaseEntity{
    isActionRequired: boolean;
    isReaded: boolean;
    dataId:number;
+   status:Status;
 }

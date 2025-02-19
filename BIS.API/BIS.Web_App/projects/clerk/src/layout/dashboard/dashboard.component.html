@@ -283,7 +283,7 @@
           placeholder="Sector" [searchable]="true" [closeOnSelect]="false">
           <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
             <div class="ng-value" *ngFor="let item of items">
-              <span class="ng-value-label">{{item}}</span>
+              <span class="ng-value-label">{{item.name}}</span>
             </div>
           </ng-template>
         </ng-select>

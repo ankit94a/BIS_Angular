@@ -3,8 +3,8 @@
     <div class="row full-width">
       <div class="col-sm-2">MasterData List</div>
       <!-- <div class="col-sm-2 offset-md-6">Bulk</div> -->
-      <div class="col-sm-2 offset-md-6"></div>
-      <div class="col-sm-2" align="end"><button class="btn btn-link" (click)="add()">+ Add Data</button>
+      <div class="col-sm-3 offset-md-6"> <action-dropdown></action-dropdown> </div>
+      <div class="col-sm-1" align="end"><button class="btn btn-link" (click)="add()">+ Add Data</button>
       </div>
     </div>
   </mat-card-header>
@@ -49,13 +49,16 @@
           </ng-template>
         </ng-select>
       </div> -->
+      <div class="col-md-3">
+        <button type="button" class="btn btn-sm btn-outline-primary" *ngIf="selectedSample?.length > 0" (click)="exportToExcel()">Download Selected</button>
+      </div>
     </div>
 
 
     <app-table *ngIf="DataList.length > 0" [rowData]="DataList" [tablePaginationSettings]="tablePaginationSettings"
       [enableCheckbox]="true" [isRowBackgroundColor]="true" [isRefresh]="isRefresh" [allowMultiSelect]="true"
       (edit)="edit($event)" (view)="view($event)" [sqColumnDefinition]="columns"
-      (pageChanged)="getMoreSameples($event)">
+      (pageChanged)="getMoreSameples($event)" (getSelectedRows)="getSelectedRows($event)">
     </app-table>
     <div class="span" *ngIf="DataList.length == 0">
       <h4>NO Data Found</h4>

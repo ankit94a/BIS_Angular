@@ -10,10 +10,15 @@ import { BisdefaultDatePipe } from 'projects/sharedlibrary/src/pipe/bisdefault-d
 import { Status } from 'projects/sharedlibrary/src/model/enum';
 import { Router } from '@angular/router';
 import { MasterDataService } from 'projects/sharedlibrary/src/services/master-data.service';
-
+import { ActionDropdownComponent } from 'projects/sharedlibrary/src/component/action-dropdown/action-dropdown.component';
+import { MasterDataFilterService } from 'projects/sharedlibrary/src/services/master-data-filter.service';
+import { DownloadService } from 'projects/sharedlibrary/src/services/download.service';
+// import * as  ExcelJS from 'exceljs';
+import { formatDate } from '@angular/common';
+import * as XLSX from 'xlsx';
 @Component({
   selector: 'app-master-data',
-  imports: [SharedLibraryModule,ZipperTableComponent],
+  imports: [SharedLibraryModule,ZipperTableComponent,ActionDropdownComponent],
   templateUrl: './master-data.component.html',
   styleUrl: './master-data.component.scss'
 })
@@ -21,7 +26,8 @@ export class MasterDataComponent extends TablePaginationSettingsConfig implement
   DataList:masterData[] = [];
   isRefresh=false;
   sortedData = [];
-  constructor(private apiService:ApiService,private dialogService:BISMatDialogService,private router:Router,private masterDataService:MasterDataService){
+  selectedSample;
+  constructor(private apiService:ApiService,private downloadService:DownloadService,private masterFilterService:MasterDataFilterService,private dialogService:BISMatDialogService,private router:Router,private masterDataService:MasterDataService){
     super();
   this.tablePaginationSettings.enableAction = true;
     this.tablePaginationSettings.enableEdit = true;
@@ -31,6 +37,44 @@ export class MasterDataComponent extends TablePaginationSettingsConfig implement
     this.tablePaginationSettings.pageSizeOptions = [50, 100];
     this.tablePaginationSettings.showFirstLastButtons = false
   }
+  getSelectedRows($event){
+    this.selectedSample = $event;
+  }
+  // exportToExcel() {
+  //   if (this.selectedSample?.length > 0) {
+  //     const { Header, DataList } = this.masterFilterService.getMasterData(this.selectedSample);
+  //     const workbook = new ExcelJS.Workbook();
+  //     const worksheet = workbook.addWorksheet('Master Data');
+  //     const fileName = `Master_Data_${formatDate(new Date(), 'd MMM yyyy', 'en')}.xlsx`;
+  
+  //     // Generate the data array by mapping headers to each data row
+  //     const Data = DataList.map(item => {
+  //       return Header.map(head => item[head] ?? '');
+  //     });
+  
+  //     // Pass the structured data and header to the download service
+  //     this.downloadService.SaveExcel(worksheet, workbook, fileName, Data, Header);
+  //   } else {
+  //     console.warn('No data selected to export.');
+  //   }
+  // }
+  exportToExcel() {
+    if (this.selectedSample?.length > 0) {
+        const { Header, DataList } = this.masterFilterService.getMasterData(this.selectedSample);
+        const fileName = `Master_Data_${formatDate(new Date(), 'd MMM yyyy', 'en')}.xlsx`;
+
+        // Generate the data array by mapping headers to each data row
+        const Data = DataList.map(item => {
+            return Header.map(head => item[head] ?? ''); // Get corresponding value for each header
+        });
+
+        // Pass the structured data and header to the download service
+        this.downloadService.SaveExcel(null, null, fileName, Data, Header);
+    } else {
+        console.warn('No data selected to export.');
+    }
+}
+  
   ngOnInit(): void {
     this.getDataFromServer();
   }
@@ -43,7 +87,7 @@ export class MasterDataComponent extends TablePaginationSettingsConfig implement
 
   }
   view($event){
-
+    const dialogRef = this.dialogService.open(MasterDataAddComponent,$event)
   }
   edit(event: masterData) {
     event.isView = false;
@@ -56,15 +100,17 @@ export class MasterDataComponent extends TablePaginationSettingsConfig implement
   }
   filterType = ['Created','Processing','Approved','Rejected']
   filterData($event){
+    let res;
     if($event == 'Created'){
-      this.DataList = this.sortedData.filter(item => item.status == Status.Created)
+      res = this.DataList = this.sortedData.filter(item => item.status == Status.Created)
     }else if($event == 'Processing'){
-      this.DataList = this.sortedData.filter(item => item.status == Status.Progress)
+      res = this.sortedData.filter(item => item.status == Status.Progress)
     }else if($event == 'Approved'){
-      this.DataList = this.sortedData.filter(item => item.status == Status.Approved)
+      res = this.sortedData.filter(item => item.status == Status.Approved)
     }else{
-      this.DataList = this.sortedData.filter(item => item.status == Status.Rejected)
+      res = this.sortedData.filter(item => item.status == Status.Rejected)
     }
+    this.DataList = [...res]
   }
   getDataFromServer(){
     this.apiService.getWithHeaders('MasterData').subscribe(res => {

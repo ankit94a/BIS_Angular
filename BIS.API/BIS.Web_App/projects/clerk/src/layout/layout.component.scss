@@ -13,3 +13,26 @@
   height: 50px;
   width: 50px;
 }
+
+.content {
+  height: 87.9vh;
+}
+
+@media screen and (min-width: 768px) {
+  .content {
+    height: 80vh;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .content {
+    height: 84vh;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .content {
+    height: 100vh;
+  }
+}
+

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,6 +19,8 @@ namespace BIS.Common.Entities
         public RoleType SenderEntityType { get; set; }
         public RoleType ReceiverEntityType { get; set; }
         public int DataId { get; set; }
+        [NotMapped]
+        public Status? Status { get; set; }
 
     }
 }

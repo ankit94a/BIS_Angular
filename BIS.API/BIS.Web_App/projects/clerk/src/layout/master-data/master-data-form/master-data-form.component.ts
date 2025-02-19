@@ -45,6 +45,9 @@ export class MasterDataFormComponent {
   indicators: Indicator[] = [];
   masterData;
   hasNonEmptyParams:boolean=false;
+
+  // storing aspectName globally for handling add form
+  aspectName:string;
   constructor(private masterDataService:MasterDataService,private authService:AuthService, private apiService: ApiService,private datePipe: DatePipe,  private toastr: ToastrService) {
     this.indicators = [];
     this.getData();
@@ -54,7 +57,6 @@ export class MasterDataFormComponent {
     this.apiService.getWithHeaders('attribute/allaspect').subscribe(res =>{
       if(res){
         this.aspectList = res;
-        debugger
         if(this.hasNonEmptyParams){
           let aspect = this.aspectList.find(item => item.name == this.masterData.aspect);    
           this.createData.controls['aspect'].patchValue(aspect.id);
@@ -64,6 +66,10 @@ export class MasterDataFormComponent {
     })
   }
   getIndicator(event){
+    debugger
+    if(!this.hasNonEmptyParams){
+      this.aspectName = this.aspectList.find(item => item.id == event).name;  
+    }
     this.apiService.getWithHeaders('attribute/indicator/' + event).subscribe(res =>{
       if(res){
         this.indicators = res;
@@ -648,6 +654,9 @@ export class MasterDataFormComponent {
 
   save() {
     if(!this.createData.invalid){
+      if(!this.hasNonEmptyParams){
+        this.createData.get('aspect')?.setValue(this.aspectName);
+      }
     this.apiService.postWithHeader('masterData',this.createData.value).subscribe(res =>{
       if (res) {
         this.toastr.success("Input saved successfully",'success');

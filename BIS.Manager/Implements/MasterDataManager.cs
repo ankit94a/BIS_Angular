@@ -141,11 +141,11 @@ namespace BIS.Manager.Implements
 							{
 								notification.ReceiverId = await userDB.GetUserIdByRoleType(item, masterData.CorpsId, masterData.DivisionId);
 								notification.ReceiverEntityType = item;
-
-
 								await notificationDB.AddNotification(notification); 
 							}
 						}
+						var masterDB = scope.ServiceProvider.GetRequiredService<MasterDataDB>();
+						await masterDB.UpdateStatus(masterData.ID, Status.Progress);
 					}
 				});
 			}

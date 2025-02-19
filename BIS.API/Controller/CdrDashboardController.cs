@@ -31,7 +31,7 @@ namespace BIS.API.Controller
 			inference.CreatedBy = HttpContext.GetUserId();
 			inference.CreatedOn = DateTime.UtcNow;
 			inference.CorpsId = HttpContext.GetCorpsId();
-			inference.DivisionId = HttpContext.GetCorpsId();
+			inference.DivisionId = HttpContext.GetDivisionId();
 			inference.IsActive = true;
 			RoleType roleTye = HttpContext.GetRoleType();
 			return Ok(_cdrDashboardManager.AddInference(inference,roleTye));
