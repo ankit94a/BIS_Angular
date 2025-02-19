@@ -2,7 +2,7 @@ import { Component, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/
 import { SharedLibraryModule } from '../../../../sharedlibrary/src/shared-library.module';
 import { ApiService } from '../../../../sharedlibrary/src/services/api.service';
 import { BaseChartDirective } from 'ng2-charts';
-import { ChartConfiguration, ChartData, ChartOptions } from 'chart.js';
+import { ChartConfiguration, ChartData, ChartDataset, ChartOptions } from 'chart.js';
 import { DashboardFmnAspect } from 'projects/sharedlibrary/src/model/dashboard-fmn-aspect';
 import { DasboardChart, DashboardInputCount, FilterModel } from 'projects/sharedlibrary/src/model/dashboard.model';
 import { AuthService } from 'projects/sharedlibrary/src/services/auth.service';
@@ -29,6 +29,11 @@ export class DashboardComponent implements OnInit {
   sectorList: any = [];
   filterModel: FilterModel = new FilterModel();
   indicatorFilter:FilterModel = new FilterModel();
+
+  sectorInputChartData:ChartData<'pie'>;
+  sector30DaysChartData:ChartData<'pie'>;
+  sectorTodayChartData:ChartData<'pie'>;
+  sector12MonthsChartData:ChartData<'line'>;
 
   frmInputChartData:ChartData<'pie'>;
   frm30DaysChartData:ChartData<'pie'>;
@@ -157,6 +162,10 @@ export class DashboardComponent implements OnInit {
     this.getAspect30DaysData();
     this.getAspectTodayData();
     this.getAspect12MonthsData();
+    this.getSectorInputData()
+    this.getSectorInput30DaysData();
+    this.getSectorInputTodayData();
+    this.getSector12MonthsData();
   }
   getIndicatorAndLocation(){
     this.getIndicatorData();
@@ -172,6 +181,103 @@ export class DashboardComponent implements OnInit {
       }
     })
   }
+
+  // Getting Frmn Chart Data
+  getSectorInputData(){
+    this.apiService.postWithHeader('dashboard/sector',this.filterModel).subscribe(res =>{
+      if(res){
+        this.sectorInputChartData = {
+          labels: res.name,
+          datasets: [
+            { data: res.count, label: res.name },
+          ],
+        };
+      }
+    })
+  }
+  getSectorInput30DaysData(){
+    this.apiService.postWithHeader('dashboard/sector/30days',this.filterModel).subscribe(res =>{
+      if(res){
+        this.sector30DaysChartData = {
+          labels: res.name,
+          datasets: [
+            { data: res.count, label: res.name },
+          ],
+        };
+      }
+    })
+  }
+  getSectorInputTodayData(){
+    this.apiService.postWithHeader('dashboard/sector/today',this.filterModel).subscribe(res =>{
+      if(res){
+        this.sectorTodayChartData = {
+          labels: res.name,
+          datasets: [
+            { data: res.count, label: res.name },
+          ],
+        };
+      }
+    })
+  }
+  getSector12MonthsData(){
+    this.apiService.postWithHeader('dashboard/sector/last12Months',this.filterModel).subscribe(res =>{
+      if(res){
+        this.prepareChartData(res)
+        this.sector12MonthsChartData = {
+          labels: res.name,
+          datasets: [
+            { data: res.count, label: res.name,
+              backgroundColor: 'rgba(151, 126, 201, 0.5)', // Semi-transparent blue
+              borderColor: 'rgba(150, 68, 150, 0.5)', // Solid blue
+              borderWidth: 1.2,
+              fill: true, // Fill area under the line
+              tension: 0.4, // Adds smoothness to the line
+            },
+          ],
+        };
+      }
+    })
+  }
+  public barChartLabels: string[] = [];
+  public barChartData: ChartData<'bar'> = { labels: [], datasets: [] }
+  prepareChartData(chartData: { name: string[], count: number[] }) {
+    const monthGroups: { [key: string]: { sector: string, count: number }[] } = {};
+
+    chartData.name.forEach((fullLabel, index) => {
+      const [sector, monthYear] = fullLabel.split(" - ");
+      if (!monthGroups[monthYear]) {
+        monthGroups[monthYear] = [];
+      }
+      monthGroups[monthYear].push({ sector, count: chartData.count[index] });
+    });
+
+    const sortedMonths = Object.keys(monthGroups).sort(
+      (a, b) => new Date(a).getTime() - new Date(b).getTime()
+    );
+
+    this.barChartData.labels = sortedMonths; // ✅ Fix Here
+
+    const uniqueSectors = [...new Set(chartData.name.map(n => n.split(" - ")[0]))];
+
+    this.barChartData.datasets = uniqueSectors.map(sector => ({
+      label: sector,
+      data: sortedMonths.map(month => {
+        const entry = monthGroups[month]?.find(e => e.sector === sector);
+        return entry ? entry.count : 0;
+      }),
+      backgroundColor: this.getSectorColor(sector)
+    }));
+  }
+
+// Function to generate unique colors for each sector
+getSectorColor(sector: string): string {
+  const colorMap = {
+    "NESS": "#FF6384",
+    "PSS": "#36A2EB",
+    "MSS": "#FFCE56"
+  };
+  return colorMap[sector] || `#${Math.floor(Math.random() * 16777215).toString(16)}`;
+}
   // Getting Frmn Chart Data
   getFrmInputData(){
     this.apiService.postWithHeader('dashboard/fmn',this.filterModel).subscribe(res =>{

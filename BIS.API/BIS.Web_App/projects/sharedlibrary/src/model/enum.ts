@@ -15,7 +15,8 @@ export class EnumBase {
 
 export enum NotificationType {
   MasterData = 1,
-  GenerateReport = 2
+  GenerateReport = 2,
+  ApprovedReport = 3
 }
 
 export enum PermissionItem {

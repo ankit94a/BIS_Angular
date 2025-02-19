@@ -21,9 +21,18 @@ namespace BIS.Manager.Implements
 		{
 			return _dashboardDB.GetInputCounts(corpsId, divisionId);
 		}
-        public DashboardChart GetSectorWiseData(long corpsId, long divisionId, RoleType roleType, FilterModel filterModel)
+        public DashboardChart GetSectorWiseData(long corpsId, long divisionId, RoleType roleType, FilterModel filterModel, DaysMonthFilter daysMonthFilter)
 		{
-			return new DashboardChart();
+			//return new DashboardChart();
+
+			if(divisionId > 0)
+			{
+				return _dashboardDB.GetSectorWiseData(corpsId,divisionId,filterModel,daysMonthFilter);
+
+			}else
+			{
+				return new DashboardChart();
+			}
 		}
 
         public DashboardChart GetAllFmnOrAspectData(long corpsId, long divisionId, RoleType roleType, FilterModel filterModel, bool isFrmn = true)
@@ -133,8 +142,19 @@ namespace BIS.Manager.Implements
 				}
 			}
 		}
+        public DashboardChart Get12MonthsSectorData(long corpsId, long divisionId, RoleType roleType, FilterModel filterModel)
+		{
+			if(divisionId > 0)
+			{
+				return _dashboardDB.Get12MonthsSectorData(corpsId, divisionId, filterModel);
+			}
+			else
+			{
+				return new DashboardChart();
+			}
+		}
 
-		public DashboardChart Get12MonthsFmnOrAspectData(long corpsId, long divisionId, RoleType roleType, FilterModel filterModel, bool isFrmn)
+        public DashboardChart Get12MonthsFmnOrAspectData(long corpsId, long divisionId, RoleType roleType, FilterModel filterModel, bool isFrmn)
 		{
 			//case 1 role is belonging to division
 			if (divisionId > 0)

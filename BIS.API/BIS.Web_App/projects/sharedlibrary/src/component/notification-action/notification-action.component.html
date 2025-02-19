@@ -167,4 +167,5 @@
       <button class="btn btn-sm fileUpload" *ngIf="notify.notificationType == NotificationType.MasterData && userRole != '1'" (click)="changeStatus(true)">Approved</button>
       <button class="btn btn-sm fileUpload" *ngIf="notify.notificationType == NotificationType.MasterData && userRole == '1'" (click)="Viewed()">Mark as viewed</button>
       <button class="btn btn-sm fileUpload" *ngIf="notify.notificationType == NotificationType.GenerateReport" (click)="submitReport()">Submit</button>
+      <button class="btn btn-sm fileUpload" *ngIf="notify.notificationType == NotificationType.ApprovedReport" (click)="Viewed()">Mark as viewed</button>
 </mat-dialog-actions>

@@ -228,8 +228,83 @@ namespace BIS.DB.Implements
 				return chart;
 			}
 		}
+        public DashboardChart GetSectorWiseData(long corpsId, long divisionId, FilterModel filterModel,DaysMonthFilter daysMonthFilter)
+		{
+			var chart = new DashboardChart();
+            var query = _dbContext.MasterDatas.Where(m => m.CorpsId == corpsId && m.DivisionId == divisionId && m.Sector != null && m.Sector != "");
+            DateTime today = DateTime.UtcNow;
 
-		public DashboardChart GetTop10Indicator(long corpsId, long divisionId, FilterModel filterModel)
+            // Apply filters based on `daysMonthFilter`
+            if (daysMonthFilter == DaysMonthFilter.Today)
+            {
+                query = query.Where(m => m.CreatedOn.Value.Date == today.Date);
+            }
+            else if (daysMonthFilter == DaysMonthFilter.Days30)
+            {
+                DateTime past30Days = today.AddDays(-30);
+                query = query.Where(m => m.CreatedOn.Value.Date >= past30Days.Date);
+            }
+            // handling sector filter
+            if (filterModel != null && filterModel.Sector.Count > 0)
+            {
+                query = query.Where(ms => filterModel.Sector.Contains(ms.Sector));
+            }
+            var result = query.GroupBy(ms => ms.Sector).Select(g => new { Sector = g.Key, Count = g.Count() })
+                    .OrderByDescending(g => g.Count)
+                    .Take(10).ToList();
+            foreach (var item in result)
+            {
+                chart.Name.Add(item.Sector);
+                chart.Count.Add(item.Count);
+            }
+            return chart;
+        }
+        public DashboardChart Get12MonthsSectorData(long corpsId, long divisionId, FilterModel filterModel)
+        {
+            var chart = new DashboardChart();
+            DateTime today = DateTime.UtcNow;
+            DateTime filterDate = today.AddMonths(-12); // Get data from the last 12 months
+
+            // Base query with filtering conditions
+            var query = _dbContext.MasterDatas
+                .Where(m => m.CorpsId == corpsId &&
+                            m.DivisionId == divisionId &&
+                            m.Sector != null && m.Sector != "" &&
+                            m.CreatedOn >= filterDate); // Filter last 12 months data
+
+            // Apply sector filter if available
+            if (filterModel != null && filterModel.Sector.Count > 0)
+            {
+                query = query.Where(m => filterModel.Sector.Contains(m.Sector));
+            }
+
+            // Group by Year, Month, and Sector
+            var result = query.GroupBy(m => new { m.CreatedOn.Value.Year, m.CreatedOn.Value.Month, m.Sector })
+                .Select(g => new
+                {
+                    Sector = g.Key.Sector,
+                    MonthYear = new DateTime(g.Key.Year, g.Key.Month, 1).ToString("MMM yyyy"), // "Jan 2024" format
+                    Count = g.Count(),
+                    Year = g.Key.Year,
+                    Month = g.Key.Month
+                })
+                .OrderBy(e => e.Year).ThenBy(e => e.Month)
+                .ToList();
+
+            // Prepare Chart Data
+            foreach (var item in result)
+            {
+                if (!string.IsNullOrEmpty(item.MonthYear))
+                {
+                    chart.Name.Add($"{item.Sector} - {item.MonthYear}"); // E.g., "IT - Jan 2024"
+                    chart.Count.Add(item.Count);
+                }
+            }
+
+            return chart;
+        }
+
+        public DashboardChart GetTop10Indicator(long corpsId, long divisionId, FilterModel filterModel)
 		{
 			var chart = new DashboardChart();
 			var query = _dbContext.MasterDatas.Where(m => m.CorpsId == corpsId && m.DivisionId == divisionId && m.Indicator != null && m.Indicator != "");

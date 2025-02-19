@@ -12,11 +12,12 @@ namespace BIS.Manager.Interfaces
     public interface IDashboardManager
     {
         public DashboardInputCount GetInputCounts(int corpsId,int divisionId);
-        public DashboardChart GetSectorWiseData(long corpsId, long divisionId, RoleType roleType, FilterModel filterModel);
-
+        public DashboardChart GetSectorWiseData(long corpsId, long divisionId, RoleType roleType, FilterModel filterModel,DaysMonthFilter daymonth);
         public DashboardChart GetAllFmnOrAspectData(long corpsId,long divisionId,RoleType roleType, FilterModel filterModel,bool isFrmn = true);
         public DashboardChart Get30DaysFmnOrAspectData(long corpsId, long divisionId, RoleType roleType, FilterModel filterModel,bool isFrmn = true);
         public DashboardChart GetTodayFmnOrAspectData(long corpsId, long divisionId, RoleType roleType, FilterModel filterModel, bool isFrmn = true);
+        public DashboardChart Get12MonthsSectorData(long corpsId, long divisionId, RoleType roleType, FilterModel filterModel);
+
         public DashboardChart Get12MonthsFmnOrAspectData(long corpsId, long divisionId, RoleType roleType, FilterModel filterModel, bool isFrmn = true);
         public DashboardChart GetIndicatorData(long corpsId, long divisionId, RoleType roleType, FilterModel filterModel, bool isTopTen = true);
 
