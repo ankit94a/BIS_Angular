@@ -27,7 +27,33 @@ namespace BIS.API.Controller
             long corpsId = HttpContext.GetCorpsId();
             long divisionId = HttpContext.GetDivisionId();
             RoleType roleType = HttpContext.GetRoleType();
-            return Ok(_dashboardManager.GetSectorWiseData(corpsId, divisionId, roleType, filterModel));
+            return Ok(_dashboardManager.GetSectorWiseData(corpsId, divisionId, roleType, filterModel,DaysMonthFilter.All));
+        }
+
+        [HttpPost, Route("sector/30days")]
+        public IActionResult Get30DaysSectorData([FromBody] FilterModel filterModel)
+        {
+            long corpsId = HttpContext.GetCorpsId();
+            long divisionId = HttpContext.GetDivisionId();
+            RoleType roleType = HttpContext.GetRoleType();
+            return Ok(_dashboardManager.GetSectorWiseData(corpsId, divisionId, roleType, filterModel,DaysMonthFilter.Days30));
+        }
+        [HttpPost, Route("sector/today")]
+        public IActionResult GetTodaysSectorData([FromBody] FilterModel filterModel)
+        {
+            long corpsId = HttpContext.GetCorpsId();
+            long divisionId = HttpContext.GetDivisionId();
+            RoleType roleType = HttpContext.GetRoleType();
+            return Ok(_dashboardManager.GetSectorWiseData(corpsId, divisionId, roleType, filterModel,DaysMonthFilter.Today));
+        }
+
+        [HttpPost, Route("sector/last12Months")]
+        public IActionResult Get12MonthsSectorData([FromBody] FilterModel filterModel)
+        {
+            long corpsId = HttpContext.GetCorpsId();
+            long divisionId = HttpContext.GetDivisionId();
+            RoleType roleType = HttpContext.GetRoleType();
+            return Ok(_dashboardManager.Get12MonthsSectorData(corpsId, divisionId, roleType, filterModel));
         }
         [HttpPost,Route("fmn")]
         public IActionResult GetFmnWiseData([FromBody] FilterModel filterModel)

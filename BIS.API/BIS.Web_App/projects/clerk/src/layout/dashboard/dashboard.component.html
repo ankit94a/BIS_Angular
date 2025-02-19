@@ -71,7 +71,7 @@
           </button>
         </section>
         <div class="chart-container">
-          <canvas baseChart [data]="frmInputChartData" type="doughnut" [options]="ChartOptions"></canvas>
+          <canvas baseChart [data]="sectorInputChartData" type="doughnut" [options]="ChartOptions"></canvas>
         </div>
       </mat-card>
 
@@ -85,7 +85,7 @@
           </button>
         </section>
         <div class="chart-container">
-          <canvas baseChart [data]="frm30DaysChartData" type="doughnut" [options]="ChartOptions"></canvas>
+          <canvas baseChart [data]="sector30DaysChartData" type="doughnut" [options]="ChartOptions"></canvas>
         </div>
       </mat-card>
 
@@ -98,7 +98,7 @@
           </button>
         </section>
         <div class="chart-container">
-          <canvas baseChart [data]="frmTodayChartData" type="doughnut" [options]="ChartOptions"></canvas>
+          <canvas baseChart [data]="sectorTodayChartData" type="doughnut" [options]="ChartOptions"></canvas>
         </div>
       </mat-card>
 
@@ -111,7 +111,13 @@
           </button>
         </section>
         <div class="chart-container">
-          <canvas baseChart [data]="frm12MonthsChartData" [options]="barChartOptions" [type]="'bar'"></canvas>
+          <canvas 
+    baseChart 
+    [data]="barChartData" 
+    [labels]="barChartLabels"
+    [options]="barChartOptions"
+    [type]="'bar'">
+  </canvas>
         </div>
       </mat-card>
 
