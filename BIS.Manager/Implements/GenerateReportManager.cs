@@ -96,7 +96,9 @@ namespace BIS.Manager.Implements
 								}
 							}
 						}
-					}
+                        var generateReportDB = scope.ServiceProvider.GetRequiredService<GenerateReportDB>();
+                        await generateReportDB.UpdateStatus(generateReport.Id, Status.Progress);
+                    }
 				});
 			}
 			return reportId;

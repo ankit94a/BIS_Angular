@@ -163,7 +163,8 @@
 </mat-dialog-content>
 <mat-dialog-actions align="end">
       <button class="btn btn-sm btn-warning" (click)="close(false)">Close</button>
-      <button class="btn btn-sm btn-outline-danger" *ngIf="notify.notificationType == NotificationType.MasterData" (click)="changeStatus(false)">Rejected</button>
-      <button class="btn btn-sm fileUpload" *ngIf="notify.notificationType == NotificationType.MasterData" (click)="changeStatus(true)">Approved</button>
+      <button class="btn btn-sm btn-outline-danger" *ngIf="notify.notificationType == NotificationType.MasterData && userRole != '1'" (click)="changeStatus(false)">Rejected</button>
+      <button class="btn btn-sm fileUpload" *ngIf="notify.notificationType == NotificationType.MasterData && userRole != '1'" (click)="changeStatus(true)">Approved</button>
+      <button class="btn btn-sm fileUpload" *ngIf="notify.notificationType == NotificationType.MasterData && userRole == '1'" (click)="Viewed()">Mark as viewed</button>
       <button class="btn btn-sm fileUpload" *ngIf="notify.notificationType == NotificationType.GenerateReport" (click)="submitReport()">Submit</button>
 </mat-dialog-actions>

@@ -25,6 +25,8 @@ namespace BIS.API
 
 			services.AddScoped<UserDB>();
 			services.AddScoped<NotificationDB>();
+			services.AddScoped<MasterDataDB>();
+			services.AddScoped<GenerateReportDB>();
 			IoCConfiguration.Configuration(services);
 			services.AddSingleton(Configuration);
 			services.AddCors(options =>

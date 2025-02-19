@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BIS.Common.Entities;
+using static BIS.Common.Enum.Enum;
 
 namespace BIS.DB.Interfaces
 {
@@ -14,5 +15,6 @@ namespace BIS.DB.Interfaces
         public string AddGraphs(List<GraphImages> Graphs);
         public List<GraphImages> GetGraphs(List<int> ids);
 		public Tuple<int,int?> GetUserIdAndRptId(int reportId);
-	}
+        public Task<long> UpdateStatus(int id, Status status);
+    }
 }

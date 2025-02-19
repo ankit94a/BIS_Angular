@@ -13,5 +13,5 @@ namespace BIS.DB.Interfaces
 
 		public Task<long> AddNotification(Notification notification);
 		public long UpdateStatus(Notification notification);
-	}
+    }
 }

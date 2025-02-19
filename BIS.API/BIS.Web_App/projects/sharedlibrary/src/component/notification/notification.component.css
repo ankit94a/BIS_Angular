@@ -72,6 +72,20 @@
 .notification-content {
   flex: 1;
   margin-left: 10px;
+  display: flex;
+  flex-direction: column;
+  word-wrap: break-word; /* Ensures long words wrap */
+  overflow-wrap: break-word; /* Break long words */
+  white-space: normal; /* Allows text to wrap to the next line */
+}
+
+.notification-message {
+  max-width: 100%; /* Ensures it doesn't overflow */
+  word-break: break-word; /* Breaks long words */
+  font-size: 12px;
+  color: #6b6666;
+  text-align: start;
+  margin: 5px 0;
 }
 
 .notification-type {
@@ -81,12 +95,12 @@
   color: #2973B2;
 }
 
-.notification-message {
+/* .notification-message {
   font-size: 12px;
   color: #333;
   text-align: start;
   margin: 5px 0;
-}
+} */
 
 .notification-timestamp {
   font-size: 10px;

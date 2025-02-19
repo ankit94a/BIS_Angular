@@ -93,13 +93,13 @@ namespace BIS.DB.Implements
 				return _dbContext.MasterLocations.Where(ms => ms.IsActive && ms.CategoryLoc == Common.Enum.Enum.CategoryLoc.TypeOfLoc).ToList();
 			}
 		}
-		public long UpdateStatus(int id, bool isApproved)
+		public async Task<long> UpdateStatus(int id, Status status)
 		{
 			var result = _dbContext.MasterDatas.Where(ms => ms.ID == id).FirstOrDefault();
 
 			if (result != null)
 			{
-				result.Status = isApproved ? Status.Approved : Status.Rejected;
+				result.Status = status;
 				_dbContext.SaveChanges();
 			}
 
@@ -111,7 +111,13 @@ namespace BIS.DB.Implements
 			var query = _dbContext.MasterDatas.Where(ms => ms.CreatedOn >= befor30Min && ms.Status == Status.Created);
 			return query.ToList();
 		}
-		public List<EnemyLocation> GetAllEnemyLocation()
+		public int GetUserIdByMasterDataId(int id)
+		{
+			var result = _dbContext.MasterDatas.Where(ms => ms.ID == id).FirstOrDefault();
+			return result.CreatedBy;
+		}
+
+        public List<EnemyLocation> GetAllEnemyLocation()
 		{
 			return _dbContext.MasterEnLocName.Where(ms => ms.IsActive).ToList();
 		}

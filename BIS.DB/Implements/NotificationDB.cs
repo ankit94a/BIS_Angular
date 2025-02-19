@@ -44,6 +44,5 @@ namespace BIS.DB.Implements
 
 			return result?.Id ?? 0;
 		}
-
-	}
+    }
 }

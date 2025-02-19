@@ -44,10 +44,13 @@ export class LoginComponent implements OnInit{
 
     this.apiService.postWithHeader('auth/login',loginData).subscribe((res)=>{
       if(res){
+        debugger
         this.authService.setToken(res.token);
         this.authService.setUserDetails(res.user);
-        if(this.authService.getRoleType() == '1'){
+        if(res.user.roleType == '1'){
           this.router.navigateByUrl('/master-data');
+        }else if(res.user.roleType == '7'){
+          this.router.navigateByUrl('/cdr-dahboard');
         }else{
           this.router.navigateByUrl('/dashboard');
         }

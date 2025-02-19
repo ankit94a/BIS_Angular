@@ -4,13 +4,14 @@ import { ApiService } from '../../services/api.service';
 import { masterData } from '../../model/masterdata.model';
 import { SharedLibraryModule } from '../../shared-library.module';
 import { NotificationModel } from '../../model/notification.model';
-import { EnumBase, NotificationType } from '../../model/enum';
+import { EnumBase, NotificationType, Status } from '../../model/enum';
 import { GenerateReport, GraphImages } from '../../model/generatereport.model';
 import { MasterDataFilterService } from '../../services/master-data-filter.service';
 import { BehaviorSubject } from 'rxjs';
 import { BisdefaultDatePipe } from '../../pipe/bisdefault-date.pipe';
 import { CommonModule } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'lib-notification-action',
@@ -30,7 +31,8 @@ export class NotificationActionComponent extends EnumBase {
   // handling unique table header & master Data;
   tableHeader = [];
   masterDataList = [];
-
+  /* handling user like staff view */
+  userRole = this.authService.getRoleType()
   // Using BehaviorSubject for reactivity
   private tableHeaderSubject = new BehaviorSubject<string[]>([]);
   private masterDataListSubject = new BehaviorSubject<masterData[]>([]);
@@ -39,9 +41,9 @@ export class NotificationActionComponent extends EnumBase {
   tableHeader$ = this.tableHeaderSubject.asObservable();
   masterDataList$ = this.masterDataListSubject.asObservable();
   chartImages$ = this.chartImagesSubject.asObservable();
-  constructor(private toastr: ToastrService, private cdr: ChangeDetectorRef, private masterDataService: MasterDataFilterService, @Inject(MAT_DIALOG_DATA) data, private apiService: ApiService, private dialogRef: MatDialogRef<NotificationActionComponent>) {
+  constructor(private authService:AuthService,private toastr: ToastrService, private cdr: ChangeDetectorRef, private masterDataService: MasterDataFilterService, @Inject(MAT_DIALOG_DATA) data, private apiService: ApiService, private dialogRef: MatDialogRef<NotificationActionComponent>) {
     super();
-
+debugger
     this.notify = data;
     this.masterData = new masterData();
     if (this.notify.notificationType == NotificationType.MasterData) {
@@ -52,6 +54,13 @@ export class NotificationActionComponent extends EnumBase {
       this.getReport();
     }
 
+  }
+  Viewed(){
+    this.apiService.postWithHeader('notification/viewed',this.notify).subscribe(res =>{
+      if(res){
+        this.dialogRef.close(true);
+      }
+    })
   }
   onFileSelect(event: Event): void {
     const input = event.target as HTMLInputElement;
@@ -130,7 +139,8 @@ export class NotificationActionComponent extends EnumBase {
     })
   }
   changeStatus(isApproved) {
-    this.apiService.postWithHeader(`notification/updatestatus?isApproved=${isApproved}`, this.notify).subscribe(res => {
+    isApproved ? this.notify.status = Status.Approved : this.notify.status = Status.Rejected;
+    this.apiService.postWithHeader(`notification/updatestatus`, this.notify).subscribe(res => {
       if (res) {
         isApproved ? this.toastr.success("Input approved successfully", 'success') : this.toastr.success("Input rejected successfully", 'success');
         this.close(true);

@@ -79,18 +79,21 @@ namespace BIS.Manager.Implements
 			var inferenceId = _cdrDashboardDB.AddInference(inference);
 			if (inferenceId > 0)
 			{
+				// getting colgs id based on generate report id also if there is g1 generate report is exist then fetch the id;
 				var ColgsIdAndRptId = _generateReportDB.GetUserIdAndRptId(inference.GenerateReportId);
+				var clogsUpdateStatus = _generateReportDB.UpdateStatus(inference.GenerateReportId, Status.Approved);
 				if (ColgsIdAndRptId.Item2.HasValue)
 				{
 					var G1IntId = _generateReportDB.GetUserIdAndRptId(ColgsIdAndRptId.Item2.Value);
-					var notif = new Notification();
+                    var G1UpdateStatus = _generateReportDB.UpdateStatus(ColgsIdAndRptId.Item2.Value, Status.Approved);
+                    var notif = new Notification();
 					notif.SenderId = inference.CreatedBy;
 					notif.SenderEntityType = roleType;
 					notif.ReceiverId = G1IntId.Item1;
 					notif.ReceiverEntityType = RoleType.G1Int;
 					notif.NotificationType = NotificationType.ApprovedReport;
 					notif.Title = "Generate Report Approved";
-					notif.Content = $"{roleType} just approved your report. Please review and respond!";
+					notif.Content = $"Your report has been successfully reviewed and approved by {roleType}";
 					notif.CreatedBy = inference.CreatedBy;
 					notif.CreatedOn = DateTime.UtcNow;
 					notif.CorpsId = inference.CorpsId;
@@ -106,13 +109,13 @@ namespace BIS.Manager.Implements
 				notification.ReceiverEntityType = RoleType.Colgs;
 				notification.NotificationType = NotificationType.ApprovedReport;
 				notification.Title = "Generate Report Approved";
-				notification.Content = $"{roleType} just approved your report. Please review and respond!";
+				notification.Content = $"Your report has been successfully reviewed and approved by {roleType}";
 				notification.CreatedBy = inference.CreatedBy;
 				notification.CreatedOn = DateTime.UtcNow;
 				notification.CorpsId = inference.CorpsId;
 				notification.DivisionId = inference.DivisionId;
 				// for temprary i just fill the generate reportid make change according to the requirement
-				notification.DataId = ColgsIdAndRptId.Item2.Value;
+				notification.DataId = inference.GenerateReportId;
 				_notificationDB.AddNotification(notification);
 			}
 			return true;

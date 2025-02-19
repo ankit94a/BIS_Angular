@@ -26,9 +26,9 @@ namespace BIS.API.Controller
 			return Ok(_notificationManager.GetNotificationByUserId(userId));
 		}
 		[HttpPost, Route("updatestatus")]
-		public IActionResult UpdateStatus([FromQuery] bool isApproved,Notification notification)
+		public IActionResult UpdateStatus(Notification notification)
 		{
-			return Ok(_notificationManager.UpdateStatus(notification, isApproved));
+			return Ok(_notificationManager.UpdateStatus(notification));
 		}
 		[HttpPost, Route("report")]
 		public IActionResult GetReport(Notification notification)
@@ -36,6 +36,11 @@ namespace BIS.API.Controller
 			int corpsId = HttpContext.GetCorpsId();
 			int divisionId = HttpContext.GetDivisionId();
 			return Ok(_reportManager.GetById(notification.DataId, corpsId, divisionId));
+		}
+		[HttpPost,Route("viewed")]
+		public IActionResult NotificationViewed(Notification notification)
+		{
+			return Ok(_notificationManager.NotificationViewed(notification));
 		}
 	}
 }

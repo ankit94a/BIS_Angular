@@ -9,8 +9,8 @@
         <span> {{facilityName}} </span>
         <span class="example-spacer">
         </span>
-        <div class="user mx-4" *ngIf="roleType != '1'">
-                <app-notification></app-notification>
+        <div class="user mx-4">
+                <app-notification *ngIf="roleType != '7'"></app-notification>
         </div>
         <div class="user-profile" *ngIf="roleType != '7' && roleType != '8' && roleType != '9'">
           <mat-icon class="py-1">person</mat-icon> &nbsp;{{userName}}

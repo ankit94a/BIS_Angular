@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, Inject, inject, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { BISDialogTitleComponent } from 'projects/sharedlibrary/src/component/edusynk-dialog-title/edusynk-dialog-title.component';
@@ -11,7 +11,7 @@ import { SharedLibraryModule } from 'projects/sharedlibrary/src/shared-library.m
 import { MatStepperModule } from '@angular/material/stepper';
 import { BISMatDialogService, } from 'projects/sharedlibrary/src/services/insync-mat-dialog.service';
 import { MasterDataComponent } from '../master-data-list/master-data.component';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AuthService } from 'projects/sharedlibrary/src/services/auth.service';
 import { Aspect, Indicator } from 'projects/sharedlibrary/src/model/attribute.model';
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
@@ -56,22 +56,34 @@ export class MasterDataAddComponent implements OnInit {
   sourceLoc:MasterLoc[] = [];
   typeOfLoc:MasterLoc[] = [];
   enemyLocations:EnemyLocation[] = [];
-  constructor(private authService:AuthService,private toastr: ToastrService,  private apiService: ApiService,private datePipe: DatePipe,private dialogref:MatDialogRef<MasterDataAddComponent>) {
+  masterData;
+  constructor(@Inject(MAT_DIALOG_DATA) data, private authService:AuthService,private toastr: ToastrService,  private apiService: ApiService,private datePipe: DatePipe,private dialogref:MatDialogRef<MasterDataAddComponent>) {
     this.indicators = [];
+    if(data != null){
+      this.masterData = data;
+    }
   }
 
   getAspect(){
+    debugger
     this.apiService.getWithHeaders('attribute/allaspect').subscribe(res =>{
       if(res){
+        debugger
         this.aspectList = res;
+        if(this.masterData?.id > 0){
+          this.getIndicator(this.masterData.aspect)
+        }
       }
     })
   }
   getIndicator(event){
-    let apsectId = this.aspectList.find(item => item.name == event.value)?.id;
+    let apsectId = this.aspectList.find(item => item.name == event)?.id;
     this.apiService.getWithHeaders('attribute/indicator/' + apsectId).subscribe(res =>{
       if(res){
         this.indicators = res;
+        if(this.masterData?.id > 0){
+          this.onChange2(this.masterData.indicator)
+        }
       }
     })
   }
@@ -566,6 +578,25 @@ export class MasterDataAddComponent implements OnInit {
     this.createData.get('frmn')?.setValue(this.name);
     this.getData();
     this.createData.get('reportedDate')?.disable();
+
+    // handling view part
+    if (this.masterData?.id && this.masterData.id > 0) {
+      this.patchFormValues(this.masterData)
+    }
+  }
+  patchFormValues(data: any) { 
+    debugger
+    if (this.createData && this.createData.controls) {
+      const formControls = this.createData.controls;
+      Object.keys(data).forEach(key => {
+        if (formControls[key]) {
+          formControls[key].patchValue(data[key] || '');
+        }
+      });    
+    }
+    this.masterData.aspect;
+    this.aspectList;
+
   }
   getData(){
     this.getAspect();
@@ -699,8 +730,7 @@ export class MasterDataAddComponent implements OnInit {
   additionalFields: Array<any> = [];
 
   onChange2($event) {
-    const selectedIndicator = this.subselected;
-    const fields = this.fieldConfigurations[selectedIndicator] || [];
+    const fields = this.fieldConfigurations[$event] || [];
 
     this.dynamicFields = fields.filter(field => field.type !== 'dropdown');
     const dropdownFields = fields.filter(field => field.type === 'dropdown');

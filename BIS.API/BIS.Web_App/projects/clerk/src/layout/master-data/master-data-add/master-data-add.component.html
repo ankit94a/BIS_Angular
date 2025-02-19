@@ -21,7 +21,7 @@
           <div class="col-md-4">
             <mat-form-field>
               <mat-label>Input date</mat-label>
-              <input matInput [matDatepicker]="picker" formControlName="reportedDate" [disabled]="true">
+              <input matInput [matDatepicker]="picker" formControlName="reportedDate" [readonly]="true">
               <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
               <mat-datepicker #picker></mat-datepicker>
             </mat-form-field>
@@ -29,7 +29,7 @@
           <div class="col-md-4">
             <mat-form-field>
               <mat-label>Input Level</mat-label>
-              <mat-select formControlName="inputLevel">
+              <mat-select formControlName="inputLevel" >
                 <mat-option *ngFor="let item of inputLevels" [value]="item.name">
                   {{ item.name }}
                 </mat-option>
@@ -96,7 +96,7 @@
           <div class="col-md-4">
             <mat-form-field>
               <mat-label>Aspect</mat-label>
-              <mat-select (selectionChange)="getIndicator($event)" formControlName="aspect">
+              <mat-select (selectionChange)="getIndicator($event.value)" formControlName="aspect">
                 <mat-option *ngFor="let option of aspectList" [value]="option.name">
                   {{ option.name }}
                 </mat-option>
@@ -114,7 +114,7 @@
           <div class="col-md-12">
             <mat-form-field>
               <mat-label>Indicators</mat-label>
-              <mat-select [(value)]="subselected" (selectionChange)="onChange2($event)" formControlName="indicator">
+              <mat-select [(value)]="subselected" (selectionChange)="onChange2($event.value)" formControlName="indicator">
                 <mat-option *ngFor="let indicator of indicators" [value]="indicator.name">
                   {{ indicator.name }}
                 </mat-option>
@@ -185,7 +185,7 @@
         </div>
         <div align="end">
           <button mat-button matStepperPrevious type="button">Back</button>
-          <button mat-button type="submit">Save</button>
+          <button mat-button type="submit" *ngIf="!masterData">Save</button>
         </div>
       </mat-step>
     </mat-horizontal-stepper>

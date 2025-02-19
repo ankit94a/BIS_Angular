@@ -48,45 +48,27 @@ namespace BIS.API.Controller
 			}
 		}
 
-		[HttpPost]
-		public IActionResult AddData(MasterData masterData)
-		{
-			masterData.CorpsId = HttpContext.GetCorpsId();
-			masterData.DivisionId = HttpContext.GetDivisionId();
-			masterData.CreatedBy = HttpContext.GetUserId();
-			var id = _masterDataManager.AddMasterData(masterData, HttpContext.GetRoleType());
-			//if (id > 0)
-			//{
-			//	try
-			//	{
-			//		var notif = new Notification();
-			//		notif.SenderId = HttpContext.GetUserId();
-			//		notif.ReceiverId = 24;
-			//		notif.SenderEntityType = RoleType.Staff1;
-			//		notif.ReceiverEntityType = RoleType.G1Int;
-			//		notif.DataId = Convert.ToInt32(id);
-			//		notif.Title = "Notification from Hub";
-			//		notif.Content = "Real-time notification sending using signalR and Dot Net Hub";
-			//		notif.IsRead = false;
-			//		notif.NotificationType = NotificationType.MasterData;
-			//		Task.Run(async () =>
-			//		{
-			//			if (NotificationHub.ConnectionIds.TryGetValue(notif.ReceiverId, out var connectionId))
-			//			{
-			//				await _notificationHubContext.Clients.All.SendAsync("ReceiveNotification", notif);
-			//			}
-			//			else
-			//			{
-			//				BISLogger.Info($"Receiver with ID {notif.ReceiverId} is not connected.", "MasterDataController", "Add Method");
-			//			}
-			//		});
-			//	}
-			//	catch (Exception ex) { throw ex; }
-			//}
-			return Ok(id);
-			return BadRequest();
-		}
-		[HttpGet, Route("getbyid{id}")]
+        [HttpPost]
+        public IActionResult AddData(MasterData masterData)
+        {
+            if (masterData == null)
+            {
+                return BadRequest("Master data cannot be null.");
+            }
+            try
+            {
+                masterData.CorpsId = HttpContext.GetCorpsId();
+                masterData.DivisionId = HttpContext.GetDivisionId();
+                masterData.CreatedBy = HttpContext.GetUserId();
+                return Ok(_masterDataManager.AddMasterData(masterData, HttpContext.GetRoleType()));
+            }
+            catch (Exception ex)
+            {
+                BISLogger.Error(ex, "Error while adding master data");
+                return StatusCode(500, "Internal server error while adding master data");
+            }
+        }
+        [HttpGet, Route("getbyid{id}")]
 		public IActionResult GetById(int id)
 		{
 			var corpsId = HttpContext.GetCorpsId();
