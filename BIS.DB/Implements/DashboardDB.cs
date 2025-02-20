@@ -23,7 +23,7 @@ namespace BIS.DB.Implements
 			var currentTime = DateTime.Now;
 			var last7Days = currentTime.AddDays(-7);
 
-			var query = _dbContext.MasterDatas.Where(ms => ms.CorpsId == corpsId);
+			var query = _dbContext.MasterDatas.Where(ms => ms.CorpsId == corpsId && ms.Status == Status.Approved);
 			if (divisionId > 0)
 			{
 				query = query.Where(ms => ms.DivisionId == divisionId);
@@ -51,25 +51,6 @@ namespace BIS.DB.Implements
 			return result;
 		}
 
-		public DashboardChart GetAllMasterDataCount(long corpsId, long divisionId)
-		{
-			// use it for monthly chart
-			var chart = new DashboardChart();
-			var result = _dbContext.MasterDatas.Where(ms => ms.CorpsId == corpsId && ms.DivisionId == divisionId)
-							.GroupBy(ms => ms.Frmn).Select(group => new
-							{
-								Frmn = group.Key,
-								Count = group.Count()
-							}).ToList();
-
-			foreach (var item in result)
-			{
-				chart.Name.Add(item.Frmn);
-				chart.Count.Add(item.Count);
-			}
-			return chart;
-		}
-
 		public DashboardChart GetFrmnChart(long corpsId, long divisionId, DaysMonthFilter daysMonthFilter, FilterModel filterModel)
 		{
 			var chart = new DashboardChart();
@@ -87,7 +68,7 @@ namespace BIS.DB.Implements
 					break;
 			}
 
-			var query = _dbContext.MasterDatas.Where(ms => ms.CorpsId == corpsId && ms.DivisionId == divisionId);
+			var query = _dbContext.MasterDatas.Where(ms => ms.CorpsId == corpsId && ms.DivisionId == divisionId && ms.Status == Status.Approved);
 			// handling Today, last30Days and All
 			if (filterDate.HasValue)
 			{
@@ -167,7 +148,7 @@ namespace BIS.DB.Implements
 					break;
 			}
 
-			var query = _dbContext.MasterDatas.Where(ms => ms.CorpsId == corpsId && ms.DivisionId == divisionId);
+			var query = _dbContext.MasterDatas.Where(ms => ms.CorpsId == corpsId && ms.DivisionId == divisionId && ms.Status == Status.Approved);
 			// handling Today, last30Days and All
 			if (filterDate.HasValue)
 			{
@@ -228,86 +209,87 @@ namespace BIS.DB.Implements
 				return chart;
 			}
 		}
-        public DashboardChart GetSectorWiseData(long corpsId, long divisionId, FilterModel filterModel,DaysMonthFilter daysMonthFilter)
+		public DashboardChart GetSectorWiseData(long corpsId, long divisionId, FilterModel filterModel, DaysMonthFilter daysMonthFilter)
 		{
 			var chart = new DashboardChart();
-            var query = _dbContext.MasterDatas.Where(m => m.CorpsId == corpsId && m.DivisionId == divisionId && m.Sector != null && m.Sector != "");
-            DateTime today = DateTime.UtcNow;
+			var query = _dbContext.MasterDatas.Where(m => m.CorpsId == corpsId && m.DivisionId == divisionId && m.Sector != null && m.Sector != "" && m.Status == Status.Approved);
+			DateTime today = DateTime.UtcNow;
 
-            // Apply filters based on `daysMonthFilter`
-            if (daysMonthFilter == DaysMonthFilter.Today)
-            {
-                query = query.Where(m => m.CreatedOn.Value.Date == today.Date);
-            }
-            else if (daysMonthFilter == DaysMonthFilter.Days30)
-            {
-                DateTime past30Days = today.AddDays(-30);
-                query = query.Where(m => m.CreatedOn.Value.Date >= past30Days.Date);
-            }
-            // handling sector filter
-            if (filterModel != null && filterModel.Sector.Count > 0)
-            {
-                query = query.Where(ms => filterModel.Sector.Contains(ms.Sector));
-            }
-            var result = query.GroupBy(ms => ms.Sector).Select(g => new { Sector = g.Key, Count = g.Count() })
-                    .OrderByDescending(g => g.Count)
-                    .Take(10).ToList();
-            foreach (var item in result)
-            {
-                chart.Name.Add(item.Sector);
-                chart.Count.Add(item.Count);
-            }
-            return chart;
-        }
-        public DashboardChart Get12MonthsSectorData(long corpsId, long divisionId, FilterModel filterModel)
-        {
-            var chart = new DashboardChart();
-            DateTime today = DateTime.UtcNow;
-            DateTime filterDate = today.AddMonths(-12); // Get data from the last 12 months
-
-            // Base query with filtering conditions
-            var query = _dbContext.MasterDatas
-                .Where(m => m.CorpsId == corpsId &&
-                            m.DivisionId == divisionId &&
-                            m.Sector != null && m.Sector != "" &&
-                            m.CreatedOn >= filterDate); // Filter last 12 months data
-
-            // Apply sector filter if available
-            if (filterModel != null && filterModel.Sector.Count > 0)
-            {
-                query = query.Where(m => filterModel.Sector.Contains(m.Sector));
-            }
-
-            // Group by Year, Month, and Sector
-            var result = query.GroupBy(m => new { m.CreatedOn.Value.Year, m.CreatedOn.Value.Month, m.Sector })
-                .Select(g => new
-                {
-                    Sector = g.Key.Sector,
-                    MonthYear = new DateTime(g.Key.Year, g.Key.Month, 1).ToString("MMM yyyy"), // "Jan 2024" format
-                    Count = g.Count(),
-                    Year = g.Key.Year,
-                    Month = g.Key.Month
-                })
-                .OrderBy(e => e.Year).ThenBy(e => e.Month)
-                .ToList();
-
-            // Prepare Chart Data
-            foreach (var item in result)
-            {
-                if (!string.IsNullOrEmpty(item.MonthYear))
-                {
-                    chart.Name.Add($"{item.Sector} - {item.MonthYear}"); // E.g., "IT - Jan 2024"
-                    chart.Count.Add(item.Count);
-                }
-            }
-
-            return chart;
-        }
-
-        public DashboardChart GetTop10Indicator(long corpsId, long divisionId, FilterModel filterModel)
+			// Apply filters based on `daysMonthFilter`
+			if (daysMonthFilter == DaysMonthFilter.Today)
+			{
+				query = query.Where(m => m.CreatedOn.Value.Date == today.Date);
+			}
+			else if (daysMonthFilter == DaysMonthFilter.Days30)
+			{
+				DateTime past30Days = today.AddDays(-30);
+				query = query.Where(m => m.CreatedOn.Value.Date >= past30Days.Date);
+			}
+			// handling sector filter
+			if (filterModel != null && filterModel.Sector.Count > 0)
+			{
+				query = query.Where(ms => filterModel.Sector.Contains(ms.Sector));
+			}
+			var result = query.GroupBy(ms => ms.Sector).Select(g => new { Sector = g.Key, Count = g.Count() })
+					.OrderByDescending(g => g.Count)
+					.Take(10).ToList();
+			foreach (var item in result)
+			{
+				chart.Name.Add(item.Sector);
+				chart.Count.Add(item.Count);
+			}
+			return chart;
+		}
+		public DashboardChart Get12MonthsSectorData(long corpsId, long divisionId, FilterModel filterModel)
 		{
 			var chart = new DashboardChart();
-			var query = _dbContext.MasterDatas.Where(m => m.CorpsId == corpsId && m.DivisionId == divisionId && m.Indicator != null && m.Indicator != "");
+			DateTime today = DateTime.UtcNow;
+			DateTime filterDate = today.AddMonths(-12);
+
+			var query = _dbContext.MasterDatas
+				.Where(m => m.CorpsId == corpsId &&
+							m.DivisionId == divisionId &&
+							!string.IsNullOrEmpty(m.Sector) &&
+							m.CreatedOn >= filterDate && m.Status == Status.Approved);
+
+			if (filterModel != null && filterModel.Sector.Count > 0)
+			{
+				query = query.Where(m => filterModel.Sector.Contains(m.Sector));
+			}
+
+			var result = query.GroupBy(m => new { m.CreatedOn.Value.Year, m.CreatedOn.Value.Month, m.Sector })
+				.Select(g => new
+				{
+					Sector = g.Key.Sector,
+					MonthYear = new DateTime(g.Key.Year, g.Key.Month, 1).ToString("MMM yyyy"),
+					Count = g.Count(),
+					Year = g.Key.Year,
+					Month = g.Key.Month
+				})
+				.OrderBy(e => e.Year).ThenBy(e => e.Month)
+				.ToList();
+
+			chart.Name = result
+				.Select(r => r.MonthYear)
+				.Distinct()
+				.OrderBy(m => DateTime.ParseExact(m, "MMM yyyy", System.Globalization.CultureInfo.InvariantCulture))
+				.ToList();
+
+			var uniqueSectors = result.Select(r => r.Sector).Distinct().ToList();
+			chart.SectorData = uniqueSectors.Select(sector => new DashboardSectorData
+			{
+				Sector = sector,
+				Count = chart.Name.Select(month =>
+					result.FirstOrDefault(r => r.MonthYear == month && r.Sector == sector)?.Count ?? 0
+				).ToList()
+			}).ToList();
+			return chart;
+		}
+
+		public DashboardChart GetTop10Indicator(long corpsId, long divisionId, FilterModel filterModel)
+		{
+			var chart = new DashboardChart();
+			var query = _dbContext.MasterDatas.Where(m => m.CorpsId == corpsId && m.DivisionId == divisionId && m.Indicator != null && m.Indicator != "" && m.Status == Status.Approved);
 
 			// handling sector filter
 			if (filterModel != null && filterModel.Sector.Count > 0)
@@ -324,12 +306,11 @@ namespace BIS.DB.Implements
 			}
 			return chart;
 		}
-
 		public DashboardChart GetTop5IndicatorLast7Days(long corpsId, long divisionId, FilterModel filterModel)
 		{
 			var chart = new DashboardChart();
 
-			var query = _dbContext.MasterDatas.Where(m => m.CorpsId == corpsId && m.DivisionId == divisionId && m.Indicator != null && m.Indicator != "" && m.CreatedOn.Value.Date >= DateTime.UtcNow.AddDays(-7).Date);
+			var query = _dbContext.MasterDatas.Where(m => m.CorpsId == corpsId && m.DivisionId == divisionId && m.Indicator != null && m.Indicator != "" && m.CreatedOn.Value.Date >= DateTime.UtcNow.AddDays(-7).Date && m.Status == Status.Approved);
 
 			if (filterModel != null && filterModel.Sector.Count > 0)
 			{
@@ -355,7 +336,7 @@ namespace BIS.DB.Implements
 		{
 			var chart = new DashboardChart();
 
-			var query = _dbContext.MasterDatas.Where(m => m.CorpsId == corpsId && m.DivisionId == divisionId && m.EnLocName != null && m.EnLocName != "");
+			var query = _dbContext.MasterDatas.Where(m => m.CorpsId == corpsId && m.DivisionId == divisionId && m.EnLocName != null && m.EnLocName != "" && m.Status == Status.Approved);
 
 			if (isTopFive7Days)
 			{
@@ -380,15 +361,6 @@ namespace BIS.DB.Implements
 			}
 
 			return chart;
-		}
-		public List<MasterData> GetDivisionFrmChart(long corpsId, long divisionId, FilterModel filterModel)
-		{
-			var query = _dbContext.MasterDatas.Where(ms => ms.CorpsId == corpsId);
-			if (filterModel != null && filterModel.Sector.Count > 0)
-			{
-				query = query.Where(ms => filterModel.Sector.Contains(ms.Sector));
-			}
-			return query.ToList();
 		}
 
 	}

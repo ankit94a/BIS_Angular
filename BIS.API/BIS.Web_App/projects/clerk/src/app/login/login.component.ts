@@ -35,30 +35,41 @@ export class LoginComponent implements OnInit{
   }
 
   proceedlogin() {
-    // if (this.loginform.invalid) {
-    //   return;
-    // }
+    if (this.loginform.invalid) {
+      return;
+    }
 
     this.loginLoading = true;
     const loginData = this.loginform.value;
 
-    this.apiService.postWithHeader('auth/login',loginData).subscribe((res)=>{
-      if(res){
-        debugger
-        this.authService.setToken(res.token);
-        this.authService.setUserDetails(res.user);
-        if(res.user.roleType == '1'){
-          this.router.navigateByUrl('/master-data');
-        }else if(res.user.roleType == '7'){
-          this.router.navigateByUrl('/cdr-dahboard');
-        }else{
-          this.router.navigateByUrl('/dashboard');
-        }
+    this.apiService.postWithHeader('auth/login', loginData).subscribe({
+      next: (res) => {
+        this.loginLoading = false; // Stop spinner
 
-      }else{
-        this.router.navigateByUrl('/');
+        if (res && res.token && res.user) {
+          this.authService.setToken(res.token);
+          this.authService.setUserDetails(res.user);
+
+          // Redirect based on roleType
+          let redirectUrl = '/dashboard'; // Default route
+
+          if (res.user.roleType == '1') {
+            redirectUrl = '/master-data';
+          } else if (res.user.roleType == '7') {
+            redirectUrl = '/cdr-dahboard';
+          }
+
+          this.router.navigate([redirectUrl]); // Use navigate() instead of navigateByUrl()
+        } else {
+          this.router.navigate(['/login']);
+        }
+      },
+      error: (err) => {
+        console.error("Login failed", err);
+        this.loginLoading = false; // Stop spinner on error
       }
-    })
+    });
   }
+
 
 }

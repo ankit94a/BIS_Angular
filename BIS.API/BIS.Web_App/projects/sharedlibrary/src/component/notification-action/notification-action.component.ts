@@ -43,7 +43,6 @@ export class NotificationActionComponent extends EnumBase {
   chartImages$ = this.chartImagesSubject.asObservable();
   constructor(private authService:AuthService,private toastr: ToastrService, private cdr: ChangeDetectorRef, private masterDataService: MasterDataFilterService, @Inject(MAT_DIALOG_DATA) data, private apiService: ApiService, private dialogRef: MatDialogRef<NotificationActionComponent>) {
     super();
-debugger
     this.notify = data;
     this.masterData = new masterData();
     if (this.notify.notificationType == NotificationType.MasterData) {

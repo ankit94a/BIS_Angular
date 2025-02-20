@@ -17,8 +17,8 @@ namespace BIS.Manager.Implements
 	{
 		private readonly INotificationDB _notificationDB;
 		private readonly IMasterDataDB _masterDataDB;
-        private readonly IServiceScopeFactory _serviceScopeFactory;
-        public NotificationManager(INotificationDB notificationDB, IMasterDataDB masterDataDB,IServiceScopeFactory serviceScopeFactory)
+		private readonly IServiceScopeFactory _serviceScopeFactory;
+		public NotificationManager(INotificationDB notificationDB, IMasterDataDB masterDataDB, IServiceScopeFactory serviceScopeFactory)
 		{
 			_notificationDB = notificationDB;
 			_masterDataDB = masterDataDB;
@@ -29,14 +29,14 @@ namespace BIS.Manager.Implements
 			return _notificationDB.GetNotificationByUserId(userId);
 
 		}
-        public long NotificationViewed(Notification notification)
+		public long NotificationViewed(Notification notification)
 		{
 			return _notificationDB.NotificationViewed(notification);
 		}
-        public long UpdateStatus(Notification notify)
+		public long UpdateStatus(Notification notify)
 		{
 			var masterId = _masterDataDB.UpdateStatus(notify.DataId, notify.Status.Value);
-             
+
 			// sending notification to staff that his form is approved or not.
 			Task.Run(async () =>
 			{
@@ -56,20 +56,20 @@ namespace BIS.Manager.Implements
 				notification.IsActive = true;
 				notification.NotificationType = NotificationType.MasterData;
 				notification.CorpsId = notify.CorpsId;
-                notification.DivisionId = notify.DivisionId;
+				notification.DivisionId = notify.DivisionId;
 
-                using (var scope = _serviceScopeFactory.CreateScope())
+				using (var scope = _serviceScopeFactory.CreateScope())
 				{
-                    var notificationDB = scope.ServiceProvider.GetRequiredService<NotificationDB>();
-                    await notificationDB.AddNotification(notification);
-                }
-                   
-            });
-           
-			
+					var notificationDB = scope.ServiceProvider.GetRequiredService<NotificationDB>();
+					await notificationDB.AddNotification(notification);
+				}
+
+			});
+
+
 
 			return _notificationDB.UpdateStatus(notify);
-        }
+		}
 		public bool GetNotificationConfig()
 		{
 			// getting upto 30min of master form filled by staff

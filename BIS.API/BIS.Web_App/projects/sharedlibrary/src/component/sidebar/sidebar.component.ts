@@ -23,7 +23,7 @@ export class SidebarComponent implements OnInit {
     // this.http.get<any[]>('/assets/menu.json').subscribe(data => {
     //   this.sideBarMenus = data;
     // });
-    // debugger
+    //
     let userrole = this.authService.getRoleType();
     this.apiService.getWithHeaders('user/menu').subscribe(res =>{
       if(res){
@@ -32,7 +32,7 @@ export class SidebarComponent implements OnInit {
       }
     })
    }
-   
+
   ngOnInit() {
 
   }

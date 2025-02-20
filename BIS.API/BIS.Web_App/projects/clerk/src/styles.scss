@@ -18,12 +18,28 @@ body {
 	width: 100%;
 }
 .mat-content {
-    max-height: calc(100vh - 165px);
-    overflow-y: auto;
-    overflow-x: hidden;
-    padding: 1rem;
-    box-sizing: border-box;
+  max-height: calc(100vh - 200px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+/* Ensure it remains responsive on smaller screens */
+@media (max-width: 768px) {
+  .mat-content {
+    max-height: calc(100vh - 175px); /* Adjust height for smaller screens */
+    padding: 0.75rem;
   }
+}
+
+@media (max-width: 480px) {
+  .mat-content {
+    max-height: calc(100vh - 150px); /* Further reduce height for very small screens */
+    padding: 0.5rem;
+  }
+}
+
 .mat-mdc-form-field,
 .mat-mdc-card,
 .mat-body,

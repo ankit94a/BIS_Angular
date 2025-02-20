@@ -40,16 +40,7 @@ export class DashboardComponent implements OnInit {
   frmTodayChartData:ChartData<'pie'>;
   frm12MonthsChartData:ChartData<'line'>;
 
-  // aspectAllChartData:ChartData<'pie'>;
-  aspectAllChartData: any = {
-    labels: [],
-    datasets: [
-      {
-        data: [],
-        backgroundColor: []
-      }
-    ]
-  };
+  aspectAllChartData:ChartData<'pie'>;
   aspect30DaysChartData:ChartData<'pie'>;
   aspectTodayChartData:ChartData<'pie'>;
   aspect12MonthsChartData:ChartData<'line'>;
@@ -61,6 +52,11 @@ export class DashboardComponent implements OnInit {
   // EnLocation
   enLocationData:ChartData<'pie'>;
   enLocationData7Days:ChartData<'pie'>;
+
+  public barChartLabels: string[] = [];
+  public barChartData: ChartData<'bar'> = { labels: [], datasets: [] }
+  private sectorColorMap: { [key: string]: string } = {};
+
   constructor(private apiService: ApiService,private authService:AuthService) {
     let divisionName = this.authService.getDivisionName();
     if(divisionName != undefined && divisionName != 'null'){
@@ -69,25 +65,37 @@ export class DashboardComponent implements OnInit {
       div.name = divisionName;
       this.frmnList.push(div);
       this.filterModel.frmn.push(div.name);
-      // this.onFilterChange(this.frmnList[0])
-      this.getFrmAndAspect();
       this.getIndicatorAndLocation();
     }else{
       let corpsId = this.authService.getCorpsId();
       this.getFrmnList(corpsId);
-      this.getFrmAndAspect();
     }
   }
   ngOnInit(): void {
+    this.getAll();
     this.getCount();
     this.getSector();
-    // this.getTodayCount();
-    // this.getTotalCount();
-    // this.getWeekCount();
-    // this.getFrmInputData()
   }
-
-
+  getAll(){
+    this.getFrmInputData();
+    this.getFrm30DaysData();
+    this.getFrmTodayData();
+    this.getFrm12MonthsData();
+    this.getAspectAllData()
+    this.getAspect30DaysData();
+    this.getAspectTodayData();
+    this.getAspect12MonthsData();
+    this.getSectorInputData()
+    this.getSectorInput30DaysData();
+    this.getSectorInputTodayData();
+    this.getSector12MonthsData();
+  }
+  getIndicatorAndLocation(){
+    this.getIndicatorData();
+    this.getTop5IndicatorData();
+    this.getTop5EnLocationData();
+    this.getTop5EnLoc7DaysData();
+  }
   getSector() {
     this.apiService.getWithHeaders('MasterData/sector').subscribe(res => {
       if (res) {
@@ -101,8 +109,6 @@ export class DashboardComponent implements OnInit {
         this.frmnList = res;
         this.filterModel.frmn = [];
         this.filterModel.frmn.push(res[res.length - 1].name)
-        // this.filterModel.frmn = res[res.length - 1].name;
-        console.log('frmn',this.frmnList)
       }
     })
   }
@@ -153,26 +159,6 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  getFrmAndAspect(){
-    this.getFrmInputData();
-    this.getFrm30DaysData();
-    this.getFrmTodayData();
-    this.getFrm12MonthsData();
-    this.getAspectAllData()
-    this.getAspect30DaysData();
-    this.getAspectTodayData();
-    this.getAspect12MonthsData();
-    this.getSectorInputData()
-    this.getSectorInput30DaysData();
-    this.getSectorInputTodayData();
-    this.getSector12MonthsData();
-  }
-  getIndicatorAndLocation(){
-    this.getIndicatorData();
-    this.getTop5IndicatorData();
-    this.getTop5EnLocationData();
-    this.getTop5EnLoc7DaysData();
-  }
   // Getting Input Counts
   getCount(){
     this.apiService.getWithHeaders('dashboard/count').subscribe(res =>{
@@ -182,7 +168,7 @@ export class DashboardComponent implements OnInit {
     })
   }
 
-  // Getting Frmn Chart Data
+  // Getting Sector Chart Data
   getSectorInputData(){
     this.apiService.postWithHeader('dashboard/sector',this.filterModel).subscribe(res =>{
       if(res){
@@ -223,61 +209,40 @@ export class DashboardComponent implements OnInit {
     this.apiService.postWithHeader('dashboard/sector/last12Months',this.filterModel).subscribe(res =>{
       if(res){
         this.prepareChartData(res)
-        this.sector12MonthsChartData = {
-          labels: res.name,
-          datasets: [
-            { data: res.count, label: res.name,
-              backgroundColor: 'rgba(151, 126, 201, 0.5)', // Semi-transparent blue
-              borderColor: 'rgba(150, 68, 150, 0.5)', // Solid blue
-              borderWidth: 1.2,
-              fill: true, // Fill area under the line
-              tension: 0.4, // Adds smoothness to the line
-            },
-          ],
-        };
+        // this.sector12MonthsChartData = {
+        //   labels: res.name,
+        //   datasets: [
+        //     { data: res.count, label: res.name,
+        //       backgroundColor: 'rgba(151, 126, 201, 0.5)', // Semi-transparent blue
+        //       borderColor: 'rgba(150, 68, 150, 0.5)', // Solid blue
+        //       borderWidth: 1.2,
+        //       fill: true, // Fill area under the line
+        //       tension: 0.4, // Adds smoothness to the line
+        //     },
+        //   ],
+        // };
       }
     })
   }
-  public barChartLabels: string[] = [];
-  public barChartData: ChartData<'bar'> = { labels: [], datasets: [] }
-  prepareChartData(chartData: { name: string[], count: number[] }) {
-    const monthGroups: { [key: string]: { sector: string, count: number }[] } = {};
 
-    chartData.name.forEach((fullLabel, index) => {
-      const [sector, monthYear] = fullLabel.split(" - ");
-      if (!monthGroups[monthYear]) {
-        monthGroups[monthYear] = [];
-      }
-      monthGroups[monthYear].push({ sector, count: chartData.count[index] });
-    });
-
-    const sortedMonths = Object.keys(monthGroups).sort(
-      (a, b) => new Date(a).getTime() - new Date(b).getTime()
-    );
-
-    this.barChartData.labels = sortedMonths; // ✅ Fix Here
-
-    const uniqueSectors = [...new Set(chartData.name.map(n => n.split(" - ")[0]))];
-
-    this.barChartData.datasets = uniqueSectors.map(sector => ({
-      label: sector,
-      data: sortedMonths.map(month => {
-        const entry = monthGroups[month]?.find(e => e.sector === sector);
-        return entry ? entry.count : 0;
-      }),
-      backgroundColor: this.getSectorColor(sector)
+  prepareChartData(chartData: { name: string[], sectorData: { sector: string, count: number[] }[] }) {
+    this.barChartLabels = [...chartData.name];
+    const datasets = chartData.sectorData.map(sector => ({
+      label: sector.sector,
+      data: sector.count,
+      backgroundColor: this.getSectorColor(sector.sector)
     }));
+    this.barChartData = Object.assign({}, { labels: this.barChartLabels, datasets });
+  }
+  getSectorColor(sector: string): string {
+    if (this.sectorColorMap[sector]) {
+      return this.sectorColorMap[sector];
+    }
+    const newColor = `#${Math.floor(Math.random() * 16777215).toString(16)}`;
+    this.sectorColorMap[sector] = newColor;
+    return newColor;
   }
 
-// Function to generate unique colors for each sector
-getSectorColor(sector: string): string {
-  const colorMap = {
-    "NESS": "#FF6384",
-    "PSS": "#36A2EB",
-    "MSS": "#FFCE56"
-  };
-  return colorMap[sector] || `#${Math.floor(Math.random() * 16777215).toString(16)}`;
-}
   // Getting Frmn Chart Data
   getFrmInputData(){
     this.apiService.postWithHeader('dashboard/fmn',this.filterModel).subscribe(res =>{
@@ -348,7 +313,6 @@ getSectorColor(sector: string): string {
       }
     })
   }
-
   getAspect30DaysData(){
     this.apiService.postWithHeader('dashboard/aspect/30days',this.filterModel).subscribe(res =>{
       if(res){
@@ -409,7 +373,6 @@ getSectorColor(sector: string): string {
       }
     })
   }
-
   getTop5IndicatorData(){
     this.apiService.postWithHeader('dashboard/indicator/top5',this.indicatorFilter).subscribe(res =>{
       if(res){
@@ -527,28 +490,22 @@ getSectorColor(sector: string): string {
       },
     },
   };
-  public barChartOptions: ChartOptions = {
+
+  barChartOptions: ChartOptions = {
     responsive: true,
     plugins: {
-      legend: {
-        display:false
-      },
       tooltip: {
         callbacks: {
-          label: function (tooltipItem) {
-            const dataLabel = tooltipItem.label;
-            const dataValue = tooltipItem.raw;
-            return ` ${dataValue}`;
+          label: (tooltipItem: any) => {
+            const sectorName = tooltipItem.dataset.label; // Get sector name
+            const count = tooltipItem.raw; // Get count
+            return `${sectorName}: ${count}`; // Format tooltip
           }
         }
       }
-    },
-    elements: {
-      arc: {
-        backgroundColor: this.bgColor
-      },
-    },
+    }
   };
+
   onFilterChange(value) {
     let item = [];
     switch (value) {

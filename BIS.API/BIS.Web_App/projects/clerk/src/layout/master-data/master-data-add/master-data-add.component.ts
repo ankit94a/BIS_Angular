@@ -65,10 +65,8 @@ export class MasterDataAddComponent implements OnInit {
   }
 
   getAspect(){
-    debugger
     this.apiService.getWithHeaders('attribute/allaspect').subscribe(res =>{
       if(res){
-        debugger
         this.aspectList = res;
         if(this.masterData?.id > 0){
           this.getIndicator(this.masterData.aspect)
@@ -584,15 +582,14 @@ export class MasterDataAddComponent implements OnInit {
       this.patchFormValues(this.masterData)
     }
   }
-  patchFormValues(data: any) { 
-    debugger
+  patchFormValues(data: any) {
     if (this.createData && this.createData.controls) {
       const formControls = this.createData.controls;
       Object.keys(data).forEach(key => {
         if (formControls[key]) {
           formControls[key].patchValue(data[key] || '');
         }
-      });    
+      });
     }
     this.masterData.aspect;
     this.aspectList;
