@@ -32,7 +32,6 @@ export class NotificationComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    debugger
     this.getUnreadNotification();
     this.signalRService.startConnection();
     this.signalRService.onNotificationReceived((message) => {
@@ -51,9 +50,7 @@ export class NotificationComponent implements OnInit {
   }
 
   openNotification(notify){
-    debugger
     this.dialogService.open(NotificationActionComponent,notify).then(res =>{
-      debugger
       if(res){
         let index = this.notifications.findIndex(item => item.id == notify.id);
         this.notifications.splice(index,1);

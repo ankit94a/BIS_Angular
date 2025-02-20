@@ -17,6 +17,12 @@ namespace BIS.Common.Entities
 	{
 		public List<int>? Count { get; set; } = new List<int>();
 		public List<string>? Name { get; set; } = new List<string>();
+		public List<DashboardSectorData>? SectorData { get; set; } = new List<DashboardSectorData>();
+	}
+	public class DashboardSectorData
+	{
+		public string Sector { get; set; } = string.Empty; // Sector name (e.g., "NESS", "PSS")
+		public List<int> Count { get; set; } = new List<int>(); // Counts for each month in `Name`
 	}
 	public class MeanValueModel : DashboardChart
 	{

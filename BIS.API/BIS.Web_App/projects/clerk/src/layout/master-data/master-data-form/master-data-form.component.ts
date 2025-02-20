@@ -58,7 +58,7 @@ export class MasterDataFormComponent {
       if(res){
         this.aspectList = res;
         if(this.hasNonEmptyParams){
-          let aspect = this.aspectList.find(item => item.name == this.masterData.aspect);    
+          let aspect = this.aspectList.find(item => item.name == this.masterData.aspect);
           this.createData.controls['aspect'].patchValue(aspect.id);
           this.getIndicator(aspect.id);
         }
@@ -66,9 +66,8 @@ export class MasterDataFormComponent {
     })
   }
   getIndicator(event){
-    debugger
     if(!this.hasNonEmptyParams){
-      this.aspectName = this.aspectList.find(item => item.id == event).name;  
+      this.aspectName = this.aspectList.find(item => item.id == event).name;
     }
     this.apiService.getWithHeaders('attribute/indicator/' + event).subscribe(res =>{
       if(res){
@@ -81,7 +80,7 @@ export class MasterDataFormComponent {
   }
 
   ngOnInit(): void {
-    
+
     this.createData = this.formBuilder.group({
       // reportedDate: ['', Validators.required],
       // masterInputlevelID:[0],
@@ -574,7 +573,7 @@ export class MasterDataFormComponent {
       this.name = this.authService.getCorpsName();
     }
     this.fmnList.push(this.name);
-    this.createData.get('frmn')?.setValue(this.name);  
+    this.createData.get('frmn')?.setValue(this.name);
     this.createData.get('reportedDate')?.disable();
 
     // new work for edit master-form
@@ -585,15 +584,15 @@ export class MasterDataFormComponent {
       this.patchFormValues(this.masterData);
     }
   }
-  patchFormValues(data: any) { 
+  patchFormValues(data: any) {
     if (this.createData && this.createData.controls) {
       const formControls = this.createData.controls;
       Object.keys(data).forEach(key => {
         if (formControls[key]) {
           formControls[key].patchValue(data[key] || '');
         }
-      });    
-    }  
+      });
+    }
   }
 
   getData(){
@@ -679,7 +678,6 @@ export class MasterDataFormComponent {
   dynamicDropdownLabel: string = '';  // Label for the dynamic dropdown
 
   onChange2($event) {
-    debugger
     const selectedIndicator = $event;
     const fields = this.fieldConfigurations[selectedIndicator] || [];
 

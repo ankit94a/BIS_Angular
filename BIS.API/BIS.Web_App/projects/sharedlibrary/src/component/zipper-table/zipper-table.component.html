@@ -1,4 +1,4 @@
-<section class="example-container mat-elevation-z8" tabindex="0" style="overflow: auto;" style="width: auto;">
+<section class="example-container mat-elevation-z8" tabindex="0" style="overflow: auto;" style="width: auto;height: 680px;">
     <mat-table [dataSource]="dataSource" class="mat-elevation-z8">
         <ng-container *ngFor="let column of sqColumnDefinition" matColumnDef="{{column.name}}" sticky="true">
             <ng-container *ngIf="column.name ==='select';then checkbox else nocheckbox"></ng-container>
@@ -110,7 +110,7 @@
                 </button>
                 <button mat-icon-button color="basic" *ngIf="element!=null && tablePaginationSettings.enableEdit && element.status == '1'"
                     type="button" (click)="editObj(element)" matTooltip="edit"> <mat-icon>edit</mat-icon></button>
-                
+
                 <button mat-icon-button color="warn" *ngIf="element!=null && tablePaginationSettings.enableDelete"
                     type="button" (click)="deleteObj(i,element)" matTooltip="delete">
                     <mat-icon>delete_outline</mat-icon>

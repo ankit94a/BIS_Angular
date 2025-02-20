@@ -10,5 +10,5 @@ export const routes: Routes = [
         loadComponent: () => import('../app/login/login.component').then(m => m.LoginComponent)
     },
     // otherwise redirect to home
-    { path: '**', redirectTo: '' }
+    { path: '**', redirectTo: 'login' }
 ];

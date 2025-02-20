@@ -5,28 +5,78 @@
   <mat-card-content class="mat-content">
 
     <div class="row">
-      <div class="col-sm-4">
+      <!-- <div class="col-sm-4">
         <mat-card>
-          <mat-card-title class="totals">Total Inputs : {{ dashboardCount.totalInputCount }}</mat-card-title>
+          <mat-card-title class="totals">
+            <section>Inputs | <span class="fed-text">Total</span></section>
+            <div class="card-icon"><i class="material-icons card-header">equalizer</i></div>
+
+            <section>{{ dashboardCount.totalInputCount }}</section>
+          </mat-card-title>
         </mat-card>
+      </div> -->
+      <div class="col-lg-4 col-md-6 col-sm-6">
+        <div class="card2 card-stats">
+          <div class="card-header2">
+            <div class="card-icon red">
+              <i class="material-icons">equalizer</i>
+            </div>
+            <div class="count-text">{{ dashboardCount.totalInputCount }}</div>
+          </div>
+          <div class="card-footer">
+            <div class="stats">
+              <i class="material-icons">date_range</i> Inputs | <span class="fed-text">Total</span>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="col-sm-4">
+      <!-- <div class="col-sm-4">
         <mat-card>
           <mat-card-title class="totals">Total Today : {{ dashboardCount.todayCount }}</mat-card-title>
         </mat-card>
+      </div> -->
+      <div class="col-lg-4 col-md-6 col-sm-6">
+        <div class="card2 card-stats">
+          <div class="card-header2">
+            <div class="card-icon green">
+              <i class="material-icons">store</i>
+            </div>
+            <div class="count-text">{{ dashboardCount.todayCount }}</div>
+          </div>
+          <div class="card-footer">
+            <div class="stats">
+              <i class="material-icons">date_range</i> Inputs | <span class="fed-text">Today</span>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="col-sm-4">
+      <div class="col-lg-4 col-md-6 col-sm-6">
+        <div class="card2 card-stats">
+          <div class="card-header2">
+            <div class="card-icon orange">
+              <i class="material-icons">weekend</i>
+            </div>
+            <div class="count-text">{{ dashboardCount.last7DaysCount }}</div>
+          </div>
+          <div class="card-footer">
+            <div class="stats">
+              <i class="material-icons">date_range</i> Inputs | <span class="fed-text">7 Days</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- <div class="col-sm-4">
         <mat-card>
           <mat-card-title class="totals">Total (07 Days) : {{ dashboardCount.last7DaysCount }}</mat-card-title>
         </mat-card>
-      </div>
+      </div> -->
     </div>
     <br>
     <div class="row">
       <div class="col-sm-5">
-        <ng-select appendTo="ng-select" [items]="frmnList" [multiple]="true" (change)="onFilterChange($event)" bindLabel="name" bindValue="name"
-          [closeOnSelect]="false" placeholder="Fmn" [searchable]="true" [(ngModel)]="filterModel.frmn"
-          (keydown.enter)="onFilterChange($event)">
+        <ng-select appendTo="ng-select" [items]="frmnList" [multiple]="true" (change)="onFilterChange($event)"
+          bindLabel="name" bindValue="name" [closeOnSelect]="false" placeholder="Fmn" [searchable]="true"
+          [(ngModel)]="filterModel.frmn" (keydown.enter)="onFilterChange($event)">
           <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
             <div class="ng-value" *ngFor="let item of items">
               <span class="ng-value-label">{{item.name}}</span>
@@ -48,7 +98,7 @@
         </ng-select>
       </div>
       <div class="col-sm-1 btn-float-down">
-        <button class="btn btn-sm btn-outline-primary btn-height" (click)="getFrmAndAspect()">Search</button>
+        <button class="btn btn-sm btn-outline-primary btn-height" (click)="getAll()">Search</button>
       </div>
     </div>
 
@@ -111,13 +161,8 @@
           </button>
         </section>
         <div class="chart-container">
-          <canvas 
-    baseChart 
-    [data]="barChartData" 
-    [labels]="barChartLabels"
-    [options]="barChartOptions"
-    [type]="'bar'">
-  </canvas>
+          <canvas baseChart [data]="barChartData" [labels]="barChartLabels" [options]="barChartOptions" [type]="'bar'">
+          </canvas>
         </div>
       </mat-card>
 
@@ -286,7 +331,7 @@
     <div class="row">
       <div class="col-sm-10">
         <ng-select appendTo="ng-select" [items]="sectorList" [multiple]="true" [(ngModel)]="indicatorFilter.sector"
-          placeholder="Sector" [searchable]="true" [closeOnSelect]="false">
+          placeholder="Sector" [searchable]="true" [closeOnSelect]="false" bindLabel="name" bindValue="name">
           <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
             <div class="ng-value" *ngFor="let item of items">
               <span class="ng-value-label">{{item.name}}</span>

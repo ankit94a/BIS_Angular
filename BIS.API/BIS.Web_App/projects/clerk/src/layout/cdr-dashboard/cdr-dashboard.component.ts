@@ -68,14 +68,11 @@ export class CdrDashboardComponent {
     this.dialogService.open(GenerateReportViewComponent,item);
   }
   addInference(item){
-    debugger
     this.dialogService.open(CdrInferenceComponent,item);
   }
   getReportByDate(){
-    debugger
     if(this.filterModel2.endDate != null && this.filterModel2.endDate != undefined){
       this.apiService.postWithHeader('cdrdashboard',this.filterModel2).subscribe(res =>{
-        debugger
       if(res){
         this.allReports = res;
       }

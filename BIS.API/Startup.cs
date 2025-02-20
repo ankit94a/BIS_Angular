@@ -33,6 +33,7 @@ namespace BIS.API
 			{
 				options.AddPolicy("_myAllowSpecificOrigins", builder =>
 				{
+					//https://bis1.jayceetechsoftwares.com
 					builder.WithOrigins("http://localhost:4200")
 						   .AllowAnyMethod()
 						   .AllowAnyHeader()
@@ -82,11 +83,11 @@ namespace BIS.API
 				app.UseDeveloperExceptionPage();
 				app.UseSwaggerSetup();
 
-				app.UseSwagger(); 
+				app.UseSwagger();
 				app.UseSwaggerUI(c =>
 				{
-					c.SwaggerEndpoint("/swagger/v1/swagger.json", "BIS API v1");  
-					c.RoutePrefix = string.Empty; 
+					c.SwaggerEndpoint("/swagger/v1/swagger.json", "BIS API v1");
+					c.RoutePrefix = string.Empty;
 				});
 
 			}
@@ -94,21 +95,21 @@ namespace BIS.API
 			app.UseRouting();
 			app.UseCors("_myAllowSpecificOrigins");
 			//app.ConfigureExceptionHandler();
-			
+
 			//app.UseCors(MyAllowSpecificOrigins);
-			
-			
-			
+
+
+
 			//app.UseAuthorization();
 			//app.UseCors();
-			
+
 			app.UseAuthentication();
 			app.UseAuthorization();
 			app.UseResponseCompression();
 
-			
+
 			//app.UseHttpsRedirection();
-			
+
 			//app.UseResponseCaching();
 			app.UseEndpoints(endpoints =>
 			{
