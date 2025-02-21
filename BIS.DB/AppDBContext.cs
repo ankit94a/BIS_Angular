@@ -27,5 +27,7 @@ namespace BIS.DB
 		public DbSet<Notification> Notification { get; set; }
 		public DbSet<GraphImages> GraphImages { get; set; }
 		public DbSet<ApprovedReports> ApprovedReports { get; set; }
+		public DbSet<RolePermission> RolePermission { get; set; }
+		public DbSet<Permission> Permisssion { get; set; }
 	}
 }

@@ -1,4 +1,5 @@
-﻿using BIS.API.Hubs;
+﻿using BIS.API.Authorization;
+using BIS.API.Hubs;
 using BIS.Common.Entities;
 using BIS.Common.Helpers;
 using BIS.DB.Implements;
@@ -30,6 +31,7 @@ namespace BIS.API.Controller
 		//    long DivisonId = HttpContext.GetDivisionId();
 		//    return Ok(_masterDataManager.GetAll(CorpsId,DivisonId));
 		//}
+		[AuthorizePermission(PermissionItem.MasterData, PermissionAction.Read)]
 		[HttpGet]
 		public async Task<IActionResult> GetAllMasterData()
 		{
@@ -48,7 +50,8 @@ namespace BIS.API.Controller
 			}
 		}
 
-        [HttpPost]
+		[AuthorizePermission(PermissionItem.MasterData, PermissionAction.Create)]
+		[HttpPost]
         public IActionResult AddData(MasterData masterData)
         {
             if (masterData == null)
@@ -68,17 +71,23 @@ namespace BIS.API.Controller
                 return StatusCode(500, "Internal server error while adding master data");
             }
         }
-        [HttpGet, Route("getbyid{id}")]
+
+		[AuthorizePermission(PermissionItem.MasterData, PermissionAction.Read)]
+		[HttpGet, Route("getbyid{id}")]
 		public IActionResult GetById(int id)
 		{
 			var corpsId = HttpContext.GetCorpsId();
 			return Ok(_masterDataManager.GetBy(id, corpsId));
 		}
+
+		[AuthorizePermission(PermissionItem.MasterData, PermissionAction.Read)]
 		[HttpGet, Route("idsList{idsList}")]
 		public IActionResult GetByIds(string idsList)
 		{
 			return Ok(_masterDataManager.GetByIds(idsList));
 		}
+
+		[AuthorizePermission(PermissionItem.MasterData, PermissionAction.Read)]
 		[HttpPost, Route("dateRange")]
 		public IActionResult GetBetweenDateRange(FilterModelEntries filterModel)
 		{
@@ -86,6 +95,7 @@ namespace BIS.API.Controller
 			int DivisionId = HttpContext.GetDivisionId();
 			return Ok(_masterDataManager.GetBetweenDateRange(filterModel, CorpsId, DivisionId));
 		}
+
 		// Common Fields for MasterData
 		[HttpGet, Route("inputlevels")]
 		public IActionResult GetInputLevels()
@@ -116,7 +126,8 @@ namespace BIS.API.Controller
 			return Ok(_masterDataManager.GetAllEnemyLocation());
 		}
 
-        [HttpPut]
+		[AuthorizePermission(PermissionItem.MasterData, PermissionAction.Update)]
+		[HttpPut]
         public IActionResult updateMasterData(MasterData masterData)
         {
             masterData.UpdatedBy = HttpContext.GetUserId();

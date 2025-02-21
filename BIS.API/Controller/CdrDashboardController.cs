@@ -1,4 +1,5 @@
-﻿using BIS.Common.Entities;
+﻿using BIS.API.Authorization;
+using BIS.Common.Entities;
 using BIS.Manager.Implements;
 using BIS.Manager.Interfaces;
 using InSync.Api.Helpers;
@@ -15,6 +16,7 @@ namespace BIS.API.Controller
 		{
 			_cdrDashboardManager = cdrDashboardManager;
 		}
+		[AuthorizePermission(PermissionItem.CdrDashboard, PermissionAction.Read)]
 		[HttpPost]
 		public IActionResult GetReportByDate([FromBody] FilterModel filterModel)
 		{
@@ -24,7 +26,7 @@ namespace BIS.API.Controller
 			var roleType = HttpContext.GetRoleType();
 			return Ok(_cdrDashboardManager.GetReportByDate(filterModel, CorpsId, roleType, DivisionId));
 		}
-
+		[AuthorizePermission(PermissionItem.CdrDashboard, PermissionAction.Create)]
 		[HttpPost, Route("inference")]
 		public IActionResult AddInference([FromBody] ApprovedReports inference)
 		{
@@ -36,7 +38,7 @@ namespace BIS.API.Controller
 			RoleType roleTye = HttpContext.GetRoleType();
 			return Ok(_cdrDashboardManager.AddInference(inference,roleTye));
 		}
-
+		[AuthorizePermission(PermissionItem.CdrDashboard, PermissionAction.Read)]
 		[HttpGet, Route("inference")]
 		public IActionResult GetInference()
 		{
@@ -44,7 +46,7 @@ namespace BIS.API.Controller
 			int divisionId = HttpContext.GetDivisionId();
 			return Ok(_cdrDashboardManager.GetInference(corpsId, divisionId));
 		}
-
+		[AuthorizePermission(PermissionItem.CdrDashboard, PermissionAction.Read)]
 		[HttpPost,Route("fullreport")]
 		public IActionResult GetFullReport([FromBody] ApprovedReports inference)
 		{
