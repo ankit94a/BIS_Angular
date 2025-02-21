@@ -574,7 +574,7 @@ export class MasterDataFormComponent {
     }
     this.fmnList.push(this.name);
     this.createData.get('frmn')?.setValue(this.name);
-    this.createData.get('reportedDate')?.disable();
+    // this.createData.get('reportedDate')?.disable();
 
     // new work for edit master-form
     const queryParams = this.route.snapshot.queryParams;

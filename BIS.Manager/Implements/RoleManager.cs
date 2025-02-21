@@ -7,6 +7,7 @@ using BIS.Common.Entities;
 using BIS.DB.Implements;
 using BIS.DB.Interfaces;
 using BIS.Manager.Interfaces;
+using static BIS.Common.Enum.Enum;
 
 namespace BIS.Manager.Implements
 {
@@ -18,8 +19,11 @@ namespace BIS.Manager.Implements
         {
             _roleDB = roleDB;
         }
-
-        public List<Role> GetAll(int corpsId,int divisonId)
+		public bool Check(long RoleId, PermissionItem PermissionName, PermissionAction permissionAction)
+		{
+			return _roleDB.Check(RoleId, PermissionName, permissionAction);
+		}
+		public List<Role> GetAll(int corpsId,int divisonId)
         {
             return _roleDB.GetAll(corpsId,divisonId);
         }

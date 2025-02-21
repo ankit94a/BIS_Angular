@@ -1,4 +1,5 @@
-﻿using BIS.Common.Entities;
+﻿using BIS.API.Authorization;
+using BIS.Common.Entities;
 using BIS.DB.Implements;
 using BIS.Manager.Interfaces;
 using InSync.Api.Helpers;
@@ -15,6 +16,7 @@ namespace BIS.API.Controller
 		{
 			_generateReportManager = generateReportManager;
 		}
+		[AuthorizePermission(PermissionItem.GenerateReport, PermissionAction.Create)]
 		[HttpPost]
 		public IActionResult AddReport([FromBody] GenerateReport report)
 		{
@@ -25,6 +27,7 @@ namespace BIS.API.Controller
 			report.CreatedOn = DateTime.Now;
 			return Ok(_generateReportManager.AddReport(report, roleType));
 		}
+		[AuthorizePermission(PermissionItem.GenerateReport, PermissionAction.Read)]
 		[HttpGet]
 		public IActionResult GetReport()
 		{
@@ -33,11 +36,13 @@ namespace BIS.API.Controller
 			int userId = HttpContext.GetUserId();
 			return Ok(_generateReportManager.GetReportByUser(CorpsId, DivisionId, userId));
 		}
+		[AuthorizePermission(PermissionItem.GenerateReport, PermissionAction.Read)]
 		[HttpGet, Route("graph{ids}")]
 		public IActionResult GetGraphs(string ids)
 		{
 			return Ok(_generateReportManager.GetGraphs(ids));
 		}
+		[AuthorizePermission(PermissionItem.GenerateReport, PermissionAction.Read)]
 		[HttpGet, Route("report{id}")]
 		public IActionResult GetById(int id)
 		{

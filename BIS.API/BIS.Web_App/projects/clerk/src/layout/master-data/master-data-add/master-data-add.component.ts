@@ -575,7 +575,7 @@ export class MasterDataAddComponent implements OnInit {
     this.fmnList.push(this.name);
     this.createData.get('frmn')?.setValue(this.name);
     this.getData();
-    this.createData.get('reportedDate')?.disable();
+    // this.createData.get('reportedDate')?.disable();
 
     // handling view part
     if (this.masterData?.id && this.masterData.id > 0) {

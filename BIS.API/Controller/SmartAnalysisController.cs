@@ -1,4 +1,5 @@
-﻿using BIS.Common.Entities;
+﻿using BIS.API.Authorization;
+using BIS.Common.Entities;
 using BIS.Manager.Interfaces;
 using InSync.Api.Helpers;
 using Microsoft.AspNetCore.Mvc;
@@ -14,7 +15,7 @@ namespace BIS.API.Controller
 		{
 			_smartAnalysisManager = smartAnalysisManager;
 		}
-
+		[AuthorizePermission(PermissionItem.SmartAnalysis, PermissionAction.Read)]
 		[HttpPost, Route("30days")]
 		public IActionResult Get30DaysFmnData([FromBody] FilterModel filterModel)
 		{
@@ -23,6 +24,7 @@ namespace BIS.API.Controller
 			RoleType roleType = HttpContext.GetRoleType();
 			return Ok(_smartAnalysisManager.Get30DaysFmnData(corpsId, divisionId, roleType, filterModel));
 		}
+		[AuthorizePermission(PermissionItem.SmartAnalysis, PermissionAction.Read)]
 		[HttpPost, Route("30days/lastyear")]
 		public IActionResult Get30DaysFmnLastYear([FromBody] FilterModel filterModel)
 		{
@@ -31,6 +33,7 @@ namespace BIS.API.Controller
 			RoleType roleType = HttpContext.GetRoleType();
 			return Ok(_smartAnalysisManager.Get30DaysFmnData(corpsId, divisionId, roleType, filterModel, true));
 		}
+		[AuthorizePermission(PermissionItem.SmartAnalysis, PermissionAction.Read)]
 		[HttpPost, Route("aspect/30days")]
 		public IActionResult Get30DaysAspect([FromBody] FilterModel filterModel)
 		{
@@ -39,6 +42,7 @@ namespace BIS.API.Controller
 			RoleType roleType = HttpContext.GetRoleType();
 			return Ok(_smartAnalysisManager.Get30DaysAspectData(corpsId, divisionId, roleType, filterModel));
 		}
+		[AuthorizePermission(PermissionItem.SmartAnalysis, PermissionAction.Read)]
 		[HttpPost, Route("aspect/30days/lastyear")]
 		public IActionResult Get30DaysAspectLastYear([FromBody] FilterModel filterModel)
 		{
@@ -47,7 +51,7 @@ namespace BIS.API.Controller
 			RoleType roleType = HttpContext.GetRoleType();
 			return Ok(_smartAnalysisManager.Get30DaysFmnData(corpsId, divisionId, roleType, filterModel, true));
 		}
-
+		[AuthorizePermission(PermissionItem.SmartAnalysis, PermissionAction.Read)]
 		[HttpPost, Route("indicator/30days")]
 		public IActionResult Get30DaysIndicator([FromBody] FilterModel filterModel)
 		{
@@ -56,6 +60,7 @@ namespace BIS.API.Controller
 			RoleType roleType = HttpContext.GetRoleType();
 			return Ok(_smartAnalysisManager.Get30DaysIndicatorData(corpsId, divisionId, roleType, filterModel));
 		}
+		[AuthorizePermission(PermissionItem.SmartAnalysis, PermissionAction.Read)]
 		[HttpPost, Route("indicator/30days/lastyear")]
 		public IActionResult Get30DaysIndicatorLastYear([FromBody] FilterModel filterModel)
 		{
@@ -64,7 +69,7 @@ namespace BIS.API.Controller
 			RoleType roleType = HttpContext.GetRoleType();
 			return Ok(_smartAnalysisManager.Get30DaysIndicatorData(corpsId, divisionId, roleType, filterModel, true));
 		}
-
+		[AuthorizePermission(PermissionItem.SmartAnalysis, PermissionAction.Read)]
 		[HttpPost, Route("getentries")]
 		public async Task<IActionResult> GetEntries([FromBody] FilterModelEntries filterModel)
 		{
@@ -73,6 +78,7 @@ namespace BIS.API.Controller
 			RoleType roleType = HttpContext.GetRoleType();
 			return Ok(await _smartAnalysisManager.GetEntries(corpsId, divisionId, roleType, filterModel));
 		}
+		[AuthorizePermission(PermissionItem.SmartAnalysis, PermissionAction.Read)]
 		[HttpPost, Route("variation")]
 		public IActionResult GetVariationData([FromBody] FilterModel filterModel)
 		{

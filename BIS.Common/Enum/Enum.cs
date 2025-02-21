@@ -22,7 +22,7 @@ namespace BIS.Common.Enum
             PredictiveModel,
             CdrDashboard,
             ImportExport,
-            SavedNotes,
+            ApprovedReports,
             NotesForMe,
             Facility,
             User,
