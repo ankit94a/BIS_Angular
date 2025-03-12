@@ -17,60 +17,37 @@ namespace BIS.Manager.Implements
 		{
 			_smartAnalysisDB = smartAnalysisDB;
 		}
-		public DashboardChart Get30DaysFmnData(long corpsId, long divisionId, RoleType roleType, FilterModel filterModel, bool isLastYear = false)
+		public DashboardChart Get30DaysFmnData(RoleType roleType, FilterModel filterModel, bool isLastYear = false)
 		{
-			if (divisionId > 0)
-			{
-				return _smartAnalysisDB.Get30DaysFmnData(corpsId, divisionId, roleType, filterModel, isLastYear);
-			}
-			else
-			{
-				return new DashboardChart();
-			}
+
+			return _smartAnalysisDB.Get30DaysFmnData(roleType, filterModel, isLastYear);
+
 		}
-		public DashboardChart Get30DaysAspectData(long corpsId, long divisionId, RoleType roleType, FilterModel filterModel, bool isLastYear = false)
+		public DashboardChart Get30DaysAspectData(RoleType roleType, FilterModel filterModel, bool isLastYear = false)
 		{
-			if (divisionId > 0)
-			{
-				return _smartAnalysisDB.Get30DaysAspectData(corpsId, divisionId, roleType, filterModel, isLastYear);
-			}
-			else
-			{
-				return new DashboardChart();
-			}
+
+			return _smartAnalysisDB.Get30DaysAspectData(roleType, filterModel, isLastYear);
+
 		}
-		public DashboardChart Get30DaysIndicatorData(long corpsId, long divisionId, RoleType roleType, FilterModel filterModel, bool isLastYear = false)
+		public DashboardChart Get30DaysIndicatorData(RoleType roleType, FilterModel filterModel, bool isLastYear = false)
 		{
-			if (divisionId > 0)
-			{
-				return _smartAnalysisDB.Get30DaysIndicatorData(corpsId, divisionId, roleType, filterModel, isLastYear);
-			}
-			else
-			{
-				return new DashboardChart();
-			}
+
+			return _smartAnalysisDB.Get30DaysIndicatorData(roleType, filterModel, isLastYear);
+
 		}
-		public async Task<MeanValueModel> GetEntries(long corpsId, long divisionId, RoleType roleType, FilterModelEntries filterModel)
+		public async Task<MeanValueModel> GetEntries(RoleType roleType, FilterModelEntries filterModel)
 		{
-			if (divisionId > 0)
-			{
-				return await _smartAnalysisDB.GetEntries(corpsId, divisionId, roleType, filterModel);
-			}
-			else
-			{
-				return new MeanValueModel();
-			}
+
+			return await _smartAnalysisDB.GetEntries(roleType, filterModel);
+
+
 		}
-		public DashboardChart GetVariationData(long corpsId, long divisionId, RoleType roleType, FilterModel filterModel)
+		public DashboardChart GetVariationData(RoleType roleType, FilterModel filterModel)
 		{
-			if (divisionId > 0)
-			{
-				return _smartAnalysisDB.GetVariationData(corpsId, divisionId, roleType, filterModel);
-			}
-			else
-			{
-				return new DashboardChart();
-			}
+
+			return _smartAnalysisDB.GetVariationData(roleType, filterModel);
+
+
 		}
 	}
 }

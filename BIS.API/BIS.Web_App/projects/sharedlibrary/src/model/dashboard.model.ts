@@ -5,7 +5,7 @@ export class DasboardChart{
     name:string;
 }
 export class FilterModel{
-    frmn:string[]=[];
+    frmn:FmnModel[];
     source:string[]=[];
     aspects:string[]=[];
     sector:string[]=[];
@@ -20,4 +20,10 @@ export class DashboardInputCount{
 }
 export class FilterModel4 extends FilterModel{
   filterType:FilterType;
+}
+
+export class FmnModel {
+  corpsId:number;
+  divisionId:number;
+  name:string;
 }

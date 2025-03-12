@@ -30,13 +30,19 @@ namespace BIS.Common.Entities
 	}
 	public class FilterModel
 	{
-		public List<string>? Frmn { get; set; }
+		public List<FmnModel> Frmn { get; set; }
 		public List<string>? Sector { get; set; }
 		public List<string>? Aspects { get; set; }
 		public List<string>? Source { get; set; }
 		public List<string>? Indicator { get; set; }
 		public DateTime? startDate { get; set; }
 		public DateTime? endDate { get; set; }
+	}
+	public class FmnModel
+	{
+		public long CorpsId { get; set; }
+		public int DivisionId { get; set; }
+		public string Name { get; set; }
 	}
 	public class FilterModelEntries : FilterModel
 	{

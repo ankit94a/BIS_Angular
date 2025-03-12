@@ -22,7 +22,7 @@ namespace BIS.API.Controller
 			long corpsId = HttpContext.GetCorpsId();
 			long divisionId = HttpContext.GetDivisionId();
 			RoleType roleType = HttpContext.GetRoleType();
-			return Ok(_smartAnalysisManager.Get30DaysFmnData(corpsId, divisionId, roleType, filterModel));
+			return Ok(_smartAnalysisManager.Get30DaysFmnData(roleType, filterModel));
 		}
 		[AuthorizePermission(PermissionItem.SmartAnalysis, PermissionAction.Read)]
 		[HttpPost, Route("30days/lastyear")]
@@ -31,7 +31,7 @@ namespace BIS.API.Controller
 			long corpsId = HttpContext.GetCorpsId();
 			long divisionId = HttpContext.GetDivisionId();
 			RoleType roleType = HttpContext.GetRoleType();
-			return Ok(_smartAnalysisManager.Get30DaysFmnData(corpsId, divisionId, roleType, filterModel, true));
+			return Ok(_smartAnalysisManager.Get30DaysFmnData(roleType, filterModel, true));
 		}
 		[AuthorizePermission(PermissionItem.SmartAnalysis, PermissionAction.Read)]
 		[HttpPost, Route("aspect/30days")]
@@ -40,7 +40,7 @@ namespace BIS.API.Controller
 			long corpsId = HttpContext.GetCorpsId();
 			long divisionId = HttpContext.GetDivisionId();
 			RoleType roleType = HttpContext.GetRoleType();
-			return Ok(_smartAnalysisManager.Get30DaysAspectData(corpsId, divisionId, roleType, filterModel));
+			return Ok(_smartAnalysisManager.Get30DaysAspectData(roleType, filterModel));
 		}
 		[AuthorizePermission(PermissionItem.SmartAnalysis, PermissionAction.Read)]
 		[HttpPost, Route("aspect/30days/lastyear")]
@@ -49,7 +49,7 @@ namespace BIS.API.Controller
 			long corpsId = HttpContext.GetCorpsId();
 			long divisionId = HttpContext.GetDivisionId();
 			RoleType roleType = HttpContext.GetRoleType();
-			return Ok(_smartAnalysisManager.Get30DaysFmnData(corpsId, divisionId, roleType, filterModel, true));
+			return Ok(_smartAnalysisManager.Get30DaysFmnData(roleType, filterModel, true));
 		}
 		[AuthorizePermission(PermissionItem.SmartAnalysis, PermissionAction.Read)]
 		[HttpPost, Route("indicator/30days")]
@@ -58,7 +58,7 @@ namespace BIS.API.Controller
 			long corpsId = HttpContext.GetCorpsId();
 			long divisionId = HttpContext.GetDivisionId();
 			RoleType roleType = HttpContext.GetRoleType();
-			return Ok(_smartAnalysisManager.Get30DaysIndicatorData(corpsId, divisionId, roleType, filterModel));
+			return Ok(_smartAnalysisManager.Get30DaysIndicatorData(roleType, filterModel));
 		}
 		[AuthorizePermission(PermissionItem.SmartAnalysis, PermissionAction.Read)]
 		[HttpPost, Route("indicator/30days/lastyear")]
@@ -67,7 +67,7 @@ namespace BIS.API.Controller
 			long corpsId = HttpContext.GetCorpsId();
 			long divisionId = HttpContext.GetDivisionId();
 			RoleType roleType = HttpContext.GetRoleType();
-			return Ok(_smartAnalysisManager.Get30DaysIndicatorData(corpsId, divisionId, roleType, filterModel, true));
+			return Ok(_smartAnalysisManager.Get30DaysIndicatorData(roleType, filterModel, true));
 		}
 		[AuthorizePermission(PermissionItem.SmartAnalysis, PermissionAction.Read)]
 		[HttpPost, Route("getentries")]
@@ -76,7 +76,7 @@ namespace BIS.API.Controller
 			long corpsId = HttpContext.GetCorpsId();
 			long divisionId = HttpContext.GetDivisionId();
 			RoleType roleType = HttpContext.GetRoleType();
-			return Ok(await _smartAnalysisManager.GetEntries(corpsId, divisionId, roleType, filterModel));
+			return Ok(await _smartAnalysisManager.GetEntries(roleType, filterModel));
 		}
 		[AuthorizePermission(PermissionItem.SmartAnalysis, PermissionAction.Read)]
 		[HttpPost, Route("variation")]
@@ -85,7 +85,7 @@ namespace BIS.API.Controller
 			long corpsId = HttpContext.GetCorpsId();
 			long divisionId = HttpContext.GetDivisionId();
 			RoleType roleType = HttpContext.GetRoleType();
-			return Ok(_smartAnalysisManager.GetVariationData(corpsId, divisionId, roleType, filterModel));
+			return Ok(_smartAnalysisManager.GetVariationData(roleType, filterModel));
 		}
 	}
 }

@@ -31,7 +31,10 @@ namespace BIS.DB.Implements
 							 .Where(d => d.CorpsId == corpsId)
 							 .ToList();
 		}
-
+		public Divisons GetDivisonDetails(int corpsId, int divisionId)
+		{
+			return _dbContext.Divisions.Where(it => it.CorpsId == corpsId && it.Id == divisionId).FirstOrDefault();
+		}
 
 		public string GetNameByCorpsId(long corpsId)
 		{

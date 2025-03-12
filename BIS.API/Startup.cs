@@ -34,6 +34,7 @@ namespace BIS.API
 				options.AddPolicy("_myAllowSpecificOrigins", builder =>
 				{
 					//https://bis1.jayceetechsoftwares.com
+					//http://localhost:4200
 					builder.WithOrigins("http://localhost:4200")
 						   .AllowAnyMethod()
 						   .AllowAnyHeader()

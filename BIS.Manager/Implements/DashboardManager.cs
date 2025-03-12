@@ -17,193 +17,124 @@ namespace BIS.Manager.Implements
 		{
 			_dashboardDB = dashboardDB;
 		}
-		public DashboardInputCount GetInputCounts(int corpsId, int divisionId = 0)
+		public List<FmnModel> GetFmnDetails(int corpsId, int divisionId)
 		{
-			return _dashboardDB.GetInputCounts(corpsId, divisionId);
+			return _dashboardDB.GetFmnDetails(corpsId, divisionId);
 		}
-        public DashboardChart GetSectorWiseData(long corpsId, long divisionId, RoleType roleType, FilterModel filterModel, DaysMonthFilter daysMonthFilter)
+
+		public DashboardInputCount GetInputCounts(FilterModel filterModel, int corpsId, int divisionId)
+		{
+			return _dashboardDB.GetInputCounts(filterModel, corpsId, divisionId);
+		}
+		public DashboardChart GetSectorWiseData(RoleType roleType, FilterModel filterModel, DaysMonthFilter daysMonthFilter)
 		{
 			//return new DashboardChart();
 
-			if(divisionId > 0)
-			{
-				return _dashboardDB.GetSectorWiseData(corpsId,divisionId,filterModel,daysMonthFilter);
+			return _dashboardDB.GetSectorWiseData(filterModel, daysMonthFilter);
 
-			}else
-			{
-				return new DashboardChart();
-			}
+
 		}
 
-        public DashboardChart GetAllFmnOrAspectData(long corpsId, long divisionId, RoleType roleType, FilterModel filterModel, bool isFrmn = true)
+		public DashboardChart GetAllFmnOrAspectData(RoleType roleType, FilterModel filterModel, bool isFrmn = true)
 		{
 			//case 1 role is belonging to division
-			if (divisionId > 0)
-			{
-				// case 1.1 sector and aspect is empty any of one
-				// case 1.2 sector and aspect any of have value
-				// case 1.3 handling frmn and aspect base chart
-				var result = new DashboardChart();
-				if (isFrmn)
-				{
-					return _dashboardDB.GetFrmnChart(corpsId, divisionId, DaysMonthFilter.All, filterModel);
-				}
-				else
-				{
-					return _dashboardDB.GetAspectChart(corpsId, divisionId, DaysMonthFilter.All, filterModel);
-				}
 
+			// case 1.1 sector and aspect is empty any of one
+			// case 1.2 sector and aspect any of have value
+			// case 1.3 handling frmn and aspect base chart
+			var result = new DashboardChart();
+			if (isFrmn)
+			{
+				return _dashboardDB.GetFrmnChart(DaysMonthFilter.All, filterModel);
 			}
 			else
 			{
-				//if (isFrmn)
-				//{
-				//    return _dashboardDB.
-				//}
-
-				//return null;
-
-				var result = new DashboardChart();
-				if (isFrmn)
-				{
-					return _dashboardDB.GetFrmnChart(corpsId, divisionId, DaysMonthFilter.All, filterModel);
-				}
-				else
-				{
-					return _dashboardDB.GetAspectChart(corpsId, divisionId, DaysMonthFilter.All, filterModel);
-				}
+				return _dashboardDB.GetAspectChart(DaysMonthFilter.All, filterModel);
 			}
+
+
 		}
-		public DashboardChart Get30DaysFmnOrAspectData(long corpsId, long divisionId, RoleType roleType, FilterModel filterModel, bool isFrmn)
+		public DashboardChart Get30DaysFmnOrAspectData(RoleType roleType, FilterModel filterModel, bool isFrmn)
 		{
 			//case 1 role is belonging to division
-			if (divisionId > 0)
-			{
-				// case 1.1 sector and aspect is empty any of one
-				// case 1.2 sector and aspect any of have value
-				// case 1.3 handling frmn and aspect base chart
-				var result = new DashboardChart();
-				if (isFrmn)
-				{
-					return _dashboardDB.GetFrmnChart(corpsId, divisionId, DaysMonthFilter.Days30, filterModel);
-				}
-				else
-				{
-					return _dashboardDB.GetAspectChart(corpsId, divisionId, DaysMonthFilter.Days30, filterModel);
-				}
 
+			// case 1.1 sector and aspect is empty any of one
+			// case 1.2 sector and aspect any of have value
+			// case 1.3 handling frmn and aspect base chart
+			var result = new DashboardChart();
+			if (isFrmn)
+			{
+				return _dashboardDB.GetFrmnChart(DaysMonthFilter.Days30, filterModel);
 			}
 			else
 			{
-				//return null;
-				var result = new DashboardChart();
-				if (isFrmn)
-				{
-					return _dashboardDB.GetFrmnChart(corpsId, divisionId, DaysMonthFilter.Days30, filterModel);
-				}
-				else
-				{
-					return _dashboardDB.GetAspectChart(corpsId, divisionId, DaysMonthFilter.Days30, filterModel);
-				}
-
+				return _dashboardDB.GetAspectChart(DaysMonthFilter.Days30, filterModel);
 			}
+
+
+
 		}
 
-		public DashboardChart GetTodayFmnOrAspectData(long corpsId, long divisionId, RoleType roleType, FilterModel filterModel, bool isFrmn = true)
+		public DashboardChart GetTodayFmnOrAspectData(RoleType roleType, FilterModel filterModel, bool isFrmn = true)
 		{
 			//case 1 role is belonging to division
-			if (divisionId > 0)
+
+
+			// case 1.1 sector and aspect is empty any of one
+			// case 1.2 sector and aspect of have value
+			// case 1.3 handling frmn and aspect base chart
+			var result = new DashboardChart();
+			if (isFrmn)
 			{
-				// case 1.1 sector and aspect is empty any of one
-				// case 1.2 sector and aspect of have value
-				// case 1.3 handling frmn and aspect base chart
-				var result = new DashboardChart();
-				if (isFrmn)
-				{
-					return _dashboardDB.GetFrmnChart(corpsId, divisionId, DaysMonthFilter.Today, filterModel);
-				}
-				else
-				{
-					return _dashboardDB.GetAspectChart(corpsId, divisionId, DaysMonthFilter.Today, filterModel);
-				}
+				return _dashboardDB.GetFrmnChart(DaysMonthFilter.Today, filterModel);
 			}
 			else
 			{
-				//return null;
-
-				var result = new DashboardChart();
-				if (isFrmn)
-				{
-					return _dashboardDB.GetFrmnChart(corpsId, divisionId, DaysMonthFilter.Today, filterModel);
-				}
-				else
-				{
-					return _dashboardDB.GetAspectChart(corpsId, divisionId, DaysMonthFilter.Today, filterModel);
-				}
+				return _dashboardDB.GetAspectChart(DaysMonthFilter.Today, filterModel);
 			}
+
+
 		}
-        public DashboardChart Get12MonthsSectorData(long corpsId, long divisionId, RoleType roleType, FilterModel filterModel)
+		public DashboardChart Get12MonthsSectorData(RoleType roleType, FilterModel filterModel)
 		{
-			if(divisionId > 0)
+			return _dashboardDB.Get12MonthsSectorData(filterModel);
+		}
+
+		public DashboardChart Get12MonthsFmnOrAspectData(RoleType roleType, FilterModel filterModel, bool isFrmn)
+		{
+			//case 1 role is belonging to division
+
+			// case 1.1 sector and aspect is empty any of one
+			// case 1.2 sector and aspect any of have value
+			// case 1.3 handling frmn and aspect base chart
+			var result = new DashboardChart();
+			if (isFrmn)
 			{
-				return _dashboardDB.Get12MonthsSectorData(corpsId, divisionId, filterModel);
+				return _dashboardDB.GetFrmnChart(DaysMonthFilter.Months12, filterModel);
 			}
 			else
 			{
-				return new DashboardChart();
+				return _dashboardDB.GetAspectChart(DaysMonthFilter.Months12, filterModel);
 			}
-		}
 
-        public DashboardChart Get12MonthsFmnOrAspectData(long corpsId, long divisionId, RoleType roleType, FilterModel filterModel, bool isFrmn)
-		{
-			//case 1 role is belonging to division
-			if (divisionId > 0)
-			{
-				// case 1.1 sector and aspect is empty any of one
-				// case 1.2 sector and aspect any of have value
-				// case 1.3 handling frmn and aspect base chart
-				var result = new DashboardChart();
-				if (isFrmn)
-				{
-					return _dashboardDB.GetFrmnChart(corpsId, divisionId, DaysMonthFilter.Months12, filterModel);
-				}
-				else
-				{
-					return _dashboardDB.GetAspectChart(corpsId, divisionId, DaysMonthFilter.Months12, filterModel);
-				}
 
-			}
 			// case 2 role is belonging to corps
-			else
-			{
-				//return null;
 
-
-				var result = new DashboardChart();
-				if (isFrmn)
-				{
-					return _dashboardDB.GetFrmnChart(corpsId, divisionId, DaysMonthFilter.Months12, filterModel);
-				}
-				else
-				{
-					return _dashboardDB.GetAspectChart(corpsId, divisionId, DaysMonthFilter.Months12, filterModel);
-				}
-			}
 		}
-		public DashboardChart GetIndicatorData(long corpsId, long divisionId, RoleType roleType, FilterModel filterModel, bool isTopTen = true)
+		public DashboardChart GetIndicatorData(RoleType roleType, FilterModel filterModel, bool isTopTen = true)
 		{
 			if (isTopTen)
 			{
-				return _dashboardDB.GetTop10Indicator(corpsId, divisionId, filterModel);
+				return _dashboardDB.GetTop10Indicator(filterModel);
 			}
 			else
 			{
-				return _dashboardDB.GetTop5IndicatorLast7Days(corpsId, divisionId, filterModel);
+				return _dashboardDB.GetTop5IndicatorLast7Days(filterModel);
 			}
 		}
-		public DashboardChart GetTopFiveLocation(long corpsId, long divisionId, RoleType roleType, FilterModel filterModel, bool isTopFive7Days = true)
+		public DashboardChart GetTopFiveLocation(RoleType roleType, FilterModel filterModel, bool isTopFive7Days = true)
 		{
-			return _dashboardDB.GetTopFiveLocation(corpsId, divisionId, filterModel, isTopFive7Days);
+			return _dashboardDB.GetTopFiveLocation(filterModel, isTopFive7Days);
 
 		}
 	}
