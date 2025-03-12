@@ -15,5 +15,6 @@ namespace BIS.DB.Interfaces
 		public List<Divisons> GetDivisonByCorps(long corpsId);
 		public string GetNameByCorpsId(long CorpsId);
 		public string GetNameByDivisionId(int? DivisionId);
+		public Divisons GetDivisonDetails(int corpsId, int divisionId);
 	}
 }

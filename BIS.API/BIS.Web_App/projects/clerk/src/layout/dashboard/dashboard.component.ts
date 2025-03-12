@@ -58,25 +58,45 @@ export class DashboardComponent implements OnInit {
   private sectorColorMap: { [key: string]: string } = {};
 
   constructor(private apiService: ApiService,private authService:AuthService) {
-    let divisionName = this.authService.getDivisionName();
-    if(divisionName != undefined && divisionName != 'null'){
-      let div = new Division();
-      div.id = parseInt(this.authService.getDivisionId(), 10);
-      div.name = divisionName;
-      this.frmnList.push(div);
-      this.filterModel.frmn.push(div.name);
-      this.getIndicatorAndLocation();
-    }else{
-      let corpsId = this.authService.getCorpsId();
-      this.getFrmnList(corpsId);
-    }
-  }
-  ngOnInit(): void {
-    this.getAll();
-    this.getCount();
+    this.getFrmDetails();
     this.getSector();
   }
+
+  ngOnInit(): void {
+
+  }
+
+  getFrmDetails() {
+    this.apiService.getWithHeaders('dashboard/FmnDetails').subscribe(res => {
+      if (res) {
+        this.frmnList = res;
+        var divisionId = parseInt(this.authService.getDivisionId());
+        var corpsId = parseInt(this.authService.getCorpsId());
+        var frm = this.frmnList.find(item => item.corpsId === corpsId && item.divisionId === divisionId);
+        if (frm) {
+          if (!this.filterModel.frmn) {
+            this.filterModel.frmn = [];
+            this.indicatorFilter.frmn = [];
+          }
+          this.filterModel.frmn.push({ ...frm });
+          this.indicatorFilter.frmn.push({ ...frm });
+          this.getAll();
+        }
+      }
+    })
+  }
+  syncModels(selectedItems: any) {
+    this.indicatorFilter.frmn = [...selectedItems];  // Sync with the second model
+    this.getAll();
+  }
+
   getAll(){
+    this.getCount();
+    this.getFrmAndAspect();
+    this.getIndicatorAndLocation();
+  }
+
+  getFrmAndAspect() {
     this.getFrmInputData();
     this.getFrm30DaysData();
     this.getFrmTodayData();
@@ -90,7 +110,7 @@ export class DashboardComponent implements OnInit {
     this.getSectorInputTodayData();
     this.getSector12MonthsData();
   }
-  getIndicatorAndLocation(){
+  getIndicatorAndLocation() {
     this.getIndicatorData();
     this.getTop5IndicatorData();
     this.getTop5EnLocationData();
@@ -160,13 +180,13 @@ export class DashboardComponent implements OnInit {
   }
 
   // Getting Input Counts
-  getCount(){
-    this.apiService.getWithHeaders('dashboard/count').subscribe(res =>{
-      if(res){
-        this.dashboardCount = res;
-      }
-    })
-  }
+   getCount() {
+   this.apiService.postWithHeader('dashboard/count', this.filterModel).subscribe(res => {
+     if (res) {
+       this.dashboardCount = res;
+     }
+   })
+ }
 
   // Getting Sector Chart Data
   getSectorInputData(){
@@ -209,18 +229,6 @@ export class DashboardComponent implements OnInit {
     this.apiService.postWithHeader('dashboard/sector/last12Months',this.filterModel).subscribe(res =>{
       if(res){
         this.prepareChartData(res)
-        // this.sector12MonthsChartData = {
-        //   labels: res.name,
-        //   datasets: [
-        //     { data: res.count, label: res.name,
-        //       backgroundColor: 'rgba(151, 126, 201, 0.5)', // Semi-transparent blue
-        //       borderColor: 'rgba(150, 68, 150, 0.5)', // Solid blue
-        //       borderWidth: 1.2,
-        //       fill: true, // Fill area under the line
-        //       tension: 0.4, // Adds smoothness to the line
-        //     },
-        //   ],
-        // };
       }
     })
   }

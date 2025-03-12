@@ -5,12 +5,12 @@
   <mat-card-content class="mat-content">
     <div class="row">
       <div class="col-sm-3">
-        <ng-select [(ngModel)]="filterModel.frmn" appendTo="ng-select" [items]="fmnList" [multiple]="true"
-          bindLabel="name" (change)="onFilterChange1('fmn')" bindValue="name" placeholder="Fmn" [searchable]="true"
-          (keydown.enter)="onFilterChange1('fmn')">
+        <ng-select [(ngModel)]="filterModel.frmn" appendTo="ng-select" [items]="frmnList" [multiple]="true"
+          bindLabel="name"  [closeOnSelect]="true" (change)="getAll()" placeholder="Fmn" [searchable]="true"
+          (keydown.enter)="getAll()">
           <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
             <div class="ng-value" *ngFor="let item of items">
-              <span class="ng-value-label">{{item}}</span>
+             <span class="ng-value-label">{{item.name}}</span>
             </div>
           </ng-template>
         </ng-select>
@@ -183,12 +183,12 @@
     <!-- Second filter line -->
     <div class="row">
       <div class="col-sm-3">
-          <ng-select [(ngModel)]="filterModel2.frmn" appendTo="ng-select" [items]="fmnList" [multiple]="true" bindLabel="name"
-               (change)="getvariation()" bindValue="name" placeholder="Fmn" [searchable]="true"
+          <ng-select [(ngModel)]="filterModel2.frmn" appendTo="ng-select" [items]="frmnList" [multiple]="true" bindLabel="name"
+               (change)="getvariation()"  placeholder="Fmn" [searchable]="true"
               (keydown.enter)="getvariation()">
               <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
                   <div class="ng-value" *ngFor="let item of items">
-                      <span class="ng-value-label">{{item}}</span>
+                      <span class="ng-value-label">{{item.name}}</span>
                   </div>
               </ng-template>
           </ng-select>
@@ -276,12 +276,12 @@
     <!-- Third filter line -->
     <div class="row">
       <div class="col-sm-3">
-          <ng-select [(ngModel)]="filterModel3.frmn" appendTo="ng-select" [items]="fmnList" [multiple]="true" bindLabel="name"
-          (change)="getvariation2()" bindValue="name" placeholder="Fmn" [searchable]="true"
+          <ng-select [(ngModel)]="filterModel3.frmn" appendTo="ng-select" [items]="frmnList" [multiple]="true" bindLabel="name"
+          (change)="getvariation2()" placeholder="Fmn" [searchable]="true"
               (keydown.enter)="getvariation2()">
               <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
                   <div class="ng-value" *ngFor="let item of items">
-                      <span class="ng-value-label">{{item}}</span>
+                      <span class="ng-value-label">{{item.name}}</span>
                   </div>
               </ng-template>
           </ng-select>
@@ -356,12 +356,12 @@
     <!-- Fourth Filter For Multiple Daily-Monthly-Weekly Chart -->
     <div class="row">
       <div class="col-sm-3">
-        <ng-select [(ngModel)]="filterModel4.frmn" (change)="getEntries()" appendTo="ng-select" [items]="fmnList"
-          [multiple]="true" bindLabel="name" (change)="onFilterChange2('fmn', $event)" bindValue="name"
+        <ng-select [(ngModel)]="filterModel4.frmn" (change)="getEntries()" appendTo="ng-select" [items]="frmnList"
+          [multiple]="true" bindLabel="name" (change)="onFilterChange2('fmn', $event)"
           placeholder="Fmn" [searchable]="true" (keydown.enter)="onFilterChange2('fmn', $event)">
           <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
             <div class="ng-value" *ngFor="let item of items">
-              <span class="ng-value-label">{{item}}</span>
+              <span class="ng-value-label">{{item.name}}</span>
             </div>
           </ng-template>
         </ng-select>

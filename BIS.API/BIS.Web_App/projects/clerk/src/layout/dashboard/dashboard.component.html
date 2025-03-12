@@ -5,16 +5,6 @@
   <mat-card-content class="mat-content">
 
     <div class="row">
-      <!-- <div class="col-sm-4">
-        <mat-card>
-          <mat-card-title class="totals">
-            <section>Inputs | <span class="fed-text">Total</span></section>
-            <div class="card-icon"><i class="material-icons card-header">equalizer</i></div>
-
-            <section>{{ dashboardCount.totalInputCount }}</section>
-          </mat-card-title>
-        </mat-card>
-      </div> -->
       <div class="col-lg-4 col-md-6 col-sm-6">
         <div class="card2 card-stats">
           <div class="card-header2">
@@ -30,11 +20,6 @@
           </div>
         </div>
       </div>
-      <!-- <div class="col-sm-4">
-        <mat-card>
-          <mat-card-title class="totals">Total Today : {{ dashboardCount.todayCount }}</mat-card-title>
-        </mat-card>
-      </div> -->
       <div class="col-lg-4 col-md-6 col-sm-6">
         <div class="card2 card-stats">
           <div class="card-header2">
@@ -65,18 +50,13 @@
           </div>
         </div>
       </div>
-      <!-- <div class="col-sm-4">
-        <mat-card>
-          <mat-card-title class="totals">Total (07 Days) : {{ dashboardCount.last7DaysCount }}</mat-card-title>
-        </mat-card>
-      </div> -->
     </div>
     <br>
     <div class="row">
-      <div class="col-sm-5">
-        <ng-select appendTo="ng-select" [items]="frmnList" [multiple]="true" (change)="onFilterChange($event)"
-          bindLabel="name" bindValue="name" [closeOnSelect]="false" placeholder="Fmn" [searchable]="true"
-          [(ngModel)]="filterModel.frmn" (keydown.enter)="onFilterChange($event)">
+      <div class="col-sm-6">
+        <ng-select appendTo="ng-select" [items]="frmnList" [multiple]="true" (change)="syncModels($event)"
+          bindLabel="name"  [closeOnSelect]="true" placeholder="Fmn" [searchable]="true"
+          [(ngModel)]="filterModel.frmn" (keydown.enter)="syncModels($event)">
           <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
             <div class="ng-value" *ngFor="let item of items">
               <span class="ng-value-label">{{item.name}}</span>
@@ -86,9 +66,9 @@
         </ng-select>
 
       </div>
-      <div class="col-sm-5">
-        <ng-select appendTo="ng-select" [items]="sectorList" [multiple]="true" bindLabel="name" bindValue="name"
-          [closeOnSelect]="false" [(ngModel)]="filterModel.sector" placeholder="Sector" [searchable]="true">
+      <div class="col-sm-6">
+        <ng-select appendTo="ng-select" [items]="sectorList" [multiple]="true" bindLabel="name" bindValue="name" (change)="getFrmAndAspect()"
+          [closeOnSelect]="true" [(ngModel)]="filterModel.sector" placeholder="Sector" [searchable]="true" (keydown.enter)="getFrmAndAspect()">
           <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
             <div class="ng-value" *ngFor="let item of items">
               <span class="ng-value-label">{{item.name}}</span>
@@ -96,9 +76,6 @@
             </div>
           </ng-template>
         </ng-select>
-      </div>
-      <div class="col-sm-1 btn-float-down">
-        <button class="btn btn-sm btn-outline-primary btn-height" (click)="getAll()">Search</button>
       </div>
     </div>
 
@@ -329,18 +306,15 @@
 
     <hr>
     <div class="row">
-      <div class="col-sm-10">
+      <div class="col-sm-12">
         <ng-select appendTo="ng-select" [items]="sectorList" [multiple]="true" [(ngModel)]="indicatorFilter.sector"
-          placeholder="Sector" [searchable]="true" [closeOnSelect]="false" bindLabel="name" bindValue="name">
+          placeholder="Sector" [searchable]="true" [closeOnSelect]="true" bindLabel="name" (change)="getIndicatorAndLocation()" (keydown.enter)="getIndicatorAndLocation()" bindValue="name">
           <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
             <div class="ng-value" *ngFor="let item of items">
               <span class="ng-value-label">{{item.name}}</span>
             </div>
           </ng-template>
         </ng-select>
-      </div>
-      <div class="col-sm-1 btn-float-down">
-        <button class="btn btn-sm btn-outline-primary btn-height" (click)="getIndicatorAndLocation()">Search</button>
       </div>
     </div>
 

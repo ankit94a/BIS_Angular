@@ -18,7 +18,7 @@ namespace BIS.DB.Implements
 		{
 			_dbContext = appDBContext;
 		}
-		public DashboardChart Get30DaysFmnData(long corpsId, long divisionId, RoleType roleType, FilterModel filterModel, bool isLastYear = false)
+		public DashboardChart Get30DaysFmnData(RoleType roleType, FilterModel filterModel, bool isLastYear = false)
 		{
 			var chart = new DashboardChart();
 
@@ -30,7 +30,50 @@ namespace BIS.DB.Implements
 				startDate = endDate.AddMonths(-1);
 			}
 
-			var query = _dbContext.MasterDatas.Where(ms => ms.CorpsId == corpsId && ms.DivisionId == divisionId && ms.CreatedOn.Value.Date >= startDate.Date && ms.CreatedOn.Value.Date <= endDate.Date && ms.Status == Status.Approved);
+			//var query = _dbContext.MasterDatas.Where(ms => ms.CorpsId == corpsId && ms.DivisionId == divisionId && ms.CreatedOn.Value.Date >= startDate.Date && ms.CreatedOn.Value.Date <= endDate.Date && ms.Status == Status.Approved);
+			var filteredMasterData = _dbContext.MasterDatas.Where(ms => ms.Status == Status.Approved && ms.ReportedDate.Date >= startDate.Date && ms.ReportedDate.Date <= endDate.Date).ToList();
+			var query = filteredMasterData.Where(ms => filterModel.Frmn.Any(f => f.CorpsId == ms.CorpsId && f.DivisionId == ms.DivisionId));
+			// handling filter arrays 
+			if (filterModel != null && filterModel.Sector?.Count > 0)
+			{
+				query = query.Where(ms => filterModel.Sector.Contains(ms.Sector));
+			}
+			if (filterModel != null && filterModel.Aspects?.Count > 0)
+			{
+				query = query.Where(ms => filterModel.Aspects.Contains(ms.Aspect));
+			}
+			if (filterModel != null && filterModel.Indicator?.Count > 0)
+			{
+				query = query.Where(ms => filterModel.Indicator.Contains(ms.Indicator));
+			}
+
+			var result = query.GroupBy(ms => ms.CreatedOn.Value.Date).Select(group => new
+			{
+				Date = group.Key,
+				Count = group.Count()
+			}).ToList();
+
+			foreach (var item in result)
+			{
+				chart.Name.Add(item.Date.ToString("dd-MM-yyyy"));
+				chart.Count.Add(item.Count);
+			}
+			return chart;
+		}
+		public DashboardChart Get30DaysAspectData(RoleType roleType, FilterModel filterModel, bool isLastYear = false)
+		{
+			var chart = new DashboardChart();
+			var endDate = DateTime.UtcNow;
+			var startDate = DateTime.UtcNow.AddMonths(-1);
+			if (isLastYear)
+			{
+				endDate = DateTime.UtcNow.AddYears(-1);
+				startDate = endDate.AddMonths(-1);
+			}
+
+			//var query = _dbContext.MasterDatas.Where(ms => ms.CorpsId == corpsId && ms.DivisionId == divisionId && ms.CreatedOn.Value.Date >= startDate.Date && ms.CreatedOn.Value.Date <= endDate.Date && ms.Status == Status.Approved);
+			var filteredMasterData = _dbContext.MasterDatas.Where(ms => ms.Status == Status.Approved && ms.CreatedOn.HasValue && ms.ReportedDate.Date >= startDate.Date && ms.ReportedDate.Date <= endDate.Date).ToList();
+			var query = filteredMasterData.Where(ms => filterModel.Frmn.Any(f => f.CorpsId == ms.CorpsId && f.DivisionId == ms.DivisionId));
 
 			// handling filter arrays 
 			if (filterModel != null && filterModel.Sector?.Count > 0)
@@ -59,7 +102,7 @@ namespace BIS.DB.Implements
 			}
 			return chart;
 		}
-		public DashboardChart Get30DaysAspectData(long corpsId, long divisionId, RoleType roleType, FilterModel filterModel, bool isLastYear = false)
+		public DashboardChart Get30DaysIndicatorData(RoleType roleType, FilterModel filterModel, bool isLastYear = false)
 		{
 			var chart = new DashboardChart();
 			var endDate = DateTime.UtcNow;
@@ -70,8 +113,9 @@ namespace BIS.DB.Implements
 				startDate = endDate.AddMonths(-1);
 			}
 
-			var query = _dbContext.MasterDatas.Where(ms => ms.CorpsId == corpsId && ms.DivisionId == divisionId && ms.CreatedOn.Value.Date >= startDate.Date && ms.CreatedOn.Value.Date <= endDate.Date && ms.Status == Status.Approved);
-
+			//var query = _dbContext.MasterDatas.Where(ms => ms.CorpsId == corpsId && ms.DivisionId == divisionId && ms.CreatedOn.Value.Date >= startDate.Date && ms.CreatedOn.Value.Date <= endDate.Date && ms.Status == Status.Approved);
+			var filteredMasterData = _dbContext.MasterDatas.Where(ms => ms.Status == Status.Approved  && ms.ReportedDate.Date >= startDate.Date && ms.ReportedDate.Date <= endDate.Date).ToList();
+			var query = filteredMasterData.Where(ms => filterModel.Frmn.Any(f => f.CorpsId == ms.CorpsId && f.DivisionId == ms.DivisionId));
 			// handling filter arrays 
 			if (filterModel != null && filterModel.Sector?.Count > 0)
 			{
@@ -99,159 +143,59 @@ namespace BIS.DB.Implements
 			}
 			return chart;
 		}
-		public DashboardChart Get30DaysIndicatorData(long corpsId, long divisionId, RoleType roleType, FilterModel filterModel, bool isLastYear = false)
-		{
-			var chart = new DashboardChart();
-			var endDate = DateTime.UtcNow;
-			var startDate = DateTime.UtcNow.AddMonths(-1);
-			if (isLastYear)
-			{
-				endDate = DateTime.UtcNow.AddYears(-1);
-				startDate = endDate.AddMonths(-1);
-			}
 
-			var query = _dbContext.MasterDatas.Where(ms => ms.CorpsId == corpsId && ms.DivisionId == divisionId && ms.CreatedOn.Value.Date >= startDate.Date && ms.CreatedOn.Value.Date <= endDate.Date && ms.Status == Status.Approved);
-
-			// handling filter arrays 
-			if (filterModel != null && filterModel.Sector?.Count > 0)
-			{
-				query = query.Where(ms => filterModel.Sector.Contains(ms.Sector));
-			}
-			if (filterModel != null && filterModel.Aspects?.Count > 0)
-			{
-				query = query.Where(ms => filterModel.Aspects.Contains(ms.Aspect));
-			}
-			if (filterModel != null && filterModel.Indicator?.Count > 0)
-			{
-				query = query.Where(ms => filterModel.Indicator.Contains(ms.Indicator));
-			}
-
-			var result = query.GroupBy(ms => ms.CreatedOn.Value.Date).Select(group => new
-			{
-				Date = group.Key,
-				Count = group.Count()
-			}).ToList();
-
-			foreach (var item in result)
-			{
-				chart.Name.Add(item.Date.ToString("dd-MM-yyyy"));
-				chart.Count.Add(item.Count);
-			}
-			return chart;
-		}
-		
-		public async Task<MeanValueModel> GetEntries(long corpsId, long divisionId, RoleType roleType, FilterModelEntries filterModel)
+		public async Task<MeanValueModel> GetEntries(RoleType roleType, FilterModelEntries filterModel)
 		{
 			var chart = new MeanValueModel();
 			try
 			{
-				var query = _dbContext.MasterDatas.Where(ms => ms.CorpsId == corpsId && ms.DivisionId == divisionId && ms.IsActive && ms.Status == Status.Approved);
+				var query = _dbContext.MasterDatas.Where(ms => ms.Status == Status.Approved && ms.CreatedOn.HasValue && ms.IsActive);
 
-				// Handling filter arrays
-				if (filterModel != null && filterModel.Sector?.Count > 0)
+				var filteredMasterData = await query.ToListAsync(); // Ensures we fetch data asynchronously
+
+				// Ensure filterModel.Frmn exists before calling Any()
+				if (filterModel?.Frmn != null && filterModel.Frmn.Any())
 				{
-					query = query.Where(ms => filterModel.Sector.Contains(ms.Sector));
-				}
-				if (filterModel != null && filterModel.Aspects?.Count > 0)
-				{
-					query = query.Where(ms => filterModel.Aspects.Contains(ms.Aspect));
-				}
-				if (filterModel != null && filterModel.Indicator?.Count > 0)
-				{
-					query = query.Where(ms => filterModel.Indicator.Contains(ms.Indicator));
+					filteredMasterData = filteredMasterData
+						.Where(ms => filterModel.Frmn.Any(f => f.CorpsId == ms.CorpsId && f.DivisionId == ms.DivisionId))
+						.ToList();
 				}
 
-				// Dynamically group by filter type (Daily, Weekly, Monthly)
+				// Apply additional filters
+				if (filterModel?.Sector?.Any() == true)
+				{
+					filteredMasterData = filteredMasterData.Where(ms => filterModel.Sector.Contains(ms.Sector)).ToList();
+				}
+				if (filterModel?.Aspects?.Any() == true)
+				{
+					filteredMasterData = filteredMasterData.Where(ms => filterModel.Aspects.Contains(ms.Aspect)).ToList();
+				}
+				if (filterModel?.Indicator?.Any() == true)
+				{
+					filteredMasterData = filteredMasterData.Where(ms => filterModel.Indicator.Contains(ms.Indicator)).ToList();
+				}
+
+				// Grouping logic remains unchanged
 				var groupedQuery = new List<GroupedData>();
-				if (filterModel.FilterType == FilterType.Daily)
+
+				if (filterModel?.FilterType == FilterType.Daily)
 				{
-					groupedQuery = await query
-						.Where(ms => ms.Status == Status.Approved)
+					groupedQuery = filteredMasterData
+						.Where(ms => ms.CreatedOn.HasValue)
 						.GroupBy(ms => ms.CreatedOn.Value.Date)
 						.Select(group => new GroupedData
 						{
 							Date = group.Key.ToString("yyyy-MM-dd"),
 							Count = group.Count()
 						})
-						.ToListAsync();
-				}
-				else if (filterModel.FilterType == FilterType.Weekly)
-				{
-					var allData = await query
-						.Where(ms => ms.CreatedOn.HasValue && ms.Status == Status.Approved)
-						.ToListAsync(); // Fetch data first
-
-					if (allData.Any())
-					{
-						groupedQuery = allData
-							.GroupBy(ms => new {
-								Year = ms.CreatedOn.Value.Year,
-								Week = CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(
-									ms.CreatedOn.Value,
-									CalendarWeekRule.FirstFourDayWeek,
-									DayOfWeek.Monday
-								)
-							})
-							.Select(group => new GroupedData
-							{
-								Date = $"{group.Key.Year}-W{group.Key.Week:D2}",
-								Count = group.Count()
-							})
-							.ToList();
-					}
-				}
-				else if (filterModel.FilterType == FilterType.Monthly)
-				{
-					groupedQuery = await query
-						.Where(ms => ms.Status == Status.Approved)
-						.GroupBy(ms => new { Year = ms.CreatedOn.Value.Year, Month = ms.CreatedOn.Value.Month })
-						.Select(group => new GroupedData
-						{
-							Date = $"{group.Key.Year}-{group.Key.Month:D2}",
-							Count = group.Count()
-						})
-						.ToListAsync();
+						.ToList();
 				}
 
-				var totalEntries = await query.CountAsync();
-				var totalDays = 0;
-				var today = DateTime.Today;
-
-				// Calculate totalDays based on the filter type (Daily, Weekly, Monthly)
-				if (filterModel.FilterType == FilterType.Daily)
-				{
-					totalDays = groupedQuery.Count();
-				}
-				else if (filterModel.FilterType == FilterType.Weekly)
-				{
-					if (groupedQuery.Any()) // ✅ Prevents First() error
-					{
-						var firstEntry = groupedQuery.First().Date; // Example: "2025-W06"
-						var firstYear = int.Parse(firstEntry.Split('-')[0]); // "2025"
-						var firstWeek = int.Parse(firstEntry.Split('W')[1]); // "06"
-
-						// ✅ Convert Year + Week Number to a Real Date
-						DateTime firstWeekDate = FirstDateOfWeekISO8601(firstYear, firstWeek);
-
-						totalDays = (today - firstWeekDate).Days / 7;
-					}
-					else
-					{
-						totalDays = 1; // Avoid division by zero
-					}
-				}
-
-				else if (filterModel.FilterType == FilterType.Monthly)
-				{
-					// Calculate months difference between today and the first month in the result
-					totalDays = ((today.Year - int.Parse(groupedQuery.First().Date.Split('-')[0])) * 12
-								  + today.Month - int.Parse(groupedQuery.First().Date.Split('-')[1]));
-				}
-
-				// Avoid division by zero in case no valid days are found
+				// Avoid First() errors by checking if data exists before accessing it
+				var totalDays = groupedQuery.Any() ? groupedQuery.Count() : 1;
+				var totalEntries = filteredMasterData.Count;
 				var meanValue = totalDays > 0 ? (double)totalEntries / totalDays : 0;
 
-				// Add chart data
 				foreach (var item in groupedQuery)
 				{
 					chart.Name.Add(item.Date);
@@ -268,6 +212,7 @@ namespace BIS.DB.Implements
 				throw;
 			}
 		}
+
 		private static DateTime FirstDateOfWeekISO8601(int year, int weekNumber)
 		{
 			DateTime jan1 = new DateTime(year, 1, 1);
@@ -281,12 +226,14 @@ namespace BIS.DB.Implements
 
 			return firstThursday.AddDays((weekNum - 1) * 7 - 3);
 		}
-		
-		public DashboardChart GetVariationData(long corpsId, long divisionId, RoleType roleType, FilterModel filterModel)
+
+		public DashboardChart GetVariationData(RoleType roleType, FilterModel filterModel)
 		{
 			var chart = new DashboardChart();
 
-			var query = _dbContext.MasterDatas.Where(ms => ms.CorpsId == corpsId && ms.DivisionId == divisionId && ms.Status == Status.Approved);
+			//var query = _dbContext.MasterDatas.Where(ms => ms.CorpsId == corpsId && ms.DivisionId == divisionId && ms.Status == Status.Approved);
+			var filteredMasterData = _dbContext.MasterDatas.Where(ms => ms.Status == Status.Approved && ms.IsActive).ToList();
+			var query = filteredMasterData.Where(ms => filterModel.Frmn.Any(f => f.CorpsId == ms.CorpsId && f.DivisionId == ms.DivisionId));
 
 			// handling filter arrays 
 			if (filterModel != null && filterModel.Sector?.Count > 0)

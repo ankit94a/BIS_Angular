@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using BIS.Common.Entities;
 using BIS.DB.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using static BIS.Common.Enum.Enum;
 
 namespace BIS.DB.Implements
@@ -13,45 +14,106 @@ namespace BIS.DB.Implements
 	public class DashboardDB : IDashboardDB
 	{
 		private readonly AppDBContext _dbContext;
-		public DashboardDB(AppDBContext dbContext)
+		private readonly ICorpsDB _corpsDB;
+		public DashboardDB(ICorpsDB corpsDB, AppDBContext dbContext)
 		{
 			_dbContext = dbContext;
+			_corpsDB = corpsDB;
 		}
-		public DashboardInputCount GetInputCounts(int corpsId, int divisionId = 0)
+		public List<FmnModel> GetFmnDetails(int corpsId, int divisionId)
+		{
+			var Fmn = new List<FmnModel>();
+			if (divisionId == 0)
+			{
+				//var query = _dbContext.MasterDatas.Where(ms => ms.CorpsId == corpsId && ms.DivisionId == divisionId).FirstOrDefault();
+
+				var corps = _corpsDB.GetCorpsById(corpsId);
+				var divisionList = _corpsDB.GetDivisonByCorps(corpsId);
+
+				foreach (var f in divisionList)
+				{
+					var frmn = new FmnModel();
+					frmn.Name = f.Name;
+					frmn.CorpsId = f.CorpsId;
+					frmn.DivisionId = f.Id;
+					Fmn.Add(frmn);
+				}
+				var temp = new FmnModel();
+				temp.Name = corps.Name;
+				temp.CorpsId = corps.Id;
+				temp.DivisionId = 0;
+				Fmn.Add(temp);
+
+			}
+			else
+			{
+
+				var division = _corpsDB.GetDivisonDetails(corpsId, divisionId);
+				var temp = new FmnModel();
+				temp.DivisionId = division.Id;
+				temp.CorpsId = division.CorpsId;
+				temp.Name = division.Name;
+				Fmn.Add(temp);
+			}
+			return Fmn;
+		}
+		public DashboardInputCount GetInputCounts(FilterModel filterModel, int corpsId, int divisionId)
 		{
 			var result = new DashboardInputCount();
 			var currentTime = DateTime.Now;
 			var last7Days = currentTime.AddDays(-7);
 
-			var query = _dbContext.MasterDatas.Where(ms => ms.CorpsId == corpsId && ms.Status == Status.Approved);
-			if (divisionId > 0)
+			if (divisionId == 0)
 			{
-				query = query.Where(ms => ms.DivisionId == divisionId);
+				var filteredMasterData = _dbContext.MasterDatas.Where(ms => ms.Status == Status.Approved).ToList();
+				var query = filteredMasterData.Where(ms => filterModel.Frmn.Any(f => f.CorpsId == ms.CorpsId && f.DivisionId == ms.DivisionId)).ToList();
+
+				var counts = query
+					.GroupBy(ms => new
+					{
+						IsToday = ms.CreatedOn.Value.Date >= currentTime.Date,
+						IsLast7Days = ms.CreatedOn.Value.Date >= last7Days.Date
+					})
+					.Select(g => new
+					{
+						g.Key.IsToday,
+						g.Key.IsLast7Days,
+						Count = g.Count()
+					})
+					.ToList();
+
+				// Extract counts from the grouped data
+				result.TotalInputCount = query.Count();
+				result.Last7DaysCount = counts.Where(c => c.IsLast7Days).Sum(c => c.Count);
+				result.TodayCount = counts.Where(c => c.IsToday).Sum(c => c.Count);
 			}
+			else
+			{
+				var query = _dbContext.MasterDatas.Where(ms => ms.CorpsId == corpsId && ms.Status == Status.Approved && ms.DivisionId == divisionId);
+				var counts = query
+					.GroupBy(ms => new
+					{
+						IsToday = ms.CreatedOn.Value.Date >= currentTime.Date,
+						IsLast7Days = ms.CreatedOn.Value.Date >= last7Days.Date
+					})
+					.Select(g => new
+					{
+						g.Key.IsToday,
+						g.Key.IsLast7Days,
+						Count = g.Count()
+					})
+					.ToList();
 
-			var counts = query
-				.GroupBy(ms => new
-				{
-					IsToday = ms.CreatedOn.Value.Date >= currentTime.Date,
-					IsLast7Days = ms.CreatedOn.Value.Date >= last7Days.Date
-				})
-				.Select(g => new
-				{
-					g.Key.IsToday,
-					g.Key.IsLast7Days,
-					Count = g.Count()
-				})
-				.ToList();
-
-			// Extract counts from the grouped data
-			result.TotalInputCount = query.Count();
-			result.Last7DaysCount = counts.Where(c => c.IsLast7Days).Sum(c => c.Count);
-			result.TodayCount = counts.Where(c => c.IsToday).Sum(c => c.Count);
+				// Extract counts from the grouped data
+				result.TotalInputCount = query.Count();
+				result.Last7DaysCount = counts.Where(c => c.IsLast7Days).Sum(c => c.Count);
+				result.TodayCount = counts.Where(c => c.IsToday).Sum(c => c.Count);
+			}
 
 			return result;
 		}
 
-		public DashboardChart GetFrmnChart(long corpsId, long divisionId, DaysMonthFilter daysMonthFilter, FilterModel filterModel)
+		public DashboardChart GetFrmnChart(DaysMonthFilter daysMonthFilter, FilterModel filterModel)
 		{
 			var chart = new DashboardChart();
 			DateTime? filterDate = null;
@@ -68,7 +130,9 @@ namespace BIS.DB.Implements
 					break;
 			}
 
-			var query = _dbContext.MasterDatas.Where(ms => ms.CorpsId == corpsId && ms.DivisionId == divisionId && ms.Status == Status.Approved);
+			//var query = _dbContext.MasterDatas.Where(ms => ms.CorpsId == corpsId && ms.DivisionId == divisionId && ms.Status == Status.Approved);
+			var filteredMasterData = _dbContext.MasterDatas.Where(ms => ms.Status == Status.Approved).ToList();
+			var query = filteredMasterData.Where(ms => filterModel.Frmn.Any(f => f.CorpsId == ms.CorpsId && f.DivisionId == ms.DivisionId));
 			// handling Today, last30Days and All
 			if (filterDate.HasValue)
 			{
@@ -102,7 +166,7 @@ namespace BIS.DB.Implements
 			}
 			else
 			{
-				result = query.Where(m => (long)m.CorpsId == corpsId && (long?)m.DivisionId == divisionId).Where(m => m.CreatedOn >= filterDate)
+				result = query.Where(ms => filterModel.Frmn.Any(f => f.CorpsId == ms.CorpsId && f.DivisionId == ms.DivisionId))
 								.GroupBy(m => new { Year = m.CreatedOn.Value.Year, Month = m.CreatedOn.Value.Month })
 								.Select(g => new
 								{
@@ -131,7 +195,7 @@ namespace BIS.DB.Implements
 			}
 		}
 
-		public DashboardChart GetAspectChart(long corpsId, long divisionId, DaysMonthFilter daysMonthFilter, FilterModel filterModel)
+		public DashboardChart GetAspectChart(DaysMonthFilter daysMonthFilter, FilterModel filterModel)
 		{
 			var chart = new DashboardChart();
 			DateTime? filterDate = null;
@@ -148,7 +212,9 @@ namespace BIS.DB.Implements
 					break;
 			}
 
-			var query = _dbContext.MasterDatas.Where(ms => ms.CorpsId == corpsId && ms.DivisionId == divisionId && ms.Status == Status.Approved);
+			//var query = _dbContext.MasterDatas.Where(ms => ms.CorpsId == corpsId && ms.DivisionId == divisionId && ms.Status == Status.Approved);
+			var filteredMasterData = _dbContext.MasterDatas.Where(ms => ms.Status == Status.Approved).ToList();
+			var query = filteredMasterData.Where(ms => filterModel.Frmn.Any(f => f.CorpsId == ms.CorpsId && f.DivisionId == ms.DivisionId));
 			// handling Today, last30Days and All
 			if (filterDate.HasValue)
 			{
@@ -209,10 +275,13 @@ namespace BIS.DB.Implements
 				return chart;
 			}
 		}
-		public DashboardChart GetSectorWiseData(long corpsId, long divisionId, FilterModel filterModel, DaysMonthFilter daysMonthFilter)
+		public DashboardChart GetSectorWiseData(FilterModel filterModel, DaysMonthFilter daysMonthFilter)
 		{
 			var chart = new DashboardChart();
-			var query = _dbContext.MasterDatas.Where(m => m.CorpsId == corpsId && m.DivisionId == divisionId && m.Sector != null && m.Sector != "" && m.Status == Status.Approved);
+			//var query = _dbContext.MasterDatas.Where(m => m.CorpsId == corpsId && m.DivisionId == divisionId && m.Sector != null && m.Sector != "" && m.Status == Status.Approved);
+			var filteredMasterData = _dbContext.MasterDatas.Where(ms => ms.Status == Status.Approved && ms.Sector != null && ms.Sector != "").ToList();
+			var query = filteredMasterData.Where(ms => filterModel.Frmn.Any(f => f.CorpsId == ms.CorpsId && f.DivisionId == ms.DivisionId));
+
 			DateTime today = DateTime.UtcNow;
 
 			// Apply filters based on `daysMonthFilter`
@@ -240,17 +309,19 @@ namespace BIS.DB.Implements
 			}
 			return chart;
 		}
-		public DashboardChart Get12MonthsSectorData(long corpsId, long divisionId, FilterModel filterModel)
+		public DashboardChart Get12MonthsSectorData(FilterModel filterModel)
 		{
 			var chart = new DashboardChart();
 			DateTime today = DateTime.UtcNow;
 			DateTime filterDate = today.AddMonths(-12);
 
-			var query = _dbContext.MasterDatas
-				.Where(m => m.CorpsId == corpsId &&
-							m.DivisionId == divisionId &&
-							!string.IsNullOrEmpty(m.Sector) &&
-							m.CreatedOn >= filterDate && m.Status == Status.Approved);
+			//var query = _dbContext.MasterDatas
+			//	.Where(m => m.CorpsId == corpsId &&
+			//				m.DivisionId == divisionId &&
+			//				!string.IsNullOrEmpty(m.Sector) &&
+			//				m.CreatedOn >= filterDate && m.Status == Status.Approved);
+			var filteredMasterData = _dbContext.MasterDatas.Where(ms => ms.Status == Status.Approved && !string.IsNullOrEmpty(ms.Sector)).ToList();
+			var query = filteredMasterData.Where(ms => filterModel.Frmn.Any(f => f.CorpsId == ms.CorpsId && f.DivisionId == ms.DivisionId));
 
 			if (filterModel != null && filterModel.Sector.Count > 0)
 			{
@@ -286,10 +357,13 @@ namespace BIS.DB.Implements
 			return chart;
 		}
 
-		public DashboardChart GetTop10Indicator(long corpsId, long divisionId, FilterModel filterModel)
+		public DashboardChart GetTop10Indicator(FilterModel filterModel)
 		{
 			var chart = new DashboardChart();
-			var query = _dbContext.MasterDatas.Where(m => m.CorpsId == corpsId && m.DivisionId == divisionId && m.Indicator != null && m.Indicator != "" && m.Status == Status.Approved);
+			//var query = _dbContext.MasterDatas.Where(m => m.CorpsId == corpsId && m.DivisionId == divisionId && m.Indicator != null && m.Indicator != "" && m.Status == Status.Approved);
+			var filteredMasterData = _dbContext.MasterDatas.Where(ms => ms.Status == Status.Approved && ms.Indicator != null && ms.Indicator != "").ToList();
+
+			var query = filteredMasterData.Where(ms => filterModel.Frmn.Any(f => f.CorpsId == ms.CorpsId && f.DivisionId == ms.DivisionId));
 
 			// handling sector filter
 			if (filterModel != null && filterModel.Sector.Count > 0)
@@ -306,11 +380,13 @@ namespace BIS.DB.Implements
 			}
 			return chart;
 		}
-		public DashboardChart GetTop5IndicatorLast7Days(long corpsId, long divisionId, FilterModel filterModel)
+		public DashboardChart GetTop5IndicatorLast7Days(FilterModel filterModel)
 		{
 			var chart = new DashboardChart();
 
-			var query = _dbContext.MasterDatas.Where(m => m.CorpsId == corpsId && m.DivisionId == divisionId && m.Indicator != null && m.Indicator != "" && m.CreatedOn.Value.Date >= DateTime.UtcNow.AddDays(-7).Date && m.Status == Status.Approved);
+			//var query = _dbContext.MasterDatas.Where(m => m.CorpsId == corpsId && m.DivisionId == divisionId && m.Indicator != null && m.Indicator != "" && m.CreatedOn.Value.Date >= DateTime.UtcNow.AddDays(-7).Date && m.Status == Status.Approved);
+			var filteredMasterData = _dbContext.MasterDatas.Where(ms => ms.Status == Status.Approved && ms.Indicator != null && ms.Indicator != "" && ms.CreatedOn.Value.Date >= DateTime.UtcNow.AddDays(-7).Date).ToList();
+			var query = filteredMasterData.Where(ms => filterModel.Frmn.Any(f => f.CorpsId == ms.CorpsId && f.DivisionId == ms.DivisionId));
 
 			if (filterModel != null && filterModel.Sector.Count > 0)
 			{
@@ -332,11 +408,22 @@ namespace BIS.DB.Implements
 
 			return chart;
 		}
-		public DashboardChart GetTopFiveLocation(long corpsId, long divisionId, FilterModel filterModel, bool isTopFive7Days = true)
+		public DashboardChart GetTopFiveLocation(FilterModel filterModel, bool isTopFive7Days = true)
 		{
 			var chart = new DashboardChart();
-
-			var query = _dbContext.MasterDatas.Where(m => m.CorpsId == corpsId && m.DivisionId == divisionId && m.EnLocName != null && m.EnLocName != "" && m.Status == Status.Approved);
+			if (filterModel == null || filterModel.Frmn == null || !filterModel.Frmn.Any())
+			{
+				// Handle the case where filterModel or filterModel.Frmn is null or empty
+				return chart; // Return an empty chart or handle accordingly
+			}
+			//var query = _dbContext.MasterDatas.Where(m => m.CorpsId == corpsId && m.DivisionId == divisionId && m.EnLocName != null && m.EnLocName != "" && m.Status == Status.Approved);
+			var filteredMasterData = _dbContext.MasterDatas.Where(ms => ms.Status == Status.Approved && ms.EnLocName != null && ms.EnLocName != "").ToList();
+			if (filteredMasterData == null || !filteredMasterData.Any())
+			{
+				// Handle the case where filteredMasterData is empty (maybe return an empty chart)
+				return chart;
+			}
+			var query = filteredMasterData.Where(ms => filterModel.Frmn.Any(f => f.CorpsId == ms.CorpsId && f.DivisionId == ms.DivisionId));
 
 			if (isTopFive7Days)
 			{

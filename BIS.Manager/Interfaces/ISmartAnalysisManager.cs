@@ -10,11 +10,11 @@ namespace BIS.Manager.Interfaces
 {
 	public interface ISmartAnalysisManager
 	{
-		public DashboardChart Get30DaysFmnData(long corpsId, long divisionId, RoleType roleType, FilterModel filterModel, bool isLastYear = false);
-		public DashboardChart Get30DaysAspectData(long corpsId, long divisionId, RoleType roleType, FilterModel filterModel, bool isLastYear = false);
-		public DashboardChart Get30DaysIndicatorData(long corpsId, long divisionId, RoleType roleType, FilterModel filterModel, bool isLastYear = false);
-		public Task<MeanValueModel> GetEntries(long corpsId, long divisionId, RoleType roleType, FilterModelEntries filterModel);
-		public DashboardChart GetVariationData(long corpsId, long divisionId, RoleType roleType, FilterModel filterModel);
+		public DashboardChart Get30DaysFmnData(RoleType roleType, FilterModel filterModel, bool isLastYear = false);
+		public DashboardChart Get30DaysAspectData(RoleType roleType, FilterModel filterModel, bool isLastYear = false);
+		public DashboardChart Get30DaysIndicatorData(RoleType roleType, FilterModel filterModel, bool isLastYear = false);
+		public Task<MeanValueModel> GetEntries(RoleType roleType, FilterModelEntries filterModel);
+		public DashboardChart GetVariationData(RoleType roleType, FilterModel filterModel);
 
 	}
 }
