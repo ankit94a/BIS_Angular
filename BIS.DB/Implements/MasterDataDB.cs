@@ -58,15 +58,15 @@ namespace BIS.DB.Implements
 				endDate = model.startDate.Value.AddMonths(1).AddDays(-1);
 			}
 			var query = _dbContext.MasterDatas
-				.Where(ms => ms.CorpsId == corpsId
-						  && ms.CreatedOn.Value.Date >= startDate
-						  && ms.CreatedOn.Value.Date <= endDate && ms.Status == Status.Approved);
+				.Where(ms => ms.CorpsId == corpsId && ms.DivisionId == divisionId
+						  && ms.ReportedDate.Date >= startDate
+						  && ms.ReportedDate.Date <= endDate && ms.Status == Status.Approved);
 
 
-			if (divisionId > 0)
-			{
-				query = query.Where(ms => ms.DivisionId == divisionId);
-			}
+			//if (divisionId > 0)
+			//{
+			//	query = query.Where(ms => ms.DivisionId == divisionId);
+			//}
 
 			return query.ToList();
 		}

@@ -47,7 +47,7 @@ namespace BIS.DB.Implements
 				query = query.Where(ms => filterModel.Indicator.Contains(ms.Indicator));
 			}
 
-			var result = query.GroupBy(ms => ms.CreatedOn.Value.Date).Select(group => new
+			var result = query.GroupBy(ms => ms.ReportedDate.Date).Select(group => new
 			{
 				Date = group.Key,
 				Count = group.Count()
@@ -72,7 +72,7 @@ namespace BIS.DB.Implements
 			}
 
 			//var query = _dbContext.MasterDatas.Where(ms => ms.CorpsId == corpsId && ms.DivisionId == divisionId && ms.CreatedOn.Value.Date >= startDate.Date && ms.CreatedOn.Value.Date <= endDate.Date && ms.Status == Status.Approved);
-			var filteredMasterData = _dbContext.MasterDatas.Where(ms => ms.Status == Status.Approved && ms.CreatedOn.HasValue && ms.ReportedDate.Date >= startDate.Date && ms.ReportedDate.Date <= endDate.Date).ToList();
+			var filteredMasterData = _dbContext.MasterDatas.Where(ms => ms.Status == Status.Approved && ms.ReportedDate.Date >= startDate.Date && ms.ReportedDate.Date <= endDate.Date).ToList();
 			var query = filteredMasterData.Where(ms => filterModel.Frmn.Any(f => f.CorpsId == ms.CorpsId && f.DivisionId == ms.DivisionId));
 
 			// handling filter arrays 
@@ -89,7 +89,7 @@ namespace BIS.DB.Implements
 				query = query.Where(ms => filterModel.Indicator.Contains(ms.Indicator));
 			}
 
-			var result = query.GroupBy(ms => ms.CreatedOn.Value.Date).Select(group => new
+			var result = query.GroupBy(ms => ms.ReportedDate.Date).Select(group => new
 			{
 				Date = group.Key,
 				Count = group.Count()
@@ -130,7 +130,7 @@ namespace BIS.DB.Implements
 				query = query.Where(ms => filterModel.Indicator.Contains(ms.Indicator));
 			}
 
-			var result = query.GroupBy(ms => ms.CreatedOn.Value.Date).Select(group => new
+			var result = query.GroupBy(ms => ms.ReportedDate.Date).Select(group => new
 			{
 				Date = group.Key,
 				Count = group.Count()
@@ -181,8 +181,7 @@ namespace BIS.DB.Implements
 				if (filterModel?.FilterType == FilterType.Daily)
 				{
 					groupedQuery = filteredMasterData
-						.Where(ms => ms.CreatedOn.HasValue)
-						.GroupBy(ms => ms.CreatedOn.Value.Date)
+						.GroupBy(ms => ms.ReportedDate.Date)
 						.Select(group => new GroupedData
 						{
 							Date = group.Key.ToString("yyyy-MM-dd"),
@@ -251,13 +250,13 @@ namespace BIS.DB.Implements
 			if (filterModel != null && filterModel.startDate.HasValue && filterModel.endDate.HasValue && filterModel.endDate >= filterModel.startDate)
 			{
 				query = query.Where(ms =>
-					ms.CreatedOn.Value.Date >= filterModel.startDate.Value.Date &&
-					ms.CreatedOn.Value.Date <= filterModel.endDate.Value.Date
+					ms.ReportedDate.Date >= filterModel.startDate.Value.Date &&
+					ms.ReportedDate.Date <= filterModel.endDate.Value.Date
 				);
 			}
 
 
-			var result = query.GroupBy(ms => ms.CreatedOn.Value.Date).Select(group => new
+			var result = query.GroupBy(ms => ms.ReportedDate.Date).Select(group => new
 			{
 				Date = group.Key,
 				Count = group.Count()
