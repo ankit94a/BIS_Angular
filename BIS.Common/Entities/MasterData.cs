@@ -24,7 +24,7 @@ namespace BIS.Common.Entities
 		public int CorpsId { get; set; }
 		public int? DivisionId { get; set; }
 		public string InputLevel { get; set; }
-		public DateTime ReportedDate { get; set; } = DateTime.Now.Date;
+		public DateTime ReportedDate { get; set; }
 		public DateTime? RptDate { get; set; }
 		//[Column("Input Level")]
 		//[Display(Name = "Input Lvl")]

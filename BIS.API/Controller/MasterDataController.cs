@@ -63,7 +63,12 @@ namespace BIS.API.Controller
                 masterData.CorpsId = HttpContext.GetCorpsId();
                 masterData.DivisionId = HttpContext.GetDivisionId();
                 masterData.CreatedBy = HttpContext.GetUserId();
-                return Ok(_masterDataManager.AddMasterData(masterData, HttpContext.GetRoleType()));
+				var roleType = HttpContext.GetRoleType();
+				if(roleType == RoleType.Staff1)
+				{
+                    return Ok(_masterDataManager.AddMasterData(masterData, HttpContext.GetRoleType()));
+                }
+                return BadRequest("You are not authorized to fill the input");
             }
             catch (Exception ex)
             {

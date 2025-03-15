@@ -16,19 +16,24 @@ import { DownloadService } from 'projects/sharedlibrary/src/services/download.se
 // import * as  ExcelJS from 'exceljs';
 import { formatDate } from '@angular/common';
 import * as XLSX from 'xlsx';
+import { AuthService } from 'projects/sharedlibrary/src/services/auth.service';
 @Component({
   selector: 'app-master-data',
   imports: [SharedLibraryModule,ZipperTableComponent,ActionDropdownComponent],
   templateUrl: './master-data.component.html',
-  styleUrl: './master-data.component.scss'
+  styleUrl: './master-data.component.scss',
+  providers:[BisdefaultDatePipe]
 })
 export class MasterDataComponent extends TablePaginationSettingsConfig implements OnInit {
   DataList:masterData[] = [];
   isRefresh=false;
   sortedData = [];
   selectedSample;
-  constructor(private apiService:ApiService,private downloadService:DownloadService,private masterFilterService:MasterDataFilterService,private dialogService:BISMatDialogService,private router:Router,private masterDataService:MasterDataService){
+  roleType;
+  constructor(private authService:AuthService,private datePipe:BisdefaultDatePipe,private apiService:ApiService,private downloadService:DownloadService,private masterFilterService:MasterDataFilterService,private dialogService:BISMatDialogService,private router:Router,private masterDataService:MasterDataService){
     super();
+    debugger
+    this.roleType = this.authService.getRoleType();
   this.tablePaginationSettings.enableAction = true;
     this.tablePaginationSettings.enableEdit = true;
     this.tablePaginationSettings.enableView = true;
@@ -123,6 +128,11 @@ export class MasterDataComponent extends TablePaginationSettingsConfig implement
     })
   }
   columns = [
+    {
+      name: 'reportedDate', displayName: 'Input Date', isSearchable: false,valuePrepareFunction:(row) =>{
+        return this.datePipe.transform(row.reportedDate)
+      }
+    },
     {
       name: 'name', displayName: 'Input Level', isSearchable: true
     },

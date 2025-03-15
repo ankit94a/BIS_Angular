@@ -73,15 +73,10 @@ namespace BIS.Manager.Implements
 		public List<MasterData> GetBetweenDateRange(FilterModelEntries model, int corpsId, int divisionId = 0)
 		{
 			// for division roles
-			if (divisionId > 0)
-			{
+			
 				return _masterDataDB.GetBetweenDateRange(model, corpsId, divisionId);
-			}
-			// for corps roles
-			else
-			{
-				return new List<MasterData>();
-			}
+			
+		
 		}
 		public List<MasterSector> GetSectorByCorpsId(int corpsId)
 		{

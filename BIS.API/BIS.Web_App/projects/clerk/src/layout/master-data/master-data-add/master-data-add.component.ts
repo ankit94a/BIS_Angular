@@ -649,7 +649,7 @@ export class MasterDataAddComponent implements OnInit {
 
     if(!this.createData.invalid){
       this.apiService.postWithHeader('masterData',this.createData.value).subscribe(res =>{
-
+debugger
         if (res) {
           this.toastr.success("Input saved successfully",'success');
           this.dialogref.close(true);
