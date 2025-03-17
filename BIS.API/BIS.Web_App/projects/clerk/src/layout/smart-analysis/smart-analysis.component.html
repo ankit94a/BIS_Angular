@@ -542,7 +542,7 @@
               <!-- <th>#</th> -->
               <ng-container *ngFor="let item of tableHeader$ | async">
                 <th
-                  *ngIf="!['Id', 'CreatedBy', 'CreatedOn', 'IsActive', 'IsDeleted', 'CorpsId', 'DivisionId','ReportedDate'].includes(item)"
+                  *ngIf="!['Id', 'CreatedBy', 'CreatedOn', 'IsActive', 'IsDeleted', 'CorpsId', 'DivisionId','ReportedDate','Status','Fmn','UserId'].includes(item)"
                   class="space">
                   {{ item }}
                 </th>
@@ -553,7 +553,7 @@
             <tr *ngFor="let item of masterDataList$ | async; let i = index">
               <ng-container *ngFor="let header of tableHeader$ | async">
                 <td
-                  *ngIf="!['Id', 'CreatedBy', 'CreatedOn', 'IsActive', 'IsDeleted', 'CorpsId', 'DivisionId','ReportedDate'].includes(header)"
+                  *ngIf="!['Id', 'CreatedBy', 'CreatedOn', 'IsActive', 'IsDeleted', 'CorpsId', 'DivisionId','ReportedDate','Status','Fmn','UserId'].includes(header)"
                   class="space">
                   {{ item[header] }}
                 </td>

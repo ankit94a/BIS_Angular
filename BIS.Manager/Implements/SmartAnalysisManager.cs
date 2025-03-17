@@ -49,5 +49,9 @@ namespace BIS.Manager.Implements
 
 
 		}
+		public List<MasterData> GetSingleEntriesChartData(RoleType roleType, FilterModelEntries filterModel)
+		{
+			return _smartAnalysisDB.GetSingleEntriesChartData(roleType, filterModel);
+		}
 	}
 }

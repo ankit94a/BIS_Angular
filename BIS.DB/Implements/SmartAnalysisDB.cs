@@ -114,7 +114,7 @@ namespace BIS.DB.Implements
 			}
 
 			//var query = _dbContext.MasterDatas.Where(ms => ms.CorpsId == corpsId && ms.DivisionId == divisionId && ms.CreatedOn.Value.Date >= startDate.Date && ms.CreatedOn.Value.Date <= endDate.Date && ms.Status == Status.Approved);
-			var filteredMasterData = _dbContext.MasterDatas.Where(ms => ms.Status == Status.Approved  && ms.ReportedDate.Date >= startDate.Date && ms.ReportedDate.Date <= endDate.Date).ToList();
+			var filteredMasterData = _dbContext.MasterDatas.Where(ms => ms.Status == Status.Approved && ms.ReportedDate.Date >= startDate.Date && ms.ReportedDate.Date <= endDate.Date).ToList();
 			var query = filteredMasterData.Where(ms => filterModel.Frmn.Any(f => f.CorpsId == ms.CorpsId && f.DivisionId == ms.DivisionId));
 			// handling filter arrays 
 			if (filterModel != null && filterModel.Sector?.Count > 0)
@@ -149,15 +149,15 @@ namespace BIS.DB.Implements
 			var chart = new MeanValueModel();
 			try
 			{
-				var query = _dbContext.MasterDatas.Where(ms => ms.Status == Status.Approved && ms.CreatedOn.HasValue && ms.IsActive);
+				var query = _dbContext.MasterDatas.Where(ms => ms.Status == Status.Approved && ms.IsActive);
 
 				var filteredMasterData = await query.ToListAsync(); // Ensures we fetch data asynchronously
-
+				
 				// Ensure filterModel.Frmn exists before calling Any()
 				if (filterModel?.Frmn != null && filterModel.Frmn.Any())
 				{
 					filteredMasterData = filteredMasterData
-						.Where(ms => filterModel.Frmn.Any(f => f.CorpsId == ms.CorpsId && f.DivisionId == ms.DivisionId))
+						.Where(ms => filterModel.Frmn.Any(f => f.CorpsId == ms.CorpsId && f.DivisionId == ms.DivisionId)).OrderBy(ms => ms.ReportedDate)
 						.ToList();
 				}
 
@@ -185,6 +185,33 @@ namespace BIS.DB.Implements
 						.Select(group => new GroupedData
 						{
 							Date = group.Key.ToString("yyyy-MM-dd"),
+							Count = group.Count()
+						})
+						.ToList();
+				}
+				else if (filterModel?.FilterType == FilterType.Weekly)
+				{
+					groupedQuery = filteredMasterData
+						.GroupBy(ms => new
+						{
+							Year = ms.ReportedDate.Year,
+							Week = System.Globalization.CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(
+								ms.ReportedDate, System.Globalization.CalendarWeekRule.FirstDay, DayOfWeek.Monday)
+						})
+						.Select(group => new GroupedData
+						{
+							Date = $"Week {group.Key.Week}, {group.Key.Year}",
+							Count = group.Count()
+						})
+						.ToList();
+				}
+				else if (filterModel?.FilterType == FilterType.Monthly)
+				{
+					groupedQuery = filteredMasterData
+						.GroupBy(ms => new { Year = ms.ReportedDate.Year, Month = ms.ReportedDate.Month })
+						.Select(group => new GroupedData
+						{
+							Date = $"{group.Key.Year}-{group.Key.Month:D2}",
 							Count = group.Count()
 						})
 						.ToList();
@@ -234,6 +261,7 @@ namespace BIS.DB.Implements
 			var filteredMasterData = _dbContext.MasterDatas.Where(ms => ms.Status == Status.Approved && ms.IsActive).ToList();
 			var query = filteredMasterData.Where(ms => filterModel.Frmn.Any(f => f.CorpsId == ms.CorpsId && f.DivisionId == ms.DivisionId));
 
+			
 			// handling filter arrays 
 			if (filterModel != null && filterModel.Sector?.Count > 0)
 			{
@@ -255,7 +283,7 @@ namespace BIS.DB.Implements
 				);
 			}
 
-
+			query = query.OrderBy(ms => ms.ReportedDate);
 			var result = query.GroupBy(ms => ms.ReportedDate.Date).Select(group => new
 			{
 				Date = group.Key,
@@ -270,6 +298,48 @@ namespace BIS.DB.Implements
 			return chart;
 		}
 
+		public List<MasterData> GetSingleEntriesChartData(RoleType roleType, FilterModelEntries filterModel)
+		{
+			var filteredMasterData = _dbContext.MasterDatas.Where(ms => ms.Status == Status.Approved && ms.IsActive).ToList();
 
+			var query = filteredMasterData.Where(ms => filterModel.Frmn.Any(f => f.CorpsId == ms.CorpsId && f.DivisionId == ms.DivisionId));
+
+			// handling filter arrays 
+			if (filterModel != null && filterModel.Sector?.Count > 0)
+			{
+				query = query.Where(ms => filterModel.Sector.Contains(ms.Sector));
+			}
+			if (filterModel != null && filterModel.Aspects?.Count > 0)
+			{
+				query = query.Where(ms => filterModel.Aspects.Contains(ms.Aspect));
+			}
+			if (filterModel != null && filterModel.Indicator?.Count > 0)
+			{
+				query = query.Where(ms => filterModel.Indicator.Contains(ms.Indicator));
+			}
+			if (filterModel != null && filterModel.startDate.HasValue && filterModel.endDate.HasValue && filterModel.endDate >= filterModel.startDate)
+			{
+				if (filterModel.FilterType == FilterType.Daily || filterModel.FilterType == FilterType.Weekly)
+				{
+					query = query.Where(ms =>
+						ms.ReportedDate.Date >= filterModel.startDate.Value.Date &&
+						ms.ReportedDate.Date <= filterModel.endDate.Value.Date
+					);
+				}
+				
+				else if (filterModel.FilterType == FilterType.Monthly)
+				{
+					// Set endDate to the last day of the month
+					filterModel.endDate = new DateTime(filterModel.startDate.Value.Year, filterModel.startDate.Value.Month, DateTime.DaysInMonth(filterModel.startDate.Value.Year, filterModel.startDate.Value.Month));
+
+					query = query.Where(ms =>
+						ms.ReportedDate.Date >= filterModel.startDate.Value.Date &&
+						ms.ReportedDate.Date <= filterModel.endDate.Value.Date
+					);
+				}
+			}
+
+			return query.ToList();
+		}
 	}
 }

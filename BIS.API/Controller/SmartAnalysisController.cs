@@ -87,5 +87,12 @@ namespace BIS.API.Controller
 			RoleType roleType = HttpContext.GetRoleType();
 			return Ok(_smartAnalysisManager.GetVariationData(roleType, filterModel));
 		}
+		[AuthorizePermission(PermissionItem.SmartAnalysis, PermissionAction.Read)]
+		[HttpPost, Route("getentrieschart/entrydata")]
+		public async Task<IActionResult> GetSingleEntriesChartData([FromBody] FilterModelEntries filterModel)
+		{
+			RoleType roleType = HttpContext.GetRoleType();
+			return Ok(_smartAnalysisManager.GetSingleEntriesChartData(roleType, filterModel));
+		}
 	}
 }

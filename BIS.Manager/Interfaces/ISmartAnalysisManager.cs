@@ -15,6 +15,7 @@ namespace BIS.Manager.Interfaces
 		public DashboardChart Get30DaysIndicatorData(RoleType roleType, FilterModel filterModel, bool isLastYear = false);
 		public Task<MeanValueModel> GetEntries(RoleType roleType, FilterModelEntries filterModel);
 		public DashboardChart GetVariationData(RoleType roleType, FilterModel filterModel);
+		public List<MasterData> GetSingleEntriesChartData(RoleType roleType, FilterModelEntries filterModel);
 
 	}
 }
