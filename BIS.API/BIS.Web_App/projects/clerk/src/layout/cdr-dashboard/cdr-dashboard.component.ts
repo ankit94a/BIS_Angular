@@ -50,15 +50,37 @@ export class CdrDashboardComponent {
   selectedType11 = 'Daily';
   filterNew :{Sector?: string, Aspects?: string, Indicator?: string,startDate?: Date, endDate?: Date} ={};
   selectedNew = 'any';
+  frmnList:any[]=[];
   constructor(private apiService:ApiService, private authService: AuthService,private masterDataService:MasterDataFilterService,private dialogService:BISMatDialogService){
-    var divisionName = this.authService.getDivisionName();
-    if (divisionName != undefined && divisionName != '' && divisionName != null) {
-      this.fmnList.push(divisionName);
-      this.filterModel.frmn = this.fmnList;
-    }
+    // var divisionName = this.authService.getDivisionName();
+    // if (divisionName != undefined && divisionName != '' && divisionName != null) {
+    //   this.fmnList.push(divisionName);
+    //   this.filterModel.frmn = this.fmnList;
+    // }
+    this.getFrmDetails();
     this.filterModel.filterType = FilterType.Daily;
     this.filterModel2.startDate = new Date();
     this.filterModel2.endDate = new Date();
+
+  }
+  getFrmDetails() {
+    this.apiService.getWithHeaders('dashboard/FmnDetails').subscribe(res => {
+      if (res) {
+        this.frmnList = res;
+        var divisionId = parseInt(this.authService.getDivisionId());
+        var corpsId = parseInt(this.authService.getCorpsId());
+        var frm = this.frmnList.find(item => item.corpsId === corpsId && item.divisionId === divisionId);
+        if (frm) {
+          if (!this.filterModel.frmn) {
+            this.filterModel.frmn = [];
+          }
+          this.filterModel.frmn.push({ ...frm });
+          this.getAll();
+        }
+      }
+    })
+  }
+  getAll(){
     this.getSector();
     this.getAspect();
     this.getEntries();
@@ -79,12 +101,43 @@ export class CdrDashboardComponent {
     })
     }
   }
+  getWeekRange(
+    weekNumber: number,
+    year: number
+  ): { startDate: Date; endDate: Date } {
+    const firstDayOfYear = new Date(year, 0, 1); // January 1st of the given year
+    const daysOffset = (weekNumber - 1) * 7; // Offset in days based on the week number
+    const firstWeekStart = new Date(
+      firstDayOfYear.getTime() + daysOffset * 24 * 60 * 60 * 1000
+    );
+
+    // Adjust to the nearest Monday
+    const dayOfWeek = firstWeekStart.getDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
+    const startDate = new Date(firstWeekStart);
+    startDate.setDate(startDate.getDate() - (dayOfWeek - 1)); // Move to Monday
+
+    const endDate = new Date(startDate);
+    endDate.setDate(startDate.getDate() + 6); // Move to Sunday
+
+    return { startDate, endDate };
+  }
   getMeanData(date){
-    let filterDate = new FilterModel4()
-    filterDate.startDate = date;
-    filterDate.endDate = date;
-    filterDate.filterType = this.filterModel.filterType
-    this.apiService.postWithHeader('masterdata/dateRange',filterDate).subscribe(res =>{
+    if (date.startsWith('Week')) {
+      const match = date.match(/^Week (\d{1,2}), (\d{4})$/);
+      if (match) {
+        const weekNumber = parseInt(match[1], 10);
+        const year = parseInt(match[2], 10);
+        const { startDate, endDate } = this.getWeekRange(weekNumber, year);
+
+        this.filterModel.startDate = startDate;
+        this.filterModel.endDate = endDate;
+      }
+    } else {
+      this.filterModel.startDate = date;
+      this.filterModel.endDate = date;
+    }
+
+    this.apiService.postWithHeader('smartanalysis/getentrieschart/entrydata',this.filterModel).subscribe(res =>{
       const {Header,DataList} = this.masterDataService.getMasterData(res);
       this.tableHeaderSubject.next(Header);
        this.masterDataListSubject.next(DataList);
@@ -155,6 +208,9 @@ export class CdrDashboardComponent {
       })
     }
   }
+
+  // smartanalysis/getentrieschart/entrydata
+
   onFilterChange1(filterKey: string): void {
     // this.filters[filterKey] = event;
     // this.getFrmnDataAll();

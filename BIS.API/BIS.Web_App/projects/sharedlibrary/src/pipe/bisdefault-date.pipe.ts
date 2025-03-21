@@ -7,7 +7,6 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class BisdefaultDatePipe extends DatePipe implements PipeTransform {
 
   override transform(value: Date | string): any {
-    debugger;
 
     if (!value) {
         return null;

@@ -59,7 +59,7 @@
                 <mat-cell *matCellDef="let element">
                     <div [ngSwitch]="column.valueType">
                         <div *ngSwitchCase="'custom'">
-                            <custom-view-component [column]="column" [element]="element"></custom-view-component>
+                            <!-- <custom-view-component [column]="column" [element]="element"></custom-view-component> -->
                         </div>
 
                         <div *ngSwitchCase="'html'" [innerHtml]="getValues(element,column)"></div>

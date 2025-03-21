@@ -165,7 +165,6 @@ export class SmartAnalysisComponent implements OnInit, OnDestroy {
   }
 
   getMeanData(date) {
-    debugger;
     if (date.startsWith('Week')) {
       const match = date.match(/^Week (\d{1,2}), (\d{4})$/);
       if (match) {

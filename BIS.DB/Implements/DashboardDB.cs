@@ -71,8 +71,8 @@ namespace BIS.DB.Implements
 				var counts = query
 					.GroupBy(ms => new
 					{
-						IsToday = ms.CreatedOn.Value.Date >= currentTime.Date,
-						IsLast7Days = ms.CreatedOn.Value.Date >= last7Days.Date
+						IsToday = ms.ReportedDate.Date >= currentTime.Date,
+						IsLast7Days = ms.ReportedDate.Date >= last7Days.Date
 					})
 					.Select(g => new
 					{
@@ -93,8 +93,8 @@ namespace BIS.DB.Implements
 				var counts = query
 					.GroupBy(ms => new
 					{
-						IsToday = ms.CreatedOn.Value.Date >= currentTime.Date,
-						IsLast7Days = ms.CreatedOn.Value.Date >= last7Days.Date
+						IsToday = ms.ReportedDate.Date >= currentTime.Date,
+						IsLast7Days = ms.ReportedDate.Date >= last7Days.Date
 					})
 					.Select(g => new
 					{
@@ -137,8 +137,8 @@ namespace BIS.DB.Implements
 			if (filterDate.HasValue)
 			{
 				query = daysMonthFilter == DaysMonthFilter.Today
-					? query.Where(ms => ms.CreatedOn.Value.Date == DateTime.UtcNow.Date)
-					: query.Where(ms => ms.CreatedOn >= filterDate.Value);
+					? query.Where(ms => ms.ReportedDate.Date == DateTime.UtcNow.Date)
+					: query.Where(ms => ms.ReportedDate >= filterDate.Value);
 			}
 			// handling sector filter
 			if (filterModel != null && filterModel.Sector.Count > 0)
@@ -167,7 +167,7 @@ namespace BIS.DB.Implements
 			else
 			{
 				result = query.Where(ms => filterModel.Frmn.Any(f => f.CorpsId == ms.CorpsId && f.DivisionId == ms.DivisionId))
-								.GroupBy(m => new { Year = m.CreatedOn.Value.Year, Month = m.CreatedOn.Value.Month })
+								.GroupBy(m => new { Year = m.ReportedDate.Year, Month = m.ReportedDate.Month })
 								.Select(g => new
 								{
 									MonthYear = new DateTime(g.Key.Year, g.Key.Month, 1).ToString("MMM") + " " + g.Key.Year,
@@ -219,8 +219,8 @@ namespace BIS.DB.Implements
 			if (filterDate.HasValue)
 			{
 				query = daysMonthFilter == DaysMonthFilter.Today
-					? query.Where(ms => ms.CreatedOn.Value.Date == DateTime.UtcNow.Date)
-					: query.Where(ms => ms.CreatedOn >= filterDate.Value);
+					? query.Where(ms => ms.ReportedDate.Date == DateTime.UtcNow.Date)
+					: query.Where(ms => ms.ReportedDate >= filterDate.Value);
 			}
 			// handling sector filter
 			if (filterModel != null && filterModel.Sector.Count > 0)
@@ -231,7 +231,7 @@ namespace BIS.DB.Implements
 			if (daysMonthFilter == DaysMonthFilter.Months12)
 			{
 				result = query.Where(m => m.Aspect != null && m.Aspect != "" && m.CreatedOn >= filterDate)
-								.GroupBy(m => new { Year = m.CreatedOn.Value.Year, Month = m.CreatedOn.Value.Month })
+								.GroupBy(m => new { Year = m.ReportedDate.Year, Month = m.ReportedDate.Month })
 								.Select(g => new
 								{
 									MonthYear = new DateTime(g.Key.Year, g.Key.Month, 1).ToString("MMM") + " " + g.Key.Year,
@@ -287,12 +287,12 @@ namespace BIS.DB.Implements
 			// Apply filters based on `daysMonthFilter`
 			if (daysMonthFilter == DaysMonthFilter.Today)
 			{
-				query = query.Where(m => m.CreatedOn.Value.Date == today.Date);
+				query = query.Where(m => m.ReportedDate.Date == today.Date);
 			}
 			else if (daysMonthFilter == DaysMonthFilter.Days30)
 			{
 				DateTime past30Days = today.AddDays(-30);
-				query = query.Where(m => m.CreatedOn.Value.Date >= past30Days.Date);
+				query = query.Where(m => m.ReportedDate.Date >= past30Days.Date);
 			}
 			// handling sector filter
 			if (filterModel != null && filterModel.Sector.Count > 0)
@@ -320,7 +320,7 @@ namespace BIS.DB.Implements
 			//				m.DivisionId == divisionId &&
 			//				!string.IsNullOrEmpty(m.Sector) &&
 			//				m.CreatedOn >= filterDate && m.Status == Status.Approved);
-			var filteredMasterData = _dbContext.MasterDatas.Where(ms => ms.Status == Status.Approved && !string.IsNullOrEmpty(ms.Sector)).ToList();
+			var filteredMasterData = _dbContext.MasterDatas.Where(ms => ms.Status == Status.Approved && !string.IsNullOrEmpty(ms.Sector) && ms.ReportedDate >= filterDate).ToList();
 			var query = filteredMasterData.Where(ms => filterModel.Frmn.Any(f => f.CorpsId == ms.CorpsId && f.DivisionId == ms.DivisionId));
 
 			if (filterModel != null && filterModel.Sector.Count > 0)
@@ -328,7 +328,7 @@ namespace BIS.DB.Implements
 				query = query.Where(m => filterModel.Sector.Contains(m.Sector));
 			}
 
-			var result = query.GroupBy(m => new { m.CreatedOn.Value.Year, m.CreatedOn.Value.Month, m.Sector })
+			var result = query.GroupBy(m => new { m.ReportedDate.Year, m.ReportedDate.Month, m.Sector })
 				.Select(g => new
 				{
 					Sector = g.Key.Sector,
@@ -385,7 +385,7 @@ namespace BIS.DB.Implements
 			var chart = new DashboardChart();
 
 			//var query = _dbContext.MasterDatas.Where(m => m.CorpsId == corpsId && m.DivisionId == divisionId && m.Indicator != null && m.Indicator != "" && m.CreatedOn.Value.Date >= DateTime.UtcNow.AddDays(-7).Date && m.Status == Status.Approved);
-			var filteredMasterData = _dbContext.MasterDatas.Where(ms => ms.Status == Status.Approved && ms.Indicator != null && ms.Indicator != "" && ms.CreatedOn.Value.Date >= DateTime.UtcNow.AddDays(-7).Date).ToList();
+			var filteredMasterData = _dbContext.MasterDatas.Where(ms => ms.Status == Status.Approved && ms.Indicator != null && ms.Indicator != "" && ms.ReportedDate.Date >= DateTime.UtcNow.AddDays(-7).Date).ToList();
 			var query = filteredMasterData.Where(ms => filterModel.Frmn.Any(f => f.CorpsId == ms.CorpsId && f.DivisionId == ms.DivisionId));
 
 			if (filterModel != null && filterModel.Sector.Count > 0)
@@ -427,7 +427,7 @@ namespace BIS.DB.Implements
 
 			if (isTopFive7Days)
 			{
-				query = query.Where(m => m.CreatedOn.Value.Date >= DateTime.UtcNow.AddDays(-7).Date);
+				query = query.Where(m => m.ReportedDate.Date >= DateTime.UtcNow.AddDays(-7).Date);
 			}
 			if (filterModel != null && filterModel.Sector.Count > 0)
 			{
