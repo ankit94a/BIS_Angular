@@ -16,7 +16,7 @@ import { FormsModule } from '@angular/forms';
   selector: 'app-table',
   templateUrl: './zipper-table.component.html',
   styleUrls: ['./zipper-table.component.scss'],
-  imports:[CustomViewComponent,MatPaginatorModule,SharedLibraryModule , NgSelectModule,FormsModule,CommonModule],
+  imports:[MatPaginatorModule,SharedLibraryModule , NgSelectModule,FormsModule,CommonModule],
   standalone:true,
   // providers: [
   //       { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
@@ -89,6 +89,7 @@ export class ZipperTableComponent extends TablePaginationSettingsConfig implemen
   @Output() markAsDelivered = new EventEmitter();
   @Output() add = new EventEmitter();
   @Output() pageChanged = new EventEmitter();
+  @Output() getFileId = new EventEmitter();
   searchValue: String;
   selected: any;
   filterDictionary = new Map<string, string>();
@@ -140,7 +141,9 @@ export class ZipperTableComponent extends TablePaginationSettingsConfig implemen
 
     }
   }
-
+  sendRow(element){
+    this.getFileId.emit(element);
+  }
   isAllSelected() {
     const numSelected = this.selection.selected.length;
     const dataCount = this.dataSource.data.reduce((count: number, _) => count + 1, 0);
@@ -168,17 +171,31 @@ export class ZipperTableComponent extends TablePaginationSettingsConfig implemen
 
   ngOnInit() {
     // Condition to add selection column to the table
-    if (this.enableCheckbox) {
-      this.columnNames.splice(0, 0, 'select');
-      this.sqColumnDefinition.splice(0, 0, {
-        'name': 'select',
-        'hide': false,
-        'displayName': '',
-        // dropDownList: undefined
-      });
-    }
+    // if (this.enableCheckbox) {
+    //   this.columnNames.splice(0, 0, 'select');
+    //   this.sqColumnDefinition.splice(0, 0, {
+    //     'name': 'select',
+    //     'hide': false,
+    //     'displayName': '',
+    //     // dropDownList: undefined
+    //   });
+    // }
     this.selection = new SelectionModel<{}>(this.allowMultiSelect, []);
     this.dataSource = new MatTableDataSource(this.rowData);
+    // this.dataSource.data = new MatTableDataSource(this.rowData); // Set initial data
+    this.dataSource.filterPredicate = (data: any, filter: string): boolean => {
+      const searchTerms = JSON.parse(filter); // Parse the filter string to get the filter criteria
+      return searchTerms.every(([key, value]) => {
+        // Filter logic for different types of columns (e.g., text, date, dropdown, etc.)
+        if (key && value) {
+          if (data[key]) {
+            return data[key].toString().toLowerCase().includes(value.toLowerCase());
+          }
+          return false;
+        }
+        return true;
+      });
+    };
   }
 
   getVisibleColumns() {
@@ -238,13 +255,17 @@ export class ZipperTableComponent extends TablePaginationSettingsConfig implemen
   }
 
   applyFilter(filterValue: string) {
+    debugger
     filterValue = filterValue.trim();
     filterValue = filterValue.toLowerCase();
     this.dataSource.filter = filterValue;
   }
 
   async applyInsyncFilter(value: any, colName: any, type: any) {
-    if (type == "date") {
+    debugger
+    this.dataSource.data
+    this.rowData
+     if (type == "date") {
       var filterDate = formatDate(value, 'dd-MMM-yy', "en-US");
       filterDate = filterDate.replace(/-/g, '');
       filterDate = filterDate.replace(/(^|\D)0(\d)/g, '$1$2');

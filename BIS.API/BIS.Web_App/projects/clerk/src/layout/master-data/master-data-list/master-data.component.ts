@@ -32,7 +32,6 @@ export class MasterDataComponent extends TablePaginationSettingsConfig implement
   roleType;
   constructor(private authService:AuthService,private datePipe:BisdefaultDatePipe,private apiService:ApiService,private downloadService:DownloadService,private masterFilterService:MasterDataFilterService,private dialogService:BISMatDialogService,private router:Router,private masterDataService:MasterDataService){
     super();
-    debugger
     this.roleType = this.authService.getRoleType();
   this.tablePaginationSettings.enableAction = true;
     this.tablePaginationSettings.enableEdit = true;
@@ -51,12 +50,12 @@ export class MasterDataComponent extends TablePaginationSettingsConfig implement
   //     const workbook = new ExcelJS.Workbook();
   //     const worksheet = workbook.addWorksheet('Master Data');
   //     const fileName = `Master_Data_${formatDate(new Date(), 'd MMM yyyy', 'en')}.xlsx`;
-  
+
   //     // Generate the data array by mapping headers to each data row
   //     const Data = DataList.map(item => {
   //       return Header.map(head => item[head] ?? '');
   //     });
-  
+
   //     // Pass the structured data and header to the download service
   //     this.downloadService.SaveExcel(worksheet, workbook, fileName, Data, Header);
   //   } else {
@@ -79,7 +78,7 @@ export class MasterDataComponent extends TablePaginationSettingsConfig implement
         console.warn('No data selected to export.');
     }
 }
-  
+
   ngOnInit(): void {
     this.getDataFromServer();
   }
@@ -99,7 +98,7 @@ export class MasterDataComponent extends TablePaginationSettingsConfig implement
     this.masterDataService.setMasterData(event);
     this.router.navigate(['master-data-form'], { queryParams: { id: event.id } });
   }
-  
+
   getMoreSameples($event){
 
   }
@@ -120,7 +119,7 @@ export class MasterDataComponent extends TablePaginationSettingsConfig implement
   getDataFromServer(){
     this.apiService.getWithHeaders('MasterData').subscribe(res => {
       if(res){
-        res.sort((a,b) => b.id - a.id);
+        res = res.sort((a, b) => new Date(b.reportedDate).getTime() - new Date(a.reportedDate).getTime());
         this.sortedData = res;
         this.DataList = res;
 

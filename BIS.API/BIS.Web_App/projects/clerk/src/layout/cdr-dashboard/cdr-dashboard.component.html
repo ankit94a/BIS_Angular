@@ -76,11 +76,21 @@
         </div> -->
     <div class="row">
       <div class="col-sm-3">
-        <ng-select [(ngModel)]="filterModel.frmn" appendTo="ng-select" [items]="fmnList" [multiple]="true"
+        <!-- <ng-select [(ngModel)]="filterModel.frmn" appendTo="ng-select" [items]="fmnList" [multiple]="true"
           bindLabel="name" bindValue="name" placeholder="Fmn" [searchable]="true">
           <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
             <div class="ng-value" *ngFor="let item of items">
               <span class="ng-value-label">{{item}}</span>
+            </div>
+          </ng-template>
+        </ng-select> -->
+        <ng-select appendTo="ng-select" [items]="frmnList" [multiple]="true" (change)="getEntries()"
+          bindLabel="name"  [closeOnSelect]="true" placeholder="Fmn" [searchable]="true"
+          [(ngModel)]="filterModel.frmn" >
+          <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+            <div class="ng-value" *ngFor="let item of items">
+              <span class="ng-value-label">{{item.name}}</span>
+              <span class="ng-value-icon right px-1" (click)="clear(item)" aria-hidden="true">×</span>
             </div>
           </ng-template>
         </ng-select>
