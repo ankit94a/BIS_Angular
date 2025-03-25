@@ -73,10 +73,10 @@ namespace BIS.Manager.Implements
 		public List<MasterData> GetBetweenDateRange(FilterModelEntries model, int corpsId, int divisionId = 0)
 		{
 			// for division roles
-			
-				return _masterDataDB.GetBetweenDateRange(model, corpsId, divisionId);
-			
-		
+
+			return _masterDataDB.GetBetweenDateRange(model, corpsId, divisionId);
+
+
 		}
 		public List<MasterSector> GetSectorByCorpsId(int corpsId)
 		{
@@ -90,13 +90,29 @@ namespace BIS.Manager.Implements
 		{
 			return _masterDataDB.GetSources();
 		}
+		public bool AddSource(Source s)
+		{
+			return _masterDataDB.AddSource(s);
+		}
 		public List<MasterLocation> GetLocation(bool isSourceLoc = true)
 		{
 			return _masterDataDB.GetLocation(isSourceLoc);
 		}
+		public bool AddLocation(MasterLocation location)
+		{
+			return _masterDataDB.AddLocation(location);
+		}
 		public List<EnemyLocation> GetAllEnemyLocation()
 		{
 			return _masterDataDB.GetAllEnemyLocation();
+		}
+		public bool AddEnemyLocation(EnemyLocation enemyLocation)
+		{
+			return _masterDataDB.AddEnemyLocation(enemyLocation);
+		}
+		public bool Deactive(long Id, string table)
+		{
+			return _masterDataDB.Deactive(Id, table);
 		}
 		public long AddMasterData(MasterData masterData, RoleType roleType)
 		{
@@ -109,7 +125,7 @@ namespace BIS.Manager.Implements
 			{
 				Task.Run(async () =>
 				{
-					await Task.Delay(TimeSpan.FromMinutes(2)); 
+					await Task.Delay(TimeSpan.FromMinutes(2));
 
 					var notification = new Notification
 					{
@@ -136,7 +152,7 @@ namespace BIS.Manager.Implements
 							{
 								notification.ReceiverId = await userDB.GetUserIdByRoleType(item, masterData.CorpsId, masterData.DivisionId);
 								notification.ReceiverEntityType = item;
-								await notificationDB.AddNotification(notification); 
+								await notificationDB.AddNotification(notification);
 							}
 						}
 						var masterDB = scope.ServiceProvider.GetRequiredService<MasterDataDB>();
@@ -150,12 +166,12 @@ namespace BIS.Manager.Implements
 		{
 			throw new NotImplementedException();
 		}
-        public long Update(MasterData masterData)
-        {
-            masterData.UpdatedOn = DateTime.Now;
-            return _masterDataDB.Update(masterData);
-        }
-        public MasterData GetBy(int Id, int CorpsId)
+		public long Update(MasterData masterData)
+		{
+			masterData.UpdatedOn = DateTime.Now;
+			return _masterDataDB.Update(masterData);
+		}
+		public MasterData GetBy(int Id, int CorpsId)
 		{
 			return _masterDataDB.GetBy(Id, CorpsId);
 		}

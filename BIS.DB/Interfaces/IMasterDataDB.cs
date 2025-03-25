@@ -18,11 +18,15 @@ namespace BIS.DB.Interfaces
 		public List<MasterSector> GetSectorByCorpsId(int corpsId);
 		public List<MasterInputLevel> GetInputLevels();
 		public List<Source> GetSources();
+		public bool AddSource(Source source);
 		public List<MasterLocation> GetLocation(bool isSourceLoc = true);
+		public bool AddLocation(MasterLocation location);
 		public List<EnemyLocation> GetAllEnemyLocation();
+		public bool AddEnemyLocation(EnemyLocation enemyLocation);
 		public Task<long> UpdateStatus(int id, Status status);
 		public List<MasterData> GetUpto30MinForm();
 		public int GetUserIdByMasterDataId(int id);
+		public bool Deactive(long Id, string table);
 		public Task<(List<List<int>> Id, List<string> Labels, List<double> Data, List<double> Data2, List<string> Alerts, List<List<string>> FrmnsList, List<List<string>> SectorsList, List<List<string>> AspectsList, List<List<string>> IndicatorsList)> GetDailyAverageEntriesAsync(string frmn = null, string sector = null, string Aspects = null, string Indicator = null, DateTime? filterStartDate = null, DateTime? filterEndDate = null, int? Id = null);
 	}
 }

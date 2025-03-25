@@ -1,14 +1,5 @@
 import { Indicator } from './../../../../sharedlibrary/src/model/attribute.model';
-import {
-  AfterViewInit,
-  Component,
-  ElementRef,
-  OnDestroy,
-  OnInit,
-  QueryList,
-  ViewChild,
-  ViewChildren,
-} from '@angular/core';
+import {Component,ElementRef,OnDestroy,OnInit,QueryList,ViewChild,ViewChildren,} from '@angular/core';
 import { ApiService } from 'projects/sharedlibrary/src/services/api.service';
 import { SharedLibraryModule } from 'projects/sharedlibrary/src/shared-library.module';
 import { Chart, ChartData, ChartOptions } from 'chart.js';
@@ -16,14 +7,8 @@ import { BaseChartDirective } from 'ng2-charts';
 import { BehaviorSubject, Subject, takeUntil } from 'rxjs';
 import { DatePipe } from '@angular/common';
 import { AuthService } from 'projects/sharedlibrary/src/services/auth.service';
-import {
-  FilterModel,
-  FilterModel4,
-} from 'projects/sharedlibrary/src/model/dashboard.model';
-import {
-  Aspect,
-  Sector,
-} from 'projects/sharedlibrary/src/model/attribute.model';
+import {FilterModel,FilterModel4,} from 'projects/sharedlibrary/src/model/dashboard.model';
+import {Aspect,Sector,} from 'projects/sharedlibrary/src/model/attribute.model';
 import { FilterType } from 'projects/sharedlibrary/src/model/enum';
 import { GetMeanvalueColorDirective } from 'projects/sharedlibrary/src/directives/get-meanvalue-color.directive';
 import { BisdefaultDatePipe } from 'projects/sharedlibrary/src/pipe/bisdefault-date.pipe';
@@ -32,17 +17,13 @@ import { masterData } from 'projects/sharedlibrary/src/model/masterdata.model';
 
 @Component({
   selector: 'app-smart-analysis',
-  imports: [
-    SharedLibraryModule,
-    BaseChartDirective,
-    GetMeanvalueColorDirective,
-  ],
+  imports: [SharedLibraryModule,BaseChartDirective,GetMeanvalueColorDirective,],
   providers: [BisdefaultDatePipe],
   templateUrl: './smart-analysis.component.html',
   styleUrl: './smart-analysis.component.scss',
 })
 export class SmartAnalysisComponent implements OnInit, OnDestroy {
-  // savedNotes: IsavedNotes[] = [];
+  isExpand:boolean=false;
   fmnList = [];
   frmnList: any[] = [];
   sectorList: Sector[] = [];
@@ -81,26 +62,8 @@ export class SmartAnalysisComponent implements OnInit, OnDestroy {
     chart2: false,
     chart3: false,
   };
-
-  // fmnList: string[] = ["33 Corps", "27 Mtn Div", "17 Mtn Div", "111 Sub Area", "20 Mtn Div", "3 Corps", "2 Mtn Div", "56 Mtn Div", "57 Mtn Div", "4 Corps", "5 Mtn Div", "21 Mtn Div", "71 Mtn Div", "17 Corps", "59 Mtn Div", "23 Mtn Div"];
-  //sectorList: string[] = ['None', 'PSS', 'MSS', 'Cho_la', 'Doka_la'];
-  //aspectList: string[] = ['None', 'Svl / Counter Svl', 'Friction / Belligerence', 'Ae Activity', 'Conc of Tps', 'Armr / Arty / AD / Engrs Indn', 'Mob', 'Infra Devp', 'Dumping of WLS', 'Heightened Diplomatic Eng', 'Collapse of Diplomatic Ties', 'Propoganda', 'Internal Issues', 'Cyber', 'Def', 'Interactions'];
-  // indicatorList: string[] = ['None', 'Placement of addl Svl Eqpt', 'Incr Recce', 'Incr in OP loc', 'Jamming', 'Enhanced Tourist Influx']
-  chartList: string[] = ['Monthly', 'Daily', 'Weekly'];
-  constructor(
-    private apiService: ApiService,
-    private datePipe: DatePipe,
-    private authService: AuthService,
-    private masterDataService: MasterDataFilterService
-  ) {
-    // var divisionName = this.authService.getDivisionName();
-    // if (divisionName != undefined && divisionName != '' && divisionName != null) {
-    //   this.fmnList.push(divisionName);
-    //   this.filterModel.frmn = this.fmnList;
-    //   this.filterModel2.frmn = this.fmnList;
-    //   this.filterModel3.frmn = this.fmnList;
-    //   this.filterModel4.frmn = this.fmnList;
-    // }
+chartList: string[] = ['Monthly', 'Daily', 'Weekly'];
+  constructor(private apiService: ApiService,private datePipe: DatePipe,private authService: AuthService,private masterDataService: MasterDataFilterService) {
     this.filterModel4.filterType = FilterType.Daily;
     this.getFrmDetails();
   }
@@ -143,24 +106,15 @@ export class SmartAnalysisComponent implements OnInit, OnDestroy {
   isAnyCheckboxSelected(): boolean {
     return Object.values(this.selectedCharts).some((selected) => selected);
   }
-  getWeekRange(
-    weekNumber: number,
-    year: number
-  ): { startDate: Date; endDate: Date } {
-    const firstDayOfYear = new Date(year, 0, 1); // January 1st of the given year
-    const daysOffset = (weekNumber - 1) * 7; // Offset in days based on the week number
-    const firstWeekStart = new Date(
-      firstDayOfYear.getTime() + daysOffset * 24 * 60 * 60 * 1000
-    );
-
-    // Adjust to the nearest Monday
-    const dayOfWeek = firstWeekStart.getDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
+  getWeekRange(weekNumber: number,year: number): { startDate: Date; endDate: Date } {
+    const firstDayOfYear = new Date(year, 0, 1);
+    const daysOffset = (weekNumber - 1) * 7;
+    const firstWeekStart = new Date(firstDayOfYear.getTime() + daysOffset * 24 * 60 * 60 * 1000);
+    const dayOfWeek = firstWeekStart.getDay();
     const startDate = new Date(firstWeekStart);
-    startDate.setDate(startDate.getDate() - (dayOfWeek - 1)); // Move to Monday
-
+    startDate.setDate(startDate.getDate() - (dayOfWeek - 1));
     const endDate = new Date(startDate);
-    endDate.setDate(startDate.getDate() + 6); // Move to Sunday
-
+    endDate.setDate(startDate.getDate() + 6);
     return { startDate, endDate };
   }
 
@@ -179,21 +133,11 @@ export class SmartAnalysisComponent implements OnInit, OnDestroy {
       this.filterModel4.startDate = date;
       this.filterModel4.endDate = date;
     }
-    this.apiService
-      .postWithHeader(
-        'smartanalysis/getentrieschart/entrydata',
-        this.filterModel4
-      )
-      .subscribe((res) => {
+    this.apiService.postWithHeader('smartanalysis/getentrieschart/entrydata', this.filterModel4).subscribe((res) => {
         const { Header, DataList } = this.masterDataService.getMasterData(res);
         this.tableHeaderSubject.next(Header);
         this.masterDataListSubject.next(DataList);
       });
-    // this.apiService.postWithHeader('masterdata/dateRange', filterDate).subscribe(res => {
-    //   const { Header, DataList } = this.masterDataService.getMasterData(res);
-    //   this.tableHeaderSubject.next(Header);
-    //   this.masterDataListSubject.next(DataList);
-    // })
   }
   downloadSelectedGraphs(): void {
     Object.keys(this.selectedCharts).forEach((chartId) => {
@@ -202,6 +146,7 @@ export class SmartAnalysisComponent implements OnInit, OnDestroy {
       }
     });
   }
+
   download(chartId: string): void {
     let index = 0;
     switch (chartId) {
@@ -281,91 +226,49 @@ export class SmartAnalysisComponent implements OnInit, OnDestroy {
     this.getvariation2();
   }
   getvariation() {
-    if (
-      this.filterModel2.endDate != null &&
-      this.filterModel2.endDate != undefined
-    ) {
-      this.apiService
-        .postWithHeader('smartanalysis/variation', this.filterModel2)
-        .subscribe((res) => {
+    if (this.filterModel2.endDate != null &&this.filterModel2.endDate != undefined) {
+      this.apiService.postWithHeader('smartanalysis/variation', this.filterModel2).subscribe((res) => {
           if (res) {
-            // Set the data dynamically
             this.variation = {
               labels: res.name,
               datasets: [
                 {
                   data: res.count,
-                  label: 'Inputs', // Dataset label // Semi-transparent purple
-                  borderColor: 'rgba(17, 114, 179, 0.8)', // Solid purple
+                  label: 'Inputs',
+                  borderColor: 'rgba(17, 114, 179, 0.8)',
                   borderWidth: 1.2,
-                  fill: true,
+                  fill: false,
                   tension: 0.4,
                 },
               ],
             };
-
-            // Update the chart title dynamically
-            // this.lineChartOptions.plugins.title.display = true;
-            // this.lineChartOptions.plugins.title.text = `Abcdedfasdkfjkflsajflk`;
           }
         });
     }
   }
   getvariation2() {
-    if (
-      this.filterModel3.endDate != null &&
-      this.filterModel3.endDate != undefined
-    ) {
-      this.apiService
-        .postWithHeader('smartanalysis/variation', this.filterModel3)
-        .subscribe((res) => {
+    if (this.filterModel3.endDate != null &&this.filterModel3.endDate != undefined) {
+      this.apiService.postWithHeader('smartanalysis/variation', this.filterModel3).subscribe((res) => {
           if (res) {
-            // Set the data dynamically
             this.variation2 = {
               labels: res.name,
               datasets: [
                 {
                   data: res.count,
-                  label: 'Inputs', // Dataset label // Semi-transparent purple
-                  borderColor: 'rgba(173, 93, 13, 0.8)', // Solid purple
+                  label: 'Inputs',
+                  borderColor: 'rgba(173, 93, 13, 0.8)',
                   borderWidth: 1.2,
-                  fill: true,
+                  fill: false,
                   tension: 0.4,
                 },
               ],
             };
-
-            // Update the chart title dynamically
-            // this.lineChartOptions.plugins.title.display = true;
-            // this.lineChartOptions.plugins.title.text = `Abcdedfasdkfjkflsajflk`;
           }
         });
     }
   }
   ngOnInit(): void {
-    // this.getAllData();
-    // this.getFrmnDataAll();
-    // this.getFrmnDataAll30();
-    // this.getAspect30();
-    // this.getAspect30LY();
-    // this.getIndicators30Day();
-    // this.getIndicators30DaysLY();
-    // this.getFrmnAll();
-    // this.getFrmnAll2();
-    // this.getMeanWeek();
-    // this.getMeanMonth();
-    // this.getWeeklyEntries();
-    // this.getMEntries();
-    // this.getDEntries();
-    // this.onChange1('');
-    // this.getNoOfInputChart();
-    // this.getNoOfInputChartLY();
-    // this.getAspectChart();
-    // this.getAspectChartLY();
-    // this.getIndicatorChart();
-    // this.getIndicatorChartLY();
-    // this.getVariationChart1();
-    // this.getVariationChart2();
+
   }
 
   public lineChartOptions: ChartOptions<'line'> = {
@@ -385,8 +288,8 @@ export class SmartAnalysisComponent implements OnInit, OnDestroy {
         },
       },
       title: {
-        display: false, // Initially hidden; will be set dynamically
-        text: '', // Placeholder text
+        display: false,
+        text: '',
         font: {
           size: 16,
         },
@@ -423,36 +326,49 @@ export class SmartAnalysisComponent implements OnInit, OnDestroy {
         if (res) {
           this.meanChartList = res;
           console.log(this.meanChartList);
+
+          // Define datasets
           this.entriesChart = {
             labels: res.name,
             datasets: [
               {
                 data: res.count,
-                label: 'Inputs',
-                // backgroundColor: 'rgba(112, 128, 144, 0.7)',
+                label: 'Inputs Count',
                 borderColor: 'rgba(70, 79, 88, 0.7)',
                 borderWidth: 1.2,
-                fill: true,
+                fill: false,
                 tension: 0.4,
+                pointBackgroundColor: res.count.map((value, index) =>
+               {
+                if(value >= 400){
+                  return '#FE4F2D'
+                } else if(value >= 200 && value <= 400){
+                  return '#FFA725'
+                }else if(value >= 100 && value <= 200){
+                  return '#F6DC43'
+                }else{
+                   return '#A0C878'
+                }
+               }
+                ),
               },
               {
                 data: res.meanValue,
-                label: 'Inputs',
-                backgroundColor: 'rgba(20, 199, 65, 0.5)',
+                label: 'Mean Value',
                 borderColor: 'rgba(143, 92, 35, 0.5)',
                 borderWidth: 1.2,
-                fill: true,
+                fill: false,
                 tension: 0.4,
+                pointBackgroundColor: '#205781', // Static color for mean value dots
               },
             ],
           };
         }
       });
   }
+
   get30DaysInput() {
-    this.apiService
-      .postWithHeader('smartanalysis/30days', this.filterModel)
-      .subscribe((res) => {
+    this.apiService.postWithHeader('smartanalysis/30days', this.filterModel).subscribe((res) => {
         if (res) {
           this.input30Days = {
             labels: res.name,
@@ -460,10 +376,9 @@ export class SmartAnalysisComponent implements OnInit, OnDestroy {
               {
                 data: res.count,
                 label: 'Inputs',
-                // backgroundColor: 'rgba(151, 126, 201, 0.5)',
-                borderColor: 'rgba(150, 68, 150, 0.5)',
+                borderColor: '#F7CFD8',
                 borderWidth: 1.2,
-                fill: true,
+                fill: false,
                 tension: 0.4,
               },
             ],
@@ -471,45 +386,39 @@ export class SmartAnalysisComponent implements OnInit, OnDestroy {
         }
       });
   }
+
   getlastYearInput() {
-    this.apiService
-      .postWithHeader('smartanalysis/30days/lastyear', this.filterModel)
-      .subscribe((res) => {
+    this.apiService.postWithHeader('smartanalysis/30days/lastyear', this.filterModel).subscribe((res) => {
         if (res) {
           this.inputLastYear = {
             labels: res.name,
             datasets: [
               {
                 data: res.count,
-                label: res.name, // Semi-transparent blue
-                borderColor: 'rgba(150, 68, 150, 0.5)', // Solid blue
+                label: res.name,
+                borderColor: '#D17D98',
                 borderWidth: 1.2,
-                fill: true, // Fill area under the line
-                tension: 0.4, // Adds smoothness to the line
+                fill: false,
+                tension: 0.4,
               },
             ],
           };
-          // Update the chart title dynamically
-          //  this.lineChartOptions.plugins.title.display = true;
-          //  this.lineChartOptions.plugins.title.text = `ankit`;
         }
       });
   }
   get30DaysAspect() {
-    this.apiService
-      .postWithHeader('smartanalysis/aspect/30days', this.filterModel)
-      .subscribe((res) => {
+    this.apiService.postWithHeader('smartanalysis/aspect/30days', this.filterModel).subscribe((res) => {
         if (res) {
           this.aspect30Days = {
             labels: res.name,
             datasets: [
               {
                 data: res.count,
-                label: res.name, // Semi-transparent blue
-                borderColor: 'rgba(150, 68, 150, 0.5)', // Solid blue
+                label: res.name,
+                borderColor: '#A3D1C6',
                 borderWidth: 1.2,
-                fill: true, // Fill area under the line
-                tension: 0.4, // Adds smoothness to the line
+                fill: false,
+                tension: 0.4,
               },
             ],
           };
@@ -517,20 +426,18 @@ export class SmartAnalysisComponent implements OnInit, OnDestroy {
       });
   }
   getlastYearAspect() {
-    this.apiService
-      .postWithHeader('smartanalysis/aspect/30days/lastyear', this.filterModel)
-      .subscribe((res) => {
+    this.apiService.postWithHeader('smartanalysis/aspect/30days/lastyear', this.filterModel).subscribe((res) => {
         if (res) {
           this.aspectLastYear = {
             labels: res.name,
             datasets: [
               {
                 data: res.count,
-                label: res.name, // Semi-transparent blue
-                borderColor: 'rgba(150, 68, 150, 0.5)', // Solid blue
+                label: res.name,
+                borderColor: '#3D8D7A',
                 borderWidth: 1.2,
-                fill: true, // Fill area under the line
-                tension: 0.4, // Adds smoothness to the line
+                fill: false,
+                tension: 0.4,
               },
             ],
           };
@@ -538,20 +445,18 @@ export class SmartAnalysisComponent implements OnInit, OnDestroy {
       });
   }
   get30DaysIndicator() {
-    this.apiService
-      .postWithHeader('smartanalysis/indicator/30days', this.filterModel)
-      .subscribe((res) => {
+    this.apiService.postWithHeader('smartanalysis/indicator/30days', this.filterModel).subscribe((res) => {
         if (res) {
           this.indicator30Days = {
             labels: res.name,
             datasets: [
               {
                 data: res.count,
-                label: res.name, // Semi-transparent blue
-                borderColor: 'rgba(150, 68, 150, 0.5)', // Solid blue
+                label: res.name,
+                borderColor: '#A1E3F9',
                 borderWidth: 1.2,
-                fill: true, // Fill area under the line
-                tension: 0.4, // Adds smoothness to the line
+                fill: false,
+                tension: 0.4,
               },
             ],
           };
@@ -559,23 +464,18 @@ export class SmartAnalysisComponent implements OnInit, OnDestroy {
       });
   }
   getlastYearIndicator() {
-    this.apiService
-      .postWithHeader(
-        'smartanalysis/indicator/30days/lastyear',
-        this.filterModel
-      )
-      .subscribe((res) => {
+    this.apiService.postWithHeader('smartanalysis/indicator/30days/lastyear', this.filterModel).subscribe((res) => {
         if (res) {
           this.indicatorLastYear = {
             labels: res.name,
             datasets: [
               {
                 data: res.count,
-                label: res.name, // Semi-transparent blue
-                borderColor: 'rgba(150, 68, 150, 0.5)', // Solid blue
+                label: res.name,
+                borderColor: '#578FCA',
                 borderWidth: 1.2,
-                fill: true, // Fill area under the line
-                tension: 0.4, // Adds smoothness to the line
+                fill: false,
+                tension: 0.4,
               },
             ],
           };
@@ -598,10 +498,7 @@ export class SmartAnalysisComponent implements OnInit, OnDestroy {
   }
   getIndicator(event) {
     if (event != undefined && event != null) {
-      this.onFilterChange1('aspect');
-      this.apiService
-        .postWithHeader('attribute/indicatorlist', event)
-        .subscribe((res) => {
+      this.onFilterChange1('aspect');this.apiService.postWithHeader('attribute/indicatorlist', event).subscribe((res) => {
           if (res) {
             this.indicatorList = res;
           }
@@ -611,9 +508,7 @@ export class SmartAnalysisComponent implements OnInit, OnDestroy {
   getIndicatorForVarition1(event) {
     if (event != undefined && event != null) {
       this.getvariation();
-      this.apiService
-        .postWithHeader('attribute/indicatorlist', event)
-        .subscribe((res) => {
+      this.apiService.postWithHeader('attribute/indicatorlist', event).subscribe((res) => {
           if (res) {
             this.indicatorList2 = res;
           }
@@ -647,16 +542,8 @@ export class SmartAnalysisComponent implements OnInit, OnDestroy {
   removeIndicator() {
     this.indicatorList = [];
   }
-  onFilterChange($event) {}
+
   onFilterChange1(filterKey: string): void {
-    // this.filters[filterKey] = event;
-    // this.getFrmnDataAll();
-    // this.getNoOfInputChart();
-    // this.getNoOfInputChartLY();
-    // this.getAspectChart();
-    // this.getAspectChartLY();
-    // this.getIndicatorChart();
-    // this.getIndicatorChartLY();
     switch (filterKey) {
       case 'sector':
         this.getAllData();
@@ -831,45 +718,6 @@ export class SmartAnalysisComponent implements OnInit, OnDestroy {
 
   //FOR CHARTSN AP
   private unsubscribe$ = new Subject<void>();
-
-  // public lineChartOptions: ChartOptions<'line'> = {
-  //   responsive: true,
-  //   maintainAspectRatio: false,
-  //   plugins: {
-  //     legend: {
-  //       display: false,
-  //       position: 'top',
-  //     },
-  //     tooltip: {
-  //       callbacks: {
-  //         label: function (tooltipItem) {
-  //           const dataValue = tooltipItem.raw;
-  //           return ` ${dataValue}`;
-  //         }
-  //       }
-  //     }
-  //   },
-  //   scales: {
-  //     x: {
-  //       title: {
-  //         display: true,
-  //         text: 'Dates',
-  //       },
-  //       ticks: {
-  //         autoSkip: false,
-  //         maxRotation: 60,
-  //         minRotation: 60,
-  //       },
-  //     },
-  //     y: {
-  //       title: {
-  //         display: true,
-  //         text: 'Values',
-  //       },
-  //       beginAtZero: true,
-  //     },
-  //   },
-  // };
 
   ngOnDestroy(): void {
     this.unsubscribe$.next();
@@ -2604,7 +2452,6 @@ export class SmartAnalysisComponent implements OnInit, OnDestroy {
 
     // Full URL with query parameters
     const fullUrl = queryParams ? `${baseUrl}?${queryParams}` : baseUrl;
-    console.log('Request URL:', fullUrl);
     this.isLoadingPie = true;
     this.apiService
       .getWithHeaders(fullUrl) // API 1 for Pie Chart
@@ -2619,10 +2466,10 @@ export class SmartAnalysisComponent implements OnInit, OnDestroy {
           }
           const updatedData = data.data;
           this.chartDataVariation1 = {
-            labels: data.labels || [], // Assuming the API returns an array of labels
+            labels: data.labels || [],
             datasets: [
               {
-                data: updatedData, // Assuming the API returns an array of values
+                data: updatedData,
                 backgroundColor: [
                   'rgba(255, 99, 132, 1)',
                   'rgba(54, 162, 235, 1)',

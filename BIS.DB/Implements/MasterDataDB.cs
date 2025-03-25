@@ -8,6 +8,7 @@ using BIS.Common.Entities;
 using BIS.DB.Interfaces;
 using static BIS.Common.Enum.Enum;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Data.SqlClient;
 
 namespace BIS.DB.Implements
 {
@@ -82,6 +83,16 @@ namespace BIS.DB.Implements
 		{
 			return _dbContext.MasterSources.Where(ms => ms.IsActive).ToList();
 		}
+		public bool AddSource(Source source)
+		{
+			var result = _dbContext.MasterSources.Add(source);
+			_dbContext.SaveChanges();
+			if (result != null)
+			{
+				return true;
+			}
+			return false;
+		}
 		public List<MasterLocation> GetLocation(bool isSourceLoc)
 		{
 			if (isSourceLoc)
@@ -92,6 +103,16 @@ namespace BIS.DB.Implements
 			{
 				return _dbContext.MasterLocations.Where(ms => ms.IsActive && ms.CategoryLoc == Common.Enum.Enum.CategoryLoc.TypeOfLoc).ToList();
 			}
+		}
+		public bool AddLocation(MasterLocation location)
+		{
+			var result = _dbContext.MasterLocations.Add(location);
+			_dbContext.SaveChanges();
+			if (result != null)
+			{
+				return true;
+			}
+			return false;
 		}
 		public async Task<long> UpdateStatus(int id, Status status)
 		{
@@ -116,24 +137,43 @@ namespace BIS.DB.Implements
 			var result = _dbContext.MasterDatas.Where(ms => ms.ID == id).FirstOrDefault();
 			return result.CreatedBy;
 		}
+		public bool Deactive(long id, string tableName)
+		{
+			string query = $"UPDATE {tableName} SET isActive = 0 WHERE Id = @id";
+			int rowsAffected = _dbContext.Database.ExecuteSqlRaw(query, new SqlParameter("@id", id));
 
-        public List<EnemyLocation> GetAllEnemyLocation()
+			return rowsAffected > 0;
+		}
+
+
+		public List<EnemyLocation> GetAllEnemyLocation()
 		{
 			return _dbContext.MasterEnLocName.Where(ms => ms.IsActive).ToList();
 		}
-        public long Update(MasterData masterData)
-        {
-            var data = _dbContext.MasterDatas.FirstOrDefault(ms => ms.ID == masterData.ID && ms.Status == Status.Created);
-			
-			if(data != null)
+		public bool AddEnemyLocation(EnemyLocation enemyLocation)
+		{
+			var result = _dbContext.MasterEnLocName.Add(enemyLocation);
+			_dbContext.SaveChanges();
+			if (result != null)
+			{
+				return true;
+			}
+			return false;
+		}
+
+		public long Update(MasterData masterData)
+		{
+			var data = _dbContext.MasterDatas.FirstOrDefault(ms => ms.ID == masterData.ID && ms.Status == Status.Created);
+
+			if (data != null)
 			{
 				_dbContext.MasterDatas.Update(masterData);
-                var id = _dbContext.SaveChanges();
-                return id;
-            }
+				var id = _dbContext.SaveChanges();
+				return id;
+			}
 			return 0;
-        }
-        public MasterData GetBy(long Id, long CorpsId)
+		}
+		public MasterData GetBy(long Id, long CorpsId)
 		{
 			return _dbContext.MasterDatas.Where(ms => ms.ID == Id && ms.CorpsId == CorpsId).FirstOrDefault();
 		}

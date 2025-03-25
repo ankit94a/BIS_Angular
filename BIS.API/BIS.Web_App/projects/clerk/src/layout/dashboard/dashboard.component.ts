@@ -225,31 +225,38 @@ export class DashboardComponent implements OnInit {
       }
     })
   }
-  getSector12MonthsData(){
-    this.apiService.postWithHeader('dashboard/sector/last12Months',this.filterModel).subscribe(res =>{
-      if(res){
-        this.prepareChartData(res)
+  getSector12MonthsData() {
+    this.apiService.postWithHeader('dashboard/sector/last12Months', this.filterModel).subscribe(res => {
+      if (res) {
+        this.prepareChartData(res);
       }
-    })
+    });
   }
 
-  prepareChartData(chartData: { name: string[], sectorData: { sector: string, count: number[] }[] }) {
-    this.barChartLabels = [...chartData.name];
-    const datasets = chartData.sectorData.map(sector => ({
-      label: sector.sector,
-      data: sector.count,
-      backgroundColor: this.getSectorColor(sector.sector)
+  prepareChartData(chartData: { name: any[], frmnData: { [key: string]: number[] } }) {
+    this.barChartLabels = chartData.name.map(label => label.toString()); // Convert dynamic labels to strings
+
+    const datasets = Object.keys(chartData.frmnData).map(sector => ({
+      label: sector.toString(), // Ensure dynamic key is converted to a string
+      data: chartData.frmnData[sector],
+      backgroundColor: this.getSectorColor(sector.toString()) // Ensure correct color assignment
     }));
-    this.barChartData = Object.assign({}, { labels: this.barChartLabels, datasets });
+
+    this.barChartData = {
+      labels: this.barChartLabels,
+      datasets
+    };
   }
+
   getSectorColor(sector: string): string {
-    if (this.sectorColorMap[sector]) {
-      return this.sectorColorMap[sector];
+    if (!this.sectorColorMap[sector]) {
+      // Assign colors cyclically from the bgColor array
+      const colorIndex = Object.keys(this.sectorColorMap).length % this.bgColor.length;
+      this.sectorColorMap[sector] = this.bgColor[colorIndex];
     }
-    const newColor = `#${Math.floor(Math.random() * 16777215).toString(16)}`;
-    this.sectorColorMap[sector] = newColor;
-    return newColor;
+    return this.sectorColorMap[sector];
   }
+
 
   // Getting Frmn Chart Data
   getFrmInputData(){
@@ -288,24 +295,47 @@ export class DashboardComponent implements OnInit {
       }
     })
   }
-  getFrm12MonthsData(){
-    this.apiService.postWithHeader('dashboard/fmn/last12Months',this.filterModel).subscribe(res =>{
-      if(res){
+  getFrm12MonthsData() {
+    this.apiService.postWithHeader('dashboard/fmn/last12Months', this.filterModel).subscribe(res => {
+      if (res) {
         this.frm12MonthsChartData = {
           labels: res.name,
-          datasets: [
-            { data: res.count, label: res.name,
-              backgroundColor: 'rgba(151, 126, 201, 0.5)', // Semi-transparent blue
-              borderColor: 'rgba(150, 68, 150, 0.5)', // Solid blue
-              borderWidth: 1.2,
-              fill: true, // Fill area under the line
-              tension: 0.4, // Adds smoothness to the line
-            },
-          ],
+          datasets: Object.keys(res.frmnData).map((frmn,index) => {
+            const lineColor = this.bgColor[index % this.bgColor.length];
+            return {
+              label: frmn,
+              data: res.frmnData[frmn],
+              borderColor: lineColor,
+              borderWidth: 1.9,
+              fill: false,
+              tension: 0.4
+            };
+          })
         };
       }
-    })
+    });
   }
+
+  // getFrm12MonthsData(){
+  //   this.apiService.postWithHeader('dashboard/fmn/last12Months',this.filterModel).subscribe(res =>{
+  //     if(res){
+  //       debugger;
+  //       console.log(res)
+  //       this.frm12MonthsChartData = {
+  //         labels: res.name,
+  //         datasets: [
+  //           {
+  //             data: res.count, label: res.name,
+  //             borderColor: '#8AB2A6',
+  //             borderWidth: 1.9,
+  //             fill: false,
+  //             tension: 0.4,
+  //           },
+  //         ],
+  //       };
+  //     }
+  //   })
+  // }
   // Getting Aspect Chart Data
   getAspectAllData(){
     this.apiService.postWithHeader('dashboard/aspect',this.filterModel).subscribe(res =>{
@@ -314,8 +344,7 @@ export class DashboardComponent implements OnInit {
           labels: res.name,
           datasets: [
             { data: res.count, label: res.name
-              // ,backgroundColor:this.bgColor
-             },
+            },
           ],
         };
       }
@@ -328,7 +357,7 @@ export class DashboardComponent implements OnInit {
           labels: res.name,
           datasets: [
             { data: res.count, label: res.name
-              // ,backgroundColor:this.bgColor
+              ,backgroundColor:this.bgColor
 
             },
           ],
@@ -342,32 +371,34 @@ export class DashboardComponent implements OnInit {
         this.aspectTodayChartData = {
           labels: res.name,
           datasets: [
-            { data: res.count, label: res.name
-              // ,backgroundColor:this.bgColor
-            },
+            { data: res.count, label: res.name},
           ],
         };
       }
     })
   }
-  getAspect12MonthsData(){
-    this.apiService.postWithHeader('dashboard/aspect/last12Months',this.filterModel).subscribe(res =>{
-      if(res){
+  getAspect12MonthsData() {
+    this.apiService.postWithHeader('dashboard/aspect/last12Months', this.filterModel).subscribe(res => {
+      if (res) {
+        console.log(res)
+        const colors = ['#F38C79', '#8AB2A6', '#E27D60', '#85CDCA', '#C38D9E', '#41B3A3']; // Different colors for aspects
         this.aspect12MonthsChartData = {
-          labels: res.name,
-          datasets: [
-            { data: res.count, label: res.name,
-              backgroundColor: 'rgba(151, 126, 201, 0.5)', // Semi-transparent blue
-              borderColor: 'rgba(150, 68, 150, 0.5)', // Solid blue
-              borderWidth: 1.2,
-              fill: true, // Fill area under the line
-              tension: 0.4, // Adds smoothness to the line
-            },
-          ],
+          labels: res.name, // Month-Year labels
+          datasets: Object.keys(res.frmnData).map((aspect, index) => {
+            return {
+              label: aspect, // Aspect Name
+              data: res.frmnData[aspect], // Aspect-wise count
+              borderColor: this.bgColor[index % this.bgColor.length], // Assign different colors
+              borderWidth: 1.9,
+              fill: false,
+              tension: 0.4
+            };
+          })
         };
       }
-    })
+    });
   }
+
   // Getting Indicator Chart Data
   getIndicatorData(){
     this.apiService.postWithHeader('dashboard/indicator',this.indicatorFilter).subscribe(res =>{
@@ -417,6 +448,7 @@ export class DashboardComponent implements OnInit {
       }
     })
   }
+
   public  bgColor= [
     'rgba(54, 162, 235, 0.8)',   // Blue
     'rgba(255, 159, 64, 0.8)',   // Orange
@@ -437,7 +469,6 @@ export class DashboardComponent implements OnInit {
     'rgba(0, 128, 128, 0.8)',    // Teal
     'rgba(154, 205, 50, 0.8)',   // Yellow-Green
   ]
-
   public ChartOptions: ChartOptions = {
     responsive: true,
     plugins: {
@@ -465,14 +496,19 @@ export class DashboardComponent implements OnInit {
     maintainAspectRatio: false,
     plugins: {
       legend: {
-        display: false,
-        position: 'top',
+        display: true, // Enable legend
+        position: 'top', // Position at the top
+        align: 'center', // Center align
+        labels: {
+          usePointStyle: true, // Use point style to match dataset colors
+        }
       },
       tooltip: {
         callbacks: {
           label: function (tooltipItem) {
+            const datasetLabel = tooltipItem.dataset.label || '';
             const dataValue = tooltipItem.raw;
-            return ` ${dataValue}`;
+            return `${datasetLabel}: ${dataValue}`;
           }
         }
       }
@@ -498,8 +534,7 @@ export class DashboardComponent implements OnInit {
       },
     },
   };
-
-  barChartOptions: ChartOptions = {
+  public barChartOptions: ChartOptions = {
     responsive: true,
     plugins: {
       tooltip: {
@@ -513,136 +548,5 @@ export class DashboardComponent implements OnInit {
       }
     }
   };
-
-  onFilterChange(value) {
-    let item = [];
-    switch (value) {
-      case '4 Corps':
-        item = ['Zimthang', 'Lungro La', 'Bum La', 'Landa', 'Yangtse', 'Mago Chuna', 'Dominated Areas']
-        this.sectorList = [...this.sectorList, ...item];
-        break;
-      case '5 Mtn Div':
-        item = ['Zimthang', 'Lungro La', 'Bum La']
-        this.sectorList = [...this.sectorList, ...item];
-        break;
-      case '71 Mtn Div':
-        item = ['Landa', 'Yangtse', 'Mago Chuna', 'Dominated Areas'];
-        this.sectorList = [...this.sectorList, ...item];
-        break;
-      case '21 Mtn Div':
-        item = ['Zimthang', 'Lungro La', 'Bum La', 'Landa', 'Yangtse', 'Mago Chuna', 'Dominated Areas'];
-        this.sectorList = [...this.sectorList, ...item];
-        break;
-      case 'HQ 17 Inf Div':
-        item = ['Semi Held', 'Chola', 'NatuLa', 'DokaLa'];
-        this.sectorList = [...this.sectorList, ...item];
-        break;
-      case '27 Mtn Div':
-        item = ['MSS', 'PSS', 'NESS'];
-        this.sectorList = [...this.sectorList, ...item];
-        break;
-      case '3 Corps':
-        item = ['Dibang Valley', 'Dou-delai valley', 'Lohit Valley', 'Subansiri Valley', 'Siyom Valley', 'Siang Valley', 'Dibang Valley', 'Dou-delai valley', 'Lohit Valley', 'Subansiri Valley', 'Siyom Valley', 'Siang Valley'];
-        this.sectorList = [...this.sectorList, ...item];
-        break;
-      case '2 Mtn Div':
-        item = ['Dibang Valley', 'Dou-delai valley', 'Lohit Valley'];
-        this.sectorList = [...this.sectorList, ...item];
-        break;
-      case '56 Mtn Div':
-        item = ['Subansiri Valley', 'Siyom Valley', 'Siang Valley'];
-        this.sectorList = [...this.sectorList, ...item];
-        break;
-      case '57 Mtn Div':
-        item = ['Dibang Valley', 'Dou-delai valley', 'Lohit Valley', 'Subansiri Valley', 'Siyom Valley', 'Siang Valley'];
-        this.sectorList = [...this.sectorList, ...item];
-        break;
-      default:
-        item = ['MSS', 'PSS', 'Cho_La', 'Doka_La', 'NESS', 'Semi Held', 'NatuLa'];
-        this.sectorList = [...this.sectorList, ...item];
-        break;
-    }
-    if (!value) {
-      item = ['MSS', 'PSS', 'Cho_La', 'Doka_La', 'NESS', 'Semi Held', 'NatuLa'];
-      this.sectorList = [...this.sectorList, ...item];
-    }
-  }
-  // getTotalCount() {
-  //   this.apiService.getWithHeaders('Rpt/count/').subscribe(res => {
-  //     if (res) {
-  //       this.totalRecords = res.result;
-  //     }
-  //   })
-  // }
-  // getTodayCount() {
-  //   this.apiService.getWithHeaders('Rpt/count/today').subscribe(res => {
-  //     if (res) {
-  //       this.totalRecordsToday = res.count;
-  //     }
-  //   })
-  // }
-  // getWeekCount() {
-  //   this.apiService.getWithHeaders('Rpt/count/lastweek').subscribe(res => {
-  //     if (res) {
-  //       this.totalRecordsOneWeek = res.count;
-  //     }
-  //   })
-  // }
-
-  // charts = [
-  //   {
-  //     title: 'Chart 1',
-  //     data: [30, 70],
-  //     labels: ['Category A', 'Category B'],
-  //     values: [
-  //       { label: 'Category A', value: '30%' },
-  //       { label: 'Category B', value: '70%' }
-  //     ]
-  //   },
-  //   {
-  //     title: 'Chart 2',
-  //     data: [50, 50],
-  //     labels: ['Category C', 'Category D'],
-  //     values: [
-  //       { label: 'Category C', value: '50%' },
-  //       { label: 'Category D', value: '50%' }
-  //     ]
-  //   },
-  //   {
-  //     title: 'Chart 3',
-  //     data: [20, 80],
-  //     labels: ['Category E', 'Category F'],
-  //     values: [
-  //       { label: 'Category E', value: '20%' },
-  //       { label: 'Category F', value: '80%' }
-  //     ]
-  //   }
-  // ];
-
-  chartData: ChartData<'pie', number[], string | string[]> = {
-    labels: ['Label 1', 'Label 2'],
-    datasets: [
-      {
-        data: [30, 70],
-      },
-    ],
-  };
-  chartDataLineFrmn12Months: ChartData<'line', number[], string | string[]> = {
-    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-    datasets: [
-      {
-        label: 'Fmn',
-        data: [30, 45, 28, 50, 60, 33, 45, 40, 55, 48, 62, 70],
-        backgroundColor: 'rgba(54, 162, 235, 0.5)', // Semi-transparent blue
-        borderColor: 'rgba(54, 162, 235, 1)', // Solid blue
-        borderWidth: 1.2,
-        fill: true, // Fill area under the line
-        tension: 0.4, // Adds smoothness to the line
-      },
-    ],
-  };
-
-  // Line chart options
-
 
 }

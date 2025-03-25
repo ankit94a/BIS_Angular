@@ -25,12 +25,12 @@ export class BISMatDialogService {
 }
 
 
-  open(compononetName, dataObject): Promise<any> {
+  open(compononetName, dataObject,width='80vw'): Promise<any> {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = false;
     dialogConfig.autoFocus = true;
     dialogConfig.data = dataObject;
-    dialogConfig.width= '80vw';
+    dialogConfig.width= width;
     dialogConfig. maxWidth='80vw';
     const dialogRef = this.dialog.open(compononetName, dialogConfig);
     return dialogRef.afterClosed().toPromise();

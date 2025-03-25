@@ -6,11 +6,11 @@
     <div class="row">
       <div class="col-sm-3">
         <ng-select [(ngModel)]="filterModel.frmn" appendTo="ng-select" [items]="frmnList" [multiple]="true"
-          bindLabel="name"  [closeOnSelect]="true" (change)="getAll()" placeholder="Fmn" [searchable]="true"
+          bindLabel="name" [closeOnSelect]="true" (change)="getAll()" placeholder="Fmn" [searchable]="true"
           (keydown.enter)="getAll()">
           <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
             <div class="ng-value" *ngFor="let item of items">
-             <span class="ng-value-label">{{item.name}}</span>
+              <span class="ng-value-label">{{item.name}}</span>
             </div>
           </ng-template>
         </ng-select>
@@ -70,11 +70,6 @@
         <div class="chart-container">
           <canvas baseChart [data]="input30Days" [options]="lineChartOptions" [type]="'line'"></canvas>
         </div>
-        <!-- <div class="card-footer">
-                    <ul>
-                        <li> 1 : 10</li>
-                    </ul>
-                </div> -->
       </mat-card>
 
       <mat-card class="card card-large">
@@ -88,11 +83,6 @@
         <div class="chart-container">
           <canvas baseChart [data]="inputLastYear" [options]="lineChartOptions" [type]="'line'"></canvas>
         </div>
-        <!-- <div class="card-footer">
-                    <ul>
-                        <li>val : val2</li>
-                    </ul>
-                </div> -->
       </mat-card>
     </div>
     <br>
@@ -108,13 +98,7 @@
 
         <div class="chart-container">
           <canvas baseChart [data]="aspect30Days" [options]="lineChartOptions" [type]="'line'"></canvas>
-          <!-- <canvas #myChartAspect30></canvas> -->
         </div>
-        <!-- <div class="card-footer">
-                    <ul>
-                        <li> 1 : 10</li>
-                    </ul>
-                </div> -->
       </mat-card>
 
       <mat-card class="card card-large">
@@ -128,13 +112,7 @@
 
         <div class="chart-container">
           <canvas baseChart [data]="aspectLastYear" [options]="lineChartOptions" [type]="'line'"></canvas>
-          <!-- <canvas #myChartAspect30LY></canvas> -->
         </div>
-        <!-- <div class="card-footer">
-                    <ul>
-                        <li>val : val2</li>
-                    </ul>
-                </div> -->
       </mat-card>
     </div>
     <br>
@@ -150,13 +128,7 @@
 
         <div class="chart-container">
           <canvas baseChart [data]="indicator30Days" [options]="lineChartOptions" [type]="'line'"></canvas>
-          <!-- <canvas baseChart #myChartIndicators30Days></canvas> -->
         </div>
-        <!-- <div class="card-footer">
-                    <ul>
-                        <li> 1 : 10</li>
-                    </ul>
-                </div> -->
       </mat-card>
 
       <mat-card class="card card-large">
@@ -170,88 +142,67 @@
 
         <div class="chart-container">
           <canvas baseChart [data]="indicatorLastYear" [options]="lineChartOptions" [type]="'line'"></canvas>
-          <!-- <canvas baseChart #myChartIndicators30DaysLY></canvas> -->
         </div>
-        <!-- <div class="card-footer">
-                    <ul>
-                        <li>val : val2</li>
-                    </ul>
-                </div> -->
       </mat-card>
     </div>
-<br>
-    <!-- Second filter line -->
+    <br>
+
+    <!-- Button for merging charts in a single row or expanding into two rows -->
+     <div class="row">
+      <div class="col-md-10"></div>
+      <div class="col-md-2">
+        <button type="button" class="gradient-button" style="margin-left: 26%;" (click)="isExpand = !isExpand">
+          {{ isExpand ? 'Merge Variation Charts' : 'Expand Variation Charts' }}
+        </button>
+      </div>
+     </div>
+
+
+<!-- Chart Filter & Charts Section -->
+<div class="row">
+  <!-- First Chart Filter + Chart -->
+  <div [ngClass]="{'col-12': isExpand, 'col-sm-6': !isExpand}">
+    <!-- First Filter Row -->
     <div class="row">
-      <div class="col-sm-3">
-          <ng-select [(ngModel)]="filterModel2.frmn" appendTo="ng-select" [items]="frmnList" [multiple]="true" bindLabel="name"
-               (change)="getvariation()"  placeholder="Fmn" [searchable]="true"
-              (keydown.enter)="getvariation()">
-              <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-                  <div class="ng-value" *ngFor="let item of items">
-                      <span class="ng-value-label">{{item.name}}</span>
-                  </div>
-              </ng-template>
-          </ng-select>
-      </div>
-      <div class="col-sm-3">
-          <ng-select [(ngModel)]="filterModel2.sector" appendTo="ng-select" [items]="sectorList" [multiple]="true" bindLabel="name"
-          (change)="getvariation()" bindValue="name" placeholder="Sector" [searchable]="true"
+      <div class="col-sm-2">
+        <ng-select [(ngModel)]="filterModel2.frmn" appendTo="ng-select" [items]="frmnList" [multiple]="true"
+          bindLabel="name" (change)="getvariation()" placeholder="Fmn" [searchable]="true"
           (keydown.enter)="getvariation()">
-              <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-                  <div class="ng-value" *ngFor="let item of items">
-                      <span class="ng-value-label">{{item.name}}</span>
-                  </div>
-              </ng-template>
-          </ng-select>
+        </ng-select>
+      </div>
+      <div class="col-sm-2">
+        <ng-select [(ngModel)]="filterModel2.sector" appendTo="ng-select" [items]="sectorList" [multiple]="true"
+          bindLabel="name" (change)="getvariation()" bindValue="name" placeholder="Sector" [searchable]="true"
+          (keydown.enter)="getvariation()">
+        </ng-select>
+      </div>
+      <div class="col-sm-2">
+        <ng-select [(ngModel)]="filterModel2.aspects" appendTo="ng-select" [items]="aspectList" [multiple]="true"
+          bindLabel="name" (change)="getIndicatorForVarition1($event)" bindValue="name" placeholder="Aspect"
+          [searchable]="true" (keydown.enter)="getIndicatorForVarition1($event)">
+        </ng-select>
       </div>
       <div class="col-sm-3">
-          <ng-select [(ngModel)]="filterModel2.aspects" appendTo="ng-select" [items]="aspectList" [multiple]="true" bindLabel="name"
-          (change)="getIndicatorForVarition1($event)"  bindValue="name" placeholder="Aspect" [searchable]="true"
-          (keydown.enter)="getIndicatorForVarition1($event)">
-              <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-                  <div class="ng-value" *ngFor="let item of items">
-                      <span class="ng-value-label">{{item.name}}</span>
-                  </div>
-              </ng-template>
-          </ng-select>
+        <ng-select [(ngModel)]="filterModel2.indicator" appendTo="ng-select" [items]="indicatorList2" [multiple]="true"
+          bindLabel="name" (change)="getvariation()" bindValue="name" placeholder="Indicators" [searchable]="true"
+          (keydown.enter)="getvariation()">
+        </ng-select>
       </div>
       <div class="col-sm-3">
-          <ng-select [(ngModel)]="filterModel2.indicator" appendTo="ng-select" [items]="indicatorList2" [multiple]="true" bindLabel="name"
-          (change)="getvariation()"  bindValue="name" placeholder="Indicators" [searchable]="true"
-          (keydown.enter)="getvariation()" >
-              <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-                  <div class="ng-value" *ngFor="let item of items">
-                      <span class="ng-value-label">{{item.name}}</span>
-                  </div>
-              </ng-template>
-          </ng-select>
+        <mat-form-field>
+          <mat-label>Enter a date range</mat-label>
+          <mat-date-range-input [rangePicker]="picker1">
+            <input matStartDate placeholder="Start date" [(ngModel)]="filterModel2.startDate">
+            <input matEndDate placeholder="End date" (dateChange)="getvariation()" [(ngModel)]="filterModel2.endDate">
+          </mat-date-range-input>
+          <mat-datepicker-toggle matIconSuffix [for]="picker1"></mat-datepicker-toggle>
+          <mat-date-range-picker #picker1></mat-date-range-picker>
+        </mat-form-field>
       </div>
-      <!-- <div class="col-sm-3">
-          <mat-form-field>
-              <mat-label>Enter a date range</mat-label>
-              <mat-date-range-input [rangePicker]="picker1">
-                <input matStartDate placeholder="Start date">
-                <input matEndDate placeholder="End date">
-              </mat-date-range-input>
-              <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
-              <mat-datepicker-toggle matIconSuffix [for]="picker1"></mat-datepicker-toggle>
-              <mat-date-range-picker #picker1></mat-date-range-picker>
-            </mat-form-field>
-      </div> -->
-      <div class="col-sm-3">
-          <mat-form-field>
-              <mat-label>Enter a date range</mat-label>
-              <mat-date-range-input [rangePicker]="picker1"  >
-                  <input matStartDate placeholder="Start date" [(ngModel)]="filterModel2.startDate">
-                  <input matEndDate placeholder="End date" (dateChange)="getvariation()" [(ngModel)]="filterModel2.endDate">
-              </mat-date-range-input>
-              <mat-datepicker-toggle matIconSuffix [for]="picker1"></mat-datepicker-toggle>
-              <mat-date-range-picker #picker1></mat-date-range-picker>
-          </mat-form-field>
-      </div>
-  </div>
-  <!-- Chart For Second Filter -->
-  <div class="card-container">
+    </div>
+
+    <!-- First Chart -->
+    <div class="card-container">
       <mat-card class="card card-extralarge">
         <section class="card-title">
           <mat-checkbox [(ngModel)]="selectedCharts['chart6']"></mat-checkbox>
@@ -260,79 +211,56 @@
             <mat-icon class="icon-display" matTooltip="download">arrow_downward</mat-icon>
           </button>
         </section>
-
-          <div class="chart-container">
-              <canvas baseChart [data]="variation" [options]="chartOptions" [type]="'line'"></canvas>
-               <!-- <canvas baseChart #myChartFrmn></canvas> -->
-          </div>
-          <!-- <div class="card-footer">
-              <ul>
-                  <li> 1 : 10</li>
-              </ul>
-          </div> -->
+        <div class="chart-container">
+          <canvas baseChart [data]="variation" [options]="chartOptions" [type]="'line'"></canvas>
+        </div>
       </mat-card>
+    </div>
   </div>
-<br>
-    <!-- Third filter line -->
+
+  <!-- Second Chart Filter + Chart -->
+  <div [ngClass]="{'col-12': isExpand, 'col-sm-6': !isExpand}">
+    <!-- Second Filter Row -->
     <div class="row">
-      <div class="col-sm-3">
-          <ng-select [(ngModel)]="filterModel3.frmn" appendTo="ng-select" [items]="frmnList" [multiple]="true" bindLabel="name"
-          (change)="getvariation2()" placeholder="Fmn" [searchable]="true"
-              (keydown.enter)="getvariation2()">
-              <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-                  <div class="ng-value" *ngFor="let item of items">
-                      <span class="ng-value-label">{{item.name}}</span>
-                  </div>
-              </ng-template>
-          </ng-select>
-      </div>
-      <div class="col-sm-3">
-          <ng-select [(ngModel)]="filterModel3.sector" appendTo="ng-select" [items]="sectorList" [multiple]="true" bindLabel="name"
-          (change)="getvariation2()"  bindValue="name" placeholder="Sector" [searchable]="true"
+      <div class="col-sm-2">
+        <ng-select [(ngModel)]="filterModel3.frmn" appendTo="ng-select" [items]="frmnList" [multiple]="true"
+          bindLabel="name" (change)="getvariation2()" placeholder="Fmn" [searchable]="true"
           (keydown.enter)="getvariation2()">
-              <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-                  <div class="ng-value" *ngFor="let item of items">
-                      <span class="ng-value-label">{{item.name}}</span>
-                  </div>
-              </ng-template>
-          </ng-select>
+        </ng-select>
       </div>
-      <div class="col-sm-3">
-          <ng-select [(ngModel)]="filterModel3.aspects" appendTo="ng-select" [items]="aspectList" [multiple]="true" bindLabel="name"
-          (change)="getIndicatorForVarition2($event)"bindValue="name" placeholder="Aspect" [searchable]="true"
-          (keydown.enter)="getIndicatorForVarition2($event)">
-              <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-                  <div class="ng-value" *ngFor="let item of items">
-                      <span class="ng-value-label">{{item.name}}</span>
-                  </div>
-              </ng-template>
-          </ng-select>
-      </div>
-      <div class="col-sm-3">
-          <ng-select [(ngModel)]="filterModel3.indicator" appendTo="ng-select" [items]="indicatorList3" [multiple]="true" bindLabel="name"
-          (change)="getvariation2()"  bindValue="name" placeholder="Indicators" [searchable]="true"
+      <div class="col-sm-2">
+        <ng-select [(ngModel)]="filterModel3.sector" appendTo="ng-select" [items]="sectorList" [multiple]="true"
+          bindLabel="name" (change)="getvariation2()" bindValue="name" placeholder="Sector" [searchable]="true"
           (keydown.enter)="getvariation2()">
-              <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-                  <div class="ng-value" *ngFor="let item of items">
-                      <span class="ng-value-label">{{item.name}}</span>
-                  </div>
-              </ng-template>
-          </ng-select>
+        </ng-select>
+      </div>
+      <div class="col-sm-2">
+        <ng-select [(ngModel)]="filterModel3.aspects" appendTo="ng-select" [items]="aspectList" [multiple]="true"
+          bindLabel="name" (change)="getIndicatorForVarition2($event)" bindValue="name" placeholder="Aspect"
+          [searchable]="true" (keydown.enter)="getIndicatorForVarition2($event)">
+        </ng-select>
       </div>
       <div class="col-sm-3">
-          <mat-form-field>
-              <mat-label>Enter a date range</mat-label>
-              <mat-date-range-input [rangePicker]="picker2"  >
-                  <input matStartDate placeholder="Start date" [(ngModel)]="filterModel3.startDate">
-                  <input matEndDate placeholder="End date" (dateChange)="getvariation2()" [(ngModel)]="filterModel3.endDate">
-              </mat-date-range-input>
-              <mat-datepicker-toggle matIconSuffix [for]="picker2"></mat-datepicker-toggle>
-              <mat-date-range-picker #picker2></mat-date-range-picker>
-          </mat-form-field>
+        <ng-select [(ngModel)]="filterModel3.indicator" appendTo="ng-select" [items]="indicatorList3" [multiple]="true"
+          bindLabel="name" (change)="getvariation2()" bindValue="name" placeholder="Indicators" [searchable]="true"
+          (keydown.enter)="getvariation2()">
+        </ng-select>
       </div>
-  </div>
-  <!-- Chart For Third Filter -->
-  <div class="card-container">
+      <div class="col-sm-3">
+        <mat-form-field>
+          <mat-label>Enter a date range</mat-label>
+          <mat-date-range-input [rangePicker]="picker2">
+            <input matStartDate placeholder="Start date" [(ngModel)]="filterModel3.startDate">
+            <input matEndDate placeholder="End date" (dateChange)="getvariation2()" [(ngModel)]="filterModel3.endDate">
+          </mat-date-range-input>
+          <mat-datepicker-toggle matIconSuffix [for]="picker2"></mat-datepicker-toggle>
+          <mat-date-range-picker #picker2></mat-date-range-picker>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <!-- Second Chart -->
+    <div class="card-container">
       <mat-card class="card card-extralarge">
         <section class="card-title">
           <mat-checkbox [(ngModel)]="selectedCharts['chart7']"></mat-checkbox>
@@ -341,24 +269,22 @@
             <mat-icon class="icon-display" matTooltip="download">arrow_downward</mat-icon>
           </button>
         </section>
-          <div class="chart-container">
-              <canvas baseChart [data]="variation2" [options]="chartOptions" [type]="'line'"></canvas>
-               <!-- <canvas baseChart #myChartFrmn2></canvas> -->
-          </div>
-          <!-- <div class="card-footer">
-              <ul>
-                  <li> 1 : 10</li>
-              </ul>
-          </div> -->
+        <div class="chart-container">
+          <canvas baseChart [data]="variation2" [options]="chartOptions" [type]="'line'"></canvas>
+        </div>
       </mat-card>
+    </div>
   </div>
-  <br>
-    <!-- Fourth Filter For Multiple Daily-Monthly-Weekly Chart -->
+</div>
+
+
+
+    <br>
     <div class="row">
       <div class="col-sm-3">
         <ng-select [(ngModel)]="filterModel4.frmn" (change)="getEntries()" appendTo="ng-select" [items]="frmnList"
-          [multiple]="true" bindLabel="name" (change)="onFilterChange2('fmn', $event)"
-          placeholder="Fmn" [searchable]="true" (keydown.enter)="onFilterChange2('fmn', $event)">
+          [multiple]="true" bindLabel="name" (change)="onFilterChange2('fmn', $event)" placeholder="Fmn"
+          [searchable]="true" (keydown.enter)="onFilterChange2('fmn', $event)">
           <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
             <div class="ng-value" *ngFor="let item of items">
               <span class="ng-value-label">{{item.name}}</span>
@@ -411,14 +337,10 @@
         </mat-form-field>
       </div>
     </div>
+
     <!-- Chart -->
     <div class="card-container">
       <mat-card class="card card-extralarge">
-        <!-- <h3 class="card-title">Entries</h3> -->
-        <!-- <div class="chart-container"> -->
-        <!-- <canvas baseChart [data]="chartDataLine3" [options]="chartOptions" [type]="'line'"></canvas> -->
-        <!-- <canvas baseChart #myChartWeeklyEntry ></canvas>
-                </div> -->
         <section class="card-title">
           <mat-checkbox [(ngModel)]="selectedCharts['chart8']"></mat-checkbox>
           <h3 class="card-title">Entries Chart</h3>
@@ -428,93 +350,15 @@
         </section>
         <div class="chart-container">
           <canvas baseChart [data]="entriesChart" [options]="lineChartOptions" [type]="'line'"></canvas>
-          <!-- @if(selected11 == 'Weekly' ){
-                    <table class="mat-table" style="width: 100%;">
-                      <tr style="max-width: fit-content;">
-                        <td style="width: 25%;">
-                          <mat-card>
-                            <div style="text-align:center;">
-                              <mat-card-title>Entries Weekly</mat-card-title>
-                            </div>
-                            <mat-card-content>
-                              <input type="checkbox" style="position: absolute; top: 10px; left: 10px; z-index: 1;" />
-                              <canvas #myChartWeeklyEntry width="100" height="200"></canvas>
-                            </mat-card-content>
-                          </mat-card>
-                        </td>
-                      </tr>
-                    </table>
-                    }
 
-                    @if(selected11 == 'Monthly' ){
-                    <table class="mat-table" style="width: 100%;">
-                      <tr style="max-width: fit-content;">
-                        <td style="width: 25%;">
-                          <mat-card>
-                            <div style="text-align:center;">
-                              <mat-card-title>Entries Monthly</mat-card-title>
-                            </div>
-                            <mat-card-content>
-                              <input type="checkbox" style="position: absolute; top: 10px; left: 10px; z-index: 1;" />
-                              <canvas #myChartMEntry width="100" height="200"></canvas>
-                            </mat-card-content>
-                          </mat-card>
-                        </td>
-
-
-                      </tr>
-                    </table>
-                    }
-
-                    @if(selected11 == 'Daily' ){
-                    <table class="mat-table" style="width: 100%;">
-                      <tr style="max-width: fit-content;">
-                        <td style="width: 25%;">
-                          <mat-card>
-                            <div style="text-align:center;">
-                              <mat-card-title>Entries Daily</mat-card-title>
-                            </div>
-                            <mat-card-content>
-                              <input type="checkbox" style="position: absolute; top: 10px; left: 10px; z-index: 1;"/>
-                              <canvas #myChartDEntry width="100" height="200"></canvas>
-                            </mat-card-content>
-                          </mat-card>
-                        </td>
-                      </tr>
-                    </table>
-                    } -->
         </div>
       </mat-card>
 
     </div>
     <br>
-    <!-- <table id="data-table">
-      <thead>
-        <tr>
-          <th>Date</th>
-          <th>Data</th>
-          <th id="mean-header">Mean</th>
-        </tr>
-      </thead>
-      <tbody id="data-table-body">
-      </tbody>
-    </table> -->
-    <!-- <table id="mean-table" class="right-table table2">
-      <thead>
-        <tr>
-          <th>Date</th>
-          <th>Mean</th>
-          <th>Fmn</th>
-          <th>Sector</th>
-          <th>Aspect</th>
-        </tr>
-      </thead>
-      <tbody id="mean-table-body">
-      </tbody>
-    </table> -->
 
     <div class="mean-table-container">
-      <div class="mean">
+      <div class="mean table-container">
         <table>
           <thead>
             <tr>
@@ -539,7 +383,6 @@
         <table>
           <thead>
             <tr>
-              <!-- <th>#</th> -->
               <ng-container *ngFor="let item of tableHeader$ | async">
                 <th
                   *ngIf="!['Id', 'CreatedBy', 'CreatedOn', 'IsActive', 'IsDeleted', 'CorpsId', 'DivisionId','ReportedDate','Status','Fmn','UserId'].includes(item)"
