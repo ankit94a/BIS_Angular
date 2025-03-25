@@ -68,11 +68,15 @@ export class MasterDataAddComponent implements OnInit {
     this.apiService.getWithHeaders('attribute/allaspect').subscribe(res =>{
       if(res){
         this.aspectList = res;
+        console.log('as',this.aspectList)
         if(this.masterData?.id > 0){
           this.getIndicator(this.masterData.aspect)
         }
       }
     })
+  }
+  close(){
+    this.dialogref.close(true)
   }
   getIndicator(event){
     let apsectId = this.aspectList.find(item => item.name == event)?.id;
@@ -1437,7 +1441,7 @@ debugger
       { name: 'biNpm', label: 'No_of_Pers_Mil', type: 'string' },
       { name: 'biNpo', label: 'No_of_Pers_Others', type: 'string' },
     ],
-    'Cease Fire Violations': [
+    'Violations': [
       { name: 'cfvLoc', label: 'Loc', type: 'string' },
       { name: 'cfvate', label: 'Date', type: 'date' },
       { name: 'cfvBetween', label: 'Between', type: 'string' },

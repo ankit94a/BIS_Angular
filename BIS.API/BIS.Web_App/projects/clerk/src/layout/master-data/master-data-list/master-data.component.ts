@@ -10,16 +10,16 @@ import { BisdefaultDatePipe } from 'projects/sharedlibrary/src/pipe/bisdefault-d
 import { Status } from 'projects/sharedlibrary/src/model/enum';
 import { Router } from '@angular/router';
 import { MasterDataService } from 'projects/sharedlibrary/src/services/master-data.service';
-import { ActionDropdownComponent } from 'projects/sharedlibrary/src/component/action-dropdown/action-dropdown.component';
 import { MasterDataFilterService } from 'projects/sharedlibrary/src/services/master-data-filter.service';
 import { DownloadService } from 'projects/sharedlibrary/src/services/download.service';
 // import * as  ExcelJS from 'exceljs';
 import { formatDate } from '@angular/common';
 import * as XLSX from 'xlsx';
 import { AuthService } from 'projects/sharedlibrary/src/services/auth.service';
+import { MatDialog } from '@angular/material/dialog';
 @Component({
   selector: 'app-master-data',
-  imports: [SharedLibraryModule,ZipperTableComponent,ActionDropdownComponent],
+  imports: [SharedLibraryModule,ZipperTableComponent],
   templateUrl: './master-data.component.html',
   styleUrl: './master-data.component.scss',
   providers:[BisdefaultDatePipe]

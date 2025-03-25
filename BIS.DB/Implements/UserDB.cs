@@ -41,14 +41,8 @@ namespace BIS.DB.Implements
 			{
 				var query = dbContext.UserMenus.AsQueryable();
 
-				if (roleType == RoleType.SuperAdmin || roleType == RoleType.Admin)
-				{
-					query = query.Where(m => m.RoleId == 10);
-				}
-				else
-				{
 					query = query.Where(m => m.CorpsId == corpsId && m.DivisionId == divisionId && m.RoleId == roleId);
-				}
+				
 				var result = query.ToList();
 				return result;
 			}

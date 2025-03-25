@@ -102,6 +102,12 @@ export const routes: Routes = [
                 data: { allowedRoles: ['2','3','4','7'] },
               },
               {
+                path:'attribute',
+                loadComponent : () =>import('projects/clerk/src/layout/attribute/attribute.component').then(m => m.AttributeComponent),
+                canActivate: [AuthGuard,PermissionGuard],
+                data: { allowedRoles: ['8'] },
+              },
+              {
                 path: 'forbidden',
                 component: ForbiddenComponent
               }

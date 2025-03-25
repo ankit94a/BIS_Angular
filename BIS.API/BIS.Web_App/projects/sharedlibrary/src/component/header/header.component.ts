@@ -19,15 +19,17 @@ export class HeaderComponent implements OnInit {
   @Output() toggleSideBarForMe: EventEmitter<any> = new EventEmitter();
   // companyName: string;
   userName:string;
-  facilityName:string;
+  facilityName:string ;
   roleType;
   constructor(private authService:AuthService) { }
 
   ngOnInit(): void {
     if(this.authService.getDivisionName() != null && this.authService.getDivisionName() != 'null'){
       this.facilityName = this.authService.getDivisionName();
-    }else{
+    }else if(this.authService.getCorpsName() != null && this.authService.getCorpsName() != 'null'){
       this.facilityName = this.authService.getCorpsName();
+    }else{
+      this.facilityName = 'Admin'
     }
     // this.facilityName = this.authService.getDivisionName()?.trim() ? this.authService.getDivisionName() : this.authService.getCorpsName();
     this.roleType = this.authService.getRoleType();

@@ -16,8 +16,9 @@ namespace BIS.Common.Entities
 	public class DashboardChart
 	{
 		public List<int>? Count { get; set; } = new List<int>();
-		public List<string>? Name { get; set; } = new List<string>();
+		public List<dynamic>? Name { get; set; } = new List<dynamic>();
 		public List<DashboardSectorData>? SectorData { get; set; } = new List<DashboardSectorData>();
+		public Dictionary<dynamic, List<int>> FrmnData { get; set; } = new Dictionary<dynamic, List<int>>();
 	}
 	public class DashboardSectorData
 	{

@@ -57,6 +57,8 @@ export class LoginComponent implements OnInit{
             redirectUrl = '/master-data';
           } else if (res.user.roleType == '7') {
             redirectUrl = '/cdr-dahboard';
+          }else if(res.user.roleType == '8'){
+            redirectUrl = '/attribute'
           }
 
           this.router.navigate([redirectUrl]); // Use navigate() instead of navigateByUrl()

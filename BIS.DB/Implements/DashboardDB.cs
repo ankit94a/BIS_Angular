@@ -112,6 +112,60 @@ namespace BIS.DB.Implements
 
 			return result;
 		}
+		//public DashboardChart GetFrmnChart(DaysMonthFilter daysMonthFilter, FilterModel filterModel)
+		//{
+		//	var chart = new DashboardChart();
+		//	DateTime? filterDate = null;
+		//	switch (daysMonthFilter)
+		//	{
+		//		case DaysMonthFilter.Days30:
+		//			filterDate = DateTime.UtcNow.AddDays(-30);
+		//			break;
+		//		case DaysMonthFilter.Today:
+		//			filterDate = DateTime.UtcNow.Date;
+		//			break;
+		//		case DaysMonthFilter.Months12:
+		//			filterDate = DateTime.UtcNow.AddMonths(-12);
+		//			break;
+		//	}
+		//	var query = _dbContext.MasterDatas
+		//				.Where(ms => ms.Status == Status.Approved && ms.ReportedDate >= filterDate.Value);
+
+		//	if (filterModel.Frmn.Any())
+		//	{
+		//		query = query.Where(ms => filterModel.Frmn.Any(f => f.CorpsId == ms.CorpsId && f.DivisionId == ms.DivisionId));
+		//	}
+
+		//	var result = query
+		//		.GroupBy(m => new { m.Frmn, Year = m.ReportedDate.Year, Month = m.ReportedDate.Month })
+		//		.Select(g => new
+		//		{
+		//			Frmn = g.Key.Frmn,
+		//			MonthYear = new DateTime(g.Key.Year, g.Key.Month, 1).ToString("MMM yyyy"),
+		//			Count = g.Count(),
+		//			Year = g.Key.Year,
+		//			Month = g.Key.Month
+		//		})
+		//		.OrderBy(e0 => e0.Year)
+		//		.ThenBy(e0 => e0.Month)
+		//		.ToList();
+
+		//	var uniqueMonths = result.Select(x => x.MonthYear).Distinct().ToList();
+		//	chart.Name.AddRange(uniqueMonths);
+
+		//	var groupedFrmn = result.GroupBy(x => x.Frmn);
+
+		//	foreach (var group in groupedFrmn)
+		//	{
+		//		var frmnName = group.Key ?? "Unknown";
+		//		var frmnCounts = uniqueMonths.Select(m => group.FirstOrDefault(g => g.MonthYear == m)?.Count ?? 0).ToList();
+
+		//		chart.FrmnData[frmnName] = frmnCounts;
+		//	}
+
+		//	return chart;
+		//}
+
 
 		public DashboardChart GetFrmnChart(DaysMonthFilter daysMonthFilter, FilterModel filterModel)
 		{
@@ -166,32 +220,42 @@ namespace BIS.DB.Implements
 			}
 			else
 			{
-				result = query.Where(ms => filterModel.Frmn.Any(f => f.CorpsId == ms.CorpsId && f.DivisionId == ms.DivisionId))
-								.GroupBy(m => new { Year = m.ReportedDate.Year, Month = m.ReportedDate.Month })
-								.Select(g => new
-								{
-									MonthYear = new DateTime(g.Key.Year, g.Key.Month, 1).ToString("MMM") + " " + g.Key.Year,
-									Count = g.Count(),
-									Year = g.Key.Year,
-									Month = g.Key.Month
-								})
-								.OrderBy(e0 => e0.Year)
-								.ThenBy(e0 => e0.Month)
-								.Select(e0 => new
-								{
-									MonthYear = e0.MonthYear,
-									Count = e0.Count
-								}).ToList();
+				result = query.GroupBy(m => new { m.Frmn, Year = m.ReportedDate.Year, Month = m.ReportedDate.Month })
+						   .Select(g => new
+						   {
+							   Frmn = g.Key.Frmn ?? "Unknown",
+							   MonthYear = new DateTime(g.Key.Year, g.Key.Month, 1).ToString("MMM yyyy"),
+							   Count = g.Count(),
+							   Year = g.Key.Year,
+							   Month = g.Key.Month
+						   }).OrderBy(e0 => e0.Year).ThenBy(e0 => e0.Month).ToList();
 
-				foreach (var item in result)
+				// Get unique months from the dataset
+				var uniqueMonths = result.Select(x => x.MonthYear).Distinct().ToList();
+				chart.Name.AddRange(uniqueMonths);
+
+				// Initialize FrmnData dictionary
+				chart.FrmnData = new Dictionary<dynamic, List<int>>();
+
+				var groupedFrmn = result.GroupBy(x => x.Frmn);
+
+				foreach (var group in groupedFrmn)
 				{
-					if (item.MonthYear != "" && item.MonthYear != null)
-					{
-						chart.Name.Add(item.MonthYear);
-						chart.Count.Add(item.Count);
-					}
+					var frmnName = group.Key;
+
+					// Ensure frmnCounts is of type List<int>
+					var frmnCounts = uniqueMonths
+						.Select(m => group.FirstOrDefault(g => g.MonthYear == m)?.Count ?? 0)
+						.Cast<int>() // Explicitly cast to int
+						.ToList();
+
+					chart.FrmnData[frmnName] = frmnCounts;
 				}
+
 				return chart;
+
+
+
 			}
 		}
 
@@ -230,33 +294,50 @@ namespace BIS.DB.Implements
 			IEnumerable<dynamic> result;
 			if (daysMonthFilter == DaysMonthFilter.Months12)
 			{
-				result = query.Where(m => m.Aspect != null && m.Aspect != "" && m.CreatedOn >= filterDate)
-								.GroupBy(m => new { Year = m.ReportedDate.Year, Month = m.ReportedDate.Month })
-								.Select(g => new
-								{
-									MonthYear = new DateTime(g.Key.Year, g.Key.Month, 1).ToString("MMM") + " " + g.Key.Year,
-									Count = g.Count(),
-									Year = g.Key.Year,
-									Month = g.Key.Month,
-								})
-								.OrderBy(e => e.Year)
-								.ThenBy(e => e.Month)
-								.Select(e => new
-								{
-									MonthYear = e.MonthYear,
-									Count = e.Count,
-								}).ToList();
+				// Fetch the data
+				result = query
+				   .Where(m => !string.IsNullOrEmpty(m.Aspect) && m.CreatedOn >= filterDate)
+				   .GroupBy(m => new { m.Aspect, Year = m.ReportedDate.Year, Month = m.ReportedDate.Month })
+				   .Select(g => new
+				   {
+					   Aspect = g.Key.Aspect ?? "Unknown", // Handle null values
+					   MonthYear = new DateTime(g.Key.Year, g.Key.Month, 1).ToString("MMM yyyy"),
+					   Count = g.Count(),
+					   Year = g.Key.Year,
+					   Month = g.Key.Month
+				   })
+				   .OrderBy(e => e.Year)
+				   .ThenBy(e => e.Month)
+				   .ToList();
 
-				foreach (var item in result)
-				{
-					if (item.MonthYear != "" && item.MonthYear != null)
+				// Step 1: Extract unique Month-Year values **as List<string>**
+				List<dynamic> monthNames = result.Select(e => (dynamic)e.MonthYear).Distinct().ToList();
+
+				// Step 2: Ensure Aspect is always a **string** and count mapping is consistent
+				var frmnData = result
+					.GroupBy(e => e.Aspect) // Group by Aspect
+					.ToDictionary(g => g.Key.ToString(), g => // Convert Aspect to string
 					{
-						chart.Name.Add(item.MonthYear);
-						chart.Count.Add(item.Count);
-					}
-				}
-				return chart;
+						// Create a dictionary of Month-Year with default count = 0
+						var monthMap = monthNames.ToDictionary(m => m, _ => 0);
+
+						// Populate actual counts from the result
+						foreach (var entry in g)
+						{
+							monthMap[entry.MonthYear] = entry.Count;
+						}
+
+						return monthMap.Values.ToList(); // Ensure List<int>
+					});
+
+				// Step 3: Return the data in correct type
+				return new DashboardChart
+				{
+					Name = monthNames, // List<string>
+					FrmnData = frmnData // Dictionary<string, List<int>>
+				};
 			}
+
 			else
 			{
 				result = query.Where(m => m.Aspect != null && m.Aspect != "").GroupBy(ms => ms.Aspect).Select(group => new
@@ -315,23 +396,23 @@ namespace BIS.DB.Implements
 			DateTime today = DateTime.UtcNow;
 			DateTime filterDate = today.AddMonths(-12);
 
-			//var query = _dbContext.MasterDatas
-			//	.Where(m => m.CorpsId == corpsId &&
-			//				m.DivisionId == divisionId &&
-			//				!string.IsNullOrEmpty(m.Sector) &&
-			//				m.CreatedOn >= filterDate && m.Status == Status.Approved);
-			var filteredMasterData = _dbContext.MasterDatas.Where(ms => ms.Status == Status.Approved && !string.IsNullOrEmpty(ms.Sector) && ms.ReportedDate >= filterDate).ToList();
-			var query = filteredMasterData.Where(ms => filterModel.Frmn.Any(f => f.CorpsId == ms.CorpsId && f.DivisionId == ms.DivisionId));
+			var filteredMasterData = _dbContext.MasterDatas
+				.Where(ms => ms.Status == Status.Approved && !string.IsNullOrEmpty(ms.Sector) && ms.ReportedDate >= filterDate)
+				.ToList();
+
+			var query = filteredMasterData
+				.Where(ms => filterModel.Frmn.Any(f => f.CorpsId == ms.CorpsId && f.DivisionId == ms.DivisionId));
 
 			if (filterModel != null && filterModel.Sector.Count > 0)
 			{
 				query = query.Where(m => filterModel.Sector.Contains(m.Sector));
 			}
 
+			// Group and process data
 			var result = query.GroupBy(m => new { m.ReportedDate.Year, m.ReportedDate.Month, m.Sector })
 				.Select(g => new
 				{
-					Sector = g.Key.Sector,
+					Sector = (dynamic)g.Key.Sector,  // Explicitly cast to dynamic
 					MonthYear = new DateTime(g.Key.Year, g.Key.Month, 1).ToString("MMM yyyy"),
 					Count = g.Count(),
 					Year = g.Key.Year,
@@ -340,22 +421,37 @@ namespace BIS.DB.Implements
 				.OrderBy(e => e.Year).ThenBy(e => e.Month)
 				.ToList();
 
+			// Ensure Month-Year is treated as dynamic
 			chart.Name = result
-				.Select(r => r.MonthYear)
+				.Select(r => (dynamic)r.MonthYear) // Convert to dynamic explicitly
 				.Distinct()
-				.OrderBy(m => DateTime.ParseExact(m, "MMM yyyy", System.Globalization.CultureInfo.InvariantCulture))
+				.OrderBy(m => DateTime.ParseExact((string)m, "MMM yyyy", System.Globalization.CultureInfo.InvariantCulture))
 				.ToList();
 
-			var uniqueSectors = result.Select(r => r.Sector).Distinct().ToList();
-			chart.SectorData = uniqueSectors.Select(sector => new DashboardSectorData
-			{
-				Sector = sector,
-				Count = chart.Name.Select(month =>
-					result.FirstOrDefault(r => r.MonthYear == month && r.Sector == sector)?.Count ?? 0
-				).ToList()
-			}).ToList();
+			// Populate FrmnData with aspect-wise counts
+			chart.FrmnData = result
+				.GroupBy(r => r.Sector)
+				.ToDictionary(
+					g => g.Key, // Sector Name (dynamic)
+					g =>
+					{
+						var monthMap = chart.Name.ToDictionary(m => m, m => 0); // Initialize all months with 0 counts
+
+						foreach (var entry in g)
+						{
+							if (monthMap.ContainsKey(entry.MonthYear))
+							{
+								monthMap[entry.MonthYear] = entry.Count;
+							}
+						}
+
+						return monthMap.Values.ToList(); // Return counts in correct order
+					}
+				);
+
 			return chart;
 		}
+
 
 		public DashboardChart GetTop10Indicator(FilterModel filterModel)
 		{

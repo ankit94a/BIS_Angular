@@ -105,6 +105,7 @@
           </div>
         </div>
         <div align="end">
+          <button mat-button (click)="close()" type="button">Close</button>
           <button mat-button matStepperNext type="button">Next</button>
         </div>
       </mat-step>
@@ -185,6 +186,7 @@
         </div>
         <div align="end">
           <button mat-button matStepperPrevious type="button">Back</button>
+          <button mat-button (click)="close()"  type="button">Close</button>
           <button mat-button type="submit" *ngIf="!masterData">Save</button>
         </div>
       </mat-step>

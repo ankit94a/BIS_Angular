@@ -43,5 +43,7 @@ namespace BIS.API.Controller
 			var corpsId = HttpContext.GetCorpsId();
 			return Ok(_attributeManager.GetSectorByCorpsId(corpsId));
 		}
+
+
 	}
 }
