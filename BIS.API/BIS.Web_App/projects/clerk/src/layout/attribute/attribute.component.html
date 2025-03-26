@@ -20,7 +20,10 @@
                 <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
                 <mat-cell *matCellDef="let source">
                   <!-- <button mat-button (click)="edit(source)"><i class="fa-solid fa-eye"></i></button> -->
-                  <button mat-button (click)="view(source,'MasterSources')"><i class="fa-solid fa-trash"></i></button>
+                  <button mat-icon-button color="warn"
+                  type="button" (click)="view(source,'MasterSources')"matTooltip="delete">
+                  <mat-icon>delete_outline</mat-icon>
+              </button>
                 </mat-cell>
               </ng-container>
               <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
@@ -63,7 +66,10 @@
                 <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
                 <mat-cell *matCellDef="let sourceLoc">
                   <!-- <button mat-button (click)="edit(sourceLoc)"><i class="fa-solid fa-eye"></i></button> -->
-                  <button mat-button (click)="view(sourceLoc,'MasterLocations')"><i class="fa-solid fa-trash"></i></button>
+                  <button mat-icon-button color="warn"
+                  type="button" (click)="view(sourceLoc,'MasterLocations')" matTooltip="delete">
+                  <mat-icon>delete_outline</mat-icon>
+              </button>
                 </mat-cell>
               </ng-container>
               <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
@@ -116,7 +122,10 @@
                 <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
                 <mat-cell *matCellDef="let typeOfLoc">
                   <!-- <button mat-button (click)="edit(typeOfLoc)"><i class="fa-solid fa-eye"></i></button> -->
-                  <button mat-button (click)="view(typeOfLoc,'MasterLocations')"><i class="fa-solid fa-trash"></i></button>
+                  <button mat-icon-button color="warn"
+                  type="button" (click)="view(typeOfLoc,'MasterLocations')" matTooltip="delete">
+                  <mat-icon>delete_outline</mat-icon>
+              </button>
                 </mat-cell>
               </ng-container>
 
@@ -152,7 +161,10 @@
                 <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
                 <mat-cell *matCellDef="let enemyLoc">
                   <!-- <button mat-button (click)="edit(enemyLoc)"><i class="fa-solid fa-eye"></i></button> -->
-                  <button mat-button (click)="view(enemyLoc,'MasterEnLocName')"><i class="fa-solid fa-trash"></i></button>
+                  <button mat-icon-button color="warn"
+                  type="button" (click)="view(enemyLoc,'MasterEnLocName')" matTooltip="delete">
+                  <mat-icon>delete_outline</mat-icon>
+              </button>
                 </mat-cell>
               </ng-container>
               <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

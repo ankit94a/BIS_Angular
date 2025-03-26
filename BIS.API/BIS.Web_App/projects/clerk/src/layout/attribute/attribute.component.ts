@@ -113,9 +113,21 @@ export class AttributeComponent extends TablePaginationSettingsConfig implements
   }
   view(item,type){
     debugger;
-    this.apiService.getWithHeaders(`masterdata/deactivate/${item.id}/${type} `).subscribe(res =>{
+    this.dialogService.confirmDialog("remove " + item.name).subscribe(res => {
       if(res){
-
+        this.apiService.getWithHeaders(`masterdata/deactivate/${item.id}/${type} `).subscribe(res =>{
+          if(res){
+            this.toastr.success("delete successfully",'success');
+            if(type == 'MasterSources'){
+              this.getSource();
+            }else if(type == 'MasterLocations'){
+              this.getSourceLoc();
+              this.getTypeOfLoc();
+            }else{
+              this.getEnemyLoc();
+            }
+          }
+        })
       }
     })
   }
