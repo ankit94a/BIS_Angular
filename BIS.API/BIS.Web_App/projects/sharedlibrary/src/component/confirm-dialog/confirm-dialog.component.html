@@ -1,11 +1,10 @@
   <h1 mat-dialog-title>
-    {{'ConfirmAction' | translate}}
+    {{'Confirm Action'}}
   </h1>
   <div mat-dialog-content>
-    <p>{{message | translate}}</p>
+    <p>Are you sure you want to {{ message }}?</p>
   </div>
   <div mat-dialog-actions>
-    <button class="btn btn-sm btn-outline-danger" (click)="onDismiss()">{{'No' |
-      translate}}</button>
-    <button class="btn btn-sm btn-primary" (click)=" onConfirm()">{{'Yes' | translate}}</button>
+    <button class="btn btn-sm btn-outline-danger" (click)="onDismiss()">{{'No'}}</button>
+    <button class="btn btn-sm btn-primary" (click)=" onConfirm()">{{'Yes' }}</button>
   </div>
