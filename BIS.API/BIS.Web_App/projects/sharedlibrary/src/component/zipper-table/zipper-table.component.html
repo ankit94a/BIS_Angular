@@ -75,7 +75,10 @@
                 <div class="column-header-content">
                     <button class="btn btn-link" type="button"
                         *ngIf="tablePaginationSettings.enableColumn;else actionTemplate" #menuTrigger="matMenuTrigger"
-                        [matMenuTriggerFor]="mainMenuButton"> <mat-icon matTooltip="Add More Columns">filter_list</mat-icon> </button>
+                        [matMenuTriggerFor]="mainMenuButton">
+                         <!-- <mat-icon matTooltip="Add More Columns">filter_list</mat-icon>  -->
+                         <img src="/assets/filter.svg" class="custom-icon" style="height: 30px;" alt="">
+                      </button>
 
 
                     <ng-template #actionTemplate>Action</ng-template>
@@ -106,10 +109,11 @@
                     type="button" (click)="uploadFile(element)" matTooltip="upload"> <mat-icon>upload</mat-icon>
                 </button>
                 <button mat-icon-button color="accent" *ngIf="element!=null && tablePaginationSettings.enableView"
-                    type="button" (click)="viewObj(element)" matTooltip="view"> <mat-icon>remove_red_eye</mat-icon>
+                    type="button" (click)="viewObj(element)" matTooltip="view"> <img src="/assets/eye.svg" class="custom-icon" alt="">
                 </button>
                 <button mat-icon-button color="basic" *ngIf="element!=null && tablePaginationSettings.enableEdit && element.status == '1'"
-                    type="button" (click)="editObj(element)" matTooltip="edit"> <mat-icon>edit</mat-icon></button>
+                    type="button" (click)="editObj(element)" matTooltip="edit"> <img src="/assets/edit.svg" class="custom-icon" alt="">
+                  </button>
 
                 <button mat-icon-button color="warn" *ngIf="element!=null && tablePaginationSettings.enableDelete"
                     type="button" (click)="deleteObj(i,element)" matTooltip="delete">

@@ -8,3 +8,7 @@
   width: 100vw;
   align-items: center;
 }
+.custom-icon{
+  height: 25px;
+  filter: invert(100%) brightness(100%) contrast(100%);
+}

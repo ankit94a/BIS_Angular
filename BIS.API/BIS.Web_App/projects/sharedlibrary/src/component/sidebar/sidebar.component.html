@@ -3,10 +3,11 @@
     <a class="navbar-brand" href="/dashboard">
     </a>
     <span *ngFor="let menu of sideBarMenus">
-  
+
       <a  mat-list-item (click)="addExpandClass(menu.text)"
         routerLink="{{menu.code}}" routerLinkActive="active">
-        <mat-icon>{{menu.icon}}</mat-icon><span class="nav-caption">
+        <!-- <mat-icon>{{menu.icon}}</mat-icon> -->
+        <span class="nav-caption">
           {{menu.name}}
         </span>
       </a>
@@ -27,5 +28,4 @@
       </div>
     </span>
   </mat-nav-list>
- 
-  
+

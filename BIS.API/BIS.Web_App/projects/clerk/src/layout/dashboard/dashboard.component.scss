@@ -206,3 +206,7 @@
     transform: scale(0.98); /* Slight press effect */
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1); /* Reduced shadow */
   }
+  .custom-icon{
+    height: 25px;
+    filter: invert(100%) brightness(100%) contrast(100%);
+  }

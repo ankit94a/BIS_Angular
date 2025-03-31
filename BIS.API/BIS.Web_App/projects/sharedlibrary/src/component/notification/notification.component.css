@@ -12,13 +12,13 @@
 
 .badge {
   position: absolute;
-  top: -5px;
-  right: -10px;
-  background-color: #DF6D2D;
-  color: white;
-  font-size: 12px;
-  padding: 2px 6px;
-  border-radius: 50%;
+    top: -13px;
+    right: -17px;
+    background-color: rgb(223, 109, 45);
+    color: white;
+    font-size: 12px;
+    padding: 2px 6px;
+    border-radius: 20%;
 }
 
 .popup {
@@ -112,4 +112,9 @@
   display: flex;
   justify-content: center;
   margin: 20px 0;
+}
+
+.custom-icon{
+  height: 25px;
+  filter: invert(100%) brightness(100%) contrast(100%);
 }

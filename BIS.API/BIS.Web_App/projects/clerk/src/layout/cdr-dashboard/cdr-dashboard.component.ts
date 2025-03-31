@@ -154,35 +154,53 @@ export class CdrDashboardComponent {
     }
   }
   getEntries() {
-    this.apiService.postWithHeader('smartanalysis/getentries', this.filterModel).subscribe(res => {
-      if (res) {
-        this.meanChartList = res;
-        console.log(this.meanChartList)
-        this.entriesChart = {
-          labels: res.name,
-          datasets: [
-            {
-              data: res.count,
-              label: 'Inputs',
-              backgroundColor: 'rgba(151, 126, 201, 0.5)',
-              borderColor: 'rgba(150, 68, 150, 0.5)',
-              borderWidth: 1.2,
-              fill: true,
-              tension: 0.4,
-            },
-            {
-              data: res.meanValue,
-              label: 'Inputs',
-              backgroundColor: 'rgba(20, 199, 65, 0.5)',
-              borderColor: 'rgba(143, 92, 35, 0.5)',
-              borderWidth: 1.2,
-              fill: true,
-              tension: 0.4,
-            },
-          ],
-        };
-      }
-    })
+    this.tableHeaderSubject.next([]);
+    this.masterDataListSubject.next([]);
+    this.apiService
+      .postWithHeader('smartanalysis/getentries', this.filterModel)
+      .subscribe((res) => {
+        if (res) {
+          this.meanChartList = res;
+          console.log(this.meanChartList);
+
+          // Define datasets
+          this.entriesChart = {
+            labels: res.name,
+            datasets: [
+              {
+                data: res.count,
+                label: 'Inputs Count',
+                borderColor: 'rgba(70, 79, 88, 0.7)',
+                borderWidth: 1.2,
+                fill: false,
+                tension: 0.4,
+                pointBackgroundColor: res.count.map((value, index) =>
+               {
+                if(value >= 400){
+                  return '#FE4F2D'
+                } else if(value >= 200 && value <= 400){
+                  return '#FFA725'
+                }else if(value >= 100 && value <= 200){
+                  return '#F6DC43'
+                }else{
+                   return '#A0C878'
+                }
+               }
+                ),
+              },
+              {
+                data: res.meanValue,
+                label: 'Mean Value',
+                borderColor: 'rgba(143, 92, 35, 0.5)',
+                borderWidth: 1.2,
+                fill: false,
+                tension: 0.4,
+                pointBackgroundColor: '#205781', // Static color for mean value dots
+              },
+            ],
+          };
+        }
+      });
   }
   getSector() {
     this.apiService.getWithHeaders('attribute/sector').subscribe(res => {
