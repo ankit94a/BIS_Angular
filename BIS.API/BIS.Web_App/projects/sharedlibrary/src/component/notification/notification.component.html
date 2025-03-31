@@ -1,5 +1,13 @@
 <div class="bell-container" (click)="openNotifications()">
-  <i class="fa-solid fa-bell fa-1x" style="color:#fff;"  [@bounce]="animState" (@bounce.done)="animDone($event)"></i>
+  <!-- <mat-icon
+  style="color: #fff;"
+  [@bounce]="animState"
+  (@bounce.done)="animDone($event)">
+  notifications
+</mat-icon> -->
+<img src="/assets/bell-ringing-svgrepo-com.svg" class="custom-icon"  [@bounce]="animState"
+(@bounce.done)="animDone($event)"  alt="">
+
   <span class="badge" *ngIf="notifications.length>0"> {{notifications.length}}</span>
 </div>
 <div class="popup" *ngIf="dropdownVisible">

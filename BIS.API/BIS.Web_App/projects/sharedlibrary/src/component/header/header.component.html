@@ -13,28 +13,31 @@
                 <app-notification *ngIf="roleType != '7'"></app-notification>
         </div>
         <div class="user-profile" *ngIf="roleType != '7' && roleType != '8' && roleType != '9'">
-          <mat-icon class="py-1">person</mat-icon> &nbsp;{{userName}}
-          <button mat-button (click)="onLoggedout()">
-            <mat-icon matTooltip="logout" style="color: #fff;">exit_to_app</mat-icon>
-        </button>
+          <!-- <mat-icon class="py-1">person</mat-icon>  -->
+           <img src="/assets/user.svg" class="custom-icon" alt="">
+           &nbsp;{{userName}}
+           <img src="/assets/logout2.svg" class="custom-icon px-2" style="height: 20px; cursor: pointer;" alt="" (click)="onLoggedout()">
         </div>
         <div *ngIf="roleType == '7' || roleType == '8' || roleType == '9'">
             <button mat-button [matMenuTriggerFor]="settingMenu">
-                <mat-icon>settings</mat-icon>
+                <!-- <mat-icon>settings</mat-icon> -->
+                <img src="/assets/setting.svg" class="custom-icon px-2" style="height: 20px; cursor: pointer;" alt="" (click)="onLoggedout()">
             </button>
             <mat-menu #settingMenu="matMenu">
                 <a mat-menu-item routerLinkActive="list-item-active" routerLink="/user-list">
-                    <mat-icon>label</mat-icon>
+                    <!-- <mat-icon>label</mat-icon> -->
+
                     User
                 </a>
                 <a mat-menu-item routerLinkActive="list-item-active" routerLink="/roles">
-                    <mat-icon>label</mat-icon>
+                    <!-- <mat-icon>label</mat-icon> -->
                     Role & Permission
                 </a>
-                <button mat-menu-item (click)="onLoggedout()">
+                <!-- <button mat-menu-item (click)="onLoggedout()">
                     <mat-icon>exit_to_app</mat-icon>
                     Sign out
-                </button>
+                </button> -->
+                <img src="/assets/logout2.svg" class="custom-icon" alt="" (click)="onLoggedout()">
             </mat-menu>
         </div>
       </div>

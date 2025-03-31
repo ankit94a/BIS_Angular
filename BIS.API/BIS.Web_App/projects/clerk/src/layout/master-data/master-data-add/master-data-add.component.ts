@@ -844,13 +844,13 @@ debugger
   fieldConfigurations = {
     'Placement of addl Svl Eqpt': [
       { name: 'typeSvlEqpt', label: 'Type Svl Eqpt', type: 'string' },
-      { name: 'noSvlEqpt', label: 'No Svl Eqpt', type: 'string' },
+      { name: 'noSvlEqpt', label: 'No Of Svl Eqpt', type: 'string' },
       { name: 'tgt', label: 'Tgt', type: 'string' },
       { name: 'htM', label: 'Ht(M)', type: 'string' },
       { name: 'poaseReamrks', label: 'Remarks', type: 'string' },
     ],
     'Incr Recce': [
-      { name: 'visSrOffrs', label: 'Vis Sr Offrs', type: 'string' },
+      { name: 'visSrOffrs', label: 'No of Vis Sr Offrs', type: 'string' },
       { name: 'ptls', label: 'Ptls', type: 'string' },
       { name: 'newTps', label: 'New Tps', type: 'string' },
       { name: 'cvys', label: 'Cvys', type: 'string' },
@@ -869,9 +869,9 @@ debugger
       { name: 'jammingTimeto', label: 'Time to', type: 'time' },
       { name: 'jammingDtOfJx', label: 'Dt Of Jx', type: 'date' },
       { name: 'jammingEffect', label: 'Effect', type: 'string' },
-      { name: 'jammingSpecificationFreq', label: 'Specification Freq', type: 'string' },
-      { name: 'jammingSpecificationWavelength', label: 'Specification Wavelength', type: 'string' },
-      { name: 'jammingSpecificationType', label: 'Specification Type', type: 'string' },
+      { name: 'jammingSpecificationFreq', label: 'Specific Freq', type: 'string' },
+      { name: 'jammingSpecificationWavelength', label: 'Specific Wavelength', type: 'string' },
+      { name: 'jammingSpecificationType', label: 'Specific Type', type: 'string' },
       { name: 'jammingRemarks', label: 'Remarks', type: 'string' }
     ],
     'Enhanced Tourist Influx': [
@@ -891,7 +891,7 @@ debugger
       { name: 'foSSkirmishPlaNoOfOffrs', label: 'Skirmish Pla No Of Offrs', type: 'string' },
       { name: 'foSSkirmishPlaNoOfOr', label: 'Skirmish Pla No Of Or', type: 'string' },
       { name: 'foSSkirmishPlaNoOfCiv', label: 'Skirmish Pla No Of Civ', type: 'string' },
-      { name: 'foSSkirmishPlaNameOfOffrs', label: 'Skirmish Pla Name Of Offrs', type: 'string' },
+      { name: 'foSSkirmishPlaNameOfOffrs', label: 'Skirmish Pla No Of JCOs', type: 'string' },
       { name: 'foSCas', label: 'Cas', type: 'dropdown', options: ['Fatal', 'Non Fatal'] },
       { name: 'foSDamageEqpt', label: 'Damage Eqpt', type: 'string' },
       { name: 'foSDamageProperty', label: 'Damage Property', type: 'string' },
@@ -911,10 +911,10 @@ debugger
       { name: 'soCUnitType', label: 'Unit Type', type: 'dropdown', options: ['Containers', 'Tents', 'Sheds'] },
       { name: 'soCNoOfUnits', label: 'No Of Units', type: 'string' },
       { name: 'soCOccupiedBy', label: 'Occupied By', type: 'dropdown', options: ['PLA', 'Civs', 'RBA', 'PAPF', 'Militia'] },
-      { name: 'soCNoOfPlaPers', label: 'No Of Pla Pers', type: 'string' },
+      { name: 'soCNoOfPlaPers', label: 'No Of PLA Pers', type: 'string' },
       { name: 'soCNoOfCivs', label: 'No Of Civs', type: 'string' },
-      { name: 'soCNoOfRbaPers', label: 'No Of Rba Pers', type: 'string' },
-      { name: 'soCNoOfPapfPers', label: 'No Of Papf Pers', type: 'string' },
+      { name: 'soCNoOfRbaPers', label: 'No Of RBA Pers', type: 'string' },
+      { name: 'soCNoOfPapfPers', label: 'No Of PAPF Pers', type: 'string' },
       { name: 'soCNoOfMilitia', label: 'No Of Militia', type: 'string' },
       { name: 'soCNoOfEqpt', label: 'No Of Eqpt', type: 'string' },
       { name: 'soCDescription', label: 'Description', type: 'string' }

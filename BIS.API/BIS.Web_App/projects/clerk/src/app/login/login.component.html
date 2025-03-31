@@ -35,7 +35,8 @@
                 <input formControlName="password" [type]="showPassword ? 'text' : 'password'" matInput
                   placeholder="Enter your password" required/>
                 <button mat-icon-button matSuffix (click)="togglePasswordVisibility()"  type="button">
-                  <mat-icon>{{ showPassword ? 'visibility' : 'visibility_off' }}</mat-icon>
+                  <!-- <mat-icon>{{ showPassword ? 'visibility' : 'visibility_off' }}</mat-icon> -->
+                  <img src="/assets/eye.svg" class="custom-icon" alt="">
                 </button>
                 <mat-error *ngIf="loginform.get('password')?.touched && loginform.get('password')?.invalid">
                   Password is required

@@ -149,7 +149,8 @@
           <span>.</span>
           <h3 class="card-title">Entries Chart</h3>
           <button class="download-icon mt-2" (click)="download('chart8')">
-            <mat-icon class="icon-display" matTooltip="download">arrow_downward</mat-icon>
+            <!-- <mat-icon class="icon-display" matTooltip="download">arrow_downward</mat-icon> -->
+            <img src="/assets/down-arrow.svg" class="custom-icon" style="height: 20px;" alt="">
           </button>
         </section>
         <div class="chart-container">
@@ -174,13 +175,17 @@
               [libGetMeanvalueColor]="{ count: meanChartList.count[i], meanValue: meanChartList.meanValue[i] }">
               <td>{{item | bisdefaultDate}}</td>
               <td>{{meanChartList.count[i]}}</td>
-              <td><button class="btn btn-link" (click)="getMeanData(item)"><mat-icon
-                    matTooltip="show data">arrow_right_alt</mat-icon> </button></td>
+              <td><button class="btn btn-link" (click)="getMeanData(item)">
+                <img src="/assets/right-arrow.svg" class="custom-icon" style="height: 20px;" alt="">
+                  </button></td>
             </tr>
           </tbody>
         </table>
       </div>
-      <div class="arrow-icon"><mat-icon>compare_arrows</mat-icon></div>
+      <div class="arrow-icon">
+        <!-- <mat-icon>compare_arrows</mat-icon> -->
+        <img src="/assets/right-arrow.svg" class="custom-icon" style="height: 20px;" alt="">
+      </div>
       <div class="card">
         <table>
           <thead>
