@@ -24,5 +24,6 @@ namespace BIS.API.Controller
 
 			return Ok(_corpsManager.GetDivisonByCorps(corpsId));
 		}
+
 	}
 }

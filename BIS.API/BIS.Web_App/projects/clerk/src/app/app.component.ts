@@ -5,7 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 import { authInterceptor } from 'projects/sharedlibrary/src/services/auth-interceptor.service';
 
 @Component({
-    selector: 'app-root',
+    selector: 'app-clerk',
     imports: [RouterOutlet],
     templateUrl: './app.component.html',
     styleUrl: './app.component.scss',
@@ -16,6 +16,7 @@ import { authInterceptor } from 'projects/sharedlibrary/src/services/auth-interc
         multi: true
       }
     ],
+    standalone:true
 })
 export class AppComponent {
   title = 'clerk';

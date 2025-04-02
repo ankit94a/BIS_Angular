@@ -26,4 +26,6 @@ export class Corps extends CommonModel{
 export class Division extends CommonModel{
     name:string;
     corpsId:number;
+    imageUrl:string;
+    description:string;
 }

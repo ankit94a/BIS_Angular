@@ -16,7 +16,7 @@ import { ZipperTableComponent } from 'projects/sharedlibrary/src/component/zippe
 @Component({
   selector: 'app-attribute',
   standalone: true,
-  imports: [SharedLibraryModule,RouterModule,ZipperTableComponent,MatPaginatorModule],
+  imports: [SharedLibraryModule,RouterModule,MatPaginatorModule],
   templateUrl: './attribute.component.html',
   styleUrl: './attribute.component.scss'
 })
