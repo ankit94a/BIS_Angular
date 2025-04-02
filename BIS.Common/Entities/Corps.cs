@@ -16,9 +16,10 @@ namespace BIS.Common.Entities
 	{
 		public long CorpsId { get; set; }
 		public string Name { get; set; }
+		public string? Description { get; set; } = string.Empty;
 	}
 
-	public class RolePermission 
+	public class RolePermission
 	{
 		public long Id { get; set; }
 		public long CorpsId { get; set; }
@@ -32,7 +33,7 @@ namespace BIS.Common.Entities
 		public bool IsActive { get; set; }
 		public bool? IsDeleted { get; set; }
 	}
-	public class Permission 
+	public class Permission
 	{
 		public long Id { get; set; }
 		public long CreatedBy { get; set; }

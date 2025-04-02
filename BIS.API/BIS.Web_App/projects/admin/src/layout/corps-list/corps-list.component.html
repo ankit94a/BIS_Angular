@@ -1,0 +1,101 @@
+<!-- <mat-card>
+  <mat-card-content class="full-height">
+    <div class="row">
+      <div class="col-md-7">
+        <h1>Your life's work,<br>
+          powered by our life's work</h1>
+          <p>
+            A unique and powerful software suite to transform the way you work. Designed for businesses of all sizes, built by a company that values your privacy.
+          </p>
+          <br>
+          <button type="button" class="btn btn-sm btn-primary">Get Started For Free</button>
+      </div>
+      <div class="col-md-5">
+        <div class="card" *ngFor="let corps of corpsList">
+          <div class="card-content">
+            <h3>{{corps.name}}</h3>
+            <p>eggggg</p>
+            <button (click)="openClerkApp(corps)">Learn More</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card> -->
+
+<div class="main-box">
+  <div class="brand">
+    <img src="/assets/createch-removebg.png" alt="">
+  </div>
+</div>
+<main>
+  <div class="bis-banner">
+    <div class="context">
+      <div class="content-left">
+        <h1>Your life's work,
+          <span class="dis-block">powered by our life's work</span>
+        </h1>
+        <!-- <p> A unique and powerful software suite to transform the way you work. Designed for businesses of all sizes, built by a company that <a class="zwc-txt-highlight" href="/privacy-commitment.html?ireft=nhome&amp;src=home">values your privacy.</a></p> -->
+        <p>HQ Eastern Command, based in Kolkata, oversees the Indian Army’s operations in Eastern India. It ensures national security, border defense, and strategic coordination across sensitive regions, including the Northeast.</p>
+        <button class="zh-btn">VIEW MORE</button>
+        <div class="zh-img-container">
+          <picture>
+            <img src="/assets/zoho_banner.webp" alt="" width="1030" height="299">
+          </picture>
+        </div>
+      </div>
+      <div class="content-right">
+        <div class="title">Featured apps</div>
+        <ul class="list" *ngFor="let corps of corpsList">
+          <a href="/dashboard">
+          <li class="main-app">
+
+              <span><img [src]="corps.imageUrl" alt="" width="35" height="35"> &nbsp;</span>
+              <span class="content">
+                <span>{{corps.name}}</span> <br>
+                <small>{{corps.description}}</small>
+              </span>
+
+          </li>
+        </a>
+          <!-- <li class="main-app">
+            <a href="_blank">
+              <span><img src="/assets/mail.png" alt="" width="35" height="35"> &nbsp;</span>
+              <span class="content">
+                <span>CRM</span> <br>
+                <small>Comprehensive CRM platform for customer-facing team</small>
+              </span>
+            </a>
+          </li>
+          <li class="main-app">
+            <a href="_blank">
+              <span><img src="/assets/mail.png" alt="" width="35" height="35"> &nbsp;</span>
+              <span class="content">
+                <span>CRM</span> <br>
+                <small>Comprehensive CRM platform for customer-facing team</small>
+              </span>
+            </a>
+          </li>
+          <li class="main-app">
+            <a href="_blank">
+              <span><img src="/assets/mail.png" alt="" width="35" height="35"> &nbsp;</span>
+              <span class="content">
+                <span>CRM</span> <br>
+                <small>Comprehensive CRM platform for customer-facing team</small>
+              </span>
+            </a>
+          </li>
+          <li class="main-app">
+            <a href="_blank">
+              <span><img src="/assets/mail.png" alt="" width="35" height="35"> &nbsp;</span>
+              <span class="content">
+                <span>CRM</span> <br>
+                <small>Comprehensive CRM platform for customer-facing team</small>
+              </span>
+            </a>
+          </li> -->
+        </ul>
+      </div>
+    </div>
+  </div>
+</main>
