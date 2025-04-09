@@ -21,7 +21,7 @@ export const routes: Routes = [
                 path: 'dashboard',
                 loadComponent: () => import('./dashboard/dashboard.component').then(m => m.DashboardComponent),
                 canActivate: [AuthGuard,PermissionGuard],
-                data: { allowedRoles: ['2','3','4','7'] },
+                data: { allowedRoles: ['2','3','4','7','10'] },
               },
               {
                 path:'master-data',
@@ -106,6 +106,12 @@ export const routes: Routes = [
                 loadComponent : () =>import('projects/clerk/src/layout/attribute/attribute.component').then(m => m.AttributeComponent),
                 canActivate: [AuthGuard,PermissionGuard],
                 data: { allowedRoles: ['8'] },
+              },
+              {
+                path:'corps',
+                loadComponent : () =>import('projects/clerk/src/layout/corps-list/corps-list.component').then(m => m.CorpsListComponent),
+                canActivate: [AuthGuard,PermissionGuard],
+                data: { allowedRoles: ['10','11','12','13','14','15'] },
               },
               {
                 path: 'forbidden',

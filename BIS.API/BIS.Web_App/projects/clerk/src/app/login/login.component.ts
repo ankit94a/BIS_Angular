@@ -1,3 +1,4 @@
+import { RoleType } from './../../../../sharedlibrary/src/model/enum';
 import { Component, inject, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -45,7 +46,7 @@ export class LoginComponent implements OnInit{
     this.apiService.postWithHeader('auth/login', loginData).subscribe({
       next: (res) => {
         this.loginLoading = false; // Stop spinner
-
+debugger
         if (res && res.token && res.user) {
           this.authService.setToken(res.token);
           this.authService.setUserDetails(res.user);
@@ -59,6 +60,8 @@ export class LoginComponent implements OnInit{
             redirectUrl = '/cdr-dahboard';
           }else if(res.user.roleType == '8'){
             redirectUrl = '/attribute'
+          }else if(res.user.roleType == '10'){
+            redirectUrl = '/corps'
           }
 
           this.router.navigate([redirectUrl]); // Use navigate() instead of navigateByUrl()

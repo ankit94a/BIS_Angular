@@ -1,7 +1,7 @@
 import { BaseEntity } from "./base.model";
 
 export class User extends BaseEntity {
- 
+
     username: string;
     name: string;
     email: string;
@@ -13,6 +13,7 @@ export class User extends BaseEntity {
     statusname:string;
     phone;
     role;
+    roleType;
     // userType:RoleType
-  
+
   }

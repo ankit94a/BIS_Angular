@@ -23,7 +23,9 @@ export class AuthService {
   setToken(token:string){
     localStorage.setItem("BIS_TOKEN",token);
   }
-
+  setCorpsId(id){
+    localStorage.setItem("BIS_CorpsId",id);
+  }
   getToken(){
     return localStorage.getItem("BIS_TOKEN");
   }
