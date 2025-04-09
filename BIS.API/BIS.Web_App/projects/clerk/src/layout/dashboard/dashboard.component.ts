@@ -67,8 +67,10 @@ export class DashboardComponent implements OnInit {
   }
 
   getFrmDetails() {
+    debugger
     this.apiService.getWithHeaders('dashboard/FmnDetails').subscribe(res => {
       if (res) {
+        debugger
         this.frmnList = res;
         var divisionId = parseInt(this.authService.getDivisionId());
         var corpsId = parseInt(this.authService.getCorpsId());

@@ -1,5 +1,5 @@
 <mat-drawer-container>
-    <mat-drawer mode="side" [opened]="sideBarOpen">
+    <mat-drawer mode="side" [opened]="sideBarOpen" *ngIf="currentRoute != '/corps'">
       <mat-toolbar>
         <!-- <img src="/assets/logo.jpeg" class="logo" alt="logo"> -->
         <img class="logo" src="/assets/new_logo.webp" alt="CommandLogo"> &nbsp;
@@ -7,10 +7,11 @@
 
       </mat-toolbar>
       <div class="small-text">Battleground Indicator Software</div>
-      <app-sidebar (isloaded)="isLoaded($event)"></app-sidebar>
+      <app-sidebar  (isloaded)="isLoaded($event)"></app-sidebar>
+
     </mat-drawer>
     <mat-drawer-content
-    class="drawer-container" style="margin-left: 169px;"
+    class="drawer-container"  [ngClass]="currentRoute == '/corps' ? 'full-width' : 'compress'"
     >
     <!-- <mat-drawer-content
     style="margin-left: 188px;"
