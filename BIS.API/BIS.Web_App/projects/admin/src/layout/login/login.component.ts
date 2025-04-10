@@ -36,6 +36,7 @@ export class LoginComponent implements OnInit{
   }
 
   proceedlogin() {
+    debugger
     if (this.loginform.invalid) {
       return;
     }
@@ -45,31 +46,22 @@ export class LoginComponent implements OnInit{
 
     this.apiService.postWithHeader('auth/login', loginData).subscribe({
       next: (res) => {
-        this.loginLoading = false; // Stop spinner
-
+        this.loginLoading = false;
+debugger
         if (res && res.token && res.user) {
           this.authService.setToken(res.token);
           this.authService.setUserDetails(res.user);
+          let redirectUrl = '/corps';
 
-          // Redirect based on roleType
-          let redirectUrl = '/dashboard'; // Default route
 
-          if (res.user.roleType == '1') {
-            redirectUrl = '/master-data';
-          } else if (res.user.roleType == '7') {
-            redirectUrl = '/cdr-dahboard';
-          }else if(res.user.roleType == '8'){
-            redirectUrl = '/attribute'
-          }
-
-          this.router.navigate([redirectUrl]); // Use navigate() instead of navigateByUrl()
+          this.router.navigate([redirectUrl]);
         } else {
           this.router.navigate(['/login']);
         }
       },
       error: (err) => {
         console.error("Login failed", err);
-        this.loginLoading = false; // Stop spinner on error
+        this.loginLoading = false;
       }
     });
   }

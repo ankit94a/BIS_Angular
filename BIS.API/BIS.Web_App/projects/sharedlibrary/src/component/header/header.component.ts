@@ -26,8 +26,8 @@ export class HeaderComponent implements OnInit {
   ngOnInit(): void {
     if(this.authService.getDivisionName() != null && this.authService.getDivisionName() != 'null'){
       this.facilityName = this.authService.getDivisionName();
-    }else if(this.authService.getCorpsName() != null && this.authService.getCorpsName() != 'null'){
-      this.facilityName = this.authService.getCorpsName();
+    }else if(this.authService.getCorpsName()?.() != null && this.authService.getCorpsName()?.() !== 'null'){
+      this.facilityName = this.authService.getCorpsName()!();
     }else{
       this.facilityName = 'Admin'
     }

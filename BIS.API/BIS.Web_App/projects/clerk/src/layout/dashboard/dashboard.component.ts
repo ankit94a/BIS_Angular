@@ -15,6 +15,7 @@ import { Division } from 'projects/sharedlibrary/src/model/base.model';
   styleUrl: './dashboard.component.scss'
 })
 export class DashboardComponent implements OnInit {
+  isCommand:boolean=false
   dashboardCount:DashboardInputCount = new DashboardInputCount();
   @ViewChildren(BaseChartDirective) charts!: QueryList<BaseChartDirective>;
   // Map to track selected charts by their IDs
@@ -60,6 +61,8 @@ export class DashboardComponent implements OnInit {
   constructor(private apiService: ApiService,private authService:AuthService) {
     this.getFrmDetails();
     this.getSector();
+    if(parseInt(this.authService.getCorpsId()) == 1)
+      this.isCommand = true;
   }
 
   ngOnInit(): void {
@@ -67,10 +70,8 @@ export class DashboardComponent implements OnInit {
   }
 
   getFrmDetails() {
-    debugger
     this.apiService.getWithHeaders('dashboard/FmnDetails').subscribe(res => {
       if (res) {
-        debugger
         this.frmnList = res;
         var divisionId = parseInt(this.authService.getDivisionId());
         var corpsId = parseInt(this.authService.getCorpsId());

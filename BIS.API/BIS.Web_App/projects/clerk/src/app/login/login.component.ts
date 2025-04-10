@@ -46,7 +46,6 @@ export class LoginComponent implements OnInit{
     this.apiService.postWithHeader('auth/login', loginData).subscribe({
       next: (res) => {
         this.loginLoading = false; // Stop spinner
-debugger
         if (res && res.token && res.user) {
           this.authService.setToken(res.token);
           this.authService.setUserDetails(res.user);
@@ -60,7 +59,7 @@ debugger
             redirectUrl = '/cdr-dahboard';
           }else if(res.user.roleType == '8'){
             redirectUrl = '/attribute'
-          }else if(res.user.roleType == '10'){
+          }else if(res.user.roleType == '10' || res.user.roleType == '11' || res.user.roleType == '12' || res.user.roleType == '13' || res.user.roleType == '14' || res.user.roleType == '15'){
             redirectUrl = '/corps'
           }
 

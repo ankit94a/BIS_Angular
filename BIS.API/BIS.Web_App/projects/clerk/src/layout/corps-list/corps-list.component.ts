@@ -53,7 +53,6 @@ export class CorpsListComponent {
   }
 
   redirectUrl(corps){
-debugger;
   let tokenStr = this.authService.getToken();
   const decoded = this.decodeToken(tokenStr);
     let user = new User();
@@ -68,6 +67,7 @@ debugger;
         debugger;
         localStorage.removeItem('BIS_TOKEN');
         this.authService.setToken(res.token);
+        this.authService.setCorpsName(corps.name);
         this.authService.setCorpsId(corps.id)
         this.router.navigate(['/dashboard']);
       }

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Injectable({
@@ -23,6 +23,9 @@ export class AuthService {
   setToken(token:string){
     localStorage.setItem("BIS_TOKEN",token);
   }
+  setCorpsName(name){
+    localStorage.setItem("BIS_CorpsName",name);
+  }
   setCorpsId(id){
     localStorage.setItem("BIS_CorpsId",id);
   }
@@ -36,7 +39,7 @@ export class AuthService {
     return localStorage.getItem("BIS_RoleType");
   }
   getCorpsName(){
-    return localStorage.getItem("BIS_CorpsName");
+    return signal(localStorage.getItem("BIS_CorpsName"));
   }
   getCorpsId(){
     return localStorage.getItem("BIS_CorpsId");

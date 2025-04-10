@@ -27,6 +27,9 @@
   <div class="brand">
     <img src="/assets/createch-removebg.png" alt="">
   </div>
+  <div class="sign-out">
+    <button ></button>
+  </div>
 </div>
 <main>
   <div class="bis-banner">
@@ -35,7 +38,6 @@
         <h1>Your life's work,
           <span class="dis-block">powered by our life's work</span>
         </h1>
-        <!-- <p> A unique and powerful software suite to transform the way you work. Designed for businesses of all sizes, built by a company that <a class="zwc-txt-highlight" href="/privacy-commitment.html?ireft=nhome&amp;src=home">values your privacy.</a></p> -->
         <p>HQ Eastern Command, based in Kolkata, oversees the Indian Army’s operations in Eastern India. It ensures national security, border defense, and strategic coordination across sensitive regions, including the Northeast.</p>
         <button class="zh-btn">VIEW MORE</button>
         <div class="zh-img-container">
@@ -46,9 +48,10 @@
       </div>
       <div class="content-right">
         <div class="title">Featured apps</div>
-        <ul class="list" *ngFor="let corps of corpsList">
-          <a href="/dashboard">
-          <li class="main-app">
+        <ul class="list" *ngFor="let corps of corpsList" (click)="redirectUrl(corps)">
+
+            <!-- <button class="btn-link"> -->
+          <li class="main-app" >
 
               <span><img [src]="corps.imageUrl" alt="" width="35" height="35"> &nbsp;</span>
               <span class="content">
@@ -57,7 +60,8 @@
               </span>
 
           </li>
-        </a>
+        <!-- </button> -->
+
           <!-- <li class="main-app">
             <a href="_blank">
               <span><img src="/assets/mail.png" alt="" width="35" height="35"> &nbsp;</span>
