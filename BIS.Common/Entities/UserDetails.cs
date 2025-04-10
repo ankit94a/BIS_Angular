@@ -23,8 +23,6 @@ namespace BIS.Common.Entities
         public int RoleId { get; set; }
         public int? UserRoleId { get; set; }
        
-        public bool? Islocked { get; set; }
-        public int? Failattempt { get; set; }
         public RoleType RoleType { get; set; }
     }
 }

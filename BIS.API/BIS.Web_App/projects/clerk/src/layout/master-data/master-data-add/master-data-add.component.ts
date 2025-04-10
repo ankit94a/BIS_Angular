@@ -574,7 +574,7 @@ export class MasterDataAddComponent implements OnInit {
     if (this.authService.isDivisionUser()) {
       this.name = this.authService.getDivisionName();
     }else{
-      this.name = this.authService.getCorpsName();
+      this.name = this.authService.getCorpsName()!();
     }
     this.fmnList.push(this.name);
     this.createData.get('frmn')?.setValue(this.name);

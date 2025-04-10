@@ -23,8 +23,7 @@ export class ClerkAppModule {
 export const AppConfig: ApplicationConfig = {
    providers: [provideZoneChangeDetection({ eventCoalescing: true }), provideRouter(routes),
           // provideCharts(withDefaultRegisterables()),
-          // ClerkAppModule,
-           // ✅ Use Clerk app providers correctly
+
       ...ClerkAppConfig.providers,
           provideToastr(),
           provideAnimationsAsync(),

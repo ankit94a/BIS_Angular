@@ -41,7 +41,7 @@ namespace BIS.DB.Implements
 			{
 				var query = dbContext.UserMenus.AsQueryable();
 
-					query = query.Where(m => m.CorpsId == corpsId && m.DivisionId == divisionId && m.RoleId == roleId);
+					query = query.Where(m => m.CorpsId == corpsId && m.DivisionId == divisionId && m.RoleId == roleId).OrderBy(t => t.Id);
 				
 				var result = query.ToList();
 				return result;

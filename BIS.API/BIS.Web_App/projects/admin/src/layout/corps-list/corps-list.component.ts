@@ -5,6 +5,7 @@ import { GenerateReportsListComponent } from 'projects/clerk/src/layout/generate
 import { LayoutComponent } from 'projects/clerk/src/layout/layout.component';
 import { Division } from 'projects/sharedlibrary/src/model/base.model';
 import { ApiService } from 'projects/sharedlibrary/src/services/api.service';
+import { AuthService } from 'projects/sharedlibrary/src/services/auth.service';
 import { SharedLibraryModule } from 'projects/sharedlibrary/src/shared-library.module';
 
 @Component({
@@ -16,8 +17,10 @@ import { SharedLibraryModule } from 'projects/sharedlibrary/src/shared-library.m
 export class CorpsListComponent {
   corpsList:Division[]=[];
   isClerkApp:boolean=false;
-  constructor(private apiService:ApiService,private router:Router){
-    this.getCorpsList()
+  user;
+  constructor(private apiService:ApiService,private router:Router,private authService:AuthService){
+    this.getCorpsList();
+    this.user = this.authService.getRoleType()
   }
   getCorpsList(){
     this.apiService.getWithHeaders('corps').subscribe(res =>{
@@ -38,6 +41,37 @@ export class CorpsListComponent {
         })
       }
     })
+  }
+  decodeToken(token: string): any {
+    try {
+      const payload = token.split('.')[1];
+      const decodedPayload = atob(payload);
+      return JSON.parse(decodedPayload);
+    } catch (e) {
+      console.error('Invalid token', e);
+      return null;
+    }
+  }
+
+  redirectUrl(corps){
+debugger;
+let tokenStr = this.authService.getToken();
+const decoded = this.decodeToken(tokenStr);
+
+if (decoded) {
+  decoded.corpsId = corps.id;
+  localStorage.setItem("BIS_TOKEN", JSON.stringify(decoded));
+  localStorage.setItem("BIS_CorpsName", corps.name);
+  localStorage.setItem("BIS_CorpsId", corps.id);
+}
+    if(this.user == "10"){
+      this.router.navigate(['/dashboard']);
+    }else if(this.user == "15"){
+
+    }else{
+
+    }
+
   }
   openClerkApp(corps){
     debugger

@@ -230,13 +230,45 @@
   }
 }
 
-// .btn-link{
-//   border: none;
-//   color:#fff;
-//   background-color: #fff;
-// }
-// .btn-link:hover{
-//   border: none;
-//   color:#F1EFEC;
-//   background-color: #F1EFEC;
-// }
+
+/* Animation Keyframes */
+@keyframes slideDownFade {
+  from {
+    opacity: 0;
+    transform: translateY(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUpFade {
+  from {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Apply animation to heading and paragraph */
+.content-left h1,
+.content-left p {
+  opacity: 0;
+  animation: slideDownFade 1s ease-out forwards;
+}
+
+/* Delay paragraph slightly */
+.content-left p {
+  animation-delay: 0.3s;
+}
+
+/* Apply animation to image */
+.zh-img-container {
+  opacity: 0;
+  animation: slideUpFade 1.2s ease-out forwards;
+  animation-delay: 0.6s;
+}

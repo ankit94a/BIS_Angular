@@ -23,6 +23,10 @@ namespace BIS.DB.Implements
         }
         public List<Menus> GetMenuByRoleCorpsAndDivision(long corpsId, long divisionId, long roleId, RoleType roleType)
         {
+            if(roleType == RoleType.StaffEc || roleType == RoleType.G1IntEc || roleType == RoleType.ColIntEc || roleType == RoleType.BgsEc || roleType == RoleType.MggsEc || roleType == RoleType.GocEc)
+            {
+                corpsId = 1;
+            }
             return _userDB.GetMenuByRoleCorpsAndDivision(corpsId,divisionId, roleId, roleType);
         }
         public List<UserDetail> GetUserByCoprs(long corpsId)
