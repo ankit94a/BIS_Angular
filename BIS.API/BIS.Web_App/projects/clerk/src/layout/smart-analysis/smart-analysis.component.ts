@@ -62,10 +62,13 @@ export class SmartAnalysisComponent implements OnInit, OnDestroy {
     chart2: false,
     chart3: false,
   };
+  isCommand:boolean=false;
 chartList: string[] = ['Monthly', 'Daily', 'Weekly'];
   constructor(private apiService: ApiService,private datePipe: DatePipe,private authService: AuthService,private masterDataService: MasterDataFilterService) {
     this.filterModel4.filterType = FilterType.Daily;
     this.getFrmDetails();
+    if(parseInt(this.authService.getRoleType()) >= 10)
+      this.isCommand = true;
   }
 
   getFrmDetails() {

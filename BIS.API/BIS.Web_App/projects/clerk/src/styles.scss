@@ -17,6 +17,9 @@ body {
 	display: flex;
 	width: 100%;
 }
+.back-link{
+  cursor: pointer;
+}
 .mat-content {
   max-height: calc(100vh - 218px);
   overflow-y: auto;

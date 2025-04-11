@@ -8,6 +8,7 @@ import { ApiService } from 'projects/sharedlibrary/src/services/api.service';
 import { SharedLibraryModule } from 'projects/sharedlibrary/src/shared-library.module';
 import { BisdefaultDatePipe } from 'projects/sharedlibrary/src/pipe/bisdefault-date.pipe';
 import { GenerateReportViewComponent } from '../generate-report-view/generate-report-view.component';
+import { AuthService } from 'projects/sharedlibrary/src/services/auth.service';
 
 @Component({
   selector: 'app-generate-reports-list',
@@ -18,8 +19,9 @@ import { GenerateReportViewComponent } from '../generate-report-view/generate-re
 })
 export class GenerateReportsListComponent extends TablePaginationSettingsConfig implements OnInit {
   isRefresh:boolean=false;
+  isCommand:boolean =false;
   generateReportList: GenerateReport[] = [];
-  constructor(private dialogService:BISMatDialogService,private apiService:ApiService ,private datePipe:BisdefaultDatePipe){
+  constructor(private dialogService:BISMatDialogService,private apiService:ApiService ,private datePipe:BisdefaultDatePipe,private authService:AuthService){
     super();
 
     this.tablePaginationSettings.enableAction = true;
@@ -28,6 +30,8 @@ export class GenerateReportsListComponent extends TablePaginationSettingsConfig 
     // this.tablePaginationSettings.enableDelete = true;
     this.tablePaginationSettings.pageSizeOptions = [50, 100];
     this.tablePaginationSettings.showFirstLastButtons = false
+    if(parseInt(this.authService.getRoleType()) >= 10)
+      this.isCommand = true;
   }
   ngOnInit() {
     this.getReportData()

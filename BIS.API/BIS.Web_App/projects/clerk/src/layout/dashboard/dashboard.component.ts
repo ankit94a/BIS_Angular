@@ -61,7 +61,7 @@ export class DashboardComponent implements OnInit {
   constructor(private apiService: ApiService,private authService:AuthService) {
     this.getFrmDetails();
     this.getSector();
-    if(parseInt(this.authService.getCorpsId()) == 1)
+    if(parseInt(this.authService.getRoleType()) >= 10)
       this.isCommand = true;
   }
 
