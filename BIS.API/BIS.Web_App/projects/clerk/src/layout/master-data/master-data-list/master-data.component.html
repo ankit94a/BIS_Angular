@@ -2,11 +2,12 @@
   <mat-card-header class="insync-header">
     <div class="row full-width">
       <div class="col-sm-2">MasterData List</div>
-      <!-- <div class="col-sm-2 offset-md-6">Bulk</div> -->
-      <div class="col-sm-3 offset-md-6">
-        <!-- <action-dropdown></action-dropdown>  -->
+      <div class="col-sm-7">
+        <div class="col-md-2" *ngIf="isCommand" align="end">
+          <a href="/corps" class="back-link"> Back</a>
+        </div>
       </div>
-      <div class="col-sm-1" align="end" *ngIf="roleType == '1'"><button class="btn btn-link" (click)="add()">+ Add Data</button>
+      <div class="col-sm-1" align="end" *ngIf="roleType == '1' || roleType == '10'"><button class="btn btn-link" (click)="add()">+ Add Data</button>
       </div>
     </div>
   </mat-card-header>

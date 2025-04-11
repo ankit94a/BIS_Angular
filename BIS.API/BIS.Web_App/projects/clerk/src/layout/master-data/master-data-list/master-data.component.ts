@@ -30,6 +30,7 @@ export class MasterDataComponent extends TablePaginationSettingsConfig implement
   sortedData = [];
   selectedSample;
   roleType;
+  isCommand:boolean=false;
   constructor(private authService:AuthService,private datePipe:BisdefaultDatePipe,private apiService:ApiService,private downloadService:DownloadService,private masterFilterService:MasterDataFilterService,private dialogService:BISMatDialogService,private router:Router,private masterDataService:MasterDataService){
     super();
     this.roleType = this.authService.getRoleType();
@@ -39,7 +40,9 @@ export class MasterDataComponent extends TablePaginationSettingsConfig implement
     // this.tablePaginationSettings.enableDelete = true;
     this.tablePaginationSettings.enableColumn = true;
     this.tablePaginationSettings.pageSizeOptions = [50, 100];
-    this.tablePaginationSettings.showFirstLastButtons = false
+    this.tablePaginationSettings.showFirstLastButtons = false;
+    if(parseInt(this.authService.getRoleType()) >= 10)
+      this.isCommand = true;
   }
   getSelectedRows($event){
     this.selectedSample = $event;
