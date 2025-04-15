@@ -22,12 +22,10 @@ export class LayoutComponent {
   currentRoute: string = '';
   constructor(private route:Router) {
     this.typeSelected= 'ball-fussion';
-    debugger
     this.route.events
     .pipe(filter(event => event instanceof NavigationEnd))
     .subscribe((event: NavigationEnd) => {
       this.currentRoute = event.urlAfterRedirects;
-      console.log('Current Route:', this.currentRoute);
     });
 
   }

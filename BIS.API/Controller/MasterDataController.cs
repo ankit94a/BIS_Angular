@@ -65,7 +65,7 @@ namespace BIS.API.Controller
 				masterData.DivisionId = HttpContext.GetDivisionId();
 				masterData.CreatedBy = HttpContext.GetUserId();
 				var roleType = HttpContext.GetRoleType();
-				if (roleType == RoleType.Staff1)
+				if (roleType == RoleType.Staff1 || roleType == RoleType.StaffEc)
 				{
 					return Ok(_masterDataManager.AddMasterData(masterData, HttpContext.GetRoleType()));
 				}
