@@ -25,7 +25,10 @@ namespace BIS.DB.Implements
 			return _dbContext.RolePermission.Any(rp => rp.RoleId == RoleId && rp.PermissionId == permissionId);
 		}
 
-
+		public List<Role> GetAllRoles()
+		{
+			return _dbContext.Roles.Where(r => r.IsActive).ToList();
+		}
 		public List<Role> GetAll(long corpsId, long DivisonId)
 		{
 			return _dbContext.Roles.Where(r => r.CorpsId == corpsId && r.DivisionId == DivisonId).ToList();

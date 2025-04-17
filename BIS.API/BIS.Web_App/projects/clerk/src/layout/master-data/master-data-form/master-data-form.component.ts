@@ -66,9 +66,9 @@ export class MasterDataFormComponent {
     })
   }
   getIndicator(event){
-    if(!this.hasNonEmptyParams){
+    // if(!this.hasNonEmptyParams){
       this.aspectName = this.aspectList.find(item => item.id == event).name;
-    }
+    // }
     this.apiService.getWithHeaders('attribute/indicator/' + event).subscribe(res =>{
       if(res){
         this.indicators = res;
@@ -95,6 +95,7 @@ export class MasterDataFormComponent {
       // typeOfLoc: ['', Validators.required],
       // enLocName: ['', Validators.required],
       // aspect: [''],
+      id: [0],
       inputLevel: ['',],
       reportedDate: [new Date(),Validators.required],
       masterInputlevelID: [0],
@@ -575,12 +576,13 @@ export class MasterDataFormComponent {
     this.fmnList.push(this.name);
     this.createData.get('frmn')?.setValue(this.name);
     // this.createData.get('reportedDate')?.disable();
-
+    debugger
     // new work for edit master-form
     const queryParams = this.route.snapshot.queryParams;
     this.hasNonEmptyParams = Object.keys(queryParams).some(key => queryParams[key] !== null && queryParams[key] !== undefined && queryParams[key] !== '');
     if(this.hasNonEmptyParams){
       this.masterData = this.masterDataService.getMasterData();
+      this.masterData.id;
       this.patchFormValues(this.masterData);
     }
   }
@@ -652,10 +654,21 @@ export class MasterDataFormComponent {
   }
 
   save() {
+    debugger
+
+
     if(!this.createData.invalid){
-      if(!this.hasNonEmptyParams){
+      // if(!this.hasNonEmptyParams){
         this.createData.get('aspect')?.setValue(this.aspectName);
-      }
+      // }
+      this.createData.get('aspect')?.value;
+      const selectedDate = new Date(this.createData.value.reportedDate);
+    const now = new Date();
+    selectedDate.setHours(now.getHours());
+    selectedDate.setMinutes(now.getMinutes());
+    selectedDate.setSeconds(now.getSeconds());
+    this.createData.get('fmn')?.setValue(0);
+    this.createData.patchValue({ reportedDate: selectedDate });
     this.apiService.postWithHeader('masterData',this.createData.value).subscribe(res =>{
       if (res) {
         this.toastr.success("Input saved successfully",'success');
@@ -663,8 +676,6 @@ export class MasterDataFormComponent {
       }else{
         this.toastr.error("Some issue in saving input")
       }
-
-      // this.router.navigateByUrl("")
     })
   }else{
     this.toastr.error("Please fill the required filled")

@@ -15,6 +15,7 @@ namespace BIS.DB.Interfaces
 
 		public List<IndicatorSubFields> GetIndicatorSubField(int indicatorId);
 		public List<MasterSector> GetSectorByCorpsId(int corpsId);
-
+		public bool AddAspect(Aspect aspect);
+		public bool AddIndicator(Indicator indicator);
 	}
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -39,6 +40,16 @@ namespace BIS.Common.Entities
 		public DateTime? startDate { get; set; }
 		public DateTime? endDate { get; set; }
 	}
+	public class VaritaionFilter
+	{
+		public FmnModel Frmn { get; set; }
+		public List<string>? Sector { get; set; }
+		public List<string>? Aspects { get; set; }
+		public List<string>? Source { get; set; }
+		public List<string>? Indicator { get; set; }
+		public DateTime? startDate { get; set; }
+		public DateTime? endDate { get; set; }
+	}
 	public class FmnModel
 	{
 		public long CorpsId { get; set; }
@@ -54,5 +65,19 @@ namespace BIS.Common.Entities
 		public string Date { get; set; }
 		public int Count { get; set; }
 	}
+	public class VaritaionChart
+	{
+		public List<string> Labels { get; set; } = new();
+		public List<ChartSeries> Series { get; set; } = new();
+	}
+
+	public class ChartSeries
+	{
+		public string Frmn { get; set; }
+		public List<int> Data { get; set; } = new List<int>();
+		[JsonIgnore] // optional, if using JSON serialization
+		public object Tag { get; set; } // temporary internal use
+	}
+
 
 }

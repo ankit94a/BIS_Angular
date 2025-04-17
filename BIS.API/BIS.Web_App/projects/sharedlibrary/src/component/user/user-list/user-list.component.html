@@ -2,7 +2,7 @@
     <mat-card-header class="insync-header">
         User List
         <span class="example-spacer"></span>
-        <button type="button" (click)="add()" class="btn btn-link">{{'+ Add New User'}}</button>
+        <button type="button" (click)="add()" class="btn btn-primary">{{'+Add New User'}}</button>
     </mat-card-header>
     <mat-card-content>
         <div class="table-container">
@@ -13,8 +13,11 @@
                         <th>UserName</th>
                         <th>Email</th>
                         <th>Phone</th>
-                        <th>Status</th>
                         <th>Role</th>
+                        <th>Command</th>
+                        <th>Corps</th>
+                        <th>Division</th>
+                        <!-- <th>Facility</th> -->
                     </tr>
                 </thead>
                 <tbody>
@@ -23,11 +26,11 @@
                         <td>{{user.username}}</td>
                         <td>{{user.email}}</td>
                         <td>{{user.phone}}</td>
-                        <td>{{user.statusname}}</td>
-                        <td>{{user.role}}</td>
-                        <td>
-                            <!-- Add your action buttons here -->
-                        </td>
+                        <td>{{RoleType[user.roleType] }}</td>
+                        <td>{{user.corpsId == 1 ? 'Eastern Command' : '-'}}</td>
+                        <td>{{user.corpsId != 1 ? Corps[user.corpsId] : '-'}}</td>
+                        <td>{{user.divisionId > 0 ? Divison[user.divisionId] : '-'}}</td>
+                        <!-- <td>{{user.divisionId ? Divison[user.divisionId] : Corps[user.corpsId]}}</td> -->
                     </tr>
                 </tbody>
             </table>

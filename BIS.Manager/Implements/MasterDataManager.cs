@@ -125,14 +125,14 @@ namespace BIS.Manager.Implements
 			{
 				Task.Run(async () =>
 				{
-					await Task.Delay(TimeSpan.FromMinutes(2));
+					await Task.Delay(TimeSpan.FromMinutes(10));
 
 					var notification = new Notification
 					{
 						SenderId = masterData.CreatedBy,
 						SenderEntityType = roleType,
 						CreatedBy = masterData.CreatedBy,
-						CreatedOn = DateTime.UtcNow,
+						CreatedOn = DateTime.Now,
 						CorpsId = masterData.CorpsId,
 						DivisionId = masterData.DivisionId,
 						DataId = Convert.ToInt32(id),

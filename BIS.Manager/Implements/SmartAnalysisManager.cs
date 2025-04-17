@@ -42,7 +42,7 @@ namespace BIS.Manager.Implements
 
 
 		}
-		public DashboardChart GetVariationData(RoleType roleType, FilterModel filterModel)
+		public VaritaionChart GetVariationData(RoleType roleType, List<VaritaionFilter> filterModel)
 		{
 
 			return _smartAnalysisDB.GetVariationData(roleType, filterModel);

@@ -6,14 +6,14 @@
           <mat-form-field><mat-label>Role Name</mat-label>
 
           <input matInput  type="text" [ngModelOptions]="{standalone:true}"
-            [(ngModel)]="role.name" required type="text" readonly/>
+            [(ngModel)]="role.roleName" required type="text" readonly/>
         </mat-form-field>
       </div>
       <div class="col-sm-6">
           <mat-form-field><mat-label>Active Or Deactive</mat-label>
 
           <input matInput  type="text" [ngModelOptions]="{standalone:true}"
-            [(ngModel)]="role.status" readonly/>
+            [(ngModel)]="role.isActive" readonly/>
         </mat-form-field>
       </div>
     </div>
@@ -56,5 +56,5 @@
     <!-- <button type="button" class="btn btn-outline-danger btn-sm" (click)="resetObj()"
       *ngIf="!dataObject.isView && !(dataObject.id>0)">Reset</button> -->
     <button type="button" class="btn btn-outline-info btn-sm" (click)="closeDialog()">Close</button>
-  </mat-dialog-actions>  
+  </mat-dialog-actions>
 </form>

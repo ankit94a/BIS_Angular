@@ -21,7 +21,15 @@ export class DashboardInputCount{
 export class FilterModel4 extends FilterModel{
   filterType:FilterType;
 }
-
+export class VaraitionFilter{
+  frmn:FmnModel;
+    source:string[]=[];
+    aspects:string[]=[];
+    sector:string[]=[];
+    indicator:string[]=[];
+    startDate:Date;
+    endDate:Date;
+}
 export class FmnModel {
   corpsId:number;
   divisionId:number;

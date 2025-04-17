@@ -40,7 +40,6 @@ export class LoginComponent implements OnInit{
       return;
     }
 
-    this.loginLoading = true;
     const loginData = this.loginform.value;
 
     this.apiService.postWithHeader('auth/login', loginData).subscribe({

@@ -105,6 +105,17 @@ namespace BIS.DB.Implements
 				throw;
 			}
 		}
+		public List<UserDetail> GetAllUsers()
+		{
+			try
+			{
+				return dbContext.UserDetails.Where(us => us.IsActive).ToList();
+			}
+			catch (Exception ex)
+			{
+				throw;
+			}
+		}
 		public long AddUser(UserDetail user)
 		{
 			try

@@ -14,6 +14,9 @@ export class User extends BaseEntity {
     phone;
     role;
     roleType;
+    corpsId:number;
+    divisionId:number;
+    facilityType;
     // userType:RoleType
 
   }

@@ -1,3 +1,5 @@
+import { BaseEntity } from "./base.model";
+
 export class UserRolePermission {
     id: number;
     userRole: string;
@@ -24,13 +26,11 @@ export interface menus {
     name: string
     status: boolean
 }
-export interface roles {
-    id:number;
-    code: string
-    name: string
-    status: boolean
-    isView:boolean
+export class roles extends BaseEntity{
+    description: string
+    roleName: string
 }
+
 export class role{
     id:number;
     roleName:string;

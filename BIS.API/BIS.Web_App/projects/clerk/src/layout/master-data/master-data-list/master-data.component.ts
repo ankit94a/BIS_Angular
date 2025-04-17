@@ -105,19 +105,20 @@ export class MasterDataComponent extends TablePaginationSettingsConfig implement
   getMoreSameples($event){
 
   }
-  filterType = ['Created','Processing','Approved','Rejected']
+  filterType = ['All','Created','Processing','Approved','Rejected']
   filterData($event){
-    let res;
+    debugger
     if($event == 'Created'){
-      res = this.DataList = this.sortedData.filter(item => item.status == Status.Created)
+      return this.sortedData = this.DataList.filter(item => item.status == Status.Created)
     }else if($event == 'Processing'){
-      res = this.sortedData.filter(item => item.status == Status.Progress)
+      return this.sortedData = this.DataList.filter(item => item.status == Status.Progress)
     }else if($event == 'Approved'){
-      res = this.sortedData.filter(item => item.status == Status.Approved)
+      return this.sortedData = this.DataList.filter(item => item.status == Status.Approved)
+    }else if($event == 'Rejected'){
+      return this.sortedData = this.DataList.filter(item => item.status == Status.Rejected)
     }else{
-      res = this.sortedData.filter(item => item.status == Status.Rejected)
+      return this.sortedData = [...this.DataList];
     }
-    this.DataList = [...res]
   }
   getDataFromServer(){
     this.apiService.getWithHeaders('MasterData').subscribe(res => {

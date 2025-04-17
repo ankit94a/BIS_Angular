@@ -39,5 +39,10 @@ namespace BIS.Manager.Implements
         {
             throw new NotImplementedException();
         }
-    }
+		public List<Role> GetAllRoles()
+        {
+            return _roleDB.GetAllRoles();
+        }
+
+	}
 }

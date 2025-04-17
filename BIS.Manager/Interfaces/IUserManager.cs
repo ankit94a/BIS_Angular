@@ -15,5 +15,6 @@ namespace BIS.DB.Interfaces
         public List<UserDetail> GetUserByCoprs(long corpsId);
 
         public long AddUser(UserDetail user);
-    }
+		public List<UserDetail> GetAllUsers();
+	}
 }

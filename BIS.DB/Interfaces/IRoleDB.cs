@@ -11,6 +11,6 @@ namespace BIS.DB.Interfaces
     public interface IRoleDB : IBaseDB<Role>
     {
 		public bool Check(long RoleId, PermissionItem PermissionName, PermissionAction permissionAction);
-
+		public List<Role> GetAllRoles();
 	}
 }

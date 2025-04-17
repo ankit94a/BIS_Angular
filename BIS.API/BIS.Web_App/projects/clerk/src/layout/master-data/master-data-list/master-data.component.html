@@ -3,37 +3,42 @@
     <div class="row full-width">
       <div class="col-sm-2">MasterData List</div>
       <div class="col-sm-7">
-        <div class="col-md-2" *ngIf="isCommand" align="end">
-          <a href="/corps" class="back-link"> Back</a>
+        <div class="col-md-2"  align="end">
+          <a href="/corps" *ngIf="isCommand" class="back-link"> Back</a>
         </div>
       </div>
-      <div class="col-sm-1" align="end" *ngIf="roleType == '1' || roleType == '10'"><button class="btn btn-link" (click)="add()">+ Add Data</button>
-      </div>
+
     </div>
   </mat-card-header>
-  <mat-card-content style="height: 730px;">
+  <mat-card-content>
     <div class="row">
-      <div class="col-md-6">
+      <div class="col-md-9">
         <div class="layout">
-          <mat-chip>
+          <mat-chip (click)="filterData('All')">
+            <div class="chip-container">
+              <span>All</span>
+              <span class="background dark"></span>
+            </div>
+          </mat-chip>
+          <mat-chip (click)="filterData('Created')">
             <div class="chip-container">
               <span>Created</span>
               <span class="background blue"></span>
             </div>
           </mat-chip>
-          <mat-chip>
+          <mat-chip (click)="filterData('Processing')">
             <div class="chip-container">
               <span>Processing</span>
               <span class="background orange"></span>
             </div>
           </mat-chip>
-          <mat-chip>
+          <mat-chip (click)="filterData('Approved')">
             <div class="chip-container">
               <span>Approved</span>
               <span class="background green"></span>
             </div>
           </mat-chip>
-          <mat-chip>
+          <mat-chip (click)="filterData('Rejected')">
             <div class="chip-container">
               <span>Rejected</span>
               <span class="background red"></span>
@@ -41,6 +46,8 @@
           </mat-chip>
         </div>
 
+      </div>
+      <div class="col-sm-3" align="end" *ngIf="roleType == '1' || roleType == '10'"><button class="btn btn-primary" (click)="add()">+ Add Data</button>
       </div>
       <!-- <div class="col-md-6">
         <ng-select appendTo="ng-select" [items]="filterType" [multiple]="false" (change)="filterData($event)"
@@ -58,7 +65,7 @@
     </div>
 
 
-    <app-table *ngIf="DataList.length > 0" [rowData]="DataList" [tablePaginationSettings]="tablePaginationSettings"
+    <app-table *ngIf="sortedData.length > 0" [rowData]="sortedData" [tablePaginationSettings]="tablePaginationSettings"
       [enableCheckbox]="true" [isRowBackgroundColor]="true" [isRefresh]="isRefresh" [allowMultiSelect]="true"
       (edit)="edit($event)" (view)="view($event)" [sqColumnDefinition]="columns"
       (pageChanged)="getMoreSameples($event)" (getSelectedRows)="getSelectedRows($event)">

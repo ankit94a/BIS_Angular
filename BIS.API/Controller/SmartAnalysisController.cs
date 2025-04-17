@@ -78,15 +78,15 @@ namespace BIS.API.Controller
 			RoleType roleType = HttpContext.GetRoleType();
 			return Ok(await _smartAnalysisManager.GetEntries(roleType, filterModel));
 		}
-		[AuthorizePermission(PermissionItem.SmartAnalysis, PermissionAction.Read)]
 		[HttpPost, Route("variation")]
-		public IActionResult GetVariationData([FromBody] FilterModel filterModel)
+		public IActionResult GetVariationData([FromBody] List<VaritaionFilter> filterModels)
 		{
 			long corpsId = HttpContext.GetCorpsId();
 			long divisionId = HttpContext.GetDivisionId();
 			RoleType roleType = HttpContext.GetRoleType();
-			return Ok(_smartAnalysisManager.GetVariationData(roleType, filterModel));
+			return Ok(_smartAnalysisManager.GetVariationData(roleType, filterModels));
 		}
+
 		[AuthorizePermission(PermissionItem.SmartAnalysis, PermissionAction.Read)]
 		[HttpPost, Route("getentrieschart/entrydata")]
 		public async Task<IActionResult> GetSingleEntriesChartData([FromBody] FilterModelEntries filterModel)

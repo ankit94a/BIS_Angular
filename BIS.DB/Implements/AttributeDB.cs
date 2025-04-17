@@ -17,12 +17,12 @@ namespace BIS.DB.Implements
 		}
 		public List<Aspect> GetAllAspect()
 		{
-			return _dbContext.Aspect.ToList();
+			return _dbContext.Aspect.Where(a => a.IsActive).ToList();
 		}
 
 		public List<Indicator> GetIndicatorByAspect(int aspectId)
 		{
-			return _dbContext.Indicator.Where(d => d.AspectID == aspectId).ToList();
+			return _dbContext.Indicator.Where(d => d.AspectID == aspectId && d.IsActive).ToList();
 		}
 		public List<Indicator> GetIndicators(List<Aspect> aspect)
 		{
@@ -40,6 +40,17 @@ namespace BIS.DB.Implements
 		public List<MasterSector> GetSectorByCorpsId(int corpsId)
 		{
 			return _dbContext.Sector.Where(d => d.CorpsId == corpsId).ToList();
+		}
+		public bool AddAspect(Aspect aspect)
+		{
+			var result = _dbContext.Aspect.Add(aspect);
+			return _dbContext.SaveChanges() > 0;
+		}
+
+		public bool AddIndicator(Indicator indicator)
+		{
+			var result = _dbContext.Indicator.Add(indicator);
+			return _dbContext.SaveChanges() > 0;
 		}
 
 	}

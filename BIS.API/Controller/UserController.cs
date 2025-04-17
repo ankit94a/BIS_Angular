@@ -31,8 +31,12 @@ namespace BIS.API.Controller
             long corpsId = HttpContext.GetCorpsId();
             return Ok(_userManager.GetUserByCoprs(corpsId));
         }
-
-        [HttpPost]
+		[HttpGet,Route("all")]
+		public IActionResult GetAllUsers()
+		{
+			return Ok(_userManager.GetAllUsers());
+		}
+		[HttpPost]
         public IActionResult AddUser(UserDetail user)
         {
             return Ok(_userManager.AddUser(user));

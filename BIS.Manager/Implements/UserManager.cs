@@ -37,5 +37,11 @@ namespace BIS.DB.Implements
         {
             return _userDB.AddUser(user);
         }
-    }
+		public List<UserDetail> GetAllUsers()
+        {
+            return _userDB.GetAllUsers();
+
+		}
+
+	}
 }

@@ -61,6 +61,11 @@ namespace BIS.API.Controller
 			}
 			try
 			{
+				if (masterData.ID > 0)
+				{
+					masterData.UpdatedBy = HttpContext.GetUserId();
+					return Ok(_masterDataManager.Update(masterData));
+				}
 				masterData.CorpsId = HttpContext.GetCorpsId();
 				masterData.DivisionId = HttpContext.GetDivisionId();
 				masterData.CreatedBy = HttpContext.GetUserId();

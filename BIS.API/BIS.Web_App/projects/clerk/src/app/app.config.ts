@@ -8,7 +8,8 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { MatNativeDateModule } from '@angular/material/core';
 import { HttpClientModule, provideHttpClient, withInterceptors, withInterceptorsFromDi } from '@angular/common/http';
 import { authInterceptor } from 'projects/sharedlibrary/src/services/auth-interceptor.service';
-// import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
+import { OwlDateTimeModule, OwlNativeDateTimeModule } from '@danielmoncada/angular-datetime-picker';
+
 
 export const appConfig: ApplicationConfig = {
   providers: [provideZoneChangeDetection({ eventCoalescing: true }), provideRouter(routes),
@@ -17,7 +18,8 @@ export const appConfig: ApplicationConfig = {
         provideAnimationsAsync(),
         importProvidersFrom(MatNativeDateModule),
         importProvidersFrom(HttpClientModule),
-        // importProvidersFrom(OwlNativeDateTimeModule),
+        importProvidersFrom(OwlNativeDateTimeModule),
+        importProvidersFrom(OwlDateTimeModule),
         provideHttpClient(withInterceptors([authInterceptor])),
         provideCharts(withDefaultRegisterables())
   ]

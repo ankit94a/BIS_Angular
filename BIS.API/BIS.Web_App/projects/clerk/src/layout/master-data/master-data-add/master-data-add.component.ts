@@ -18,8 +18,8 @@ import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 
 @Component({
   selector: 'app-master-data-add',
-  standalone:true,
-  imports: [SharedLibraryModule, MatStepperModule,MatDatepickerModule,RouterModule],
+  standalone: true,
+  imports: [SharedLibraryModule, MatStepperModule, MatDatepickerModule, RouterModule],
   templateUrl: './master-data-add.component.html',
   styleUrl: './master-data-add.component.scss',
   providers: [
@@ -27,7 +27,7 @@ import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
   ]
 })
 export class MasterDataAddComponent implements OnInit {
-  aspectList:Aspect[]=[]
+  aspectList: Aspect[] = []
   createData;
   name = '';
   isEdit = false;
@@ -49,41 +49,40 @@ export class MasterDataAddComponent implements OnInit {
   router = inject(Router);
   route = inject(ActivatedRoute);
   // improvement
-  indicatorSubFieldList=[];
-  sectors:MasterSector[] = [];
+  indicatorSubFieldList = [];
+  sectors: MasterSector[] = [];
   inputLevels: MasterInputLevels[] = [];
-  sourceList:Source[]=[];
-  sourceLoc:MasterLoc[] = [];
-  typeOfLoc:MasterLoc[] = [];
-  enemyLocations:EnemyLocation[] = [];
+  sourceList: Source[] = [];
+  sourceLoc: MasterLoc[] = [];
+  typeOfLoc: MasterLoc[] = [];
+  enemyLocations: EnemyLocation[] = [];
   masterData;
-  constructor(@Inject(MAT_DIALOG_DATA) data, private authService:AuthService,private toastr: ToastrService,  private apiService: ApiService,private datePipe: DatePipe,private dialogref:MatDialogRef<MasterDataAddComponent>) {
+  constructor(@Inject(MAT_DIALOG_DATA) data, private authService: AuthService, private toastr: ToastrService, private apiService: ApiService, private datePipe: DatePipe, private dialogref: MatDialogRef<MasterDataAddComponent>) {
     this.indicators = [];
-    if(data != null){
+    if (data != null) {
       this.masterData = data;
     }
   }
 
-  getAspect(){
-    this.apiService.getWithHeaders('attribute/allaspect').subscribe(res =>{
-      if(res){
+  getAspect() {
+    this.apiService.getWithHeaders('attribute/allaspect').subscribe(res => {
+      if (res) {
         this.aspectList = res;
-        console.log('as',this.aspectList)
-        if(this.masterData?.id > 0){
+        if (this.masterData?.id > 0) {
           this.getIndicator(this.masterData.aspect)
         }
       }
     })
   }
-  close(){
+  close() {
     this.dialogref.close(true)
   }
-  getIndicator(event){
+  getIndicator(event) {
     let apsectId = this.aspectList.find(item => item.name == event)?.id;
-    this.apiService.getWithHeaders('attribute/indicator/' + apsectId).subscribe(res =>{
-      if(res){
+    this.apiService.getWithHeaders('attribute/indicator/' + apsectId).subscribe(res => {
+      if (res) {
         this.indicators = res;
-        if(this.masterData?.id > 0){
+        if (this.masterData?.id > 0) {
           this.onChange2(this.masterData.indicator)
         }
       }
@@ -99,7 +98,7 @@ export class MasterDataAddComponent implements OnInit {
   ngOnInit(): void {
     this.createData = this.formBuilder.group({
       inputLevel: ['',],
-      reportedDate: [new Date(),Validators.required],
+      reportedDate: [new Date(), Validators.required],
       masterInputlevelID: [0],
       masterSectorID: [0],
       // inputLevelNew: [0],
@@ -573,7 +572,7 @@ export class MasterDataAddComponent implements OnInit {
 
     if (this.authService.isDivisionUser()) {
       this.name = this.authService.getDivisionName();
-    }else{
+    } else {
       this.name = this.authService.getCorpsName()!();
     }
     this.fmnList.push(this.name);
@@ -599,7 +598,7 @@ export class MasterDataAddComponent implements OnInit {
     this.aspectList;
 
   }
-  getData(){
+  getData() {
     this.getAspect();
     this.getInputLevel();
     this.getSector();
@@ -633,7 +632,7 @@ export class MasterDataAddComponent implements OnInit {
   }
 
   getSourceLoc() {
-    this.apiService.getWithHeaders('MasterData/loc/'+true).subscribe(res => {
+    this.apiService.getWithHeaders('MasterData/loc/' + true).subscribe(res => {
       if (res) {
         this.sourceLoc = res;
       }
@@ -649,19 +648,25 @@ export class MasterDataAddComponent implements OnInit {
   }
 
   save() {
+    const selectedDate = new Date(this.createData.value.reportedDate);
+    const now = new Date();
+    selectedDate.setHours(now.getHours());
+    selectedDate.setMinutes(now.getMinutes());
+    selectedDate.setSeconds(now.getSeconds());
 
+    this.createData.patchValue({ reportedDate: selectedDate });
 
-    if(!this.createData.invalid){
-      this.apiService.postWithHeader('masterData',this.createData.value).subscribe(res =>{
-debugger
+    if (!this.createData.invalid) {
+      this.apiService.postWithHeader('masterData', this.createData.value).subscribe(res => {
+
         if (res) {
-          this.toastr.success("Input saved successfully",'success');
+          this.toastr.success("Input saved successfully", 'success');
           this.dialogref.close(true);
-        }else{
+        } else {
           this.toastr.error("Some issue in saving input")
         }
       })
-    }else{
+    } else {
       this.toastr.error("Please fill the required filled")
     }
 

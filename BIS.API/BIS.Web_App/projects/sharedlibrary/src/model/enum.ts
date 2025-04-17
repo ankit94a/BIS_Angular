@@ -55,17 +55,35 @@ export enum PermissionAction {
 
 }
 
+// export enum RoleType {
+//   Staff1 = "Staff1",
+//   G1Int = "G1Int",
+//   Colgs = "Colgs",
+//   ColInt = "ColInt",
+//   Bgs = "Bgs",
+//   Mggs = "Mggs",
+//   Goc = "Goc",
+//   Admin = "Admin",
+//   SuperAdmin = "SuperAdmin"
+// }
 export enum RoleType {
-  Staff1 = "Staff1",
-  G1Int = "G1Int",
-  Colgs = "Colgs",
-  ColInt = "ColInt",
-  Bgs = "Bgs",
-  Mggs = "Mggs",
-  Goc = "Goc",
-  Admin = "Admin",
-  SuperAdmin = "SuperAdmin"
+  Staff1 = 1,
+  G1Int,
+  Colgs,
+  ColInt,
+  Bgs,
+  Mggs,
+  Goc,
+  Admin,
+  SuperAdmin,
+  StaffEc,
+  G1IntEc,
+  ColIntEc,
+  BgsEc,
+  MggsEc,
+  GocEc
 }
+
 export enum FilterType {
   Daily = "Daily",
   Weekly = "Weekly",
@@ -77,4 +95,26 @@ export enum Status {
   Progress = 2,
   Approved = 3,
   Rejected = 4
+}
+
+export enum AllCorps{
+  HQ_Eastern = 1,
+  HQ_33Corps,
+  HQ_3Corps,
+  HQ_4Corps,
+  HQ_17Corps
+}
+export enum AllDivision{
+  HQ_17Mtn_Div = 1,
+  HQ_20Mtn_Div,
+  HQ_27Mtn_Div,
+  HQ_111_SubArea,
+  HQ_2Mtn_Div,
+  HQ_56Inf_Div,
+  HQ_57Mtn_Div,
+  HQ_5Mtn_Div,
+  HQ_71Inf_Div,
+  HQ_21Mtn_Div,
+  HQ_23Inf_Div,
+  HQ_59Mtn_Div
 }

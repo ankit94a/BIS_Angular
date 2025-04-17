@@ -1,6 +1,6 @@
 <mat-card appearance="outlined">
   <mat-card-header class="insync-header">
-    <div class="row">
+    <div class="row full-width">
       <div class="col-md-4">DETAILED ANALYSIS : EN PATTERN OF ACTIVITIES</div>
       <div class="col-md-6"></div>
       <div class="col-md-2" *ngIf="isCommand" align="end">
@@ -155,42 +155,50 @@
     <br>
 
     <!-- Button for merging charts in a single row or expanding into two rows -->
-     <div class="row">
+     <!-- <div class="row">
       <div class="col-md-10"></div>
       <div class="col-md-2">
         <button type="button" class="gradient-button" style="margin-left: 26%;" (click)="isExpand = !isExpand">
           {{ isExpand ? 'Merge Variation Charts' : 'Expand Variation Charts' }}
         </button>
       </div>
-     </div>
+     </div> -->
 
 
 <!-- Chart Filter & Charts Section -->
-<div class="row">
-  <!-- First Chart Filter + Chart -->
-  <div [ngClass]="{'col-12': isExpand, 'col-sm-6': !isExpand}">
-    <!-- First Filter Row -->
-    <div class="row">
+
+
+
+
+
+
+    <div class="row" *ngFor="let model of variationFilterList; let i = index">
       <div class="col-sm-2">
-        <ng-select [(ngModel)]="filterModel2.frmn" appendTo="ng-select" [items]="frmnList" [multiple]="true"
-          bindLabel="name" (change)="getvariation()" placeholder="Fmn" [searchable]="true"
-          (keydown.enter)="getvariation()">
+        <ng-select [(ngModel)]="model.frmn" appendTo="ng-select" [items]="frmnList" [multiple]="false"
+          bindLabel="name"  placeholder="Fmn" [searchable]="true"
+          >
+          <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+            <div class="ng-value" *ngFor="let item of items">
+              <span class="ng-value-label">{{item.name}}</span>
+            </div>
+          </ng-template>
         </ng-select>
+
       </div>
       <div class="col-sm-2">
-        <ng-select [(ngModel)]="filterModel2.sector" appendTo="ng-select" [items]="sectorList" [multiple]="true"
+        <ng-select [(ngModel)]="model.sector" appendTo="ng-select" [items]="sectorList" [multiple]="true"
           bindLabel="name" (change)="getvariation()" bindValue="name" placeholder="Sector" [searchable]="true"
           (keydown.enter)="getvariation()">
         </ng-select>
       </div>
       <div class="col-sm-2">
-        <ng-select [(ngModel)]="filterModel2.aspects" appendTo="ng-select" [items]="aspectList" [multiple]="true"
+        <ng-select [(ngModel)]="model.aspects" appendTo="ng-select" [items]="aspectList" [multiple]="true"
           bindLabel="name" (change)="getIndicatorForVarition1($event)" bindValue="name" placeholder="Aspect"
           [searchable]="true" (keydown.enter)="getIndicatorForVarition1($event)">
         </ng-select>
       </div>
-      <div class="col-sm-3">
-        <ng-select [(ngModel)]="filterModel2.indicator" appendTo="ng-select" [items]="indicatorList2" [multiple]="true"
+      <div class="col-sm-2">
+        <ng-select [(ngModel)]="model.indicator" appendTo="ng-select" [items]="indicatorList2" [multiple]="true"
           bindLabel="name" (change)="getvariation()" bindValue="name" placeholder="Indicators" [searchable]="true"
           (keydown.enter)="getvariation()">
         </ng-select>
@@ -199,16 +207,25 @@
         <mat-form-field>
           <mat-label>Enter a date range</mat-label>
           <mat-date-range-input [rangePicker]="picker1">
-            <input matStartDate placeholder="Start date" [(ngModel)]="filterModel2.startDate">
-            <input matEndDate placeholder="End date" (dateChange)="getvariation()" [(ngModel)]="filterModel2.endDate">
+            <input matStartDate placeholder="Start date" [(ngModel)]="model.startDate">
+            <input matEndDate placeholder="End date" (dateChange)="getvariation()" [(ngModel)]="model.endDate">
           </mat-date-range-input>
           <mat-datepicker-toggle matIconSuffix [for]="picker1"></mat-datepicker-toggle>
           <mat-date-range-picker #picker1></mat-date-range-picker>
         </mat-form-field>
       </div>
+      <div class="col-sm-1">
+        <button class="add-btn" (click)="removeFilterModel(i)" *ngIf="i != 0 || i != variationFilterList.length - 1">
+          <img src="/assets/minus-icon.png" alt="" width="20px" height="20px">
+        </button>
+
+        <button class="add-btn" (click)="addFilterModel()" *ngIf="i == variationFilterList.length - 1">
+          <img src="/assets/plus-icon.png" alt="" width="20px" height="20px">
+        </button>
+      </div>
     </div>
 
-    <!-- First Chart -->
+
     <div class="card-container">
       <mat-card class="card card-extralarge">
         <section class="card-title">
@@ -223,11 +240,10 @@
         </div>
       </mat-card>
     </div>
-  </div>
 
-  <!-- Second Chart Filter + Chart -->
-  <div [ngClass]="{'col-12': isExpand, 'col-sm-6': !isExpand}">
-    <!-- Second Filter Row -->
+
+
+<!--
     <div class="row">
       <div class="col-sm-2">
         <ng-select [(ngModel)]="filterModel3.frmn" appendTo="ng-select" [items]="frmnList" [multiple]="true"
@@ -266,7 +282,7 @@
       </div>
     </div>
 
-    <!-- Second Chart -->
+
     <div class="card-container">
       <mat-card class="card card-extralarge">
         <section class="card-title">
@@ -280,11 +296,12 @@
           <canvas baseChart [data]="variation2" [options]="chartOptions" [type]="'line'"></canvas>
         </div>
       </mat-card>
-    </div>
-  </div>
-</div>
+    </div> -->
 
 
+
+
+<!-- Entries Chart Starts -->
 
     <br>
     <div class="row">

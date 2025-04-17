@@ -73,13 +73,13 @@ export const routes: Routes = [
                 path:'user-list',
                 loadComponent:() => import('projects/sharedlibrary/src/component/user/user-list/user-list.component').then(m => m.UserListComponent),
                 canActivate: [AuthGuard,PermissionGuard],
-                data: { allowedRoles: ['2','3','4','7'] },
+                data: { allowedRoles: ['8'] },
               },
               {
                 path:'roles',
                 loadComponent: () => import('projects/sharedlibrary/src/component/role/role-list/role-list.component').then(m => m.RoleListComponent),
                 canActivate: [AuthGuard,PermissionGuard],
-                data: { allowedRoles: ['2','3','4','7'] },
+                data: { allowedRoles: ['8'] },
               },
               {
                 path:'facility',
@@ -107,6 +107,13 @@ export const routes: Routes = [
                 canActivate: [AuthGuard,PermissionGuard],
                 data: { allowedRoles: ['8'] },
               },
+              {
+                path:'aspect',
+                loadComponent : () =>import('projects/clerk/src/layout/aspect-indicator/aspect-indicator-list/aspect-indicator-list.component').then(m => m.AspectIndicatorListComponent),
+                canActivate: [AuthGuard,PermissionGuard],
+                data: { allowedRoles: ['8'] },
+              },
+
               {
                 path:'corps',
                 loadComponent : () =>import('projects/clerk/src/layout/corps-list/corps-list.component').then(m => m.CorpsListComponent),

@@ -8,10 +8,16 @@
     text-align: justify !important;
 }
 .example-container {
-    // height:  100vh;
-    height: 76vh;
+  height: auto;
+  overflow: visible;
+}
+
+@media (min-width: 1200px) {
+  .example-container {
+    height: 73vh;
     overflow: auto;
   }
+}
 
 //   .mat-mdc-header-cell, .mat-mdc-footer-cell, .mat-mdc-cell {
 //      width: 100px!important;

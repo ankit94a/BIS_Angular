@@ -165,16 +165,27 @@ namespace BIS.DB.Implements
 
 		public long Update(MasterData masterData)
 		{
-			var data = _dbContext.MasterDatas.FirstOrDefault(ms => ms.ID == masterData.ID && ms.Status == Status.Created);
-
-			if (data != null)
+			var existing = _dbContext.MasterDatas.FirstOrDefault(ms => ms.ID == masterData.ID && ms.Status == Status.Created);
+			if (existing != null)
 			{
-				_dbContext.MasterDatas.Update(masterData);
-				var id = _dbContext.SaveChanges();
-				return id;
+				// This copies values from the input to the tracked entity
+				_dbContext.Entry(existing).CurrentValues.SetValues(masterData);
+
+				// Ensure CreatedOn is not overwritten
+				_dbContext.Entry(existing).Property(x => x.CreatedOn).IsModified = false;
+				_dbContext.Entry(existing).Property(x => x.CreatedBy).IsModified = false;
+				_dbContext.Entry(existing).Property(x => x.CorpsId).IsModified = false;
+				_dbContext.Entry(existing).Property(x => x.DivisionId).IsModified = false;
+				_dbContext.Entry(existing).Property(x => x.IsActive).IsModified = false;
+				_dbContext.Entry(existing).Property(x => x.IsDeleted).IsModified = false;
+				_dbContext.Entry(existing).Property(x => x.Status).IsModified = false;
+				return _dbContext.SaveChanges();
 			}
+
 			return 0;
 		}
+
+
 		public MasterData GetBy(long Id, long CorpsId)
 		{
 			return _dbContext.MasterDatas.Where(ms => ms.ID == Id && ms.CorpsId == CorpsId).FirstOrDefault();

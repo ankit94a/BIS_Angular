@@ -25,9 +25,8 @@ namespace BIS.API.Controller
 		//[AllowAnonymous]
 		[HttpPost]
 		[Route("login")]
-		public dynamic Login([FromBody] Login login)
+		public IActionResult Login([FromBody] Login login)
 		{
-			IActionResult response = Unauthorized();
 			var user = _userManager.GetUserByEmailPassword(login.UserName, login.Password);
 			if (user != null)
 			{
@@ -40,12 +39,13 @@ namespace BIS.API.Controller
 					roleType = user.RoleType,
 					corpsId = user.CorpsId,
 					divisionId = user.DivisionId
-
 				};
-				response = Ok(new { token = jwtToken, user = model });
+				return Ok(new { token = jwtToken, user = model });
 			}
-			return response;
+
+			return BadRequest("User Not Found"); 
 		}
+
 
 		[HttpPost]
 		[Route("newtoken")]

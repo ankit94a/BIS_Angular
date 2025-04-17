@@ -7,7 +7,7 @@ import { BaseChartDirective } from 'ng2-charts';
 import { BehaviorSubject, Subject, takeUntil } from 'rxjs';
 import { DatePipe } from '@angular/common';
 import { AuthService } from 'projects/sharedlibrary/src/services/auth.service';
-import {FilterModel,FilterModel4,} from 'projects/sharedlibrary/src/model/dashboard.model';
+import {FilterModel,FilterModel4, VaraitionFilter,} from 'projects/sharedlibrary/src/model/dashboard.model';
 import {Aspect,Sector,} from 'projects/sharedlibrary/src/model/attribute.model';
 import { FilterType } from 'projects/sharedlibrary/src/model/enum';
 import { GetMeanvalueColorDirective } from 'projects/sharedlibrary/src/directives/get-meanvalue-color.directive';
@@ -33,7 +33,6 @@ export class SmartAnalysisComponent implements OnInit, OnDestroy {
   indicatorList3: Indicator[] = [];
   indicatorList4: Indicator[] = [];
   filterModel: FilterModel = new FilterModel();
-  filterModel2: FilterModel = new FilterModel();
   filterModel3: FilterModel = new FilterModel();
   filterModel4: FilterModel4 = new FilterModel4();
   //chart variables
@@ -63,14 +62,22 @@ export class SmartAnalysisComponent implements OnInit, OnDestroy {
     chart3: false,
   };
   isCommand:boolean=false;
+  variationFilterList:VaraitionFilter[] = [];
 chartList: string[] = ['Monthly', 'Daily', 'Weekly'];
   constructor(private apiService: ApiService,private datePipe: DatePipe,private authService: AuthService,private masterDataService: MasterDataFilterService) {
+    this.variationFilterList.push(new VaraitionFilter());
     this.filterModel4.filterType = FilterType.Daily;
     this.getFrmDetails();
     if(parseInt(this.authService.getRoleType()) >= 10)
       this.isCommand = true;
   }
-
+  addFilterModel(){
+    this.variationFilterList.push(new VaraitionFilter());
+  }
+  removeFilterModel(index){
+    this.variationFilterList.splice(index,1);
+    this.getvariation();
+  }
   getFrmDetails() {
     this.apiService.getWithHeaders('dashboard/FmnDetails').subscribe((res) => {
       if (res) {
@@ -83,14 +90,12 @@ chartList: string[] = ['Monthly', 'Daily', 'Weekly'];
         if (frm) {
           if (!this.filterModel.frmn) {
             this.filterModel.frmn = [];
-            this.filterModel2.frmn = [];
             this.filterModel3.frmn = [];
             this.filterModel4.frmn = [];
           }
           // this.filterModel.frmn.push({...frm});
           this.filterModel.frmn.push(JSON.parse(JSON.stringify(frm)));
-          this.filterModel2.frmn.push(JSON.parse(JSON.stringify(frm)));
-          this.filterModel3.frmn.push(JSON.parse(JSON.stringify(frm)));
+          this.variationFilterList[0].frmn = frm;
           this.filterModel4.frmn.push(JSON.parse(JSON.stringify(frm)));
           this.getAll();
         }
@@ -226,50 +231,66 @@ chartList: string[] = ['Monthly', 'Daily', 'Weekly'];
     this.getlastYearAspect();
     this.getlastYearIndicator();
     this.getvariation();
-    this.getvariation2();
   }
+
+
   getvariation() {
-    if (this.filterModel2.endDate != null &&this.filterModel2.endDate != undefined) {
-      this.apiService.postWithHeader('smartanalysis/variation', this.filterModel2).subscribe((res) => {
-          if (res) {
-            this.variation = {
-              labels: res.name,
-              datasets: [
-                {
-                  data: res.count,
-                  label: 'Inputs',
-                  borderColor: 'rgba(17, 114, 179, 0.8)',
-                  borderWidth: 1.2,
-                  fill: false,
-                  tension: 0.4,
-                },
-              ],
+    debugger
+    const payloads = this.variationFilterList.filter(model => model.endDate != null);
+
+    if (payloads.length === 0) return;
+
+    this.apiService.postWithHeader('smartanalysis/variation', payloads).subscribe((res: any) => {
+      if (res && res.labels && res.series) {
+        this.variation = {
+          labels: res.labels,
+          datasets: res.series.map((seriesItem: any, idx: number) => {
+            return {
+              label: seriesItem.frmn,
+              data: seriesItem.data,
+              borderColor: this.getLineColor(idx),
+              borderWidth: 1.8,
+              fill: false,
+              tension: 0.4,
             };
-          }
-        });
-    }
+          }),
+        };
+      }
+    });
   }
-  getvariation2() {
-    if (this.filterModel3.endDate != null &&this.filterModel3.endDate != undefined) {
-      this.apiService.postWithHeader('smartanalysis/variation', this.filterModel3).subscribe((res) => {
-          if (res) {
-            this.variation2 = {
-              labels: res.name,
-              datasets: [
-                {
-                  data: res.count,
-                  label: 'Inputs',
-                  borderColor: 'rgba(173, 93, 13, 0.8)',
-                  borderWidth: 1.2,
-                  fill: false,
-                  tension: 0.4,
-                },
-              ],
-            };
-          }
-        });
-    }
+  getLineColor(index: number): string {
+    const colors = [
+      'rgba(17, 114, 179, 0.8)',
+      'rgba(75, 192, 192, 0.8)',
+      'rgba(255, 99, 132, 0.8)',
+      'rgba(255, 206, 86, 0.8)',
+      'rgba(153, 102, 255, 0.8)',
+      'rgba(54, 162, 235, 0.8)',
+    ];
+    return colors[index % colors.length];
   }
+
+  // getvariation2() {
+  //   if (this.filterModel3.endDate != null &&this.filterModel3.endDate != undefined) {
+  //     this.apiService.postWithHeader('smartanalysis/variation', this.filterModel3).subscribe((res) => {
+  //         if (res) {
+  //           this.variation2 = {
+  //             labels: res.name,
+  //             datasets: [
+  //               {
+  //                 data: res.count,
+  //                 label: 'Inputs',
+  //                 borderColor: 'rgba(173, 93, 13, 0.8)',
+  //                 borderWidth: 1.2,
+  //                 fill: false,
+  //                 tension: 0.4,
+  //               },
+  //             ],
+  //           };
+  //         }
+  //       });
+  //   }
+  // }
   ngOnInit(): void {
 
   }
@@ -518,18 +539,18 @@ chartList: string[] = ['Monthly', 'Daily', 'Weekly'];
         });
     }
   }
-  getIndicatorForVarition2(event) {
-    if (event != undefined && event != null) {
-      this.getvariation2();
-      this.apiService
-        .postWithHeader('attribute/indicatorlist', event)
-        .subscribe((res) => {
-          if (res) {
-            this.indicatorList3 = res;
-          }
-        });
-    }
-  }
+  // getIndicatorForVarition2(event) {
+  //   if (event != undefined && event != null) {
+  //     this.getvariation2();
+  //     this.apiService
+  //       .postWithHeader('attribute/indicatorlist', event)
+  //       .subscribe((res) => {
+  //         if (res) {
+  //           this.indicatorList3 = res;
+  //         }
+  //       });
+  //   }
+  // }
   getIndicatorForEntries(event) {
     if (event != undefined && event != null) {
       this.getEntries();

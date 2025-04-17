@@ -14,10 +14,9 @@ namespace BIS.API.Controller
             _roleManager = roleManager;
         }
         [HttpGet]
-        public IActionResult GetAll()
+        public IActionResult GetAllByCorps(int CorpsId,int DivisionId)
         {
-            int CorpsId = HttpContext.GetCorpsId();
-            int DivisionId = HttpContext.GetDivisionId();
+           
             return Ok(_roleManager.GetAll(CorpsId, DivisionId));
         }
         [HttpPost]
@@ -25,5 +24,11 @@ namespace BIS.API.Controller
         { 
             return Ok(_roleManager.Add(role));
         }
-    }
+		[HttpGet,Route("all")]
+		public IActionResult GetAllRoles()
+		{
+
+			return Ok(_roleManager.GetAllRoles());
+		}
+	}
 }

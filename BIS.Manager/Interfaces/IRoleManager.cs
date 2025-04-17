@@ -11,5 +11,6 @@ namespace BIS.Manager.Interfaces
     public interface IRoleManager : IBaseManager<Role>
     {
 		bool Check(long RoleId, PermissionItem PermissionName, PermissionAction permissionAction);
+		public List<Role> GetAllRoles();
 	}
 }

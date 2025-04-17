@@ -2,6 +2,8 @@
 import { Component, OnInit, Inject } from "@angular/core";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { ToastrService } from "ngx-toastr";
+import { Corps, Division } from "projects/sharedlibrary/src/model/base.model";
+import { RoleType } from "projects/sharedlibrary/src/model/enum";
 import { Facility } from "projects/sharedlibrary/src/model/facility.model";
 import { roles } from "projects/sharedlibrary/src/model/permission.model";
 import { Role } from "projects/sharedlibrary/src/model/role.model";
@@ -29,16 +31,38 @@ export class UserAddEditComponent implements OnInit {
   roleList: roles[];
   facilityList:Facility[]=[];
   corps = ['HQ Eastern Comd','HQ 33 Corps','HQ 17 Corps','HQ 3 Corps','HQ 4 Corps']
-  division
+  facilityType = ['Command','Corps','Division']
+  divisionList:Division[]=[];
+  corpsList :Corps [] = [];
+  isDivisionUser:boolean=false;
+  roleTypeList: { key: string, value: number }[] = [];
   constructor(private dialogRef: MatDialogRef<UserAddEditComponent>,
     @Inject(MAT_DIALOG_DATA) data, private apiService: ApiService,
     private toastr: ToastrService) {
     this.user = data;
+    this.roleTypeList = Object.keys(RoleType)
+    .filter(key => isNaN(Number(key))) // filter out numeric keys
+    .map(key => ({ key: key, value: RoleType[key] }));
   }
 
   ngOnInit(): void {
-    this.getAllRoles();
-    this.getAllFacilities()
+    // this.getAllRoles();
+    // this.getAllFacilities()
+  }
+  getCorps(){
+    this.apiService.getWithHeaders('corps').subscribe(res =>{
+      if(res){
+        this.corpsList = res;
+      }
+    })
+  }
+  getDivision(corpsId){
+    debugger
+    this.apiService.getWithHeaders('corps/frmlist/'+corpsId).subscribe(res =>{
+      if(res){
+        this.divisionList = res;
+      }
+    })
   }
   getAllFacilities(){
     this.apiService.getWithHeaders('facility').subscribe(res =>{
@@ -47,7 +71,17 @@ export class UserAddEditComponent implements OnInit {
       }
     })
   }
+  getDynamicDropDown(type){
+    debugger
+    if(type == 'Command'){
 
+    }else if(type == 'Corps'){
+      this.getCorps();
+    }else{
+      this.getCorps();
+      this.isDivisionUser = true;
+    }
+  }
   onSubmit() {
 console.log(this.user)
   //   if (this.user.id > 0) {

@@ -34,14 +34,14 @@ export class RoleListComponent implements OnInit{
     this.add(role);
   }
   add(role=''){
-    this.dialogService.open(RoleAddComponent,role).then(res =>{
+    this.dialogService.open(RoleAddComponent,role,'45vw').then(res =>{
       if(res){
         this.getAllRoles()
       }
     })
   }
   getAllRoles(){
-    this.apiService.getWithHeaders('UserRole/GetAllRoles').subscribe(res =>{
+    this.apiService.getWithHeaders('role/all').subscribe(res =>{
       if(res){
         this.roleList = res;
       }

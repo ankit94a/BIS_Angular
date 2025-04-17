@@ -1,4 +1,5 @@
 ﻿using BIS.Common.Entities;
+using BIS.Manager.Implements;
 using BIS.Manager.Interfaces;
 using InSync.Api.Helpers;
 using Microsoft.AspNetCore.Mvc;
@@ -43,7 +44,23 @@ namespace BIS.API.Controller
 			var corpsId = HttpContext.GetCorpsId();
 			return Ok(_attributeManager.GetSectorByCorpsId(corpsId));
 		}
-
-
+		[HttpPost, Route("aspect")]
+		public IActionResult AddAspect([FromBody] Aspect aspect)
+		{
+			aspect.CreatedBy = HttpContext.GetUserId();
+			aspect.CreatedOn = DateTime.Now;
+			aspect.IsActive = true;
+			aspect.IsDeleted = false;
+			return Ok(_attributeManager.AddAspect(aspect));
+		}
+		[HttpPost, Route("indicator")]
+		public IActionResult AddIndicator([FromBody] Indicator indicator)
+		{
+			indicator.CreatedBy = HttpContext.GetUserId();
+			indicator.CreatedOn = DateTime.Now;
+			indicator.IsActive = true;
+			indicator.IsDeleted = false;
+			return Ok(_attributeManager.AddIndicator(indicator));
+		}
 	}
 }

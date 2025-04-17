@@ -6,17 +6,20 @@ import { SharedLibraryModule } from 'projects/sharedlibrary/src/shared-library.m
 import { User } from 'projects/sharedlibrary/src/model/user.model';
 import { BISMatDialogService } from 'projects/sharedlibrary/src/services/insync-mat-dialog.service';
 import { ApiService } from 'projects/sharedlibrary/src/services/api.service';
+import { AllCorps, AllDivision, RoleType } from 'projects/sharedlibrary/src/model/enum';
 
 @Component({
   selector: 'app-userlist',
   templateUrl: './user-list.component.html',
   standalone:true,
-  imports:[ SharedLibraryModule
-   ],
+  imports:[ SharedLibraryModule],
   styleUrls: ['./user-list.component.scss']
 })
 export class UserListComponent implements OnInit {
   userList: User[];
+  RoleType = RoleType;
+  Corps = AllCorps;
+  Divison = AllDivision;
   constructor(private dialogService:BISMatDialogService,private apiService:ApiService ){
 
   }
@@ -25,11 +28,10 @@ export class UserListComponent implements OnInit {
   }
 
   fetchUser() {
-    this.apiService.getWithHeaders('User/GetAll')
+    this.apiService.getWithHeaders('user/all')
       .subscribe(Response => {
         if (Response) {
           this.userList = Response as User[];
-
         }
       });
   }

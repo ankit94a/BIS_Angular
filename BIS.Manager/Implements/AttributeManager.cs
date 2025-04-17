@@ -41,6 +41,14 @@ namespace BIS.Manager.Implements
 		{
 			return _attributeDB.GetSectorByCorpsId(corpsId);
 		}
+		public bool AddAspect(Aspect aspect)
+		{
+			return _attributeDB.AddAspect(aspect);
+		}
+		public bool AddIndicator(Indicator indicator)
+		{
+			return _attributeDB.AddIndicator(indicator);
+		}
 
 	}
 }

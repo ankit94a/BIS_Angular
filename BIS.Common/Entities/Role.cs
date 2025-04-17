@@ -9,7 +9,7 @@ namespace BIS.Common.Entities
     public class Role : BaseEntity
     {
         public string RoleName { get; set; }
-        public string RoleDescription { get; set; }
+        public string Description { get; set; }
 
     }
 }

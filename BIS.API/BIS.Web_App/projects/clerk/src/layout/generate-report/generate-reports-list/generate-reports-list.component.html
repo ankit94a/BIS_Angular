@@ -2,11 +2,11 @@
     <mat-card-header class="insync-header">
         <div class="row full-width">
             <div class="col-sm-2">Generate Reports</div>
-            <div class="col-sm-6"></div>
-            <div class="col-md-2" *ngIf="isCommand" align="end">
-              <a href="/corps" class="back-link"> Back</a>
+            <div class="col-sm-2 offset-4"></div>
+            <div class="col-md-2"  align="end">
+              <a href="/corps" *ngIf="isCommand" class="back-link"> Back</a>
             </div>
-            <div class="col-sm-2"><button class="btn btn-link" style="margin-left:50px" (click)="add()">+ Create Report</button></div>
+
         </div>
     </mat-card-header>
     <mat-card-content>
@@ -37,8 +37,12 @@
                 <span class="background red"></span>
               </div>
             </mat-chip>
+
           </div>
 
+        </div>
+        <div class="col-md-6" align="end">
+          <button class="btn btn-primary" (click)="add()">+ Create Report</button>
         </div>
         <!-- <div class="col-md-6">
           <ng-select appendTo="ng-select" [items]="filterType" [multiple]="false" (change)="filterData($event)"

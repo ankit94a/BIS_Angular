@@ -152,7 +152,7 @@ namespace BIS.DB.Implements
 				var query = _dbContext.MasterDatas.Where(ms => ms.Status == Status.Approved && ms.IsActive);
 
 				var filteredMasterData = await query.ToListAsync(); // Ensures we fetch data asynchronously
-				
+
 				// Ensure filterModel.Frmn exists before calling Any()
 				if (filterModel?.Frmn != null && filterModel.Frmn.Any())
 				{
@@ -253,50 +253,123 @@ namespace BIS.DB.Implements
 			return firstThursday.AddDays((weekNum - 1) * 7 - 3);
 		}
 
-		public DashboardChart GetVariationData(RoleType roleType, FilterModel filterModel)
+		//public DashboardChart GetVariationData(RoleType roleType, FilterModel filterModel)
+		//{
+		//	var chart = new DashboardChart();
+
+		//	//var query = _dbContext.MasterDatas.Where(ms => ms.CorpsId == corpsId && ms.DivisionId == divisionId && ms.Status == Status.Approved);
+		//	var filteredMasterData = _dbContext.MasterDatas.Where(ms => ms.Status == Status.Approved && ms.IsActive).ToList();
+		//	var query = filteredMasterData.Where(ms => filterModel.Frmn.Any(f => f.CorpsId == ms.CorpsId && f.DivisionId == ms.DivisionId));
+
+
+		//	// handling filter arrays 
+		//	if (filterModel != null && filterModel.Sector?.Count > 0)
+		//	{
+		//		query = query.Where(ms => filterModel.Sector.Contains(ms.Sector));
+		//	}
+		//	if (filterModel != null && filterModel.Aspects?.Count > 0)
+		//	{
+		//		query = query.Where(ms => filterModel.Aspects.Contains(ms.Aspect));
+		//	}
+		//	if (filterModel != null && filterModel.Indicator?.Count > 0)
+		//	{
+		//		query = query.Where(ms => filterModel.Indicator.Contains(ms.Indicator));
+		//	}
+		//	if (filterModel != null && filterModel.startDate.HasValue && filterModel.endDate.HasValue && filterModel.endDate >= filterModel.startDate)
+		//	{
+		//		query = query.Where(ms =>
+		//			ms.ReportedDate.Date >= filterModel.startDate.Value.Date &&
+		//			ms.ReportedDate.Date <= filterModel.endDate.Value.Date
+		//		);
+		//	}
+
+		//	query = query.OrderBy(ms => ms.ReportedDate);
+		//	var result = query.GroupBy(ms => ms.ReportedDate.Date).Select(group => new
+		//	{
+		//		Date = group.Key,
+		//		Count = group.Count()
+		//	}).ToList();
+
+		//	foreach (var item in result)
+		//	{
+		//		chart.Name.Add(item.Date.ToString("dd-MM-yyyy"));
+		//		chart.Count.Add(item.Count);
+		//	}
+		//	return chart;
+		//}
+
+		public VaritaionChart GetVariationData(RoleType roleType, List<VaritaionFilter> filterModels)
 		{
-			var chart = new DashboardChart();
+			var chart = new VaritaionChart();
+			var allDates = new HashSet<DateTime>();
 
-			//var query = _dbContext.MasterDatas.Where(ms => ms.CorpsId == corpsId && ms.DivisionId == divisionId && ms.Status == Status.Approved);
-			var filteredMasterData = _dbContext.MasterDatas.Where(ms => ms.Status == Status.Approved && ms.IsActive).ToList();
-			var query = filteredMasterData.Where(ms => filterModel.Frmn.Any(f => f.CorpsId == ms.CorpsId && f.DivisionId == ms.DivisionId));
+			// Load master data once
+			var filteredMasterData = _dbContext.MasterDatas
+				.Where(ms => ms.Status == Status.Approved && ms.IsActive)
+				.ToList();
 
-			
-			// handling filter arrays 
-			if (filterModel != null && filterModel.Sector?.Count > 0)
+			foreach (var filter in filterModels)
 			{
-				query = query.Where(ms => filterModel.Sector.Contains(ms.Sector));
-			}
-			if (filterModel != null && filterModel.Aspects?.Count > 0)
-			{
-				query = query.Where(ms => filterModel.Aspects.Contains(ms.Aspect));
-			}
-			if (filterModel != null && filterModel.Indicator?.Count > 0)
-			{
-				query = query.Where(ms => filterModel.Indicator.Contains(ms.Indicator));
-			}
-			if (filterModel != null && filterModel.startDate.HasValue && filterModel.endDate.HasValue && filterModel.endDate >= filterModel.startDate)
-			{
-				query = query.Where(ms =>
-					ms.ReportedDate.Date >= filterModel.startDate.Value.Date &&
-					ms.ReportedDate.Date <= filterModel.endDate.Value.Date
-				);
+				if (filter?.Frmn == null)
+					continue;
+
+				var frmnItem = filter.Frmn;
+
+				// Apply base filtering for this filter
+				var query = filteredMasterData
+					.Where(ms => ms.CorpsId == frmnItem.CorpsId && ms.DivisionId == frmnItem.DivisionId);
+
+				if (filter.Sector?.Any() == true)
+					query = query.Where(ms => filter.Sector.Contains(ms.Sector));
+
+				if (filter.Aspects?.Any() == true)
+					query = query.Where(ms => filter.Aspects.Contains(ms.Aspect));
+
+				if (filter.Indicator?.Any() == true)
+					query = query.Where(ms => filter.Indicator.Contains(ms.Indicator));
+
+				if (filter.startDate.HasValue && filter.endDate.HasValue)
+				{
+					var start = filter.startDate.Value.Date;
+					var end = filter.endDate.Value.Date;
+					query = query.Where(ms => ms.ReportedDate.Date >= start && ms.ReportedDate.Date <= end);
+				}
+
+				// Group by date
+				var grouped = query
+					.GroupBy(ms => ms.ReportedDate.Date)
+					.Select(g => new { Date = g.Key, Count = g.Count() })
+					.ToList();
+
+				foreach (var item in grouped)
+					allDates.Add(item.Date);
+
+				var dateCountMap = grouped.ToDictionary(g => g.Date.ToString("dd-MM-yyyy"), g => g.Count);
+
+				var series = new ChartSeries
+				{
+					Frmn = $"{frmnItem.Name}", // Label per filter
+					Data = new List<int>(),
+					Tag = dateCountMap // Temporarily store the map
+				};
+
+				chart.Series.Add(series);
 			}
 
-			query = query.OrderBy(ms => ms.ReportedDate);
-			var result = query.GroupBy(ms => ms.ReportedDate.Date).Select(group => new
-			{
-				Date = group.Key,
-				Count = group.Count()
-			}).ToList();
+			// Create sorted labels
+			chart.Labels = allDates.OrderBy(d => d).Select(d => d.ToString("dd-MM-yyyy")).ToList();
 
-			foreach (var item in result)
+			// Populate each series' data by matching against label dates
+			foreach (var series in chart.Series)
 			{
-				chart.Name.Add(item.Date.ToString("dd-MM-yyyy"));
-				chart.Count.Add(item.Count);
+				var dateCountMap = series.Tag as Dictionary<string, int>;
+				series.Data = chart.Labels.Select(label => dateCountMap?.GetValueOrDefault(label) ?? 0).ToList();
+				series.Tag = null; // Clear tag
 			}
+
 			return chart;
 		}
+
 
 		public List<MasterData> GetSingleEntriesChartData(RoleType roleType, FilterModelEntries filterModel)
 		{
@@ -326,7 +399,7 @@ namespace BIS.DB.Implements
 						ms.ReportedDate.Date <= filterModel.endDate.Value.Date
 					);
 				}
-				
+
 				else if (filterModel.FilterType == FilterType.Monthly)
 				{
 					// Set endDate to the last day of the month

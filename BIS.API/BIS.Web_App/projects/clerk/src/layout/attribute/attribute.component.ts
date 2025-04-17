@@ -63,7 +63,7 @@ export class AttributeComponent extends TablePaginationSettingsConfig implements
     this.getSource();
   }
   ngOnInit(): void {
-    throw new Error('Method not implemented.');
+
   }
 
  public async onTabChange(event) {
