@@ -33,7 +33,7 @@ namespace BIS.Manager.Implements
         }
         public long Update(Role role)
         {
-            throw new NotImplementedException();
+            return _roleDB.Update(role);
         }
         public Role GetBy(int Id, int CorpsId)
         {

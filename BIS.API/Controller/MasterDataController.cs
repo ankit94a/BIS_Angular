@@ -72,6 +72,7 @@ namespace BIS.API.Controller
 				var roleType = HttpContext.GetRoleType();
 				if (roleType == RoleType.Staff1 || roleType == RoleType.StaffEc)
 				{
+
 					return Ok(_masterDataManager.AddMasterData(masterData, HttpContext.GetRoleType()));
 				}
 				return BadRequest("You are not authorized to fill the input");

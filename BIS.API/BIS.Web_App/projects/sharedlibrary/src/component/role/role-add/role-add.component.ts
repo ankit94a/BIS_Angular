@@ -13,34 +13,46 @@ import { SharedLibraryModule } from 'projects/sharedlibrary/src/shared-library.m
   styleUrl: './role-add.component.css'
 })
 export class RoleAddComponent {
-  role!:role
+  role:roles = new roles();
   corps = [];
   divison = [];
   constructor(@Inject(MAT_DIALOG_DATA) data,private apiService:ApiService,private dialogRef:MatDialogRef<RoleAddComponent>,private toastr:ToastrService){
-   
-     if(data != null && data != undefined){
+    debugger
+     if(data != null && data != undefined && data != ""){
       this.role = data;
-     }else{
-      this.role = new role()
-      
      }
-     this.getAllCorps();
+    //  this.getAllCorps();
   }
-  getAllCorps(){
-    this.apiService.getWithHeaders('corps').subscribe(res => {
-      if(res){
-        this.corps = res;
-      }
-    })
-  }
-  getAllDivision(corpsId){
-    this.apiService.getWithHeaders('corsp/divison'+corpsId).subscribe(res =>{
-      if(res){
-        this.divison = res;
-      }
-    })
-  }
+  // getAllCorps(){
+  //   this.apiService.getWithHeaders('corps').subscribe(res => {
+  //     if(res){
+  //       this.corps = res;
+  //     }
+  //   })
+  // }
+  // getAllDivision(corpsId){
+  //   this.apiService.getWithHeaders('corsp/divison'+corpsId).subscribe(res =>{
+  //     if(res){
+  //       this.divison = res;
+  //     }
+  //   })
+  // }
   onSubmit(){
+    if(this.role?.id > 0){
+      this.apiService.putWithHeader('role',this.role).subscribe(res => {
+        if(res){
+          this.toastr.success("Role updated successfully",'success');
+          this.closeDialog();
+        }
+      })
+    }else{
+      this.apiService.postWithHeader('role',this.role).subscribe(res => {
+        if(res){
+          this.toastr.success("Role added successfully",'success');
+          this.closeDialog();
+        }
+      })
+    }
 
   }
   closeDialog(){

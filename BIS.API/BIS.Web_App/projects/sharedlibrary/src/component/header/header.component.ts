@@ -31,7 +31,6 @@ export class HeaderComponent implements OnInit {
     }else{
       this.facilityName = 'Admin'
     }
-    debugger
     // this.facilityName = this.authService.getDivisionName()?.trim() ? this.authService.getDivisionName() : this.authService.getCorpsName();
     this.roleType = this.authService.getRoleType();
     if(this.roleType != '7' && this.roleType != '8' && this.roleType != '9'){

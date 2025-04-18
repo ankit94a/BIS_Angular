@@ -17,7 +17,7 @@
                         <th>Command</th>
                         <th>Corps</th>
                         <th>Division</th>
-                        <!-- <th>Facility</th> -->
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -30,6 +30,19 @@
                         <td>{{user.corpsId == 1 ? 'Eastern Command' : '-'}}</td>
                         <td>{{user.corpsId != 1 ? Corps[user.corpsId] : '-'}}</td>
                         <td>{{user.divisionId > 0 ? Divison[user.divisionId] : '-'}}</td>
+                        <td>
+                          <button mat-icon-button color="primary" (click)="view(user)" matTooltip="View Role">
+                            <mat-icon>remove_red_eye</mat-icon>
+                          </button>
+                          <button mat-icon-button color="primary"  (click)="edit(user)"
+                            matTooltip="Edit Role">
+                            <mat-icon>edit</mat-icon>
+                          </button>
+                          <button mat-icon-button color="warn"
+                              type="button" (click)="remove(user)"matTooltip="delete">
+                              <mat-icon>delete_outline</mat-icon>
+                          </button>
+                        </td>
                         <!-- <td>{{user.divisionId ? Divison[user.divisionId] : Corps[user.corpsId]}}</td> -->
                     </tr>
                 </tbody>

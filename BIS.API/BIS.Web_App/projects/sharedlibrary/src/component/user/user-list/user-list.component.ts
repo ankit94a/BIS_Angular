@@ -27,6 +27,16 @@ export class UserListComponent implements OnInit {
     this.fetchUser();
   }
 
+  edit(user){
+
+  }
+  remove(user){
+
+  }
+  view(user){
+    user.isView = true;
+    this.open(user);
+  }
   fetchUser() {
     this.apiService.getWithHeaders('user/all')
       .subscribe(Response => {

@@ -1,4 +1,4 @@
-<form #userForm="ngForm" (ngSubmit)="userForm.valid && onSubmit()" novalidate>
+<form>
     <div mat-dialog-title>
       Role Add
     </div>
@@ -18,8 +18,8 @@
         </div>
         <div class="col-sm-6">
             <mat-form-field><mat-label>Description</mat-label>
-            <input matInput  type="text" [ngModelOptions]="{standalone:true}"
-              [(ngModel)]="role.roleDescription" required [readonly]="role.isView"/>
+            <input matInput  type="text" name="description"
+              [(ngModel)]="role.description" required [readonly]="role.isView"/>
           </mat-form-field>
         </div>
         </div>
@@ -43,7 +43,7 @@
         </div> -->
     </mat-dialog-content>
     <mat-dialog-actions align="end">
-        <button class="btn  btn-success btn-sm" type="submit" *ngIf="!role.isView">Save</button>
+        <button class="btn  btn-success btn-sm" type="submit" (click)="onSubmit()" *ngIf="!role.isView">Save</button>
         <!-- <button type="button" class="btn btn-outline-danger btn-sm" (click)="resetObj()"
           *ngIf="!dataObject.isView && !(dataObject.id>0)">Reset</button> -->
         <button type="button" class="btn btn-outline-info btn-sm" (click)="closeDialog()">Close</button>

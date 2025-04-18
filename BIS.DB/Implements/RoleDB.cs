@@ -41,8 +41,18 @@ namespace BIS.DB.Implements
 		}
 		public long Update(Role role)
 		{
-			throw new NotImplementedException();
+			var existingRole = _dbContext.Roles.Find(role.Id);
+			if (existingRole == null)
+			{
+				throw new Exception("Role not found");
+			}
+
+			existingRole.RoleName = role.RoleName;
+			existingRole.Description = role.Description;
+			_dbContext.SaveChanges();
+			return existingRole.Id;
 		}
+
 		public Role GetBy(long Id, long CorpsId)
 		{
 			throw new NotImplementedException();

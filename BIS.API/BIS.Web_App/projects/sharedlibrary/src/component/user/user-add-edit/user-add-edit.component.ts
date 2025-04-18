@@ -27,27 +27,30 @@ import { SharedLibraryModule } from "projects/sharedlibrary/src/shared-library.m
   templateUrl: './user-add-edit.component.html'
 })
 export class UserAddEditComponent implements OnInit {
-  user: User;
+  user: User = new User();
   roleList: roles[];
   facilityList:Facility[]=[];
   corps = ['HQ Eastern Comd','HQ 33 Corps','HQ 17 Corps','HQ 3 Corps','HQ 4 Corps']
-  facilityType = ['Command','Corps','Division']
+  facilityTypeList = ["Command", "Corps", "Division"];
   divisionList:Division[]=[];
   corpsList :Corps [] = [];
-  isDivisionUser:boolean=false;
+  isCorpsUser = false;
+isDivisionUser = false;
   roleTypeList: { key: string, value: number }[] = [];
-  constructor(private dialogRef: MatDialogRef<UserAddEditComponent>,
-    @Inject(MAT_DIALOG_DATA) data, private apiService: ApiService,
-    private toastr: ToastrService) {
-    this.user = data;
+  constructor(private dialogRef: MatDialogRef<UserAddEditComponent>,@Inject(MAT_DIALOG_DATA) data, private apiService: ApiService,private toastr: ToastrService) {
+    if(data != null && data != undefined && data != '')
+      this.user = data;
     this.roleTypeList = Object.keys(RoleType)
     .filter(key => isNaN(Number(key))) // filter out numeric keys
     .map(key => ({ key: key, value: RoleType[key] }));
   }
 
   ngOnInit(): void {
-    // this.getAllRoles();
+    this.getAllRoles();
     // this.getAllFacilities()
+  }
+  resetObj(){
+    this.user = new User();
   }
   getCorps(){
     this.apiService.getWithHeaders('corps').subscribe(res =>{
@@ -71,18 +74,29 @@ export class UserAddEditComponent implements OnInit {
       }
     })
   }
-  getDynamicDropDown(type){
-    debugger
-    if(type == 'Command'){
-
-    }else if(type == 'Corps'){
-      this.getCorps();
-    }else{
-      this.getCorps();
+  getDynamicDropDown(selectedFacility: string) {
+    if (selectedFacility === 'Command') {
+      this.user.corpsId = 1;
+      this.user.divisionId = 0;
+      this.isCorpsUser = false;
+      this.isDivisionUser = false;
+      this.corpsList = [];
+      this.divisionList = [];
+    }
+    else if (selectedFacility === 'Corps') {
+      this.user.divisionId = 0;
+      this.isCorpsUser = true;
+      this.isDivisionUser = false;
+      this.getCorps(); // load corpsList
+    }
+    else if (selectedFacility === 'Division') {
+      this.isCorpsUser = true;
       this.isDivisionUser = true;
+      this.getCorps(); // load corpsList
     }
   }
   onSubmit() {
+    debugger
 console.log(this.user)
   //   if (this.user.id > 0) {
   //     this.apisService.putWithHeader('user', this.user)
@@ -121,7 +135,7 @@ console.log(this.user)
 
   // }
   getAllRoles(){
-    this.apiService.getWithHeaders('UserRole/GetAllRoles').subscribe(res =>{
+    this.apiService.getWithHeaders('role/all').subscribe(res =>{
       if(res){
         this.roleList = res;
         console.log(this.roleList)

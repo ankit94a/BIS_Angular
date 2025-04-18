@@ -9,7 +9,6 @@ export class PermissionGuard implements CanActivate {
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
     const userRole = this.authService.getRoleType();
     const allowedRoles: string[] = route.data['allowedRoles'] || [];
-debugger
     if (allowedRoles.includes(userRole)) {
       return true;
     } else {

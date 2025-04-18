@@ -2,7 +2,7 @@
   <mat-card-header class="insync-header">
     Role List
     <span class="example-spacer"></span>
-    <button type="button" (click)="add()" class="btn btn-link">{{'+ Add New Role'}}</button>
+    <button type="button" (click)="add()" class="btn btn-primary">{{'+ Add New Role'}}</button>
   </mat-card-header>
   <mat-card-content>
     <div class="table-container">
@@ -27,6 +27,10 @@
               <button mat-icon-button color="primary" *ngIf="role.roleName != 'MasterAdmin'" (click)="edit(role)"
                 matTooltip="Edit Role">
                 <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-icon-button color="warn"
+                  type="button" (click)="remove(role)"matTooltip="delete">
+                  <mat-icon>delete_outline</mat-icon>
               </button>
               <!-- <button mat-icon-button color="primary" *ngIf="role.roleName != 'MasterAdmin'" (click)="permision(role)"
                 matTooltip="Permission">

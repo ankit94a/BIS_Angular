@@ -1,88 +1,140 @@
 <form #userForm="ngForm" (ngSubmit)="userForm.valid && onSubmit()" novalidate>
-  <div mat-dialog-title>
-    User Add
-  </div>
+  <div mat-dialog-title>User Add</div>
+
   <mat-dialog-content>
+
+    <!-- Row 1: Username, Name, Email -->
     <div class="row">
       <div class="col-sm-4">
-          <mat-form-field><mat-label>UserName</mat-label>
-
-          <input matInput  type="text" name="userName" #userName="ngModel"
-            [(ngModel)]="user.username"  minlength="5" required nfNoSpaces  [ngClass]="{ 'is-invalid':  userName.errors }"  [readonly]="user.id > 0"/>
+        <mat-form-field>
+          <mat-label>UserName</mat-label>
+          <input matInput type="text" name="userName" #userName="ngModel" [(ngModel)]="user.username"
+            minlength="5" required nfNoSpaces [ngClass]="{ 'is-invalid': userName.errors }" [readonly]="user.isView" />
           <mat-error *ngIf="userName.errors" class="invalid-feedback">
             <span *ngIf="userName.errors.required">UserName is required</span>
-            <span *ngIf="userName.errors.minlength"> UserName must be at least 5 characters</span>
-            <span *ngIf="userName.errors.whitespace"> UserName cannot contain space.</span>
+            <span *ngIf="userName.errors.minlength">UserName must be at least 5 characters</span>
+            <span *ngIf="userName.errors.whitespace">UserName cannot contain space.</span>
           </mat-error>
         </mat-form-field>
       </div>
+
       <div class="col-sm-4">
-          <mat-form-field><mat-label>Name</mat-label>
-          <input matInput  type="text" [ngModelOptions]="{standalone:true}"
-            [(ngModel)]="user.name" required />
+        <mat-form-field>
+          <mat-label>Name</mat-label>
+          <input matInput type="text" [ngModelOptions]="{standalone:true}" [(ngModel)]="user.name" [readonly]="user.isView" />
         </mat-form-field>
       </div>
+
       <div class="col-sm-4">
-        <mat-form-field><mat-label>Email</mat-label>
-        <input matInput  type="email" [ngModelOptions]="{standalone:true}"
-          [(ngModel)]="user.email" />
-      </mat-form-field>
+        <mat-form-field>
+          <mat-label>Email</mat-label>
+          <input matInput type="email" [ngModelOptions]="{standalone:true}" [(ngModel)]="user.email" [readonly]="user.isView" />
+        </mat-form-field>
+      </div>
     </div>
-    </div>
+
+    <!-- Row 2: Phone and Facility Type -->
     <div class="row">
-      <div class="col-sm-4">
-          <mat-form-field><mat-label>Phone</mat-label>
-          <input matInput  type="number" [ngModelOptions]="{standalone:true}"
-            [(ngModel)]="user.phone" />
+      <div class="col-sm-6">
+        <mat-form-field>
+          <mat-label>Phone</mat-label>
+          <input matInput type="number" [ngModelOptions]="{standalone:true}" [(ngModel)]="user.phone" [readonly]="user.isView" />
         </mat-form-field>
       </div>
-      <div class="col-sm-4">
-          <mat-form-field><mat-label>Facility</mat-label>
-          <mat-select [(ngModel)]="user.facilityType" name="facilityId" #facilityId="ngModel" (selectionChange)="getDynamicDropDown($event.value)">
-            <mat-option *ngFor="let facility of facilityType" [value]="facility" required>
+
+      <div class="col-sm-6">
+        <mat-form-field>
+          <mat-label>Facility Type</mat-label>
+          <mat-select [(ngModel)]="user.facilityType" name="facilityType" (selectionChange)="getDynamicDropDown($event.value)" [disabled]="user.isView">
+            <mat-option *ngFor="let facility of facilityTypeList" [value]="facility">
               {{facility}}
             </mat-option>
           </mat-select>
         </mat-form-field>
       </div>
-      <div class="col-sm-4" *ngIf="corpsList.length > 0">
-        <mat-form-field><mat-label>Corps</mat-label>
-        <mat-select [(ngModel)]="user.corpsId" name="corps" #corpsId="ngModel" (selectionChange)="getDivision($event.value)">
-          <mat-option *ngFor="let corp of corpsList" [value]="corp.id" required>
-            {{corp.name}}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
     </div>
-    </div>
-    <div class="row">
-      <div class="col-sm-4" *ngIf="isDivisionUser">
-        <mat-form-field><mat-label>Division</mat-label>
-        <mat-select [(ngModel)]="user.corpsId" name="division" #divisionId="ngModel">
-          <mat-option *ngFor="let division of divisionList" [value]="division.id" required>
-            {{division.name}}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-    </div>
-      <div class="col-sm-4">
+
+    <!-- Row 3: Dynamic Based on Facility Type -->
+    <div class="row" *ngIf="user.facilityType">
+      <!-- Command: Only Role Type -->
+      <div *ngIf="user.facilityType === 'Command'" class="col-sm-6">
         <mat-form-field>
-          <mat-label>Role</mat-label>
-          <mat-select [(ngModel)]="user.roleType" name="roleType" #roleType="ngModel" required>
+          <mat-label>Role Type</mat-label>
+          <mat-select [(ngModel)]="user.roleType" name="roleType" required [disabled]="user.isView">
             <mat-option *ngFor="let role of roleTypeList" [value]="role.value">
-              {{ role.key }}
+              {{role.key}}
             </mat-option>
           </mat-select>
         </mat-form-field>
+      </div>
 
-    </div>
+      <!-- Corps: Corps + Role Type -->
+      <ng-container *ngIf="user.facilityType === 'Corps'">
+        <div class="col-sm-6">
+          <mat-form-field>
+            <mat-label>Corps</mat-label>
+            <mat-select [(ngModel)]="user.corpsId" name="corps" (selectionChange)="getDivision($event.value)" [disabled]="user.isView">
+              <mat-option *ngFor="let corp of corpsList" [value]="corp.id">
+                {{corp.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="col-sm-6">
+          <mat-form-field>
+            <mat-label>Role Type</mat-label>
+            <mat-select [(ngModel)]="user.roleType" name="roleType" required [disabled]="user.isView">
+              <mat-option *ngFor="let role of roleTypeList" [value]="role.value">
+                {{role.key}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </ng-container>
+
+      <!-- Division: Corps + Division + Role Type -->
+      <ng-container *ngIf="user.facilityType === 'Division'">
+        <div class="col-sm-4">
+          <mat-form-field>
+            <mat-label>Corps</mat-label>
+            <mat-select [(ngModel)]="user.corpsId" name="corps" (selectionChange)="getDivision($event.value)" [disabled]="user.isView">
+              <mat-option *ngFor="let corp of corpsList" [value]="corp.id">
+                {{corp.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="col-sm-4">
+          <mat-form-field>
+            <mat-label>Division</mat-label>
+            <mat-select [(ngModel)]="user.divisionId" name="division" [disabled]="user.isView">
+              <mat-option *ngFor="let division of divisionList" [value]="division.id">
+                {{division.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="col-sm-4">
+          <mat-form-field>
+            <mat-label>Role Type</mat-label>
+            <mat-select [(ngModel)]="user.roleType" name="roleType" required [disabled]="user.isView">
+              <mat-option *ngFor="let role of roleTypeList" [value]="role.value">
+                {{role.key}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </ng-container>
     </div>
 
   </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button class="btn btn-success btn-sm" type="submit" *ngIf="!user.isView">Save</button>
+    <button type="button" class="btn btn-outline-danger btn-sm" (click)="resetObj()" *ngIf="!user.isView && !(user.id>0)">Reset</button>
+    <button type="button" class="btn btn-outline-info btn-sm" (click)="closeDialog()">Close</button>
+  </mat-dialog-actions>
 </form>
-<mat-dialog-actions align="end">
-  <button class="btn  btn-success btn-sm" type="submit" >Save</button>
-  <!-- <button type="button" class="btn btn-outline-danger btn-sm" (click)="resetObj()"
-    *ngIf="!dataObject.isView && !(dataObject.id>0)">Reset</button> -->
-  <button type="button" class="btn btn-outline-info btn-sm" (click)="closeDialog()">Close</button>
-</mat-dialog-actions>
