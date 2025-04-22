@@ -21,6 +21,14 @@ export class GraphImages extends BaseEntity{
   name:string;
   url:string;
 }
+export class MergeReports extends GenerateReport {
+  colGraphs: GraphImages[];
+  colNotes: string;
+  bgsGraphs: GraphImages[];
+  bgsNotes: string;
+  mggsGraphs: GraphImages[];
+  mggsNotes: string;
+}
 
 export class ApprovedReports extends BaseEntity{
   enForceLevel: string;

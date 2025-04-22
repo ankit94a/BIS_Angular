@@ -50,8 +50,10 @@ export class NotificationComponent implements OnInit {
   }
 
   openNotification(notify){
+    debugger
     this.dialogService.open(NotificationActionComponent,notify).then(res =>{
       if(res){
+        debugger
         let index = this.notifications.findIndex(item => item.id == notify.id);
         this.notifications.splice(index,1);
       }

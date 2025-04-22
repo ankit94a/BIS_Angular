@@ -14,7 +14,7 @@ namespace BIS.Manager.Interfaces
 		public long AddReport(GenerateReport generateReport, RoleType roleType);
 		public GenerateReport GetById(int id, int corpsId, int divisionId);
 		public List<GraphImages> GetGraphs(string ids);
-		
 
+        public MergeReports GetByRole(Notification notification, int corpsId, int divisionId,RoleType roleType);
     }
 }

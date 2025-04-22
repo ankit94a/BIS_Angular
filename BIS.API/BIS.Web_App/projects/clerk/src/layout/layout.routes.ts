@@ -21,19 +21,19 @@ export const routes: Routes = [
                 path: 'dashboard',
                 loadComponent: () => import('./dashboard/dashboard.component').then(m => m.DashboardComponent),
                 canActivate: [AuthGuard,PermissionGuard],
-                data: { allowedRoles: ['2','3','4','7','10','11','12','13','14','15'] },
+                data: { allowedRoles: ['2','3','4','7','10','11','12','13','14','15','5'] },
               },
               {
                 path:'master-data',
                 loadComponent:() => import('./master-data/master-data-list/master-data.component').then(m => m.MasterDataComponent),
                 canActivate: [AuthGuard,PermissionGuard],
-                data: { allowedRoles: ['1','2','3','4','7','10','11','12','13','14','15'] },
+                data: { allowedRoles: ['1','2','3','4','7','10','11','12','13','14','15','5'] },
               },
               {
                 path:'create-data',
                 loadComponent:() => import('./master-data/master-data-add/master-data-add.component').then(m => m.MasterDataAddComponent),
                 canActivate: [AuthGuard,PermissionGuard],
-                data: { allowedRoles: ['1','2','3','4','7','10','11','12','13','14','15'] },
+                data: { allowedRoles: ['1','2','3','4','7','10','11','12','13','14','15','5'] },
               },
               {
                 path:'login/forgotpassword',
@@ -43,7 +43,7 @@ export const routes: Routes = [
                 path:'smart-analysis',
                 loadComponent: ()=> import('./smart-analysis/smart-analysis.component').then(m => m.SmartAnalysisComponent),
                 canActivate: [AuthGuard,PermissionGuard],
-                data: { allowedRoles: ['2','3','4','7','10','11','12','13','14','15'] },
+                data: { allowedRoles: ['2','3','4','7','10','11','12','13','14','15','5'] },
               },
               {
                 path:'saved-notes',
@@ -55,7 +55,7 @@ export const routes: Routes = [
                 path:'gen-report',
                 loadComponent:() => import('./generate-report/generate-reports-list/generate-reports-list.component').then(m => m.GenerateReportsListComponent),
                 canActivate: [AuthGuard,PermissionGuard],
-                data: { allowedRoles: ['2','3','4','7','10','11','12','13','14','15'] },
+                data: { allowedRoles: ['2','3','4','7','10','11','12','13','14','15','5'] },
               },
               {
                 path:'cdr-dahboard',
@@ -92,14 +92,14 @@ export const routes: Routes = [
                 path:'master-data-form',
                 loadComponent : () =>import('projects/clerk/src/layout/master-data/master-data-form/master-data-form.component').then(m => m.MasterDataFormComponent),
                 canActivate: [AuthGuard,PermissionGuard],
-                data: { allowedRoles: ['1','2','3','4','7','10','11','12','13','14','15'] },
+                data: { allowedRoles: ['1','2','3','4','7','10','11','12','13','14','15','5'] },
               }
               ,
               {
                 path:'approved-reports',
                 loadComponent : () =>import('projects/clerk/src/layout/approved-report/approved-report-add/approved-reports.component').then(m => m.ApprovedReportsComponent),
                 canActivate: [AuthGuard,PermissionGuard],
-                data: { allowedRoles: ['2','3','4','7','15'] },
+                data: { allowedRoles: ['2','3','4','7','15','5'] },
               },
               {
                 path:'attribute',

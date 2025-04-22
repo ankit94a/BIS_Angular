@@ -2,6 +2,7 @@
 using BIS.Manager.Interfaces;
 using InSync.Api.Helpers;
 using Microsoft.AspNetCore.Mvc;
+using static BIS.Common.Enum.Enum;
 
 namespace BIS.API.Controller
 {
@@ -42,5 +43,13 @@ namespace BIS.API.Controller
 		{
 			return Ok(_notificationManager.NotificationViewed(notification));
 		}
-	}
+        [HttpPost, Route("getreport")]
+        public IActionResult GetUserReport(Notification notification)
+        {
+            int corpsId = HttpContext.GetCorpsId();
+            int divisionId = HttpContext.GetDivisionId();
+			RoleType roleType = HttpContext.GetRoleType();
+            return Ok(_reportManager.GetByRole(notification, corpsId, divisionId,roleType));
+        }
+    }
 }

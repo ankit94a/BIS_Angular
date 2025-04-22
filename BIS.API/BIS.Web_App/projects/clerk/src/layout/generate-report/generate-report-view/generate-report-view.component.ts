@@ -1,7 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
-import { GenerateReport, GraphImages } from 'projects/sharedlibrary/src/model/generatereport.model';
+import { GenerateReport, GraphImages, MergeReports } from 'projects/sharedlibrary/src/model/generatereport.model';
 import { masterData } from 'projects/sharedlibrary/src/model/masterdata.model';
 import { ApiService } from 'projects/sharedlibrary/src/services/api.service';
 import { MasterDataFilterService } from 'projects/sharedlibrary/src/services/master-data-filter.service';
@@ -29,21 +29,27 @@ export class GenerateReportViewComponent {
     masterDataList$ = this.masterDataListSubject.asObservable();
     chartImages$ = this.chartImagesSubject.asObservable();
     colCharts$ = this.colImagesSubject.asObservable();
+     mergeReport:MergeReports = new MergeReports()
   constructor(@Inject(MAT_DIALOG_DATA) data,private toastr:ToastrService,private apiService:ApiService,private masterDataService: MasterDataFilterService,private dailog:MatDialog){
 
     this.report = data;
-    this.getColGraphs(this.report.graphIds);
-    if(this.report.rptId != undefined && this.report.rptId != null && this.report.rptId > 0){
-      this.getG1Report();
-    }
+    // this.getColGraphs(this.report.graphIds);
+    // if(this.report.rptId != undefined && this.report.rptId != null && this.report.rptId > 0){
+    //   this.getG1Report();
+    // }
+    this.getReport()
   }
-  getG1Report(){
-
-    this.apiService.getWithHeaders('generatereport/report'+ this.report.rptId).subscribe(res =>{
-
-      this.report1 = res;
-      this.getMasterList();
-      this.getGraphs(this.report1.graphIds)
+  getReport(){
+debugger
+    this.apiService.postWithHeader('cdrdashboard/view-report', this.report).subscribe(res =>{
+debugger
+this.mergeReport = res;
+        const { Header, DataList } = this.masterDataService.getMasterData(this.mergeReport.masterData);
+                this.tableHeaderSubject.next(Header);
+                this.masterDataListSubject.next(DataList);
+      // this.report1 = res;
+      // this.getMasterList();
+      // this.getGraphs(this.report1.graphIds)
     })
   }
   getMasterList() {

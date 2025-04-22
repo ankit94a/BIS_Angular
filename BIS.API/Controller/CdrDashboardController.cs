@@ -28,15 +28,15 @@ namespace BIS.API.Controller
 		}
 		[AuthorizePermission(PermissionItem.CdrDashboard, PermissionAction.Create)]
 		[HttpPost, Route("inference")]
-		public IActionResult AddInference([FromBody] ApprovedReports inference)
+		public async Task<IActionResult> AddInference([FromBody] ApprovedReports inference)
 		{
 			inference.CreatedBy = HttpContext.GetUserId();
-			inference.CreatedOn = DateTime.UtcNow;
+			inference.CreatedOn = DateTime.Now;
 			inference.CorpsId = HttpContext.GetCorpsId();
 			inference.DivisionId = HttpContext.GetDivisionId();
 			inference.IsActive = true;
 			RoleType roleTye = HttpContext.GetRoleType();
-			return Ok(_cdrDashboardManager.AddInference(inference,roleTye));
+			return Ok(await _cdrDashboardManager.AddInference(inference,roleTye));
 		}
 		[AuthorizePermission(PermissionItem.CdrDashboard, PermissionAction.Read)]
 		[HttpGet, Route("inference")]
@@ -56,5 +56,14 @@ namespace BIS.API.Controller
 			var roleType = HttpContext.GetRoleType();
 			return Ok(_cdrDashboardManager.GetFullReport(inference, CorpsId, roleType, DivisionId));
 		}
-	}
+
+        [AuthorizePermission(PermissionItem.CdrDashboard, PermissionAction.Read)]
+        [HttpPost, Route("view-report")]
+        public IActionResult GetCdrViewReport([FromBody] GenerateReport generateReport)
+        {
+            int corpsId = HttpContext.GetCorpsId();
+            int divisionId = HttpContext.GetDivisionId();
+            return Ok(_cdrDashboardManager.GetCdrViewReport(generateReport,corpsId, divisionId));
+        }
+    }
 }

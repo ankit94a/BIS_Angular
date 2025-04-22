@@ -52,11 +52,6 @@ export class CdrDashboardComponent {
   selectedNew = 'any';
   frmnList:any[]=[];
   constructor(private apiService:ApiService, private authService: AuthService,private masterDataService:MasterDataFilterService,private dialogService:BISMatDialogService){
-    // var divisionName = this.authService.getDivisionName();
-    // if (divisionName != undefined && divisionName != '' && divisionName != null) {
-    //   this.fmnList.push(divisionName);
-    //   this.filterModel.frmn = this.fmnList;
-    // }
     this.getFrmDetails();
     this.filterModel.filterType = FilterType.Daily;
     this.filterModel2.startDate = new Date();

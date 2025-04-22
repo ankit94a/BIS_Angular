@@ -5,7 +5,7 @@ import { masterData } from '../../model/masterdata.model';
 import { SharedLibraryModule } from '../../shared-library.module';
 import { NotificationModel } from '../../model/notification.model';
 import { EnumBase, NotificationType, Status } from '../../model/enum';
-import { GenerateReport, GraphImages } from '../../model/generatereport.model';
+import { GenerateReport, GraphImages, MergeReports } from '../../model/generatereport.model';
 import { MasterDataFilterService } from '../../services/master-data-filter.service';
 import { BehaviorSubject } from 'rxjs';
 import { BisdefaultDatePipe } from '../../pipe/bisdefault-date.pipe';
@@ -41,15 +41,20 @@ export class NotificationActionComponent extends EnumBase {
   tableHeader$ = this.tableHeaderSubject.asObservable();
   masterDataList$ = this.masterDataListSubject.asObservable();
   chartImages$ = this.chartImagesSubject.asObservable();
+
+  // based on recieverEntityType show the dynamic ng-template;
+  mergeReport:MergeReports = new MergeReports()
   constructor(private authService:AuthService,private toastr: ToastrService, private cdr: ChangeDetectorRef, private masterDataService: MasterDataFilterService, @Inject(MAT_DIALOG_DATA) data, private apiService: ApiService, private dialogRef: MatDialogRef<NotificationActionComponent>) {
     super();
+    debugger
     this.notify = data;
     this.masterData = new masterData();
     if (this.notify.notificationType == NotificationType.MasterData) {
       this.getMasterData(this.notify.dataId)
     } else {
-      this.report = new GenerateReport();
+      // this.report = new GenerateReport();
       this.report2 = new GenerateReport();
+      this.mergeReport.masterData = [];
       this.getReport();
     }
 
@@ -78,65 +83,71 @@ export class NotificationActionComponent extends EnumBase {
       });
     }
   }
+  excluedeFields = ['Id', 'Status', 'UserId', 'Fmn', 'CreatedBy', 'CreatedOn', 'IsActive', 'IsDeleted', 'CorpsId', 'DivisionId','ReportedDate']
 
   getReport() {
-    this.apiService.postWithHeader('notification/report', this.notify).subscribe(res => {
+    debugger
+    this.apiService.postWithHeader('notification/getreport', this.notify).subscribe(res => {
       if (res) {
-
-        if (res.rptId != null && res.rptId != undefined && res?.rptId > 0) {
-          this.report2 = res;
-          this.getG1Report(this.report.rptId)
-          if (this.report2.graphIds != undefined && this.report2.graphIds != null && this.report2.graphIds != '') {
-            this.getGraphs(this.report2.graphIds);
-          }
-        } else {
-          this.report = res;
-          this.getMasterList();
-          if (this.report.graphIds != undefined && this.report.graphIds != null && this.report.graphIds != '') {
-            this.getGraphs(this.report.graphIds);
-          }
-        }
+        debugger;
+        this.mergeReport = res;
+        const { Header, DataList } = this.masterDataService.getMasterData(this.mergeReport.masterData);
+                this.tableHeaderSubject.next(Header);
+                this.masterDataListSubject.next(DataList);
+        // if (res.rptId != null && res.rptId != undefined && res?.rptId > 0) {
+        //   this.report2 = res;
+        //   this.getG1Report(this.report.rptId)
+        //   if (this.report2.graphIds != undefined && this.report2.graphIds != null && this.report2.graphIds != '') {
+        //     this.getGraphs(this.report2.graphIds);
+        //   }
+        // } else {
+        //   this.report = res;
+        //   this.getMasterList();
+        //   if (this.report.graphIds != undefined && this.report.graphIds != null && this.report.graphIds != '') {
+        //     this.getGraphs(this.report.graphIds);
+        //   }
+        // }
       }
     })
   }
 
-  getG1Report(reportId:number) {
-    let rpt = new NotificationModel();
-    rpt.dataId = reportId;
-    this.apiService.postWithHeader('notification/report', rpt).subscribe(res => {
-      if (res) {
-
-        this.report = res;
-        this.getMasterList();
-        if (this.report.graphIds != undefined && this.report.graphIds != null && this.report.graphIds != '') {
-          this.getGraphs(this.report.graphIds);
-        }
-      }
-    })
-  }
-  getGraphs(graphIds) {
-    this.apiService.getWithHeaders('generatereport/graph' + graphIds).subscribe(res => {
-      this.report.graphs = res
-      // .map(graph => {
-      //   return {
-      //     ...graph,  // Spread the existing properties of the graph
-      //     url: 'data:image/png;base64,' + graph.url  // Prepend the base64 string
-      //   };
-      // });
-      console.log(this.report)
-      this.chartImagesSubject.next(this.report.graphs);
-    })
-  }
-  getMasterList() {
-    this.apiService.getWithHeaders('masterdata/idsList' + this.report.masterDataIds).subscribe(res => {
-      if (res) {
-        this.report.masterData = res;
-        const { Header, DataList } = this.masterDataService.getMasterData(res);
-        this.tableHeaderSubject.next(Header);
-        this.masterDataListSubject.next(DataList);
-      }
-    })
-  }
+//   getG1Report(reportId:number) {
+//     let rpt = new NotificationModel();
+//     rpt.dataId = reportId;
+//     this.apiService.postWithHeader('notification/report', rpt).subscribe(res => {
+//       if (res) {
+// debugger
+//         this.report = res;
+//         this.getMasterList();
+//         if (this.report.graphIds != undefined && this.report.graphIds != null && this.report.graphIds != '') {
+//           this.getGraphs(this.report.graphIds);
+//         }
+//       }
+//     })
+//   }
+//   getGraphs(graphIds) {
+//     this.apiService.getWithHeaders('generatereport/graph' + graphIds).subscribe(res => {
+//       this.report.graphs = res
+//       // .map(graph => {
+//       //   return {
+//       //     ...graph,  // Spread the existing properties of the graph
+//       //     url: 'data:image/png;base64,' + graph.url  // Prepend the base64 string
+//       //   };
+//       // });
+//       console.log(this.report)
+//       this.chartImagesSubject.next(this.report.graphs);
+//     })
+//   }
+//   getMasterList() {
+//     this.apiService.getWithHeaders('masterdata/idsList' + this.report.masterDataIds).subscribe(res => {
+//       if (res) {
+//         this.report.masterData = res;
+//         const { Header, DataList } = this.masterDataService.getMasterData(res);
+//         this.tableHeaderSubject.next(Header);
+//         this.masterDataListSubject.next(DataList);
+//       }
+//     })
+//   }
   changeStatus(isApproved) {
     isApproved ? this.notify.status = Status.Approved : this.notify.status = Status.Rejected;
     this.apiService.postWithHeader(`notification/updatestatus`, this.notify).subscribe(res => {
@@ -162,13 +173,13 @@ export class NotificationActionComponent extends EnumBase {
   }
 
   submitReport() {
-    this.report2.reportTitle = this.report.reportTitle;
-    this.report2.reportType = this.report.reportType;
+    this.report2.reportTitle = this.mergeReport.reportTitle;
+    this.report2.reportType = this.mergeReport.reportType;
     this.report2.reportDate = new Date();
-    this.report2.startDate = this.report.startDate;
-    this.report2.endDate = this.report.endDate;
+    this.report2.startDate = this.mergeReport.startDate;
+    this.report2.endDate = this.mergeReport.endDate;
     this.report2.graphs = this.selectedImages;
-    this.report2.rptId = this.report.id;
+    this.report2.rptId = this.mergeReport.id;
     this.apiService.postWithHeader('GenerateReport', this.report2).subscribe(res => {
       if (res) {
         this.toastr.success("Report saved successfully", 'success');

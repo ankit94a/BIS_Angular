@@ -17,10 +17,12 @@ namespace BIS.Manager.Implements
 	{
 		private readonly IGenerateReportDB _generateReportDB;
 		private readonly IServiceScopeFactory _serviceScopeFactory;
-		public GenerateReportManager(IGenerateReportDB generateReportDB, IServiceScopeFactory serviceScopeFactory)
+		private readonly IMasterDataManager _masterDataManager;
+		public GenerateReportManager(IGenerateReportDB generateReportDB, IServiceScopeFactory serviceScopeFactory,IMasterDataManager masterDataManager)
 		{
 			_generateReportDB = generateReportDB;
 			_serviceScopeFactory = serviceScopeFactory;
+			_masterDataManager = masterDataManager;
 		}
 		public List<GenerateReport> GetReportByUser(long corpsId, long divisionId, int userId)
 		{
@@ -30,7 +32,84 @@ namespace BIS.Manager.Implements
 		{
 			return _generateReportDB.GetAll(corpsId, divisonId);
 		}
-		public long AddReport(GenerateReport generateReport, RoleType roleType)
+        public MergeReports GetByRole(Notification notification, int corpsId, int divisionId, RoleType roleType)
+		{
+			var masterReport = new MergeReports();
+			if(roleType == RoleType.MggsEc || roleType == RoleType.Mggs)
+			{
+				var brigIntReport = _generateReportDB.GetById(notification.DataId, corpsId, divisionId);
+				var brigGraphs = GetGraphs(brigIntReport.GraphIds);
+				var colIntReport = _generateReportDB.GetById(brigIntReport.RptId.Value, corpsId, divisionId);
+				var colGraphs = GetGraphs(colIntReport.GraphIds);
+				var g1Report = _generateReportDB.GetById(colIntReport.RptId.Value, corpsId, divisionId);
+				var g1Graphs = GetGraphs(g1Report.GraphIds);
+
+				// filling g1 data
+				masterReport.masterData = new List<MasterData>();
+				masterReport.Graphs = new List<GraphImages>();
+				masterReport.Graphs = g1Graphs;
+				masterReport.ReportTitle = g1Report.ReportTitle;
+				masterReport.startDate = g1Report.startDate;
+				masterReport.endDate = g1Report.endDate;
+				masterReport.ReportType = g1Report.ReportType;
+				masterReport.Id = brigIntReport.Id;
+				masterReport.Notes = g1Report.Notes;
+                masterReport.masterData = _masterDataManager.GetByIds(g1Report.MasterDataIds);
+
+				// filling Col data
+				masterReport.ColGraphs = new List<GraphImages>();
+				masterReport.BgsGraphs = new List<GraphImages>();
+				masterReport.ColGraphs = colGraphs;
+				masterReport.ColNotes = colIntReport.Notes;
+				masterReport.BgsGraphs = brigGraphs;
+				masterReport.BgsNotes = brigIntReport.Notes;
+				return masterReport;
+			}
+            else if (roleType == RoleType.BrigInt || roleType == RoleType.Bgs)
+			{
+                var colIntReport = _generateReportDB.GetById(notification.DataId, corpsId, divisionId);
+                var colGraphs = GetGraphs(colIntReport.GraphIds);
+                var g1Report = _generateReportDB.GetById(colIntReport.RptId.Value, corpsId, divisionId);
+                var g1Graphs = GetGraphs(g1Report.GraphIds);
+                var masterData = _masterDataManager.GetByIds(g1Report.MasterDataIds);
+
+                masterReport.masterData = new List<MasterData>();
+                masterReport.Graphs = new List<GraphImages>();
+                masterReport.Graphs = g1Graphs;
+                masterReport.ReportTitle = g1Report.ReportTitle;
+                masterReport.startDate = g1Report.startDate;
+                masterReport.endDate = g1Report.endDate;
+                masterReport.ReportType = g1Report.ReportType;
+                masterReport.Id = colIntReport.Id;
+                masterReport.Notes = g1Report.Notes;
+                masterReport.masterData = _masterDataManager.GetByIds(g1Report.MasterDataIds);
+
+                masterReport.ColGraphs = new List<GraphImages>();
+                masterReport.ColGraphs = colGraphs;
+                masterReport.ColNotes = colIntReport.Notes;
+            }
+            else if (roleType == RoleType.ColIntEc || roleType == RoleType.ColInt)
+			{
+                var g1Report = _generateReportDB.GetById(notification.DataId, corpsId, divisionId);
+                var g1Graphs = GetGraphs(g1Report.GraphIds);
+                var masterData = _masterDataManager.GetByIds(g1Report.MasterDataIds);
+
+                masterReport.masterData = new List<MasterData>();
+                masterReport.Graphs = new List<GraphImages>();
+                masterReport.Graphs = g1Graphs;
+                masterReport.ReportTitle = g1Report.ReportTitle;
+                masterReport.startDate = g1Report.startDate;
+                masterReport.endDate = g1Report.endDate;
+                masterReport.ReportType = g1Report.ReportType;
+                masterReport.Id = g1Report.Id;
+                masterReport.Notes = g1Report.Notes;
+                masterReport.masterData = _masterDataManager.GetByIds(g1Report.MasterDataIds);
+            }
+			
+			return masterReport;
+		}
+
+        public long AddReport(GenerateReport generateReport, RoleType roleType)
 		{
 			// Add graphs to the report if any
 			if (generateReport.Graphs.Count > 0)
@@ -53,7 +132,7 @@ namespace BIS.Manager.Implements
 			{
 				Task.Run(async () =>
 				{
-					await Task.Delay(TimeSpan.FromMinutes(2));
+					await Task.Delay(TimeSpan.FromMinutes(1));
 					var notification = new Notification
 					{
 						SenderId = generateReport.CreatedBy,
@@ -73,29 +152,89 @@ namespace BIS.Manager.Implements
 						var userDB = scope.ServiceProvider.GetRequiredService<UserDB>();
 						var notificationDB = scope.ServiceProvider.GetRequiredService<NotificationDB>();
 
-						foreach (var item in Enum.GetValues(typeof(RoleType)).Cast<RoleType>().OrderByDescending(e => (int)e))
+						//foreach (var item in Enum.GetValues(typeof(RoleType)).Cast<RoleType>().OrderByDescending(e => (int)e))
+						//{
+						//	if (roleType != RoleType.Colgs)
+						//	{
+						//		if ((int)item == (int)roleType + 1)
+						//		{
+						//			notification.ReceiverId = await userDB.GetUserIdByRoleType(item, generateReport.CorpsId, generateReport.DivisionId);
+						//			notification.ReceiverEntityType = item;
+						//			await notificationDB.AddNotification(notification);
+						//			break;
+						//		}
+						//	}
+						//	else
+						//	{
+						//		if ((int)item == (int)roleType + 4)
+						//		{
+						//			notification.ReceiverId = await userDB.GetUserIdByRoleType(item, generateReport.CorpsId, generateReport.DivisionId);
+						//			notification.ReceiverEntityType = item;
+						//			await notificationDB.AddNotification(notification);
+						//			break;
+						//		}
+						//	}
+						//}
+                        
+						// finding user is from which facility
+						if(generateReport.CorpsId == 1 && roleType != RoleType.MggsEc)
 						{
-							if (roleType != RoleType.Colgs)
+							// command user
+							switch (roleType)
 							{
-								if ((int)item == (int)roleType + 1)
-								{
-									notification.ReceiverId = await userDB.GetUserIdByRoleType(item, generateReport.CorpsId, generateReport.DivisionId);
-									notification.ReceiverEntityType = item;
-									await notificationDB.AddNotification(notification);
-									break;
-								}
-							}
-							else
-							{
-								if ((int)item == (int)roleType + 4)
-								{
-									notification.ReceiverId = await userDB.GetUserIdByRoleType(item, generateReport.CorpsId, generateReport.DivisionId);
-									notification.ReceiverEntityType = item;
-									await notificationDB.AddNotification(notification);
-									break;
-								}
-							}
-						}
+                                case RoleType.G1IntEc:
+                                    notification.ReceiverId = await userDB.GetUserIdByRoleType(RoleType.ColIntEc, generateReport.CorpsId, generateReport.DivisionId);
+                                    notification.ReceiverEntityType = RoleType.ColIntEc;
+                                    break;
+                                case RoleType.ColIntEc:
+                                    notification.ReceiverId = await userDB.GetUserIdByRoleType(RoleType.BrigInt, generateReport.CorpsId, generateReport.DivisionId);
+                                    notification.ReceiverEntityType = RoleType.BrigInt;
+                                    break;
+                                case RoleType.BrigInt:
+                                    notification.ReceiverId = await userDB.GetUserIdByRoleType(RoleType.MggsEc, generateReport.CorpsId, generateReport.DivisionId);
+                                    notification.ReceiverEntityType = RoleType.MggsEc;
+                                    break;
+                                case RoleType.MggsEc:
+                                    notification.ReceiverId = await userDB.GetUserIdByRoleType(RoleType.GocEc, generateReport.CorpsId, generateReport.DivisionId);
+                                    notification.ReceiverEntityType = RoleType.GocEc;
+                                    break;
+                            }
+						}else if(generateReport.CorpsId > 1 && generateReport.DivisionId == 0 && roleType != RoleType.Bgs)
+						{
+                            // corps user
+                            switch (roleType)
+                            {
+                                case RoleType.G1Int:
+                                    notification.ReceiverId = await userDB.GetUserIdByRoleType(RoleType.ColInt, generateReport.CorpsId, generateReport.DivisionId);
+                                    notification.ReceiverEntityType = RoleType.ColInt;
+                                    break;
+                                case RoleType.ColInt:
+                                    notification.ReceiverId = await userDB.GetUserIdByRoleType(RoleType.Bgs, generateReport.CorpsId, generateReport.DivisionId);
+                                    notification.ReceiverEntityType = RoleType.Bgs;
+                                    break;
+                                case RoleType.Bgs:
+                                    notification.ReceiverId = await userDB.GetUserIdByRoleType(RoleType.Goc, generateReport.CorpsId, generateReport.DivisionId);
+                                    notification.ReceiverEntityType = RoleType.Goc;
+                                    break;
+                            }
+                        }
+                        else if(generateReport.CorpsId > 0 && generateReport.DivisionId > 0 && roleType != RoleType.Colgs)
+						{
+                            // division user
+                            switch (roleType)
+                            {
+                                case RoleType.G1Int:
+                                    notification.ReceiverId = await userDB.GetUserIdByRoleType(RoleType.Colgs, generateReport.CorpsId, generateReport.DivisionId);
+                                    notification.ReceiverEntityType = RoleType.Colgs;
+                                    break;
+                                case RoleType.Colgs:
+                                    notification.ReceiverId = await userDB.GetUserIdByRoleType(RoleType.Goc, generateReport.CorpsId, generateReport.DivisionId);
+                                    notification.ReceiverEntityType = RoleType.Goc;
+                                    break;
+                            }
+                        }
+						if(notification.ReceiverId > 0 && notification.ReceiverId != default(int))
+							await notificationDB.AddNotification(notification);
                         var generateReportDB = scope.ServiceProvider.GetRequiredService<GenerateReportDB>();
                         await generateReportDB.UpdateStatus(generateReport.Id, Status.Progress);
                     }

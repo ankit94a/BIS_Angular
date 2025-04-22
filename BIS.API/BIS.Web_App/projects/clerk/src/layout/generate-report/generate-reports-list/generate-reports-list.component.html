@@ -55,10 +55,13 @@
           </ng-select>
         </div> -->
       </div>
-        <app-table [rowData]="generateReportList" [tablePaginationSettings]="tablePaginationSettings" [isRowBackgroundColor]="true"
+        <app-table *ngIf="generateReportList.length > 0" [rowData]="generateReportList" [tablePaginationSettings]="tablePaginationSettings" [isRowBackgroundColor]="true"
         [isRefresh]="isRefresh" [allowMultiSelect]="true"  (view)="view($event)"
          [sqColumnDefinition]="columns"
         (pageChanged)="getMoreSameples($event)">
       </app-table>
+      <div class="span" *ngIf="generateReportList.length == 0">
+        <h4>NO Data Found</h4>
+      </div>
     </mat-card-content>
 </mat-card>

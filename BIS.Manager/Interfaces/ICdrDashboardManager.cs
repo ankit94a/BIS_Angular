@@ -11,9 +11,11 @@ namespace BIS.Manager.Interfaces
 	public interface ICdrDashboardManager
 	{
 		public List<GenerateReport> GetReportByDate(FilterModel filterModel, int corpsId, RoleType roleType, int divisionId);
-		public bool AddInference(ApprovedReports inference,RoleType roleType);
+		public Task<bool> AddInference(ApprovedReports inference,RoleType roleType);
 		public List<ApprovedReports> GetInference(int corpsId, int divisionId);
 
 		public FullReport GetFullReport(ApprovedReports inference, int corpsId, RoleType roleType, int divisionId);
-	}
+		public MergeReports GetCdrViewReport(GenerateReport generateReport, int corpsId, int divisionId);
+
+    }
 }

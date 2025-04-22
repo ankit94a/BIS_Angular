@@ -31,4 +31,15 @@ namespace BIS.Common.Entities
 		public string? Name { get; set; }
 		public string? Url { get; set; }
 	}
+
+	public class MergeReports : GenerateReport
+	{
+		public List<MasterData> masterData { get; set; }
+		public List<GraphImages> ColGraphs { get; set; }
+		public string ColNotes { get; set; }
+		public List <GraphImages> BgsGraphs { get; set; }
+		public string BgsNotes { get; set; }
+        public List<GraphImages> MggsGraphs { get; set; }
+        public string MggsNotes { get; set; }
+    }
 }

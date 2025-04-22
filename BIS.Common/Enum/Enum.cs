@@ -54,7 +54,7 @@ namespace BIS.Common.Enum
 			StaffEc,
 			G1IntEc,
 			ColIntEc,
-			BgsEc,
+			BrigInt,
 			MggsEc,
 			GocEc
 		}

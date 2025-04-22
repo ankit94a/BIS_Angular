@@ -125,7 +125,7 @@ namespace BIS.Manager.Implements
 			{
 				Task.Run(async () =>
 				{
-					await Task.Delay(TimeSpan.FromMinutes(10));
+					await Task.Delay(TimeSpan.FromMinutes(1));
 
 					var notification = new Notification
 					{
