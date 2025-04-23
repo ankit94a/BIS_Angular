@@ -6,10 +6,10 @@ import { ApiService } from 'projects/sharedlibrary/src/services/api.service';
 import { MasterDataFilterService } from 'projects/sharedlibrary/src/services/master-data-filter.service';
 import { SharedLibraryModule } from 'projects/sharedlibrary/src/shared-library.module';
 import { BehaviorSubject } from 'rxjs';
-
+import {MatGridListModule} from '@angular/material/grid-list';
 @Component({
   selector: 'app-approved-report-view',
-  imports: [SharedLibraryModule],
+  imports: [SharedLibraryModule,MatGridListModule],
   templateUrl: './approved-report-view.component.html',
   styleUrl: './approved-report-view.component.scss'
 })
@@ -31,13 +31,29 @@ export class ApprovedReportViewComponent {
     this.apiService.postWithHeader('cdrdashboard/fullreport', this.approvedReport).subscribe(res => {
       if (res) {
         this.fullReport = res;
-        const { Header, DataList } = this.masterDataService.getMasterData(this.fullReport.masterDatas);
-        this.tableHeaderSubject.next(Header);
-        this.masterDataListSubject.next(DataList);
+        const { Header, DataList } = this.masterDataService.getMasterData(this.fullReport.mergeReport.masterData);
+                this.tableHeaderSubject.next(Header);
+                this.masterDataListSubject.next(DataList);
       }
     })
   }
   close() {
     this.dialog.closeAll();
   }
+
+  currentChapter = 1;
+totalChapters = 2; // or however many you have
+
+nextChapter() {
+  if (this.currentChapter < this.totalChapters) {
+    this.currentChapter++;
+  }
+}
+
+prevChapter() {
+  if (this.currentChapter > 1) {
+    this.currentChapter--;
+  }
+}
+
 }

@@ -17,19 +17,19 @@
 .content {
   height: 87.9vh;
 }
-.compress{
-  margin-left: 169px;
-}
-.full-width{
-  margin-left: 0px;
-}
+// .compress{
+//   margin-left: 169px;
+// }
+// .full-width{
+//   margin-left: 0px;
+// }
 
 @media screen and (min-width: 768px) {
   .content {
     height: 80vh;
   }
 }
-
+// my laptop screen
 @media screen and (min-width: 1200px) {
   .content {
     height: 84vh;

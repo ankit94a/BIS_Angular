@@ -11,6 +11,7 @@ import { PipesModule } from './pipe/pipes.module';
 // import { CurrentColumnDirective } from './directive/current-column.directive';
 // import { WarningDialogComponent } from './components/warning-dialog/warning-dialog.component';
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from '@danielmoncada/angular-datetime-picker';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 
 
@@ -20,8 +21,8 @@ import { OwlDateTimeModule, OwlNativeDateTimeModule } from '@danielmoncada/angul
 
   ],
   imports: [
-    ToastrModule.forRoot()
-
+    ToastrModule.forRoot(),
+    NgxSpinnerModule
   ],
   exports: [
     // PipesModule,

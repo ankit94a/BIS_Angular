@@ -281,31 +281,38 @@ namespace BIS.Manager.Implements
         public FullReport GetFullReport(ApprovedReports inference, int corpsId, RoleType roleType, int divisionId)
 		{
 			var fullReport = new FullReport();
-			// first getting GOC graphs
-			var gocGraphIds = inference.GraphIds.Trim('[', ']').Split(',').Select(id => int.Parse(id)).ToList();
-			inference.Graphs = _generateReportDB.GetGraphs(gocGraphIds);
-			fullReport.Inference = inference;
-			// then get's ColGs report;
-			var colGsReport = _generateReportDB.GetById(inference.GenerateReportId, corpsId, divisionId);
-			var colGsGraphIds = colGsReport.GraphIds.Trim('[', ']').Split(',').Select(id => int.Parse(id)).ToList();
-			colGsReport.Graphs = _generateReportDB.GetGraphs(colGsGraphIds);
-			fullReport.ColGsReport = colGsReport;
-			// then get's G1Int report
-			if (colGsReport.RptId.HasValue)
-			{
-				var g1IntReport = _generateReportDB.GetById(colGsReport.RptId.Value, corpsId, divisionId);
-				var g1IntGraphIds = g1IntReport.GraphIds.Trim('[', ']').Split(',').Select(id => int.Parse(id)).ToList();
-				g1IntReport.Graphs = _generateReportDB.GetGraphs(g1IntGraphIds);
-				fullReport.G1IntReport = g1IntReport;
+            //// first getting GOC graphs
+            //var gocGraphIds = inference.GraphIds.Trim('[', ']').Split(',').Select(id => int.Parse(id)).ToList();
+            //inference.Graphs = _generateReportDB.GetGraphs(gocGraphIds);
+            //fullReport.Inference = inference;
+            //// then get's ColGs report;
+            //var colGsReport = _generateReportDB.GetById(inference.GenerateReportId, corpsId, divisionId);
+            //var colGsGraphIds = colGsReport.GraphIds.Trim('[', ']').Split(',').Select(id => int.Parse(id)).ToList();
+            //colGsReport.Graphs = _generateReportDB.GetGraphs(colGsGraphIds);
+            //fullReport.ColGsReport = colGsReport;
+            //// then get's G1Int report
+            //if (colGsReport.RptId.HasValue)
+            //{
+            //	var g1IntReport = _generateReportDB.GetById(colGsReport.RptId.Value, corpsId, divisionId);
+            //	var g1IntGraphIds = g1IntReport.GraphIds.Trim('[', ']').Split(',').Select(id => int.Parse(id)).ToList();
+            //	g1IntReport.Graphs = _generateReportDB.GetGraphs(g1IntGraphIds);
+            //	fullReport.G1IntReport = g1IntReport;
 
-				if (g1IntReport.MasterDataIds.Length > 0)
-				{
-					var masterDataIds = g1IntReport.MasterDataIds.Trim('[', ']').Split(',').Select(id => int.Parse(id)).ToList();
-					var masterDataList = _masterDataDB.GetByIds(masterDataIds);
-					fullReport.MasterDatas = masterDataList;
-				}
-			}
-			return fullReport;
+            //	if (g1IntReport.MasterDataIds.Length > 0)
+            //	{
+            //		var masterDataIds = g1IntReport.MasterDataIds.Trim('[', ']').Split(',').Select(id => int.Parse(id)).ToList();
+            //		var masterDataList = _masterDataDB.GetByIds(masterDataIds);
+            //		fullReport.MasterDatas = masterDataList;
+            //	}
+            //}
+            var gocGraphIds = inference.GraphIds.Trim('[', ']').Split(',').Select(id => int.Parse(id)).ToList();
+            inference.Graphs = _generateReportDB.GetGraphs(gocGraphIds);
+            fullReport.Inference = inference;
+			var generateReport = new GenerateReport();
+			generateReport.Id = inference.GenerateReportId;
+            fullReport.MergeReport = GetCdrViewReport(generateReport, corpsId, divisionId);
+
+            return fullReport;
 		}
 	}
 }

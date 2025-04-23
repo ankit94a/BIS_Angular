@@ -6,11 +6,12 @@ import { SidebarComponent } from '../../../sharedlibrary/src/component/sidebar/s
 import { FooterComponent } from 'projects/sharedlibrary/src/component/footer/footer.component';
 import { AuthService } from 'projects/sharedlibrary/src/services/auth.service';
 import { filter } from 'rxjs';
+import { NgxSpinnerModule, NgxSpinnerService } from 'ngx-spinner';
 
 
 @Component({
   selector: 'app-layout',
-  imports: [SharedLibraryModule,RouterModule,HeaderComponent,SidebarComponent,FooterComponent],
+  imports: [SharedLibraryModule,RouterModule,HeaderComponent,SidebarComponent,FooterComponent,NgxSpinnerModule ],
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.scss'
 })
@@ -20,7 +21,7 @@ export class LayoutComponent {
   isSideBarLoaded:boolean=false;
   typeSelected;
   currentRoute: string = '';
-  constructor(private route:Router) {
+  constructor(private route:Router,public spinnerService: NgxSpinnerService) {
     this.typeSelected= 'ball-fussion';
     this.route.events
     .pipe(filter(event => event instanceof NavigationEnd))

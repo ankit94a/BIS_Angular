@@ -15,6 +15,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AuthService } from 'projects/sharedlibrary/src/services/auth.service';
 import { Aspect, Indicator } from 'projects/sharedlibrary/src/model/attribute.model';
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-master-data-add',

@@ -40,7 +40,8 @@
               "projects/clerk/src/styles.scss",
               "node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "node_modules/ngx-toastr/toastr.css",
-              "node_modules/@danielmoncada/angular-datetime-picker/assets/style/picker.min.css"
+              "node_modules/@danielmoncada/angular-datetime-picker/assets/style/picker.min.css",
+                "node_modules/ngx-spinner/animations/square-jelly-box.css"
             ],
             "scripts": []
           },
@@ -107,7 +108,8 @@
               "projects/clerk/src/styles.scss",
               "node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "node_modules/ngx-toastr/toastr.css",
-              "node_modules/@danielmoncada/angular-datetime-picker/assets/style/picker.min.css"
+              "node_modules/@danielmoncada/angular-datetime-picker/assets/style/picker.min.css",
+                "node_modules/ngx-spinner/animations/square-jelly-box.css"
             ],
             "scripts": []
           }

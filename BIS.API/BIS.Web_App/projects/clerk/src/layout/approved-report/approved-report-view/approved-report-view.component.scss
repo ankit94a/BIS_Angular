@@ -1,67 +1,3 @@
-/* .table-container {
-    overflow-x: auto;
-    margin-top: 20px;
-    margin-bottom: 20px;
-  }
-
-  .table {
-    width: 100%;
-    border-collapse: separate;
-    border-spacing: 0 10px;
-    font-family: 'Arial', sans-serif;
-  }
-
-  .table th, .table td {
-    padding: 12px 15px;
-    text-align: left;
-    border: 1px solid #ddd;
-  }
-
-  .table th {
-    background-color: #f4f4f4;
-    font-weight: bold;
-  }
-
-  .table td {
-    background-color: #fff;
-  }
-
-  .table tbody tr:nth-child(even) {
-    background-color: #f9f9f9;
-  }
-
-  .table tbody tr:hover {
-    background-color: #f1f1f1;
-  }
-  .space{
-    padding: 20px;
-  }
-  .table th, .table td {
-    padding-left: 15px;
-    padding-right: 15px;
-    margin: 20px;
-  }
-
-  .mat-checkbox {
-    margin: 0;
-    padding: 0;
-    display: inline-block;
-  }
-
-  .mat-form-field {
-    width: 100%;
-  }
-
-  .report-title {
-    font-size: 1.2rem;
-    font-weight: 500;
-    margin-bottom: 15px;
-  }
-
-  .full-width {
-    width: 100%;
-  }
-   */
 
    /* Make the table container scrollable */
    .table-container {
@@ -148,4 +84,45 @@
 .text-area{
     height: 80px !important;
     line-height: 1.5 !important;
+}
+
+
+// chapter animation
+
+.book {
+  perspective: 1200px;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.book-page {
+  width: 100%;
+  height: 100%;
+  background: white;
+  padding: 20px;
+  transform-origin: left center;
+  animation: flipPage 1s ease;
+}
+
+@keyframes flipPage {
+  from {
+    transform: rotateY(-90deg);
+    opacity: 0;
+  }
+  to {
+    transform: rotateY(0deg);
+    opacity: 1;
+  }
+}
+
+.btn-gap{
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+.gp{
+  display: flex;
+  gap: 5px;
 }

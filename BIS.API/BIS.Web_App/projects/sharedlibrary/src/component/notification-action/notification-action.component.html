@@ -1,216 +1,215 @@
 <div mat-dialog-title>
-    {{notify.notificationType == NotificationType.MasterData ? 'Master Data' : 'Report'}}
+  {{notify.notificationType == NotificationType.MasterData ? 'Master Data' : 'Report'}}
 </div>
 <mat-dialog-content>
-    <ng-container *ngIf="notify.notificationType == NotificationType.MasterData; then data else generateReport">
-
+  <ng-container [ngSwitch]="notify.notificationType">
+    <ng-container *ngSwitchCase="NotificationType.MasterData">
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <ng-container *ngFor="let item of tableHeader$ | async">
+                <th
+                  *ngIf="!['Id', 'CreatedBy', 'CreatedOn', 'IsActive', 'IsDeleted', 'CorpsId', 'DivisionId','Status','Fmn','UserId','ReportedDate'].includes(item)"
+                  class="space">
+                  {{ item }}
+                </th>
+              </ng-container>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of masterDataList$ | async; let i = index">
+              <ng-container *ngFor="let header of tableHeader$ | async">
+                <td
+                  *ngIf="!['Id', 'CreatedBy', 'CreatedOn', 'IsActive', 'IsDeleted', 'CorpsId', 'DivisionId','Status','Fmn','UserId','ReportedDate'].includes(header)"
+                  class="space">
+                  {{ item[header] }}
+                </td>
+              </ng-container>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </ng-container>
-    <ng-template #data>
-        <div class="table-container">
-            <table>
-                <thead>
-                    <tr>
-                        <ng-container *ngFor="let item of tableHeader$ | async">
-                            <th *ngIf="!['Id', 'CreatedBy', 'CreatedOn', 'IsActive', 'IsDeleted', 'CorpsId', 'DivisionId','Status','Fmn','UserId','ReportedDate'].includes(item)"
-                                class="space">
-                                {{ item }}
-                            </th>
-                        </ng-container>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let item of masterDataList$ | async; let i = index">
-                        <ng-container *ngFor="let header of tableHeader$ | async">
-                            <td *ngIf="!['Id', 'CreatedBy', 'CreatedOn', 'IsActive', 'IsDeleted', 'CorpsId', 'DivisionId','Status','Fmn','UserId','ReportedDate'].includes(header)"
-                                class="space">
-                                {{ item[header] }}
-                            </td>
-                        </ng-container>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
 
-    </ng-template>
-    
-       
-      
-        <ng-template #generateReport>
-          <!-- Common Report Info -->
-          <div class="row">
-            <div class="col">
-              Report Date : {{ mergeReport.reportDate | bisdefaultDate }}
-            </div>
-          </div>
-      
-          <div class="row">
-            <div class="col-md-4">
-              <mat-form-field>
-                <mat-label>Report Title</mat-label>
-                <input matInput [(ngModel)]="mergeReport.reportTitle" readonly />
-              </mat-form-field>
-            </div>
-            <div class="col-md-4">
-              <mat-form-field>
-                <mat-label>Report Type</mat-label>
-                <input matInput [(ngModel)]="mergeReport.reportType" readonly />
-              </mat-form-field>
-            </div>
-            <div class="col-md-4">
-              <mat-form-field>
-                <mat-label>Date Range</mat-label>
-                <mat-date-range-input [rangePicker]="picker" [disabled]="true">
-                  <input matStartDate [(ngModel)]="mergeReport.startDate">
-                  <input matEndDate [(ngModel)]="mergeReport.endDate">
-                </mat-date-range-input>
-                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-                <mat-date-range-picker #picker></mat-date-range-picker>
-              </mat-form-field>
-            </div>
-          </div>
-      
-          <hr>
-      
-          <!-- G1 Master Data -->
-          <div class="row" *ngIf="(masterDataList$ | async)?.length > 0">
-            <div class="table-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <!-- <th>#</th> -->
-                            <ng-container *ngFor="let item of tableHeader$ | async">
-                                <th *ngIf="!['Id','Status','UserId','Fmn', 'CreatedBy', 'CreatedOn', 'IsActive', 'IsDeleted', 'CorpsId', 'DivisionId','ReportedDate'].includes(item)"
-                                    class="space">
-                                    {{ item }}
-                                </th>
-                            </ng-container>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let item of masterDataList$ | async; let i = index">
-                            <!-- Checkbox for individual rows -->
-                            <!-- <td>
+
+    <ng-container *ngSwitchCase="NotificationType.GenerateReport">
+      <!-- Common Report Info -->
+      <div class="row">
+        <div class="col">
+          Report Date : {{ mergeReport.reportDate | bisdefaultDate }}
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-4">
+          <mat-form-field>
+            <mat-label>Report Title</mat-label>
+            <input matInput [(ngModel)]="mergeReport.reportTitle" readonly />
+          </mat-form-field>
+        </div>
+        <div class="col-md-4">
+          <mat-form-field>
+            <mat-label>Report Type</mat-label>
+            <input matInput [(ngModel)]="mergeReport.reportType" readonly />
+          </mat-form-field>
+        </div>
+        <div class="col-md-4">
+          <mat-form-field>
+            <mat-label>Date Range</mat-label>
+            <mat-date-range-input [rangePicker]="picker" [disabled]="true">
+              <input matStartDate [(ngModel)]="mergeReport.startDate">
+              <input matEndDate [(ngModel)]="mergeReport.endDate">
+            </mat-date-range-input>
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-date-range-picker #picker></mat-date-range-picker>
+          </mat-form-field>
+        </div>
+      </div>
+      <hr>
+
+      <!-- G1 Master Data -->
+      <div class="row" *ngIf="(masterDataList$ | async)?.length > 0">
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <!-- <th>#</th> -->
+                <ng-container *ngFor="let item of tableHeader$ | async">
+                  <th
+                    *ngIf="!['Id','Status','UserId','Fmn', 'CreatedBy', 'CreatedOn', 'IsActive', 'IsDeleted', 'CorpsId', 'DivisionId','ReportedDate'].includes(item)"
+                    class="space">
+                    {{ item }}
+                  </th>
+                </ng-container>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of masterDataList$ | async; let i = index">
+                <!-- Checkbox for individual rows -->
+                <!-- <td>
                                 <mat-checkbox></mat-checkbox>
                             </td> -->
-                            <ng-container *ngFor="let header of tableHeader$ | async">
-                                <td *ngIf="!['Id','Status','UserId','Fmn', 'CreatedBy', 'CreatedOn', 'IsActive', 'IsDeleted', 'CorpsId', 'DivisionId','ReportedDate'].includes(header)"
-                                    class="space">
-                                    {{ item[header] }}
-                                </td>
-                            </ng-container>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+                <ng-container *ngFor="let header of tableHeader$ | async">
+                  <td
+                    *ngIf="!['Id','Status','UserId','Fmn', 'CreatedBy', 'CreatedOn', 'IsActive', 'IsDeleted', 'CorpsId', 'DivisionId','ReportedDate'].includes(header)"
+                    class="space">
+                    {{ item[header] }}
+                  </td>
+                </ng-container>
+              </tr>
+            </tbody>
+          </table>
         </div>
-          
-          
-      
-          <br>
-      
-          <!-- G1 Graphs -->
-          <div *ngIf="mergeReport.graphs.length > 0" class="row image-preview-container">
-            <div *ngFor="let image of mergeReport.graphs" class="col-md-6 image-preview">
+      </div>
+      <br>
+      <!-- G1 Graphs -->
+      <div *ngIf="mergeReport.graphs.length > 0" class="row image-preview-container">
+        <div *ngFor="let image of mergeReport.graphs" class="col-md-6 image-preview">
+          <img [src]="image.url" [alt]="image.name" />
+          <span class="image-name">{{ image.name }}</span>
+        </div>
+      </div>
+      <!-- G1 Notes -->
+      <div class="col-md-12">
+        <mat-form-field>
+          <mat-label>G1 Comment</mat-label>
+          <textarea matInput readonly class="full-width text-area" [(ngModel)]="mergeReport.notes"></textarea>
+        </mat-form-field>
+      </div>
+      <br>
+
+      <!-- Col Graphs and Notes (If Exist) -->
+      <div *ngIf="mergeReport.colGraphs?.length > 0">
+        <!-- <h4>Col Graphs</h4> -->
+        <div class="row image-preview-container">
+          <div *ngFor="let image of mergeReport.colGraphs" class="col-md-6 image-preview">
+            <img [src]="image.url" [alt]="image.name" />
+            <span class="image-name">{{ image.name }}</span>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <mat-form-field>
+            <mat-label>Col Comment</mat-label>
+            <textarea matInput readonly class="full-width text-area" [(ngModel)]="mergeReport.colNotes"></textarea>
+          </mat-form-field>
+        </div>
+      </div>
+      <br>
+
+      <!-- Bgs Graphs and Notes (If Exist) -->
+      <div *ngIf="mergeReport.bgsGraphs?.length > 0">
+        <div class="row image-preview-container">
+          <div *ngFor="let image of mergeReport.bgsGraphs" class="col-md-6 image-preview">
+            <img [src]="image.url" [alt]="image.name" />
+            <span class="image-name">{{ image.name }}</span>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <mat-form-field>
+            <mat-label>BGs Comment</mat-label>
+            <textarea matInput readonly class="full-width text-area" [(ngModel)]="mergeReport.bgsNotes"></textarea>
+          </mat-form-field>
+        </div>
+      </div>
+      <br>
+
+      <!-- Upload New Images and Add New Comments (If Needed) -->
+      <div class="row">
+        <div class="col-md-12">
+          <input type="file" accept="image/*" #fileInput id="fileInput" hidden (change)="onFileSelect($event)"
+            multiple />
+          <div>
+            <label for="fileInput" class="btn-outline-primary fileUpload">
+              <mat-icon>file_upload</mat-icon>
+              <h6>Upload Images</h6>
+            </label>
+          </div>
+
+          <!-- Image Previews -->
+          <div class="row image-preview-container">
+            <div *ngFor="let image of selectedImages" class="col-md-6 image-preview">
               <img [src]="image.url" [alt]="image.name" />
               <span class="image-name">{{ image.name }}</span>
             </div>
           </div>
-      
-          <!-- G1 Notes -->
-          <div class="col-md-12">
-            <mat-form-field>
-              <mat-label>G1 Comment</mat-label>
-              <textarea matInput readonly class="full-width text-area" [(ngModel)]="mergeReport.notes"></textarea>
-            </mat-form-field>
-          </div>
-      
-          <br>
-      
-          <!-- Col Graphs and Notes (If Exist) -->
-          <div *ngIf="mergeReport.colGraphs?.length > 0">
-            <!-- <h4>Col Graphs</h4> -->
-            <div class="row image-preview-container">
-              <div *ngFor="let image of mergeReport.colGraphs" class="col-md-6 image-preview">
-                <img [src]="image.url" [alt]="image.name" />
-                <span class="image-name">{{ image.name }}</span>
-              </div>
-            </div>
-            <div class="col-md-12">
-              <mat-form-field>
-                <mat-label>Col Comment</mat-label>
-                <textarea matInput readonly class="full-width text-area" [(ngModel)]="mergeReport.colNotes"></textarea>
-              </mat-form-field>
-            </div>
-          </div>
-      
-          <br>
-      
-          <!-- Bgs Graphs and Notes (If Exist) -->
-          <div *ngIf="mergeReport.bgsGraphs?.length > 0">
-            <h4>BGs Graphs</h4>
-            <div class="row image-preview-container">
-              <div *ngFor="let image of mergeReport.bgsGraphs" class="col-md-6 image-preview">
-                <img [src]="image.url" [alt]="image.name" />
-                <span class="image-name">{{ image.name }}</span>
-              </div>
-            </div>
-            <div class="col-md-12">
-              <mat-form-field>
-                <mat-label>BGs Comment</mat-label>
-                <textarea matInput readonly class="full-width text-area" [(ngModel)]="mergeReport.bgsNotes"></textarea>
-              </mat-form-field>
-            </div>
-          </div>
-      
-          <br>
-      
-          <!-- Upload New Images and Add New Comments (If Needed) -->
-          <div class="row">
-            <div class="col-md-12">
-              <input
-                type="file"
-                accept="image/*"
-                #fileInput
-                id="fileInput"
-                hidden
-                (change)="onFileSelect($event)"
-                multiple
-              />
-              <div>
-                <label for="fileInput" class="btn-outline-primary fileUpload">
-                  <mat-icon>file_upload</mat-icon>
-                  <h6>Upload Images</h6>
-                </label>
-              </div>
-      
-              <!-- Image Previews -->
-              <div class="row image-preview-container">
-                <div *ngFor="let image of selectedImages" class="col-md-6 image-preview">
-                  <img [src]="image.url" [alt]="image.name" />
-                  <span class="image-name">{{ image.name }}</span>
-                </div>
-              </div>
-            </div>
-      
-            <div class="col-md-12">
-              <mat-form-field>
-                <mat-label>Add Comment</mat-label>
-                <textarea matInput class="full-width text-area" [(ngModel)]="report2.notes"></textarea>
-              </mat-form-field>
-            </div>
-          </div>
-        </ng-template>
-      
-      
-
-
-
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <mat-form-field>
+            <mat-label>Add Comment</mat-label>
+            <textarea matInput class="full-width text-area" [(ngModel)]="report2.notes"></textarea>
+          </mat-form-field>
+        </div>
+      </div>
+    </ng-container>
+    <!-- Approved Reports Notification -->
+    <ng-container *ngSwitchCase="NotificationType.ApprovedReport">
+      <div class="approved-report-message">
+        <h3>Report Approved!</h3>
+        <p>
+          Congratulations! Your report has been successfully approved. 
+          Please navigate to the <a href="/approved-reports">Approved Reports</a> section to review the complete details.
+        </p>
+      </div>
+    </ng-container>
+    
+  </ng-container>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
-      <button class="btn btn-sm btn-warning" (click)="close(false)">Close</button>
-      <button class="btn btn-sm btn-outline-danger" *ngIf="notify.notificationType == NotificationType.MasterData && userRole != '1' && userRole != '10'" (click)="changeStatus(false)">Rejected</button>
-      <button class="btn btn-sm fileUpload" *ngIf="notify.notificationType == NotificationType.MasterData && userRole != '1' && userRole != '10'" (click)="changeStatus(true)">Approved</button>
-      <button class="btn btn-sm fileUpload" *ngIf="notify.notificationType == NotificationType.MasterData && (userRole == '1' || userRole == '10')" (click)="Viewed()">Mark as viewed</button>
-      <button class="btn btn-sm fileUpload" *ngIf="notify.notificationType == NotificationType.GenerateReport" (click)="submitReport()">Submit</button>
-      <button class="btn btn-sm fileUpload" *ngIf="notify.notificationType == NotificationType.ApprovedReport" (click)="Viewed()">Mark as viewed</button>
+  <button class="btn btn-sm btn-warning" (click)="close(false)">Close</button>
+  <button class="btn btn-sm btn-outline-danger"
+    *ngIf="notify.notificationType == NotificationType.MasterData && userRole != '1' && userRole != '10'"
+    (click)="changeStatus(false)">Rejected</button>
+  <button class="btn btn-sm fileUpload"
+    *ngIf="notify.notificationType == NotificationType.MasterData && userRole != '1' && userRole != '10'"
+    (click)="changeStatus(true)">Approved</button>
+  <button class="btn btn-sm fileUpload"
+    *ngIf="notify.notificationType == NotificationType.MasterData && (userRole == '1' || userRole == '10')"
+    (click)="Viewed()">Mark as viewed</button>
+  <button class="btn btn-sm fileUpload" *ngIf="notify.notificationType == NotificationType.GenerateReport"
+    (click)="submitReport()">Submit</button>
+  <button class="btn btn-sm fileUpload" *ngIf="notify.notificationType == NotificationType.ApprovedReport"
+    (click)="Viewed()">Mark as viewed</button>
 </mat-dialog-actions>

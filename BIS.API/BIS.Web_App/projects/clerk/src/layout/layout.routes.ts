@@ -99,7 +99,7 @@ export const routes: Routes = [
                 path:'approved-reports',
                 loadComponent : () =>import('projects/clerk/src/layout/approved-report/approved-report-add/approved-reports.component').then(m => m.ApprovedReportsComponent),
                 canActivate: [AuthGuard,PermissionGuard],
-                data: { allowedRoles: ['2','3','4','7','15','5'] },
+                data: { allowedRoles: ['2','3','4','7','11','12','13','14','15','5'] },
               },
               {
                 path:'attribute',
@@ -114,12 +114,7 @@ export const routes: Routes = [
                 data: { allowedRoles: ['8'] },
               },
 
-              {
-                path:'corps',
-                loadComponent : () =>import('projects/clerk/src/layout/corps-list/corps-list.component').then(m => m.CorpsListComponent),
-                canActivate: [AuthGuard,PermissionGuard],
-                data: { allowedRoles: ['10','11','12','13','14','15'] },
-              },
+             
               {
                 path: 'forbidden',
                 component: ForbiddenComponent

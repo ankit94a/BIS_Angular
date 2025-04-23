@@ -9,7 +9,8 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { HttpClientModule, provideHttpClient, withInterceptors, withInterceptorsFromDi } from '@angular/common/http';
 import { authInterceptor } from 'projects/sharedlibrary/src/services/auth-interceptor.service';
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from '@danielmoncada/angular-datetime-picker';
-
+import { NgxSpinnerModule } from 'ngx-spinner';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 export const appConfig: ApplicationConfig = {
   providers: [provideZoneChangeDetection({ eventCoalescing: true }), provideRouter(routes),
@@ -17,6 +18,8 @@ export const appConfig: ApplicationConfig = {
         provideToastr(),
         provideAnimationsAsync(),
         importProvidersFrom(MatNativeDateModule),
+        importProvidersFrom([BrowserAnimationsModule]),
+        importProvidersFrom(NgxSpinnerModule.forRoot({ type: 'ball-fussion' })),
         importProvidersFrom(HttpClientModule),
         importProvidersFrom(OwlNativeDateTimeModule),
         importProvidersFrom(OwlDateTimeModule),

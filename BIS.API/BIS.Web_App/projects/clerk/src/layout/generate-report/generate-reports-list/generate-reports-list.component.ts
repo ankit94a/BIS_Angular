@@ -9,6 +9,7 @@ import { SharedLibraryModule } from 'projects/sharedlibrary/src/shared-library.m
 import { BisdefaultDatePipe } from 'projects/sharedlibrary/src/pipe/bisdefault-date.pipe';
 import { GenerateReportViewComponent } from '../generate-report-view/generate-report-view.component';
 import { AuthService } from 'projects/sharedlibrary/src/services/auth.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-generate-reports-list',
@@ -21,7 +22,7 @@ export class GenerateReportsListComponent extends TablePaginationSettingsConfig 
   isRefresh:boolean=false;
   isCommand:boolean =false;
   generateReportList: GenerateReport[] = [];
-  constructor(private dialogService:BISMatDialogService,private apiService:ApiService ,private datePipe:BisdefaultDatePipe,private authService:AuthService){
+  constructor(private spinner:NgxSpinnerService, private dialogService:BISMatDialogService,private apiService:ApiService ,private datePipe:BisdefaultDatePipe,private authService:AuthService){
     super();
 
     this.tablePaginationSettings.enableAction = true;
@@ -34,13 +35,16 @@ export class GenerateReportsListComponent extends TablePaginationSettingsConfig 
       this.isCommand = true;
   }
   ngOnInit() {
+    this.spinner.show();
     this.getReportData()
   }
   getReportData() {
+    this.spinner.show();
     this.apiService.getWithHeaders('GenerateReport').subscribe(res =>{
       if(res){
         res.sort((a,b) => b.id - a.id)
         this.generateReportList = res;
+        this.spinner.hide();
       }
     })
   }
@@ -56,9 +60,10 @@ export class GenerateReportsListComponent extends TablePaginationSettingsConfig 
 
   }
   view($event){
-
+    $event.isView = true;
     this.dialogService.open(GenerateReportViewComponent,$event)
   }
+  
   edit($event){
     this.dialogService.open(GenerateReportViewComponent,$event)
   }

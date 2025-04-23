@@ -39,9 +39,11 @@ export class GenerateReportViewComponent {
     // }
     this.getReport()
   }
+  // 
+ 
   getReport(){
-debugger
-    this.apiService.postWithHeader('cdrdashboard/view-report', this.report).subscribe(res =>{
+    let url = this.report.isView ? 'generatereport/role-view-report' : 'cdrdashboard/view-report'
+    this.apiService.postWithHeader(url, this.report).subscribe(res =>{
 debugger
 this.mergeReport = res;
         const { Header, DataList } = this.masterDataService.getMasterData(this.mergeReport.masterData);

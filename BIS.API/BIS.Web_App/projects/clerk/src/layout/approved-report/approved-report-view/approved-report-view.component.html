@@ -2,267 +2,354 @@
   View Report
 </div>
 <mat-dialog-content>
-
-  <div class="row">
-    <div class="col">
-      Report Date : {{fullReport?.colGsReport?.reportDate| bisdefaultDate}}
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-md-4">
-      <mat-form-field>
-        <mat-label>Report Title</mat-label>
-        <input matInput placeholder="Your Report Title" [ngModel]="fullReport?.colGsReport?.reportTitle" readonly>
-      </mat-form-field>
-    </div>
-    <div class="col-md-4">
-      <mat-form-field>
-        <mat-label>Report Type</mat-label>
-        <mat-select [ngModel]="fullReport?.colGsReport?.reportType">
-          <mat-option value="ISUM">ISUM</mat-option>
-          <mat-option value="DISUM">DISUM</mat-option>
-          <mat-option value="SITREP">SITREP</mat-option>
-        </mat-select>
-      </mat-form-field>
-    </div>
-    <div class="col-md-4">
-      <mat-form-field>
-        <mat-label>Date Range</mat-label>
-        <mat-date-range-input [rangePicker]="picker">
-          <input matStartDate placeholder="Start date" [ngModel]="fullReport?.colGsReport?.startDate">
-          <input matEndDate  placeholder="End date" [ngModel]="fullReport?.colGsReport?.endDate">
-        </mat-date-range-input>
-        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-date-range-picker #picker></mat-date-range-picker>
-      </mat-form-field>
-    </div>
-  </div>
-  <div class="row" *ngIf="fullReport.masterDatas.length > 0">
-    <hr>
-    <div class="table-container">
-      <table>
-          <thead>
-              <tr>
-                  <ng-container *ngFor="let item of tableHeader$ | async">
-                      <th *ngIf="!['Id', 'CreatedBy', 'CreatedOn', 'IsActive', 'IsDeleted', 'CorpsId', 'DivisionId','Status','Fmn','UserId'].includes(item)"
-                          class="space">
-                          {{ item }}
-                      </th>
-                  </ng-container>
-              </tr>
-          </thead>
-          <tbody>
-              <tr *ngFor="let item of masterDataList$ | async; let i = index">
-                  <ng-container *ngFor="let header of tableHeader$ | async">
-                      <td *ngIf="!['Id', 'CreatedBy', 'CreatedOn', 'IsActive', 'IsDeleted', 'CorpsId', 'DivisionId','Status','Fmn','UserId'].includes(header)"
-                          class="space">
-                          {{ item[header] }}
-                      </td>
-                  </ng-container>
-              </tr>
-          </tbody>
-      </table>
-  </div>
-  </div>
-
-  <br>
-  <!-- showing G1Int Graphs -->
-  <div *ngIf="fullReport.g1IntReport.graphs?.length > 0" class="image-preview-container row">
-    <div *ngFor="let image of fullReport.g1IntReport.graphs" class="image-preview  col-md-6">
-      <img [src]="image.url" [alt]="image.name" />
-      <span class="image-name">{{ image.name }}</span>
-    </div>
-  </div>
-  <br>
-  <div class="row" *ngIf="fullReport?.g1IntReport?.notes != undefined && fullReport?.g1IntReport?.notes != ''">
-    <div class="col-md-12">
-      <mat-form-field class="example-full-width">
-        <mat-label>Leave a comment</mat-label>
-        <textarea matInput placeholder="Ex. About the Report..." class="text-area" [(ngModel)]="fullReport.g1IntReport.notes"></textarea>
-      </mat-form-field>
-    </div>
-  </div>
-
-  <br>
-  <!-- showing Colgs Graphs -->
-  <div *ngIf="fullReport?.colGsReport?.graphs?.length > 0" class="image-preview-container row">
-    <div *ngFor="let image of fullReport?.colGsReport?.graphs" class="image-preview  col-md-6">
-      <img [src]="image.url" [alt]="image.name" />
-      <span class="image-name">{{ image.name }}</span>
-    </div>
-  </div>
-  <br>
-  <div class="row" *ngIf="fullReport?.colGsReport?.notes != undefined && fullReport?.colGsReport?.notes != ''">
-    <div class="col-md-12">
-      <mat-form-field class="example-full-width">
-        <mat-label>Leave a comment</mat-label>
-        <textarea matInput placeholder="Ex. About the Report..." class="text-area" [(ngModel)]="fullReport.colGsReport.notes"></textarea>
-      </mat-form-field>
-    </div>
-  </div>
-
-  <!-- showing CDR Inference -->
-  <div class="row">
-    <div class="col-sm-4">
-      <div class="card-container">
-        <div class="card">
-          <div class="row">
-            <div class="col-sm-12 text-center">CDR Inference</div>
-          </div> <br>
-          <div class="row">
-            <div class="col-sm-4">
-              En Force Level :
-            </div>
-            <div class="col-sm-8">
-              <mat-form-field appearance="outline">
-                <mat-label>En force Level</mat-label>
-                <input matInput placeholder="Placeholder" [(ngModel)]="fullReport.inference.enForceLevel"/>
-              </mat-form-field>
-            </div>
+  <div class="book">
+    <div class="book-page" *ngIf="currentChapter === 1">
+      <!-- Chapter 1 Content -->
+      <ng-container>
+        <!-- your existing full HTML for Chapter 1 here -->
+        <div class="row">
+          <div class="col-md-4">
+            <mat-form-field>
+              <mat-label>Report Title</mat-label>
+              <input matInput [(ngModel)]="fullReport.mergeReport.reportTitle" readonly />
+            </mat-form-field>
           </div>
-          <div class="row">
-            <div class="col-sm-4">
-              En Likely Aim :
-            </div>
-            <div class="col-sm-8">
-              <mat-form-field appearance="outline">
-                <mat-label>En Likely Aim</mat-label>
-                <input matInput placeholder="Placeholder" [(ngModel)]="fullReport.inference.enLikelyAim" />
-              </mat-form-field>
-            </div>
+          <div class="col-md-4">
+            <mat-form-field>
+              <mat-label>Report Type</mat-label>
+              <input matInput [(ngModel)]="fullReport.mergeReport.reportType" readonly />
+            </mat-form-field>
           </div>
-          <div class="row">
-            <div class="col-sm-4">
-              En Likely Tgt :
-            </div>
-            <div class="col-sm-8">
-              <mat-form-field appearance="outline">
-                <mat-label>En Likely Tgt</mat-label>
-                <input matInput placeholder="Placeholder" [(ngModel)]="fullReport.inference.enLikelyTgt" />
-              </mat-form-field>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-sm-4">
-              NEXT Action By En :
-            </div>
-            <div class="col-sm-8">
-              <mat-form-field appearance="outline">
-                <mat-label>NEXT Action By En </mat-label>
-                <input matInput placeholder="Placeholder" [(ngModel)]="fullReport.inference.nextActionByEn"/>
-              </mat-form-field>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-sm-4">
-              Own Imdt Action :
-            </div>
-            <div class="col-sm-8">
-              <mat-form-field appearance="outline">
-                <mat-label> Own Imdt Action</mat-label>
-                <input matInput placeholder="Placeholder" [(ngModel)]="fullReport.inference.ownImdtAction"/>
-              </mat-form-field>
-            </div>
+          <div class="col-md-4">
+            <mat-form-field>
+              <mat-label>Date Range</mat-label>
+              <mat-date-range-input [rangePicker]="picker" [disabled]="true">
+                <input matStartDate [(ngModel)]="fullReport.mergeReport.startDate">
+                <input matEndDate [(ngModel)]="fullReport.mergeReport.endDate">
+              </mat-date-range-input>
+              <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-date-range-picker #picker></mat-date-range-picker>
+            </mat-form-field>
           </div>
         </div>
-      </div>
-    </div>
-    <div class="col-sm-4">
-      <div class="card-container">
-          <div class="card">
-              <div class="row">
-                  <div class="col-sm-12 text-center">NEXT COA : EN</div>
-              </div>
-              <br>
-              <div class="row">
-                  <div class="col-sm-12">Locs To Obsn</div>
-                  <div class="col-sm-6">
-                      <mat-form-field appearance="outline">
-                          <mat-label>Sector</mat-label>
-                          <input matInput placeholder="Enter Sector" [(ngModel)]="fullReport.inference.sector">
-                      </mat-form-field>
-                  </div>
-                  <div class="col-sm-6">
-                      <mat-form-field appearance="outline">
-                          <mat-label>LOC</mat-label>
-                          <input matInput placeholder="Enter LOC" [(ngModel)]="fullReport.inference.loc"/>
-                      </mat-form-field>
-                  </div>
-              </div>
-              <div class="row">
-                  <div class="col-sm-12">Fmns To Obsn</div>
-                  <div class="col-sm-4">
-                      <mat-form-field appearance="outline">
-                          <mat-label>Corps</mat-label>
-                          <input matInput placeholder="Enter Corps" [(ngModel)]="fullReport.inference.corps"/>
-                      </mat-form-field>
-                  </div>
-                  <div class="col-sm-4">
-                      <mat-form-field appearance="outline">
-                          <mat-label>Div</mat-label>
-                          <input matInput placeholder="Enter Division" [(ngModel)]="fullReport.inference.div"/>
-                      </mat-form-field>
-                  </div>
-                  <div class="col-sm-4">
-                      <mat-form-field appearance="outline">
-                          <mat-label>Bde</mat-label>
-                          <input matInput placeholder="Enter Brigade"[(ngModel)]="fullReport.inference.bde"/>
-                      </mat-form-field>
-                  </div>
-              </div>
+      
+        <hr>
+      
+        <!-- G1 Master Data -->
+        <div class="row" *ngIf="(masterDataList$ | async)?.length > 0">
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <!-- <th>#</th> -->
+                  <ng-container *ngFor="let item of tableHeader$ | async">
+                    <th
+                      *ngIf="!['Id','Status','UserId','Fmn', 'CreatedBy', 'CreatedOn', 'IsActive', 'IsDeleted', 'CorpsId', 'DivisionId','ReportedDate'].includes(item)"
+                      class="space">
+                      {{ item }}
+                    </th>
+                  </ng-container>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of masterDataList$ | async; let i = index">
+                  <!-- Checkbox for individual rows -->
+                  <!-- <td>
+                              <mat-checkbox></mat-checkbox>
+                          </td> -->
+                  <ng-container *ngFor="let header of tableHeader$ | async">
+                    <td
+                      *ngIf="!['Id','Status','UserId','Fmn', 'CreatedBy', 'CreatedOn', 'IsActive', 'IsDeleted', 'CorpsId', 'DivisionId','ReportedDate'].includes(header)"
+                      class="space">
+                      {{ item[header] }}
+                    </td>
+                  </ng-container>
+                </tr>
+              </tbody>
+            </table>
           </div>
-      </div>
-  </div>
-
-  <div class="col-sm-4">
-      <div class="card-container">
-          <div class="card">
-              <div class="row">
-                  <div class="col-sm-12 text-center">Troops to Task</div>
-              </div>
-                <br>
+        </div>
+      
+      
+      
+        <br>
+      
+        <!-- G1 Graphs -->
+        <div *ngIf="fullReport.mergeReport.graphs.length > 0" class="row image-preview-container">
+          <div *ngFor="let image of fullReport.mergeReport.graphs" class="col-md-6 image-preview">
+            <img [src]="image.url" [alt]="image.name" />
+            <span class="image-name">{{ image.name }}</span>
+          </div>
+        </div>
+      
+        <!-- G1 Notes -->
+        <div class="col-md-12">
+          <mat-form-field>
+            <mat-label>G1 Comment</mat-label>
+            <textarea matInput readonly class="full-width text-area" [(ngModel)]="fullReport.mergeReport.notes"></textarea>
+          </mat-form-field>
+        </div>
+      
+        <br>
+      
+        <!-- Col Graphs and Notes (If Exist) -->
+        <div *ngIf="fullReport.mergeReport.colGraphs?.length > 0">
+          <!-- <h4>Col Graphs</h4> -->
+          <div class="row image-preview-container">
+            <div *ngFor="let image of fullReport.mergeReport.colGraphs" class="col-md-6 image-preview">
+              <img [src]="image.url" [alt]="image.name" />
+              <span class="image-name">{{ image.name }}</span>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <mat-form-field>
+              <mat-label>Col Comment</mat-label>
+              <textarea matInput readonly class="full-width text-area"
+                [(ngModel)]="fullReport.mergeReport.colNotes"></textarea>
+            </mat-form-field>
+          </div>
+        </div>
+      
+        <br>
+      
+        <!-- Bgs Graphs and Notes (If Exist) -->
+        <div *ngIf="fullReport.mergeReport.bgsGraphs?.length > 0">
+          <!-- <h4>BGs Graphs</h4> -->
+          <div class="row image-preview-container">
+            <div *ngFor="let image of fullReport.mergeReport.bgsGraphs" class="col-md-6 image-preview">
+              <img [src]="image.url" [alt]="image.name" />
+              <span class="image-name">{{ image.name }}</span>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <mat-form-field>
+              <mat-label>BGs Comment</mat-label>
+              <textarea matInput readonly class="full-width text-area"
+                [(ngModel)]="fullReport.mergeReport.bgsNotes"></textarea>
+            </mat-form-field>
+          </div>
+      
+        </div>
+      
+        <!-- Mggs Graphs and Notes (If Exist) -->
+        <div *ngIf="fullReport.mergeReport.mggsGraphs?.length > 0">
+          <!-- <h4>BGs Graphs</h4> -->
+          <div class="row image-preview-container">
+            <div *ngFor="let image of fullReport.mergeReport.mggsGraphs" class="col-md-6 image-preview">
+              <img [src]="image.url" [alt]="image.name" />
+              <span class="image-name">{{ image.name }}</span>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <mat-form-field>
+              <mat-label>BGs Comment</mat-label>
+              <textarea matInput readonly class="full-width text-area"
+                [(ngModel)]="fullReport.mergeReport.mggsNotes"></textarea>
+            </mat-form-field>
+          </div>
+      
+        </div>
+      </ng-container>
+    </div>
+  
+    <div class="book-page" *ngIf="currentChapter === 2">
+      <!-- Chapter 2 Content -->
+      <ng-container>
+        <div class="row">
+          <div class="col-sm-4">
+            <div class="card-container">
+              <div class="card">
                 <div class="row">
-
+                  <div class="col-sm-12 text-center">CDR Inference</div>
+                </div> <br>
+                <div class="row">
                   <div class="col-sm-4">
-                      <mat-form-field appearance="outline">
-                          <mat-label>Fmns</mat-label>
-                          <input matInput placeholder="Enter Fmns" [(ngModel)]="fullReport.inference.fmn"/>
-                      </mat-form-field>
+                    En Force Level :
                   </div>
-                  <div class="col-sm-4">
-                      <mat-form-field appearance="outline">
-                          <mat-label>Sect</mat-label>
-                          <input matInput placeholder="Enter Sect" [(ngModel)]="fullReport.inference.sect"/>
-                      </mat-form-field>
-                  </div>
-                  <div class="col-sm-4">
-                      <mat-form-field appearance="outline">
-                          <mat-label>Tps</mat-label>
-                          <input matInput placeholder="Enter Tps" [(ngModel)]="fullReport.inference.tps"/>
-                      </mat-form-field>
+                  <div class="col-sm-8">
+                    <mat-form-field appearance="outline">
+                      <mat-label>En force Level</mat-label>
+                      <input matInput placeholder="Placeholder" [(ngModel)]="fullReport.inference.enForceLevel" />
+                    </mat-form-field>
                   </div>
                 </div>
-              <div class="row">
-                  <div class="col-sm-6">
-                      <mat-form-field appearance="outline">
-                          <mat-label>RES</mat-label>
-                          <input matInput placeholder="Enter RESO" [(ngModel)]="fullReport.inference.res"/>
-                      </mat-form-field>
+                <div class="row">
+                  <div class="col-sm-4">
+                    En Likely Aim :
                   </div>
-                  <div class="col-sm-6">
-                      <mat-form-field appearance="outline">
-                          <mat-label>Task</mat-label>
-                          <input matInput placeholder="Enter Task" [(ngModel)]="fullReport.inference.task"/>
-                      </mat-form-field>
+                  <div class="col-sm-8">
+                    <mat-form-field appearance="outline">
+                      <mat-label>En Likely Aim</mat-label>
+                      <input matInput placeholder="Placeholder" [(ngModel)]="fullReport.inference.enLikelyAim" />
+                    </mat-form-field>
                   </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-4">
+                    En Likely Tgt :
+                  </div>
+                  <div class="col-sm-8">
+                    <mat-form-field appearance="outline">
+                      <mat-label>En Likely Tgt</mat-label>
+                      <input matInput placeholder="Placeholder" [(ngModel)]="fullReport.inference.enLikelyTgt" />
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-4">
+                    NEXT Action By En :
+                  </div>
+                  <div class="col-sm-8">
+                    <mat-form-field appearance="outline">
+                      <mat-label>NEXT Action By En </mat-label>
+                      <input matInput placeholder="Placeholder" [(ngModel)]="fullReport.inference.nextActionByEn" />
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-4">
+                    Own Imdt Action :
+                  </div>
+                  <div class="col-sm-8">
+                    <mat-form-field appearance="outline">
+                      <mat-label> Own Imdt Action</mat-label>
+                      <input matInput placeholder="Placeholder" [(ngModel)]="fullReport.inference.ownImdtAction" />
+                    </mat-form-field>
+                  </div>
+                </div>
               </div>
+            </div>
           </div>
-      </div>
+          <div class="col-sm-4">
+            <div class="card-container">
+              <div class="card">
+                <div class="row">
+                  <div class="col-sm-12 text-center">NEXT COA : EN</div>
+                </div>
+                <br>
+                <div class="row">
+                  <div class="col-sm-12">Locs To Obsn</div>
+                  <div class="col-sm-6">
+                    <mat-form-field appearance="outline">
+                      <mat-label>Sector</mat-label>
+                      <input matInput placeholder="Enter Sector" [(ngModel)]="fullReport.inference.sector">
+                    </mat-form-field>
+                  </div>
+                  <div class="col-sm-6">
+                    <mat-form-field appearance="outline">
+                      <mat-label>LOC</mat-label>
+                      <input matInput placeholder="Enter LOC" [(ngModel)]="fullReport.inference.loc" />
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-12">Fmns To Obsn</div>
+                  <div class="col-sm-4">
+                    <mat-form-field appearance="outline">
+                      <mat-label>Corps</mat-label>
+                      <input matInput placeholder="Enter Corps" [(ngModel)]="fullReport.inference.corps" />
+                    </mat-form-field>
+                  </div>
+                  <div class="col-sm-4">
+                    <mat-form-field appearance="outline">
+                      <mat-label>Div</mat-label>
+                      <input matInput placeholder="Enter Division" [(ngModel)]="fullReport.inference.div" />
+                    </mat-form-field>
+                  </div>
+                  <div class="col-sm-4">
+                    <mat-form-field appearance="outline">
+                      <mat-label>Bde</mat-label>
+                      <input matInput placeholder="Enter Brigade" [(ngModel)]="fullReport.inference.bde" />
+                    </mat-form-field>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+      
+          <div class="col-sm-4">
+            <div class="card-container">
+              <div class="card">
+                <div class="row">
+                  <div class="col-sm-12 text-center">Troops to Task</div>
+                </div>
+                <br>
+                <div class="row">
+      
+                  <div class="col-sm-4">
+                    <mat-form-field appearance="outline">
+                      <mat-label>Fmns</mat-label>
+                      <input matInput placeholder="Enter Fmns" [(ngModel)]="fullReport.inference.fmn" />
+                    </mat-form-field>
+                  </div>
+                  <div class="col-sm-4">
+                    <mat-form-field appearance="outline">
+                      <mat-label>Sect</mat-label>
+                      <input matInput placeholder="Enter Sect" [(ngModel)]="fullReport.inference.sect" />
+                    </mat-form-field>
+                  </div>
+                  <div class="col-sm-4">
+                    <mat-form-field appearance="outline">
+                      <mat-label>Tps</mat-label>
+                      <input matInput placeholder="Enter Tps" [(ngModel)]="fullReport.inference.tps" />
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-6">
+                    <mat-form-field appearance="outline">
+                      <mat-label>RES</mat-label>
+                      <input matInput placeholder="Enter RESO" [(ngModel)]="fullReport.inference.res" />
+                    </mat-form-field>
+                  </div>
+                  <div class="col-sm-6">
+                    <mat-form-field appearance="outline">
+                      <mat-label>Task</mat-label>
+                      <input matInput placeholder="Enter Task" [(ngModel)]="fullReport.inference.task" />
+                    </mat-form-field>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+      
+        </div>
+      
+        <div *ngIf="fullReport.inference.graphs?.length > 0">
+          <div class="row image-preview-container">
+            <div *ngFor="let image of fullReport.inference.graphs" class="col-md-6 image-preview">
+              <img [src]="image.url" [alt]="image.name" />
+              <span class="image-name">{{ image.name }}</span>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <mat-form-field>
+              <mat-label>Cdr Comment</mat-label>
+              <textarea matInput readonly class="full-width text-area" [(ngModel)]="fullReport.inference.comment"></textarea>
+            </mat-form-field>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  
+    <!-- Add as many chapters as you want -->
   </div>
-
-  </div>
-
+  
 </mat-dialog-content>
 
-<mat-dialog-actions align="end">
-  <button class="btn btn-sm btn-warning" (click)="close()">Done</button>
+<mat-dialog-actions>
+   <!-- Chapter Navigation -->
+  <div class="btn-gap">
+    <div class="gp">
+      <button mat-raised-button color="primary" (click)="prevChapter()" [disabled]="currentChapter === 1">
+        Previous Phase
+      </button>
+      <button class="btn btn-sm btn-warning" (click)="close()"  type="button">Close</button>
+    </div>
+    <div>
+      <button mat-raised-button color="accent" (click)="nextChapter()" [disabled]="currentChapter === totalChapters">
+        Next Phase
+      </button>
+    </div>
+  </div>
+</mat-dialog-actions>

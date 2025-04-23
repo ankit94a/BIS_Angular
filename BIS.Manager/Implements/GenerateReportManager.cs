@@ -32,6 +32,110 @@ namespace BIS.Manager.Implements
 		{
 			return _generateReportDB.GetAll(corpsId, divisonId);
 		}
+        public MergeReports GetRoleViewReport(GenerateReport generateReport, int corpsId, int divisionId, RoleType roleType)
+		{
+            var masterReport = new MergeReports();
+            if (roleType == RoleType.MggsEc)
+            {
+                var mggsReport = _generateReportDB.GetById(generateReport.Id, corpsId, divisionId);
+                var mggsGraphs = GetGraphs(mggsReport.GraphIds);
+                var brigIntReport = _generateReportDB.GetById(mggsReport.RptId.Value, corpsId, divisionId);
+                var brigIntGraphs = GetGraphs(brigIntReport.GraphIds);
+                var colIntReport = _generateReportDB.GetById(brigIntReport.RptId.Value, corpsId, divisionId);
+                var colIntGraphs = GetGraphs(colIntReport.GraphIds);
+                var g1Report = _generateReportDB.GetById(colIntReport.RptId.Value, corpsId, divisionId);
+                var g1Graphs = GetGraphs(g1Report.GraphIds);
+
+                masterReport.masterData = new List<MasterData>();
+                masterReport.Graphs = new List<GraphImages>();
+                masterReport.Graphs = g1Graphs;
+                masterReport.ReportTitle = g1Report.ReportTitle;
+                masterReport.startDate = g1Report.startDate;
+                masterReport.endDate = g1Report.endDate;
+                masterReport.ReportType = g1Report.ReportType;
+                masterReport.Id = mggsReport.Id;
+                masterReport.Notes = g1Report.Notes;
+                masterReport.masterData = _masterDataManager.GetByIds(g1Report.MasterDataIds);
+
+                masterReport.ColGraphs = new List<GraphImages>();
+                masterReport.BgsGraphs = new List<GraphImages>();
+                masterReport.MggsGraphs = new List<GraphImages>();
+                masterReport.ColGraphs = colIntGraphs;
+                masterReport.ColNotes = colIntReport.Notes;
+                masterReport.BgsGraphs = brigIntGraphs;
+                masterReport.BgsNotes = brigIntReport.Notes;
+                masterReport.MggsGraphs = mggsGraphs;
+                masterReport.MggsNotes = mggsReport.Notes;
+
+            }
+            else if (roleType == RoleType.BrigInt || roleType == RoleType.Bgs)
+            {
+                var bgsReport = _generateReportDB.GetById(generateReport.Id, corpsId, divisionId);
+                var bgsGraphs = GetGraphs(bgsReport.GraphIds);
+                var colIntReport = _generateReportDB.GetById(bgsReport.RptId.Value, corpsId, divisionId);
+                var colIntGraphs = GetGraphs(colIntReport.GraphIds);
+                var g1Report = _generateReportDB.GetById(colIntReport.RptId.Value, corpsId, divisionId);
+                var g1Graphs = GetGraphs(g1Report.GraphIds);
+
+                masterReport.masterData = new List<MasterData>();
+                masterReport.Graphs = new List<GraphImages>();
+                masterReport.Graphs = g1Graphs;
+                masterReport.ReportTitle = g1Report.ReportTitle;
+                masterReport.startDate = g1Report.startDate;
+                masterReport.endDate = g1Report.endDate;
+                masterReport.ReportType = g1Report.ReportType;
+                masterReport.Id = bgsReport.Id;
+                masterReport.Notes = g1Report.Notes;
+                masterReport.masterData = _masterDataManager.GetByIds(g1Report.MasterDataIds);
+
+                masterReport.ColGraphs = new List<GraphImages>();
+                masterReport.BgsGraphs = new List<GraphImages>();
+                masterReport.ColGraphs = colIntGraphs;
+                masterReport.ColNotes = colIntReport.Notes;
+                masterReport.BgsGraphs = bgsGraphs;
+                masterReport.BgsNotes = bgsReport.Notes;
+            }
+            else if(roleType == RoleType.ColIntEc || roleType == RoleType.Colgs || roleType == RoleType.ColInt)
+            {
+                var colIntReport = _generateReportDB.GetById(generateReport.Id, corpsId, divisionId);
+                var colIntGraphs = GetGraphs(colIntReport.GraphIds);
+                var g1Report = _generateReportDB.GetById(colIntReport.RptId.Value, corpsId, divisionId);
+                var g1Graphs = GetGraphs(g1Report.GraphIds);
+
+                masterReport.masterData = new List<MasterData>();
+                masterReport.Graphs = new List<GraphImages>();
+                masterReport.Graphs = g1Graphs;
+                masterReport.ReportTitle = g1Report.ReportTitle;
+                masterReport.startDate = g1Report.startDate;
+                masterReport.endDate = g1Report.endDate;
+                masterReport.ReportType = g1Report.ReportType;
+                masterReport.Id = colIntReport.Id;
+                masterReport.Notes = g1Report.Notes;
+                masterReport.masterData = _masterDataManager.GetByIds(g1Report.MasterDataIds);
+
+                masterReport.ColGraphs = new List<GraphImages>();
+                masterReport.ColGraphs = colIntGraphs;
+                masterReport.ColNotes = colIntReport.Notes;
+            }
+            else 
+            {
+                var g1Report = _generateReportDB.GetById(generateReport.Id, corpsId, divisionId);
+                var g1Graphs = GetGraphs(g1Report.GraphIds);
+
+                masterReport.masterData = new List<MasterData>();
+                masterReport.Graphs = new List<GraphImages>();
+                masterReport.Graphs = g1Graphs;
+                masterReport.ReportTitle = g1Report.ReportTitle;
+                masterReport.startDate = g1Report.startDate;
+                masterReport.endDate = g1Report.endDate;
+                masterReport.ReportType = g1Report.ReportType;
+                masterReport.Id = g1Report.Id;
+                masterReport.Notes = g1Report.Notes;
+                masterReport.masterData = _masterDataManager.GetByIds(g1Report.MasterDataIds);
+
+            }
+            return masterReport;
+        }
         public MergeReports GetByRole(Notification notification, int corpsId, int divisionId, RoleType roleType)
 		{
 			var masterReport = new MergeReports();
@@ -88,7 +192,7 @@ namespace BIS.Manager.Implements
                 masterReport.ColGraphs = colGraphs;
                 masterReport.ColNotes = colIntReport.Notes;
             }
-            else if (roleType == RoleType.ColIntEc || roleType == RoleType.ColInt)
+            else if (roleType == RoleType.ColIntEc || roleType == RoleType.ColInt || roleType == RoleType.Colgs)
 			{
                 var g1Report = _generateReportDB.GetById(notification.DataId, corpsId, divisionId);
                 var g1Graphs = GetGraphs(g1Report.GraphIds);

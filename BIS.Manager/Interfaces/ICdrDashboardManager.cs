@@ -16,6 +16,6 @@ namespace BIS.Manager.Interfaces
 
 		public FullReport GetFullReport(ApprovedReports inference, int corpsId, RoleType roleType, int divisionId);
 		public MergeReports GetCdrViewReport(GenerateReport generateReport, int corpsId, int divisionId);
-
+       
     }
 }

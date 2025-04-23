@@ -82,6 +82,7 @@ export class CdrDashboardComponent {
     this.getReportByDate();
   }
   viewObj(item){
+    item.isView = false;
     this.dialogService.open(GenerateReportViewComponent,item);
   }
   addInference(item){

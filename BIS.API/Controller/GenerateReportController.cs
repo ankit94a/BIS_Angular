@@ -1,6 +1,7 @@
 ﻿using BIS.API.Authorization;
 using BIS.Common.Entities;
 using BIS.DB.Implements;
+using BIS.Manager.Implements;
 using BIS.Manager.Interfaces;
 using InSync.Api.Helpers;
 using Microsoft.AspNetCore.Mvc;
@@ -50,5 +51,14 @@ namespace BIS.API.Controller
 			int divisionId = HttpContext.GetDivisionId();
 			return Ok(_generateReportManager.GetById(id, corpsId, divisionId));
 		}
-	}
+        [AuthorizePermission(PermissionItem.GenerateReport, PermissionAction.Read)]
+        [HttpPost, Route("role-view-report")]
+        public IActionResult GetRoleViewReport([FromBody] GenerateReport generateReport)
+        {
+            int corpsId = HttpContext.GetCorpsId();
+            int divisionId = HttpContext.GetDivisionId();
+			RoleType roleType = HttpContext.GetRoleType();
+            return Ok(_generateReportManager.GetRoleViewReport(generateReport, corpsId, divisionId,roleType));
+        }
+    }
 }

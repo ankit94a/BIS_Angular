@@ -53,8 +53,9 @@ export class ApprovedReports extends BaseEntity{
 }
 
 export class FullReport {
-  inference:ApprovedReports;
-  colGsReport:GenerateReport = new GenerateReport();
-  g1IntReport:GenerateReport = new GenerateReport();
-  masterDatas:masterData[]=[];
+  inference:ApprovedReports = new ApprovedReports();
+  // colGsReport:GenerateReport = new GenerateReport();
+  // g1IntReport:GenerateReport = new GenerateReport();
+  // masterDatas:masterData[]=[];
+  mergeReport:MergeReports = new MergeReports();
 }

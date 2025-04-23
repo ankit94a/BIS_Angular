@@ -31,11 +31,12 @@ namespace BIS.Common.Entities
 		public List<GraphImages>? Graphs { get; set; }
 	}
 
-	public class FullReport
+	public class FullReport 
 	{
 		public ApprovedReports Inference { get; set; }
-		public GenerateReport ColGsReport { get; set; }
-		public GenerateReport G1IntReport { get; set; }
-		public List<MasterData> MasterDatas { get; set; }
+		public MergeReports MergeReport { get; set; }
+		//public GenerateReport ColGsReport { get; set; }
+		//public GenerateReport G1IntReport { get; set; }
+		//public List<MasterData> MasterDatas { get; set; }
 	}
 }

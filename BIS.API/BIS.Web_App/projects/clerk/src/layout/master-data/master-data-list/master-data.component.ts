@@ -14,9 +14,8 @@ import { MasterDataFilterService } from 'projects/sharedlibrary/src/services/mas
 import { DownloadService } from 'projects/sharedlibrary/src/services/download.service';
 // import * as  ExcelJS from 'exceljs';
 import { formatDate } from '@angular/common';
-import * as XLSX from 'xlsx';
 import { AuthService } from 'projects/sharedlibrary/src/services/auth.service';
-import { MatDialog } from '@angular/material/dialog';
+import { NgxSpinnerService } from 'ngx-spinner';
 @Component({
   selector: 'app-master-data',
   imports: [SharedLibraryModule,ZipperTableComponent],
@@ -31,7 +30,7 @@ export class MasterDataComponent extends TablePaginationSettingsConfig implement
   selectedSample;
   roleType;
   isCommand:boolean=false;
-  constructor(private authService:AuthService,private datePipe:BisdefaultDatePipe,private apiService:ApiService,private downloadService:DownloadService,private masterFilterService:MasterDataFilterService,private dialogService:BISMatDialogService,private router:Router,private masterDataService:MasterDataService){
+  constructor(private authService:AuthService,private spinnerService: NgxSpinnerService,private datePipe:BisdefaultDatePipe,private apiService:ApiService,private downloadService:DownloadService,private masterFilterService:MasterDataFilterService,private dialogService:BISMatDialogService,private router:Router,private masterDataService:MasterDataService){
     super();
     this.roleType = this.authService.getRoleType();
   this.tablePaginationSettings.enableAction = true;
@@ -83,6 +82,7 @@ export class MasterDataComponent extends TablePaginationSettingsConfig implement
 }
 
   ngOnInit(): void {
+    this.spinnerService.show();
     this.getDataFromServer();
   }
   add(){
@@ -121,12 +121,19 @@ export class MasterDataComponent extends TablePaginationSettingsConfig implement
     }
   }
   getDataFromServer(){
+    debugger
+    this.spinnerService.show(undefined,{
+      type:'square-jelly-box',
+      bdColor:'rgba(0,0,0,0.8)',
+      color:'#fff',
+      size:'default'
+    });
     this.apiService.getWithHeaders('MasterData').subscribe(res => {
       if(res){
         res = res.sort((a, b) => new Date(b.reportedDate).getTime() - new Date(a.reportedDate).getTime());
         this.sortedData = res;
         this.DataList = res;
-
+        this.spinnerService.hide();
       }
     })
   }

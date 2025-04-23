@@ -46,12 +46,11 @@ export class NotificationActionComponent extends EnumBase {
   mergeReport:MergeReports = new MergeReports()
   constructor(private authService:AuthService,private toastr: ToastrService, private cdr: ChangeDetectorRef, private masterDataService: MasterDataFilterService, @Inject(MAT_DIALOG_DATA) data, private apiService: ApiService, private dialogRef: MatDialogRef<NotificationActionComponent>) {
     super();
-    debugger
     this.notify = data;
     this.masterData = new masterData();
     if (this.notify.notificationType == NotificationType.MasterData) {
       this.getMasterData(this.notify.dataId)
-    } else {
+    } else if(this.notify.notificationType == NotificationType.GenerateReport) {
       // this.report = new GenerateReport();
       this.report2 = new GenerateReport();
       this.mergeReport.masterData = [];
@@ -86,10 +85,8 @@ export class NotificationActionComponent extends EnumBase {
   excluedeFields = ['Id', 'Status', 'UserId', 'Fmn', 'CreatedBy', 'CreatedOn', 'IsActive', 'IsDeleted', 'CorpsId', 'DivisionId','ReportedDate']
 
   getReport() {
-    debugger
     this.apiService.postWithHeader('notification/getreport', this.notify).subscribe(res => {
       if (res) {
-        debugger;
         this.mergeReport = res;
         const { Header, DataList } = this.masterDataService.getMasterData(this.mergeReport.masterData);
                 this.tableHeaderSubject.next(Header);
