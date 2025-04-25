@@ -4,12 +4,10 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { FilterModel } from 'projects/sharedlibrary/src/model/dashboard.model';
 import { GenerateReport, GraphImages } from 'projects/sharedlibrary/src/model/generatereport.model';
-import { masterData } from 'projects/sharedlibrary/src/model/masterdata.model';
 import { BisdefaultDatePipe } from 'projects/sharedlibrary/src/pipe/bisdefault-date.pipe';
 import { ApiService } from 'projects/sharedlibrary/src/services/api.service';
 import { MasterDataFilterService } from 'projects/sharedlibrary/src/services/master-data-filter.service';
 import { SharedLibraryModule } from 'projects/sharedlibrary/src/shared-library.module';
-import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-generate-reports-add',
@@ -28,7 +26,8 @@ export class GenerateReportsAddComponent implements OnInit {
   isNoDataFoundAlert: boolean = false;
   isAllChecked = false;
   filterModel: FilterModel = new FilterModel();
-  reportType = ['ISUM','DISUM','SITREP']
+  reportType = ['ISUM','DISUM','SITREP'];
+
   constructor(@Inject(MAT_DIALOG_DATA) data,private masterDataService: MasterDataFilterService, private apiService: ApiService, private toastr: ToastrService, private _formBuilder: FormBuilder, private dialogRef: MatDialogRef<GenerateReportsAddComponent>) {
     // if(data.id > 0){
     //   this.report = data;

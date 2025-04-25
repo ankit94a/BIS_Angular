@@ -37,9 +37,14 @@ namespace BIS.API.Controller
 			return Ok(_userManager.GetAllUsers());
 		}
 		[HttpPost]
-        public IActionResult AddUser(UserDetail user)
+        public IActionResult AddUser([FromBody] UserDetail user)
         {
             return Ok(_userManager.AddUser(user));
         }
-    }
+		[HttpPut,Route("password")]
+		public IActionResult UpdatePassword([FromBody] UserDetail user)
+		{
+			return Ok(_userManager.UpdatePassword(user));
+		}
+	}
 }

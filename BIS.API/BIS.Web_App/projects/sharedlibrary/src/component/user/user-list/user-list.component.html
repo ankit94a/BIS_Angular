@@ -2,7 +2,7 @@
     <mat-card-header class="insync-header">
         User List
         <span class="example-spacer"></span>
-        <button type="button" (click)="add()" class="btn btn-primary">{{'+Add New User'}}</button>
+        <!-- <button type="button" (click)="add()" class="btn btn-primary">{{'+Add New User'}}</button> -->
     </mat-card-header>
     <mat-card-content>
         <div class="table-container">
@@ -31,16 +31,21 @@
                         <td>{{user.corpsId != 1 ? Corps[user.corpsId] : '-'}}</td>
                         <td>{{user.divisionId > 0 ? Divison[user.divisionId] : '-'}}</td>
                         <td>
-                          <button mat-icon-button color="primary" (click)="view(user)" matTooltip="View Role">
-                            <mat-icon>remove_red_eye</mat-icon>
+
+                          <!-- <button mat-icon-button color="accent"
+                          type="button" (click)="view(user)" matTooltip="view"> <img src="/assets/eye.svg" class="custom-icon" alt="">
                           </button>
                           <button mat-icon-button color="primary"  (click)="edit(user)"
                             matTooltip="Edit Role">
                             <mat-icon>edit</mat-icon>
-                          </button>
-                          <button mat-icon-button color="warn"
+                          </button> -->
+                          <!-- <button mat-icon-button color="warn"
                               type="button" (click)="remove(user)"matTooltip="delete">
-                              <mat-icon>delete_outline</mat-icon>
+                              <img src="/assets/delete.svg" class="custom-icon" alt="">
+                          </button> -->
+                          <button mat-icon-button color="accent"
+                              type="button" (click)="update(user)"matTooltip="change password">
+                              <img src="/assets/password.svg" class="custom-icon" alt="">
                           </button>
                         </td>
                         <!-- <td>{{user.divisionId ? Divison[user.divisionId] : Corps[user.corpsId]}}</td> -->

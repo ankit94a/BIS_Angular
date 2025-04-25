@@ -41,7 +41,9 @@ export class CdrInferenceComponent {
       });
     }
   }
-
+  removeImage(index: number): void {
+    this.selectedImages.splice(index, 1);
+  }
   submit(){
     this.cdrInference.generateReportId = this.report.id;
     this.cdrInference.graphs = this.selectedImages;

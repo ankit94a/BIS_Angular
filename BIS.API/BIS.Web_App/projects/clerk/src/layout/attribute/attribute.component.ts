@@ -112,7 +112,6 @@ export class AttributeComponent extends TablePaginationSettingsConfig implements
 
   }
   view(item,type){
-    debugger;
     this.dialogService.confirmDialog("remove " + item.name).subscribe(res => {
       if(res){
         this.apiService.getWithHeaders(`masterdata/deactivate/${item.id}/${type} `).subscribe(res =>{

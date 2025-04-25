@@ -131,5 +131,32 @@ namespace BIS.DB.Implements
 				throw;
 			}
 		}
+
+		public bool UpdatePassword(UserDetail user)
+		{
+			try
+			{
+				BISLogger.Info("Updating password for CorpsId = " + user.CorpsId + " and DivisionId = " + user.DivisionId, "UserController", "UpdatePassword");
+
+				var existingUser = dbContext.UserDetails
+					.FirstOrDefault(u => u.CorpsId == user.CorpsId && u.DivisionId == user.DivisionId);
+
+				if (existingUser == null)
+				{
+					throw new Exception("User not found.");
+				}
+
+				existingUser.Password = user.Password;
+				dbContext.SaveChanges();
+
+				return true;
+			}
+			catch (Exception ex)
+			{
+				BISLogger.Error(ex, "Error updating password for CorpsId = " + user.CorpsId);
+				throw;
+			}
+		}
+
 	}
 }

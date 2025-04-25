@@ -2,88 +2,11 @@
   <mat-card-header class="insync-header">
     <div class="row full-width">
       <div class="col-sm-2">CDR Dashboard</div>
-      <!-- <div class="col-sm-2 offset-md-6">Bulk</div> -->
-      <!-- <div class="col-sm-2"><button class="btn btn-link" style="margin-left:50px" (click)="add()">+ Add Data</button></div> -->
     </div>
   </mat-card-header>
   <mat-card-content class="example-container">
-    <!-- <div class="row">
-            <div class="col-sm-3">
-                <mat-form-field>
-                    <mat-label>Start Date</mat-label>
-                    <input matInput [matDatepicker]="startDatePickerN" [(ngModel)]="filterNew.startDate"
-                        (dateInput)="filternew()">
-                    <mat-datepicker-toggle matSuffix [for]="startDatePickerN"></mat-datepicker-toggle>
-                    <mat-datepicker #startDatePickerN></mat-datepicker>
-                </mat-form-field>
-            </div>
-            <div class="col-sm-3">
-                <mat-form-field>
-                    <mat-label>End Date</mat-label>
-                    <input matInput [matDatepicker]="endDatePickerN" [(ngModel)]="filterNew.endDate"
-                        (dateInput)="filternew()">
-                    <mat-datepicker-toggle matSuffix [for]="endDatePickerN"></mat-datepicker-toggle>
-                    <mat-datepicker #endDatePickerN></mat-datepicker>
-                </mat-form-field>
-            </div>
-            <div class="col-sm-3">
-                <mat-form-field class="w-full">
-                    <mat-label>Select your chart</mat-label>
-                    <mat-select [(value)]="selected11" (selectionChange)="onChange1($event)">
-                        <mat-option value="Monthly">Monthly</mat-option>
-                        <mat-option value="Daily">Daily</mat-option>
-                        <mat-option value="Weekly">Weekly</mat-option>
-                    </mat-select>
-                </mat-form-field>
-            </div>
-            <div class="col-sm-3">
-                <ng-select appendTo="ng-select" [items]="sectorList" [multiple]="false" bindLabel="name"
-                    bindValue="name" placeholder="Sector" [searchable]="true">
-                    <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-                        <div class="ng-value" *ngFor="let item of items">
-                            <span class="ng-value-label">{{item}}</span>
-                        </div>
-                    </ng-template>
-                </ng-select>
-
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-3">
-                <ng-select appendTo="ng-select" [items]="aspectList" [multiple]="false" bindLabel="name"
-                    bindValue="name" placeholder="Sector" [searchable]="true">
-                    <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-                        <div class="ng-value" *ngFor="let item of items">
-                            <span class="ng-value-label">{{item}}</span>
-                        </div>
-                    </ng-template>
-                </ng-select>
-            </div>
-            <div class="col-sm-3">
-                @if(selectedNew == 'Svl / Counter Svl'){
-                <div class="col-sm-3">
-                    <ng-select appendTo="ng-select" [items]="indicatorList" [multiple]="false" bindLabel="name"
-                        bindValue="name" placeholder="Sector" [searchable]="true">
-                        <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-                            <div class="ng-value" *ngFor="let item of items">
-                                <span class="ng-value-label">{{item}}</span>
-                            </div>
-                        </ng-template>
-                    </ng-select>
-                </div>
-                }
-            </div>
-        </div> -->
     <div class="row">
       <div class="col-sm-3">
-        <!-- <ng-select [(ngModel)]="filterModel.frmn" appendTo="ng-select" [items]="fmnList" [multiple]="true"
-          bindLabel="name" bindValue="name" placeholder="Fmn" [searchable]="true">
-          <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-            <div class="ng-value" *ngFor="let item of items">
-              <span class="ng-value-label">{{item}}</span>
-            </div>
-          </ng-template>
-        </ng-select> -->
         <ng-select appendTo="ng-select" [items]="frmnList" [multiple]="true" (change)="getEntries()"
           bindLabel="name"  [closeOnSelect]="true" placeholder="Fmn" [searchable]="true"
           [(ngModel)]="filterModel.frmn" >
@@ -145,11 +68,9 @@
     <div class="card-container">
       <mat-card class="card card-extralarge">
         <section class="card-title">
-          <!-- <mat-checkbox [(ngModel)]="selectedCharts['chart0']"></mat-checkbox> -->
           <span>.</span>
           <h3 class="card-title">Entries Chart</h3>
-          <button class="download-icon mt-2" (click)="download('chart8')">
-            <!-- <mat-icon class="icon-display" matTooltip="download">arrow_downward</mat-icon> -->
+          <button class="download-icon mt-2" (click)="download('Entries Chart')">
             <img src="/assets/down-arrow.svg" class="custom-icon" style="height: 20px;" alt="">
           </button>
         </section>
@@ -161,7 +82,7 @@
     </div>
     <br>
     <div class="mean-table-container">
-      <div class="mean">
+      <div class="mean table-container">
         <table>
           <thead>
             <tr>
@@ -186,7 +107,7 @@
         <!-- <mat-icon>compare_arrows</mat-icon> -->
         <img src="/assets/right-arrow.svg" class="custom-icon" style="height: 20px;" alt="">
       </div>
-      <div class="card">
+      <div class="table-container">
         <table>
           <thead>
             <tr>
@@ -222,15 +143,6 @@
     <hr>
     <br>
     <div class="row">
-      <!-- <div class="col-sm-4">
-        <mat-form-field>
-          <mat-label>Start Date</mat-label>
-          <input matInput [matDatepicker]="startDatePickerV" [(ngModel)]="filterNew.startDate"
-            (dateInput)="filternew()">
-          <mat-datepicker-toggle matSuffix [for]="startDatePickerV"></mat-datepicker-toggle>
-          <mat-datepicker #startDatePickerV></mat-datepicker>
-        </mat-form-field>
-      </div> -->
       <div class="col-sm-4">
         <mat-form-field>
           <mat-label>Enter a date range</mat-label>
@@ -247,14 +159,6 @@
     <div class="row">
       <div class="col-md-12">
         <div class="card">
-          <div class="d-flex justify-content-between mb-4">
-              <h5 class="h5 font-weight-bold text-dark">Latest Reports</h5>
-              <a class="text-primary btn-link" [routerLink]="'/gen-report'">
-                View all
-            </a>
-
-          </div>
-
           <table class="table table-striped table-bordered">
               <thead>
                   <tr>
@@ -270,210 +174,23 @@
                     <td>{{item.reportTitle}}</td>
                     <td>{{item.reportType}}</td>
                     <td>{{item.createdOn | bisdefaultDate}}</td>
-                    <td>{{item.notes}}</td>
+                    <td>{{item.notes}}
+                       <mat-chip *ngIf="item.createdOn && isWithinOneHour(item.createdOn)"  class="alert" mat-basic> <span >New</span></mat-chip>
+
+                       </td>
                     <td>
                       <button mat-icon-button color="accent"
-                    type="button" (click)="viewObj(item)" matTooltip="view"> <mat-icon>remove_red_eye</mat-icon>
+                    type="button" (click)="viewObj(item)" matTooltip="view">  <img src="/assets/eye.svg" class="custom-icon" alt="">
                 </button>
                 <button mat-icon-button color="accent"
-                    type="button" (click)="addInference(item)" matTooltip="add inference"> <mat-icon>add</mat-icon>
+                    type="button" (click)="addInference(item)" matTooltip="add inference">  <img src="/assets/plus-icon.png" class="custom-icon" alt="">
                 </button>
                     </td>
-                      <!-- <td><img class="w-8 h-8 rounded-circle" src="/docs/images/people/profile-picture-1.jpg" alt="Neil image"></td>
-                      <td>
-                          <p class="mb-1 text-dark font-weight-medium">Neil Sims</p>
-                      </td>
-                      <td class="font-weight-semibold text-dark">$320</td> -->
                   </tr>
-                  <!-- <tr>
-                      <td><img class="w-8 h-8 rounded-circle" src="/docs/images/people/profile-picture-3.jpg" alt="Bonnie image"></td>
-                      <td>
-                          <p class="mb-1 text-dark font-weight-medium">Bonnie Green</p>
-
-                      </td>
-                      <td class="font-weight-semibold text-dark">$3467</td>
-                  </tr> -->
-
               </tbody>
           </table>
       </div>
-
-
       </div>
     </div>
-    <br> <br>
-
-    <!-- <div class="row">
-      <div class="col-sm-4">
-        <div class="card-container">
-          <div class="card">
-            <div class="row">
-              <div class="col-sm-12 text-center">CDR Inference</div>
-            </div> <br>
-            <div class="row">
-
-              <div class="col-sm-4">
-                En FORCE LEVEL :
-              </div>
-              <div class="col-sm-8">
-                <mat-form-field appearance="outline">
-                  <mat-label>En force Level</mat-label>
-                  <input matInput placeholder="Placeholder" />
-                </mat-form-field>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-sm-4">
-                En LIKELY AIM :
-              </div>
-              <div class="col-sm-8">
-                <mat-form-field appearance="outline">
-                  <mat-label>En LIKELY AIM</mat-label>
-                  <input matInput placeholder="Placeholder" />
-                </mat-form-field>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-sm-4">
-                En LIKELY TGT :
-              </div>
-              <div class="col-sm-8">
-                <mat-form-field appearance="outline">
-                  <mat-label>En LIKELY TGT</mat-label>
-                  <input matInput placeholder="Placeholder" />
-                </mat-form-field>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-sm-4">
-                NEXT ACTION BY EN :
-              </div>
-              <div class="col-sm-8">
-                <mat-form-field appearance="outline">
-                  <mat-label>NEXT ACTION BY EN </mat-label>
-                  <input matInput placeholder="Placeholder" />
-                </mat-form-field>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-sm-4">
-                OWN IMDT ACTION :
-              </div>
-              <div class="col-sm-8">
-                <mat-form-field appearance="outline">
-                  <mat-label>OWN IMDT ACTION </mat-label>
-                  <input matInput placeholder="Placeholder" />
-                </mat-form-field>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-sm-4">
-        <div class="card-container">
-            <div class="card">
-                <div class="row">
-                    <div class="col-sm-12 text-center">NEXT COA : EN</div>
-                </div>
-                <br>
-                <div class="row">
-                    <div class="col-sm-12">Locs To Obsn</div>
-                    <div class="col-sm-6">
-                        <mat-form-field appearance="outline">
-                            <mat-label>Sector</mat-label>
-                            <input matInput placeholder="Enter Sector" >
-                        </mat-form-field>
-                    </div>
-                    <div class="col-sm-6">
-                        <mat-form-field appearance="outline">
-                            <mat-label>LOC</mat-label>
-                            <input matInput placeholder="Enter LOC">
-                        </mat-form-field>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-12">Fmns To Obsn</div>
-                    <div class="col-sm-4">
-                        <mat-form-field appearance="outline">
-                            <mat-label>Corps</mat-label>
-                            <input matInput placeholder="Enter Corps" >
-                        </mat-form-field>
-                    </div>
-                    <div class="col-sm-4">
-                        <mat-form-field appearance="outline">
-                            <mat-label>Div</mat-label>
-                            <input matInput placeholder="Enter Division" >
-                        </mat-form-field>
-                    </div>
-                    <div class="col-sm-4">
-                        <mat-form-field appearance="outline">
-                            <mat-label>Bde</mat-label>
-                            <input matInput placeholder="Enter Brigade">
-                        </mat-form-field>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-sm-4">
-        <div class="card-container">
-            <div class="card">
-                <div class="row">
-                    <div class="col-sm-12 text-center">Troops to Task</div>
-                </div>
-                  <br>
-                  <div class="row">
-
-                    <div class="col-sm-4">
-                        <mat-form-field appearance="outline">
-                            <mat-label>Fmns</mat-label>
-                            <input matInput placeholder="Enter Fmns">
-                        </mat-form-field>
-                    </div>
-                    <div class="col-sm-4">
-                        <mat-form-field appearance="outline">
-                            <mat-label>Sect</mat-label>
-                            <input matInput placeholder="Enter Sect" >
-                        </mat-form-field>
-                    </div>
-                    <div class="col-sm-4">
-                        <mat-form-field appearance="outline">
-                            <mat-label>Tps</mat-label>
-                            <input matInput placeholder="Enter Tps">
-                        </mat-form-field>
-                    </div>
-                  </div>
-                <div class="row">
-                    <div class="col-sm-6">
-                        <mat-form-field appearance="outline">
-                            <mat-label>RESO</mat-label>
-                            <input matInput placeholder="Enter RESO" >
-                        </mat-form-field>
-                    </div>
-                    <div class="col-sm-6">
-                        <mat-form-field appearance="outline">
-                            <mat-label>Task</mat-label>
-                            <input matInput placeholder="Enter Task" >
-                        </mat-form-field>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    </div>
-
-    <div class="row">
-      <div class="col-sm-11">
-        <mat-form-field>
-          <mat-label>REMARKS (By Cdr) : </mat-label>
-          <textarea matInput class="remarks"></textarea>
-        </mat-form-field>
-      </div>
-      <div class="col-sm-1 custom-btn">
-        <button type="button" mat-raised-button color="primary">Save</button>
-      </div>
-    </div> -->
   </mat-card-content>
 </mat-card>

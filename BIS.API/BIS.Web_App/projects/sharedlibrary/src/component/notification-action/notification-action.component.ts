@@ -7,7 +7,7 @@ import { NotificationModel } from '../../model/notification.model';
 import { EnumBase, NotificationType, Status } from '../../model/enum';
 import { GenerateReport, GraphImages, MergeReports } from '../../model/generatereport.model';
 import { MasterDataFilterService } from '../../services/master-data-filter.service';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { BisdefaultDatePipe } from '../../pipe/bisdefault-date.pipe';
 import { CommonModule } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
@@ -43,7 +43,7 @@ export class NotificationActionComponent extends EnumBase {
   chartImages$ = this.chartImagesSubject.asObservable();
 
   // based on recieverEntityType show the dynamic ng-template;
-  mergeReport:MergeReports = new MergeReports()
+  mergeReport:MergeReports = new MergeReports();
   constructor(private authService:AuthService,private toastr: ToastrService, private cdr: ChangeDetectorRef, private masterDataService: MasterDataFilterService, @Inject(MAT_DIALOG_DATA) data, private apiService: ApiService, private dialogRef: MatDialogRef<NotificationActionComponent>) {
     super();
     this.notify = data;
@@ -56,14 +56,14 @@ export class NotificationActionComponent extends EnumBase {
       this.mergeReport.masterData = [];
       this.getReport();
     }
-
+    this.Viewed();
   }
-  Viewed(){
-    this.apiService.postWithHeader('notification/viewed',this.notify).subscribe(res =>{
-      if(res){
-        this.dialogRef.close(true);
+  Viewed() {
+    this.apiService.postWithHeader('notification/viewed', this.notify).subscribe(res => {
+      if (res) {
+
       }
-    })
+    });
   }
   onFileSelect(event: Event): void {
     const input = event.target as HTMLInputElement;
@@ -113,7 +113,6 @@ export class NotificationActionComponent extends EnumBase {
 //     rpt.dataId = reportId;
 //     this.apiService.postWithHeader('notification/report', rpt).subscribe(res => {
 //       if (res) {
-// debugger
 //         this.report = res;
 //         this.getMasterList();
 //         if (this.report.graphIds != undefined && this.report.graphIds != null && this.report.graphIds != '') {

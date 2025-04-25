@@ -60,7 +60,6 @@ isDivisionUser = false;
     })
   }
   getDivision(corpsId){
-    debugger
     this.apiService.getWithHeaders('corps/frmlist/'+corpsId).subscribe(res =>{
       if(res){
         this.divisionList = res;
@@ -96,8 +95,6 @@ isDivisionUser = false;
     }
   }
   onSubmit() {
-    debugger
-console.log(this.user)
   //   if (this.user.id > 0) {
   //     this.apisService.putWithHeader('user', this.user)
   //       .subscribe((result) => {

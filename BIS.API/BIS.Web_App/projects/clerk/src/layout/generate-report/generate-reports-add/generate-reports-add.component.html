@@ -112,7 +112,7 @@
     <div class="row">
       <div *ngFor="let image of selectedImages; let i = index" class="image-preview col-md-6">
         <div class="close-icon-container">
-          <mat-icon class="close-icon" (click)="removeImage(i)">close</mat-icon>
+          <img src="/assets/delete.svg" class="custom-icon" (click)="removeImage(i)" alt="">
         </div>
         <img [src]="image.url" [alt]="image.name" />
         <span class="image-name">{{ image.name }}</span>

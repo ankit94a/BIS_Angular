@@ -30,13 +30,13 @@ export class MasterDataComponent extends TablePaginationSettingsConfig implement
   selectedSample;
   roleType;
   isCommand:boolean=false;
+  filterType = ['All','Created','Processing','Approved','Rejected']
   constructor(private authService:AuthService,private spinnerService: NgxSpinnerService,private datePipe:BisdefaultDatePipe,private apiService:ApiService,private downloadService:DownloadService,private masterFilterService:MasterDataFilterService,private dialogService:BISMatDialogService,private router:Router,private masterDataService:MasterDataService){
     super();
     this.roleType = this.authService.getRoleType();
-  this.tablePaginationSettings.enableAction = true;
+    this.tablePaginationSettings.enableAction = true;
     this.tablePaginationSettings.enableEdit = true;
     this.tablePaginationSettings.enableView = true;
-    // this.tablePaginationSettings.enableDelete = true;
     this.tablePaginationSettings.enableColumn = true;
     this.tablePaginationSettings.pageSizeOptions = [50, 100];
     this.tablePaginationSettings.showFirstLastButtons = false;
@@ -46,35 +46,14 @@ export class MasterDataComponent extends TablePaginationSettingsConfig implement
   getSelectedRows($event){
     this.selectedSample = $event;
   }
-  // exportToExcel() {
-  //   if (this.selectedSample?.length > 0) {
-  //     const { Header, DataList } = this.masterFilterService.getMasterData(this.selectedSample);
-  //     const workbook = new ExcelJS.Workbook();
-  //     const worksheet = workbook.addWorksheet('Master Data');
-  //     const fileName = `Master_Data_${formatDate(new Date(), 'd MMM yyyy', 'en')}.xlsx`;
 
-  //     // Generate the data array by mapping headers to each data row
-  //     const Data = DataList.map(item => {
-  //       return Header.map(head => item[head] ?? '');
-  //     });
-
-  //     // Pass the structured data and header to the download service
-  //     this.downloadService.SaveExcel(worksheet, workbook, fileName, Data, Header);
-  //   } else {
-  //     console.warn('No data selected to export.');
-  //   }
-  // }
   exportToExcel() {
     if (this.selectedSample?.length > 0) {
         const { Header, DataList } = this.masterFilterService.getMasterData(this.selectedSample);
         const fileName = `Master_Data_${formatDate(new Date(), 'd MMM yyyy', 'en')}.xlsx`;
-
-        // Generate the data array by mapping headers to each data row
         const Data = DataList.map(item => {
-            return Header.map(head => item[head] ?? ''); // Get corresponding value for each header
+            return Header.map(head => item[head] ?? '');
         });
-
-        // Pass the structured data and header to the download service
         this.downloadService.SaveExcel(null, null, fileName, Data, Header);
     } else {
         console.warn('No data selected to export.');
@@ -105,9 +84,8 @@ export class MasterDataComponent extends TablePaginationSettingsConfig implement
   getMoreSameples($event){
 
   }
-  filterType = ['All','Created','Processing','Approved','Rejected']
+
   filterData($event){
-    debugger
     if($event == 'Created'){
       return this.sortedData = this.DataList.filter(item => item.status == Status.Created)
     }else if($event == 'Processing'){
@@ -121,7 +99,6 @@ export class MasterDataComponent extends TablePaginationSettingsConfig implement
     }
   }
   getDataFromServer(){
-    debugger
     this.spinnerService.show(undefined,{
       type:'square-jelly-box',
       bdColor:'rgba(0,0,0,0.8)',

@@ -36,7 +36,6 @@ export class LoginComponent implements OnInit{
   }
 
   proceedlogin() {
-    debugger
     if (this.loginform.invalid) {
       return;
     }
@@ -47,7 +46,6 @@ export class LoginComponent implements OnInit{
     this.apiService.postWithHeader('auth/login', loginData).subscribe({
       next: (res) => {
         this.loginLoading = false;
-debugger
         if (res && res.token && res.user) {
           this.authService.setToken(res.token);
           this.authService.setUserDetails(res.user);

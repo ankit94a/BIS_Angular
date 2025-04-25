@@ -67,12 +67,9 @@ export class UserListComponent implements OnInit {
   //   user.isView = false;
   //   this.open(Object.assign({}, user));
   // }
-  // updatePassword(user){
-
-  //   user.labelTitle = InSyncConstants.userPassword;
-  //   this.dialogService.open(UserPasswordComponent, user) ;
-
-  // }
+  update(user){
+    this.dialogService.open(UserPasswordComponent, user,'22vw') ;
+  }
 
 
 

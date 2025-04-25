@@ -31,15 +31,10 @@ export class HeaderComponent implements OnInit {
     }else{
       this.facilityName = 'Admin'
     }
-    debugger
-    // this.facilityName = this.authService.getDivisionName()?.trim() ? this.authService.getDivisionName() : this.authService.getCorpsName();
     this.roleType = this.authService.getRoleType();
     if(this.roleType != '7' && this.roleType != '8' && this.roleType != '9'){
-
     }
       this.userName = this.authService.getUserName()
-    // this.companyName = localStorage.getItem('company');
-    // this.userName = localStorage.getItem('name')
   }
 
   toggleSideBar() {
@@ -51,7 +46,6 @@ export class HeaderComponent implements OnInit {
     }, 300);
   }
   onLoggedout() {
-    // this.helper.logout();
     this.authService.clear()
   }
 

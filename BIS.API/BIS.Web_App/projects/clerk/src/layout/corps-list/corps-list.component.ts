@@ -64,7 +64,6 @@ export class CorpsListComponent {
     user.roleType = decoded.roletype;
     this.apiService.postWithHeader('auth/newtoken',user).subscribe(res => {
       if(res){
-        debugger;
         localStorage.removeItem('BIS_TOKEN');
         this.authService.setToken(res.token);
         this.authService.setCorpsName(corps.name);
@@ -90,7 +89,6 @@ export class CorpsListComponent {
 
   }
   openClerkApp(corps){
-    debugger
     this.isClerkApp = true;
     this.router.navigate(['/dashboard']);
   }

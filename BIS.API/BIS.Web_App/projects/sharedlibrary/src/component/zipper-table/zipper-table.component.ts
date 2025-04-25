@@ -255,14 +255,12 @@ export class ZipperTableComponent extends TablePaginationSettingsConfig implemen
   }
 
   applyFilter(filterValue: string) {
-    debugger
     filterValue = filterValue.trim();
     filterValue = filterValue.toLowerCase();
     this.dataSource.filter = filterValue;
   }
 
   async applyInsyncFilter(value: any, colName: any, type: any) {
-    debugger
     this.dataSource.data
     this.rowData
      if (type == "date") {

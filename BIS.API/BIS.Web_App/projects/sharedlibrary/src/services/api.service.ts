@@ -35,7 +35,6 @@ export class ApiService {
         }
       }), catchError(
         (error: any) => {
-          debugger
           return this.showError(error);
         }
       ))
@@ -69,7 +68,6 @@ export class ApiService {
   }
 
   public showError(error: any): Observable<any> {
-    debugger
     if (error.status === 401 || error.status === 0) {
       // this.authService.logout();
     }

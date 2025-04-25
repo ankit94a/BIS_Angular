@@ -17,7 +17,6 @@ export class RoleAddComponent {
   corps = [];
   divison = [];
   constructor(@Inject(MAT_DIALOG_DATA) data,private apiService:ApiService,private dialogRef:MatDialogRef<RoleAddComponent>,private toastr:ToastrService){
-    debugger
      if(data != null && data != undefined && data != ""){
       this.role = data;
      }

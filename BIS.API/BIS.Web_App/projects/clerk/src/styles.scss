@@ -21,25 +21,44 @@ body {
   cursor: pointer;
 }
 .mat-content {
-  max-height: calc(100vh - 218px);
+  max-height: calc(100vh - 200px);
   overflow-y: auto;
   overflow-x: hidden;
   padding: 1rem;
   box-sizing: border-box;
 }
-
+.example-container {
+  height: 78.5vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+.mat-mdc-card-content{
+  max-height: calc(100vh - 200px);
+}
 /* Ensure it remains responsive on smaller screens */
 @media (max-width: 768px) {
   .mat-content {
     max-height: calc(100vh - 175px); /* Adjust height for smaller screens */
     padding: 0.75rem;
   }
+  .mat-mdc-card-content{
+    max-height: calc(100vh - 175px);
+  }
+  .example-container {
+    height: 74vh;
+  }
 }
 
 @media (max-width: 480px) {
-  .mat-content {
+  .mat-content{
     max-height: calc(100vh - 150px); /* Further reduce height for very small screens */
     padding: 0.5rem;
+  }
+  .mat-mdc-card-content{
+    max-height: calc(100vh - 150px);
+  }
+  .example-container {
+    height: 70vh;
   }
 }
 

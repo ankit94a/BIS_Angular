@@ -322,7 +322,6 @@ export class DashboardComponent implements OnInit {
   // getFrm12MonthsData(){
   //   this.apiService.postWithHeader('dashboard/fmn/last12Months',this.filterModel).subscribe(res =>{
   //     if(res){
-  //       debugger;
   //       console.log(res)
   //       this.frm12MonthsChartData = {
   //         labels: res.name,

@@ -6,16 +6,16 @@
     .mat-mdc-list-base .mat-mdc-list-item,
     .mat-list-base .mat-list-option,
     .mat-list-base .mat-mdc-subheader {
-      height: 46px;
-  
+      height: 60px;
+
     }
   }
   .mat-mdc-subheader {
-  
+
     margin-bottom: 0px !important;
     margin-left: 5px;
   }
-  
+
   .menu-button {
     transition: 300ms ease-in-out;
     transform: rotate(0deg);
@@ -36,4 +36,24 @@
     display: block;
     transform: scaleY(1);
   }
-  
+
+  a[mat-list-item] {
+    transition: background-color 0.3s ease, color 0.3s ease;
+    border-radius: 5px;
+  }
+
+  a[mat-list-item]:hover {
+    background-color: rgba(63, 81, 181, 0.8); /* rgba equivalent of #3f51b5 with slight transparency */
+    color: #fff;
+  }
+
+  a[mat-list-item].active {
+    background-color: rgba(63, 81, 181, 0.8); /* fully opaque for selected item */
+    color: #fff;
+  }
+  a[mat-list-item].active .nav-caption {/* fully opaque for selected item */
+    color: #fff;
+  }
+  a[mat-list-item]:hover .nav-caption {
+    color: #fff;
+  }

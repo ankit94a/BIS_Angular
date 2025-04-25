@@ -189,12 +189,12 @@
       <div class="approved-report-message">
         <h3>Report Approved!</h3>
         <p>
-          Congratulations! Your report has been successfully approved. 
+          Congratulations! Your report has been successfully approved.
           Please navigate to the <a href="/approved-reports">Approved Reports</a> section to review the complete details.
         </p>
       </div>
     </ng-container>
-    
+
   </ng-container>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
@@ -205,11 +205,11 @@
   <button class="btn btn-sm fileUpload"
     *ngIf="notify.notificationType == NotificationType.MasterData && userRole != '1' && userRole != '10'"
     (click)="changeStatus(true)">Approved</button>
-  <button class="btn btn-sm fileUpload"
+  <!-- <button class="btn btn-sm fileUpload"
     *ngIf="notify.notificationType == NotificationType.MasterData && (userRole == '1' || userRole == '10')"
-    (click)="Viewed()">Mark as viewed</button>
+    (click)="Viewed()">Mark as viewed</button> -->
   <button class="btn btn-sm fileUpload" *ngIf="notify.notificationType == NotificationType.GenerateReport"
     (click)="submitReport()">Submit</button>
-  <button class="btn btn-sm fileUpload" *ngIf="notify.notificationType == NotificationType.ApprovedReport"
-    (click)="Viewed()">Mark as viewed</button>
+  <!-- <button class="btn btn-sm fileUpload" *ngIf="notify.notificationType == NotificationType.ApprovedReport"
+    (click)="Viewed()">Mark as viewed</button> -->
 </mat-dialog-actions>

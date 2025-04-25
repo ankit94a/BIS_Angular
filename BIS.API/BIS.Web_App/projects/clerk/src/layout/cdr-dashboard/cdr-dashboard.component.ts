@@ -97,6 +97,13 @@ export class CdrDashboardComponent {
     })
     }
   }
+  isWithinOneHour(dateString: string | Date): boolean {
+    const createdTime = new Date(dateString).getTime();
+    const currentTime = new Date().getTime();
+    const oneHourInMs = 60 * 60 * 1000;
+    return (currentTime - createdTime) <= oneHourInMs;
+  }
+
   getWeekRange(
     weekNumber: number,
     year: number

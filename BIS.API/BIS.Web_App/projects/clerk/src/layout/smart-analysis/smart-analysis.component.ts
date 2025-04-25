@@ -158,57 +158,14 @@ chartList: string[] = ['Monthly', 'Daily', 'Weekly'];
   download(chartId: string): void {
     let index = 0;
     switch (chartId) {
-      case 'chart0':
-        index = 0;
-        break;
-      case 'chart1':
-        index = 1;
-        break;
-      case 'chart2':
-        index = 2;
-        break;
-      case 'chart3':
-        index = 3;
-        break;
-      // fmn chart
-      case 'chart4':
-        index = 4;
-        break;
-      case 'chart5':
-        index = 5;
-        break;
-      case 'chart6':
-        index = 6;
-        break;
-      case 'chart7':
-        index = 7;
-        break;
-      // aspect chart
-      case 'chart8':
-        index = 8;
-        break;
-      case 'chart9':
-        index = 9;
-        break;
-      case 'chart10':
-        index = 10;
-        break;
-      case 'chart11':
-        index = 11;
-        break;
-      // indicator chart
-      case 'chart12':
-        index = 12;
-        break;
-      case 'chart13':
-        index = 13;
-        break;
-      case 'chart14':
-        index = 14;
-        break;
-      case 'chart15':
-        index = 15;
-        break;
+      case 'No of Inputs (Last One Month)':index = 0;break;
+      case 'No of Inputs (Same Month Last Year)':index = 1;break;
+      case 'Aspects (Last One Month)':index = 2;break;
+      case 'Aspects (Same Month Last Year)':index = 3;break;
+      case 'Indicators (Last One Month)':index = 4;break;
+      case 'Indicators (Same Month Last Year)':index = 5;break;
+      case 'Variation (all Fmn)':index = 6;break;
+      case 'Entries Chart':index = 7;break;
     }
     const chartDirective = this.charts.toArray()[index];
 
@@ -235,11 +192,8 @@ chartList: string[] = ['Monthly', 'Daily', 'Weekly'];
 
 
   getvariation() {
-    debugger
     const payloads = this.variationFilterList.filter(model => model.endDate != null);
-
     if (payloads.length === 0) return;
-
     this.apiService.postWithHeader('smartanalysis/variation', payloads).subscribe((res: any) => {
       if (res && res.labels && res.series) {
         this.variation = {

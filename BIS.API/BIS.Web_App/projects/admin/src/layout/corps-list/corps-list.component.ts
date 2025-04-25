@@ -54,7 +54,6 @@ export class CorpsListComponent {
   }
 
   redirectUrl(corps){
-debugger;
 let tokenStr = this.authService.getToken();
 const decoded = this.decodeToken(tokenStr);
 
@@ -74,7 +73,6 @@ if (decoded) {
 
   }
   openClerkApp(corps){
-    debugger
     this.isClerkApp = true;
     this.router.navigate(['/dashboard']);
   }

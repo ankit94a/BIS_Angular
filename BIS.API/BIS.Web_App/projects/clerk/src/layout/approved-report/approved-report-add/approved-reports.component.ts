@@ -6,22 +6,24 @@ import { BISMatDialogService } from 'projects/sharedlibrary/src/services/insync-
 import { SharedLibraryModule } from 'projects/sharedlibrary/src/shared-library.module';
 import { ApprovedReportViewComponent } from '../approved-report-view/approved-report-view.component';
 import { ApprovedReports } from 'projects/sharedlibrary/src/model/generatereport.model';
+import { BisdefaultDatePipe } from 'projects/sharedlibrary/src/pipe/bisdefault-date.pipe';
 
 @Component({
   selector: 'app-approved-reports',
   imports: [SharedLibraryModule, ZipperTableComponent],
   templateUrl: './approved-reports.component.html',
-  styleUrl: './approved-reports.component.scss'
+  styleUrl: './approved-reports.component.scss',
+  providers:[BisdefaultDatePipe]
 })
 export class ApprovedReportsComponent extends TablePaginationSettingsConfig implements OnInit {
   isRefresh: boolean = false;
   DataList:ApprovedReports [] = [];
-  constructor(private apiService: ApiService, private dialogService: BISMatDialogService) {
+  constructor(private apiService: ApiService, private dialogService: BISMatDialogService,private datePipe:BisdefaultDatePipe) {
     super()
     this.tablePaginationSettings.enableAction = true;
     this.tablePaginationSettings.enableView = true;
     this.tablePaginationSettings.pageSizeOptions = [50, 100];
-    this.tablePaginationSettings.showFirstLastButtons = false
+    this.tablePaginationSettings.showFirstLastButtons = false;
   }
   ngOnInit(): void {
     this.getAllInference();
@@ -41,6 +43,11 @@ export class ApprovedReportsComponent extends TablePaginationSettingsConfig impl
 
   columns = [
     {
+      name: 'createdOn', displayName: 'Approved Date', isSearchable: true,valuePrepareFunction:(row) =>{
+        return this.datePipe.transform(row.createdOn)
+    }
+  },
+    {
       name: 'enForceLevel', displayName: 'En Force Level', isSearchable: true
     },
     {
@@ -55,5 +62,6 @@ export class ApprovedReportsComponent extends TablePaginationSettingsConfig impl
     {
       name: 'ownImdtAction', displayName: 'Own Imdt Action', isSearchable: true
     }
+
   ]
 }
