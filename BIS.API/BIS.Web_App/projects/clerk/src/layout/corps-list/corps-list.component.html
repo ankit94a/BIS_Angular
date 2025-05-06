@@ -1,4 +1,4 @@
-<main>
+<!-- <main>
   <div class="bis-banner">
     <div class="context">
       <div class="content-left">
@@ -27,4 +27,72 @@
       </div>
     </div>
   </div>
-</main>
+</main> -->
+<mat-card>
+  <mat-card-title class="heading">AI Based BATTLEFIELD INDICATOR Software</mat-card-title>
+  <mat-card-content>
+
+    <!-- First card centered -->
+    <div class="row justify-content-center" *ngIf="corpsList.length > 0">
+      <div class="col-md-6 col-lg-4">
+        <div class="card text-center" (click)="redirectUrl(corpsList[0])">
+          <img [src]="corpsList[0].imageUrl" alt="Corps" width="30px">
+          {{corpsList[0].name}}
+        </div>
+      </div>
+    </div>
+
+    <!-- Next rows, two cards per row -->
+    <div class="row" *ngFor="let pair of corpsList.slice(1) | slicePairs">
+      <div class="col-md-6" *ngFor="let corps of pair" (click)="redirectUrl(corps)">
+        <div class="card">
+          <img [src]="corps.imageUrl" alt="Corps">
+          <div class="card-name">{{ corps.name }}</div>
+        </div>
+
+      </div>
+    </div>
+
+  </mat-card-content>
+</mat-card>
+
+<!-- <div class="main">
+<h1></h1>
+<div class="row">
+  <div class="col-md-6">
+    <div class="card">
+      <img src="/assets/Eastern_Command.png" alt="Corps" width="30px">
+      <h2>Eastern Command</h2>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-6">
+    <div class="card">
+      <img src="/assets/3Corps.png" alt="corps" width="30px">
+      <h2>HQ 3 Corps</h2>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="card">
+      <img src="/assets/4Corps.png" alt="corps" width="30px">
+      <h2>HQ 4 Corps</h2>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-6">
+    <div class="card">
+      <img src="/assets/17Corps.png" alt="corps" width="30px">
+      <h2>HQ 17 Corps</h2>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="card">
+ <img src="/assets/33Corps.jpg" alt="corps" width="30px">
+      <h2>HQ 33 Corps</h2>
+    </div>
+  </div>
+</div>
+</div> -->
+

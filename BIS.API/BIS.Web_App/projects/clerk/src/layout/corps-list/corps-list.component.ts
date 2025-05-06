@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { RoleType } from './../../../../sharedlibrary/src/model/enum';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
@@ -6,17 +7,19 @@ import { User } from 'projects/sharedlibrary/src/model/user.model';
 import { ApiService } from 'projects/sharedlibrary/src/services/api.service';
 import { AuthService } from 'projects/sharedlibrary/src/services/auth.service';
 import { SharedLibraryModule } from 'projects/sharedlibrary/src/shared-library.module';
+import { SlicePairsPipe } from 'projects/sharedlibrary/src/pipe/slicepairs.pipe';
 
 @Component({
   selector: 'app-corps-list',
-  imports: [SharedLibraryModule],
+  imports: [SharedLibraryModule,CommonModule,SlicePairsPipe],
   templateUrl: './corps-list.component.html',
-  styleUrl: './corps-list.component.scss'
+  styleUrl: './corps-list.component.scss',
 })
 export class CorpsListComponent {
   corpsList:Division[]=[];
   isClerkApp:boolean=false;
   user;
+corps: any;
   constructor(private apiService:ApiService,private router:Router,private authService:AuthService){
     this.getCorpsList();
     this.user = this.authService.getRoleType()
@@ -64,7 +67,6 @@ export class CorpsListComponent {
     user.roleType = decoded.roletype;
     this.apiService.postWithHeader('auth/newtoken',user).subscribe(res => {
       if(res){
-        debugger;
         localStorage.removeItem('BIS_TOKEN');
         this.authService.setToken(res.token);
         this.authService.setCorpsName(corps.name);
@@ -90,7 +92,6 @@ export class CorpsListComponent {
 
   }
   openClerkApp(corps){
-    debugger
     this.isClerkApp = true;
     this.router.navigate(['/dashboard']);
   }

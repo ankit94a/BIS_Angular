@@ -1,0 +1,74 @@
+[
+    {
+        "text": "Dashboard",
+        "icon": "dashboard",
+        "routerLink": "/dashboard",
+        "children": []
+    },
+    {
+        "text": "Master Data",
+        "icon": "dashboard",
+        "routerLink": "/master-data",
+        "children": []
+    },
+    {
+        "text": "Create Data",
+        "icon": "dashboard",
+        "routerLink": "/create-data",
+        "children": []
+    },
+    {
+        "text": "Search & Query",
+        "icon": "dashboard",
+        "routerLink": "/master-data",
+        "children": []
+    },
+    {
+        "text": "Generate Report",
+        "icon": "dashboard",
+        "routerLink": "/gen-report",
+        "children": []
+    },
+    {
+        "text": "Smart Analysis",
+        "icon": "dashboard",
+        "routerLink": "/analysis",
+        "children": []
+    },
+    {
+        "text": "Predictive Model",
+        "icon": "dashboard",
+        "routerLink": "/master-data",
+        "children": []
+    },
+    {
+        "text": "Cdr Dashboard",
+        "icon": "dashboard",
+        "routerLink": "/cdr-dahboard",
+        "children": []
+    },
+    {
+        "text": "Import / Export Data",
+        "icon": "dashboard",
+        "routerLink": "/master-data",
+        "children": []
+    },
+    {
+        "text": "Saved Notes",
+        "icon": "dashboard",
+        "routerLink": "/saved-notes",
+        "children": []
+    },
+    {
+        "text": "Notes for Me",
+        "icon": "dashboard",
+        "routerLink": "/notes-for-me",
+        "children": []
+    },
+    {
+        "text": "Facility",
+        "icon": "dashboard",
+        "routerLink": "/facility",
+        "children": []
+    }
+]

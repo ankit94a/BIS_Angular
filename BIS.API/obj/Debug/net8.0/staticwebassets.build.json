@@ -1,0 +1,12 @@
+{
+  "Version": 1,
+  "Hash": "vTPyMwp1oZMuYMchPTg4gUYONwBnumA0uTQ8aBnC/Do=",
+  "Source": "BIS.API",
+  "BasePath": "_content/BIS.API",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": [],
+  "Endpoints": []
+}

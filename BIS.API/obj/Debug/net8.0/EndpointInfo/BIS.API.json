@@ -1,0 +1,4714 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "BIS",
+    "description": "Indian Army Web API",
+    "version": "v1"
+  },
+  "paths": {
+    "/api/Attribute/AllAspect": {
+      "get": {
+        "tags": [
+          "Attribute"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Attribute/indicator/{aspectId}": {
+      "get": {
+        "tags": [
+          "Attribute"
+        ],
+        "parameters": [
+          {
+            "name": "aspectId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Attribute/indicatorlist": {
+      "post": {
+        "tags": [
+          "Attribute"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Aspect"
+                }
+              }
+            },
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Aspect"
+                }
+              }
+            },
+            "text/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Aspect"
+                }
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Aspect"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Attribute/indicatorSubField/{indicatortId}": {
+      "get": {
+        "tags": [
+          "Attribute"
+        ],
+        "parameters": [
+          {
+            "name": "indicatortId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Attribute/sector": {
+      "get": {
+        "tags": [
+          "Attribute"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Auth/login": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/Login"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Login"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Login"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/Login"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Auth/newtoken": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserDetail"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserDetail"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserDetail"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserDetail"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/CdrDashboard": {
+      "post": {
+        "tags": [
+          "CdrDashboard"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModel"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModel"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModel"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/CdrDashboard/inference": {
+      "post": {
+        "tags": [
+          "CdrDashboard"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApprovedReports"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApprovedReports"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApprovedReports"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApprovedReports"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "CdrDashboard"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/CdrDashboard/fullreport": {
+      "post": {
+        "tags": [
+          "CdrDashboard"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApprovedReports"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApprovedReports"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApprovedReports"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApprovedReports"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Corps": {
+      "get": {
+        "tags": [
+          "Corps"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Corps/frmlist/{corpsId}": {
+      "get": {
+        "tags": [
+          "Corps"
+        ],
+        "parameters": [
+          {
+            "name": "corpsId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Dashboard/FmnDetails": {
+      "get": {
+        "tags": [
+          "Dashboard"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Dashboard/count": {
+      "post": {
+        "tags": [
+          "Dashboard"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModel"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModel"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModel"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Dashboard/sector": {
+      "post": {
+        "tags": [
+          "Dashboard"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModel"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModel"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModel"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Dashboard/sector/30days": {
+      "post": {
+        "tags": [
+          "Dashboard"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModel"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModel"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModel"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Dashboard/sector/today": {
+      "post": {
+        "tags": [
+          "Dashboard"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModel"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModel"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModel"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Dashboard/sector/last12Months": {
+      "post": {
+        "tags": [
+          "Dashboard"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModel"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModel"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModel"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Dashboard/fmn": {
+      "post": {
+        "tags": [
+          "Dashboard"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModel"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModel"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModel"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Dashboard/fmn/30days": {
+      "post": {
+        "tags": [
+          "Dashboard"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModel"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModel"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModel"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Dashboard/fmn/today": {
+      "post": {
+        "tags": [
+          "Dashboard"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModel"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModel"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModel"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Dashboard/fmn/last12Months": {
+      "post": {
+        "tags": [
+          "Dashboard"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModel"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModel"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModel"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Dashboard/aspect": {
+      "post": {
+        "tags": [
+          "Dashboard"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModel"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModel"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModel"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Dashboard/aspect/30days": {
+      "post": {
+        "tags": [
+          "Dashboard"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModel"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModel"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModel"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Dashboard/aspect/today": {
+      "post": {
+        "tags": [
+          "Dashboard"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModel"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModel"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModel"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Dashboard/aspect/last12Months": {
+      "post": {
+        "tags": [
+          "Dashboard"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModel"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModel"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModel"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Dashboard/indicator": {
+      "post": {
+        "tags": [
+          "Dashboard"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModel"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModel"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModel"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Dashboard/indicator/top5": {
+      "post": {
+        "tags": [
+          "Dashboard"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModel"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModel"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModel"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Dashboard/location": {
+      "post": {
+        "tags": [
+          "Dashboard"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModel"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModel"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModel"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Dashboard/location/7days": {
+      "post": {
+        "tags": [
+          "Dashboard"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModel"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModel"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModel"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/GenerateReport": {
+      "post": {
+        "tags": [
+          "GenerateReport"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/GenerateReport"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GenerateReport"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GenerateReport"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/GenerateReport"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "GenerateReport"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/GenerateReport/graph{ids}": {
+      "get": {
+        "tags": [
+          "GenerateReport"
+        ],
+        "parameters": [
+          {
+            "name": "ids",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/GenerateReport/report{id}": {
+      "get": {
+        "tags": [
+          "GenerateReport"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/MasterData": {
+      "get": {
+        "tags": [
+          "MasterData"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "MasterData"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/MasterData"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MasterData"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MasterData"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/MasterData"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "MasterData"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/MasterData"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MasterData"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MasterData"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/MasterData"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/MasterData/getbyid{id}": {
+      "get": {
+        "tags": [
+          "MasterData"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/MasterData/idsList{idsList}": {
+      "get": {
+        "tags": [
+          "MasterData"
+        ],
+        "parameters": [
+          {
+            "name": "idsList",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/MasterData/dateRange": {
+      "post": {
+        "tags": [
+          "MasterData"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModelEntries"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModelEntries"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModelEntries"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModelEntries"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/MasterData/inputlevels": {
+      "get": {
+        "tags": [
+          "MasterData"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/MasterData/sector": {
+      "get": {
+        "tags": [
+          "MasterData"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/MasterData/source": {
+      "get": {
+        "tags": [
+          "MasterData"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/MasterData/addsource/{name}": {
+      "get": {
+        "tags": [
+          "MasterData"
+        ],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/MasterData/loc/{isSourceLoc}": {
+      "get": {
+        "tags": [
+          "MasterData"
+        ],
+        "parameters": [
+          {
+            "name": "isSourceLoc",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/MasterData/addlocsource/{name}": {
+      "get": {
+        "tags": [
+          "MasterData"
+        ],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/MasterData/addloctype/{name}": {
+      "get": {
+        "tags": [
+          "MasterData"
+        ],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/MasterData/enloc": {
+      "get": {
+        "tags": [
+          "MasterData"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/MasterData/addenloc/{name}": {
+      "get": {
+        "tags": [
+          "MasterData"
+        ],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/MasterData/deactivate/{id}/{table}": {
+      "get": {
+        "tags": [
+          "MasterData"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "table",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Notification/unread": {
+      "get": {
+        "tags": [
+          "Notification"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Notification/updatestatus": {
+      "post": {
+        "tags": [
+          "Notification"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/Notification"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Notification"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Notification"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/Notification"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Notification/report": {
+      "post": {
+        "tags": [
+          "Notification"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/Notification"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Notification"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Notification"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/Notification"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Notification/viewed": {
+      "post": {
+        "tags": [
+          "Notification"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/Notification"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Notification"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Notification"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/Notification"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Role": {
+      "get": {
+        "tags": [
+          "Role"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Role"
+        ],
+        "parameters": [
+          {
+            "name": "RoleName",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "RoleDescription",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Id",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "CreatedBy",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "UpdatedBy",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "CreatedOn",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "UpdatedOn",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "IsActive",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "IsDeleted",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "CorpsId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "DivisionId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/SmartAnalysis/30days": {
+      "post": {
+        "tags": [
+          "SmartAnalysis"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModel"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModel"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModel"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/SmartAnalysis/30days/lastyear": {
+      "post": {
+        "tags": [
+          "SmartAnalysis"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModel"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModel"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModel"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/SmartAnalysis/aspect/30days": {
+      "post": {
+        "tags": [
+          "SmartAnalysis"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModel"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModel"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModel"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/SmartAnalysis/aspect/30days/lastyear": {
+      "post": {
+        "tags": [
+          "SmartAnalysis"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModel"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModel"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModel"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/SmartAnalysis/indicator/30days": {
+      "post": {
+        "tags": [
+          "SmartAnalysis"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModel"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModel"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModel"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/SmartAnalysis/indicator/30days/lastyear": {
+      "post": {
+        "tags": [
+          "SmartAnalysis"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModel"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModel"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModel"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/SmartAnalysis/getentries": {
+      "post": {
+        "tags": [
+          "SmartAnalysis"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModelEntries"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModelEntries"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModelEntries"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModelEntries"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/SmartAnalysis/variation": {
+      "post": {
+        "tags": [
+          "SmartAnalysis"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModel"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModel"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModel"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/SmartAnalysis/getentrieschart/entrydata": {
+      "post": {
+        "tags": [
+          "SmartAnalysis"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModelEntries"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModelEntries"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModelEntries"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FilterModelEntries"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/User/menu": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/User": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "parameters": [
+          {
+            "name": "Username",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Name",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Email",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Phone",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Password",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "RoleId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "UserRoleId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "RoleType",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/RoleType"
+            }
+          },
+          {
+            "name": "Id",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "CreatedBy",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "UpdatedBy",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "CreatedOn",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "UpdatedOn",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "IsActive",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "IsDeleted",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "CorpsId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "DivisionId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ApprovedReports": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "createdBy": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "updatedBy": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "createdOn": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "updatedOn": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "isDeleted": {
+            "type": "boolean"
+          },
+          "corpsId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "divisionId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "enForceLevel": {
+            "type": "string",
+            "nullable": true
+          },
+          "enLikelyAim": {
+            "type": "string",
+            "nullable": true
+          },
+          "enLikelyTgt": {
+            "type": "string",
+            "nullable": true
+          },
+          "nextActionByEn": {
+            "type": "string",
+            "nullable": true
+          },
+          "ownImdtAction": {
+            "type": "string",
+            "nullable": true
+          },
+          "sector": {
+            "type": "string",
+            "nullable": true
+          },
+          "loc": {
+            "type": "string",
+            "nullable": true
+          },
+          "corps": {
+            "type": "string",
+            "nullable": true
+          },
+          "div": {
+            "type": "string",
+            "nullable": true
+          },
+          "bde": {
+            "type": "string",
+            "nullable": true
+          },
+          "fmn": {
+            "type": "string",
+            "nullable": true
+          },
+          "sect": {
+            "type": "string",
+            "nullable": true
+          },
+          "tps": {
+            "type": "string",
+            "nullable": true
+          },
+          "res": {
+            "type": "string",
+            "nullable": true
+          },
+          "task": {
+            "type": "string",
+            "nullable": true
+          },
+          "comment": {
+            "type": "string",
+            "nullable": true
+          },
+          "graphIds": {
+            "type": "string",
+            "nullable": true
+          },
+          "generateReportId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "graphs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GraphImages"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Aspect": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "createdBy": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "updatedBy": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "createdOn": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedOn": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "isDeleted": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "FilterModel": {
+        "type": "object",
+        "properties": {
+          "frmn": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FmnModel"
+            },
+            "nullable": true
+          },
+          "sector": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "aspects": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "source": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "indicator": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "FilterModelEntries": {
+        "type": "object",
+        "properties": {
+          "frmn": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FmnModel"
+            },
+            "nullable": true
+          },
+          "sector": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "aspects": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "source": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "indicator": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "filterType": {
+            "$ref": "#/components/schemas/FilterType"
+          }
+        },
+        "additionalProperties": false
+      },
+      "FilterType": {
+        "enum": [
+          "Daily",
+          "Weekly",
+          "Monthly"
+        ],
+        "type": "string"
+      },
+      "FmnModel": {
+        "type": "object",
+        "properties": {
+          "corpsId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "divisionId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "GenerateReport": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "createdBy": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "updatedBy": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "createdOn": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "updatedOn": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "isDeleted": {
+            "type": "boolean"
+          },
+          "corpsId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "divisionId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "reportType": {
+            "type": "string",
+            "nullable": true
+          },
+          "reportDate": {
+            "type": "string",
+            "nullable": true
+          },
+          "fromDate": {
+            "type": "string",
+            "nullable": true
+          },
+          "toDate": {
+            "type": "string",
+            "nullable": true
+          },
+          "reportTitle": {
+            "type": "string",
+            "nullable": true
+          },
+          "userId": {
+            "type": "string",
+            "nullable": true
+          },
+          "notes": {
+            "type": "string",
+            "nullable": true
+          },
+          "startDate": {
+            "type": "string",
+            "nullable": true
+          },
+          "endDate": {
+            "type": "string",
+            "nullable": true
+          },
+          "masterDataIds": {
+            "type": "string",
+            "nullable": true
+          },
+          "graphs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GraphImages"
+            },
+            "nullable": true
+          },
+          "graphIds": {
+            "type": "string",
+            "nullable": true
+          },
+          "rptId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "status": {
+            "$ref": "#/components/schemas/Status"
+          }
+        },
+        "additionalProperties": false
+      },
+      "GraphImages": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "createdBy": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "updatedBy": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "createdOn": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "updatedOn": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "isDeleted": {
+            "type": "boolean"
+          },
+          "corpsId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "divisionId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "url": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Login": {
+        "required": [
+          "password",
+          "userName"
+        ],
+        "type": "object",
+        "properties": {
+          "userName": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "password": {
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "MasterData": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "createdBy": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "updatedBy": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "status": {
+            "$ref": "#/components/schemas/Status"
+          },
+          "createdOn": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "updatedOn": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "isDeleted": {
+            "type": "boolean"
+          },
+          "corpsId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "divisionId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "inputLevel": {
+            "type": "string",
+            "nullable": true
+          },
+          "reportedDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "rptDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "sector": {
+            "type": "string",
+            "nullable": true
+          },
+          "fmn": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "source": {
+            "type": "string",
+            "nullable": true
+          },
+          "sourceLoc": {
+            "type": "string",
+            "nullable": true
+          },
+          "typeOfLoc": {
+            "type": "string",
+            "nullable": true
+          },
+          "enLocName": {
+            "type": "string",
+            "nullable": true
+          },
+          "aspect": {
+            "type": "string",
+            "nullable": true
+          },
+          "indicator": {
+            "type": "string",
+            "nullable": true
+          },
+          "frmn": {
+            "type": "string",
+            "nullable": true
+          },
+          "typeSvlEqpt": {
+            "type": "string",
+            "nullable": true
+          },
+          "noSvlEqpt": {
+            "type": "string",
+            "nullable": true
+          },
+          "htM": {
+            "type": "string",
+            "nullable": true
+          },
+          "tgt": {
+            "type": "string",
+            "nullable": true
+          },
+          "poaseReamrks": {
+            "type": "string",
+            "nullable": true
+          },
+          "visSrOffrs": {
+            "type": "string",
+            "nullable": true
+          },
+          "ptls": {
+            "type": "string",
+            "nullable": true
+          },
+          "newTps": {
+            "type": "string",
+            "nullable": true
+          },
+          "cvys": {
+            "type": "string",
+            "nullable": true
+          },
+          "obsn": {
+            "type": "string",
+            "nullable": true
+          },
+          "irRemarks": {
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "timeFrom": {
+            "type": "string",
+            "nullable": true
+          },
+          "timeTo": {
+            "type": "string",
+            "nullable": true
+          },
+          "iolRemarks": {
+            "type": "string",
+            "nullable": true
+          },
+          "jammingEqpt": {
+            "type": "string",
+            "nullable": true
+          },
+          "jammingTimefrom": {
+            "type": "string",
+            "nullable": true
+          },
+          "jammingTimeto": {
+            "type": "string",
+            "nullable": true
+          },
+          "jammingDtOfJx": {
+            "type": "string",
+            "nullable": true
+          },
+          "jammingEffect": {
+            "type": "string",
+            "nullable": true
+          },
+          "jammingSpecificationFreq": {
+            "type": "string",
+            "nullable": true
+          },
+          "jammingSpecificationWavelength": {
+            "type": "string",
+            "nullable": true
+          },
+          "jammingSpecificationType": {
+            "type": "string",
+            "nullable": true
+          },
+          "jammingRemarks": {
+            "type": "string",
+            "nullable": true
+          },
+          "etiNoOfTourists": {
+            "type": "string",
+            "nullable": true
+          },
+          "etiTimefrom": {
+            "type": "string",
+            "nullable": true
+          },
+          "etiTimeto": {
+            "type": "string",
+            "nullable": true
+          },
+          "etiFrequencyDaily": {
+            "type": "string",
+            "nullable": true
+          },
+          "etiFrequencyWeekly": {
+            "type": "string",
+            "nullable": true
+          },
+          "etiFrequencySeasonal": {
+            "type": "string",
+            "nullable": true
+          },
+          "foSTimefrom": {
+            "type": "string",
+            "nullable": true
+          },
+          "foSTimeto": {
+            "type": "string",
+            "nullable": true
+          },
+          "foSSkirmishPurpose": {
+            "type": "string",
+            "nullable": true
+          },
+          "foSSkirmishPlaFmn": {
+            "type": "string",
+            "nullable": true
+          },
+          "foSSkirmishPlaNoOfPers": {
+            "type": "string",
+            "nullable": true
+          },
+          "foSSkirmishPlaNoOfOffrs": {
+            "type": "string",
+            "nullable": true
+          },
+          "foSSkirmishPlaNoOfJcos": {
+            "type": "string",
+            "nullable": true
+          },
+          "foSSkirmishPlaNoOfOr": {
+            "type": "string",
+            "nullable": true
+          },
+          "foSSkirmishPlaNoOfCiv": {
+            "type": "string",
+            "nullable": true
+          },
+          "foSSkirmishPlaNameOfOffrs": {
+            "type": "string",
+            "nullable": true
+          },
+          "foSCas": {
+            "type": "string",
+            "nullable": true
+          },
+          "foSDamageEqpt": {
+            "type": "string",
+            "nullable": true
+          },
+          "foSDamageProperty": {
+            "type": "string",
+            "nullable": true
+          },
+          "foSLossWpn": {
+            "type": "string",
+            "nullable": true
+          },
+          "foSLossAmn": {
+            "type": "string",
+            "nullable": true
+          },
+          "foSLossEqpt": {
+            "type": "string",
+            "nullable": true
+          },
+          "foSCasFatal": {
+            "type": "string",
+            "nullable": true
+          },
+          "foSCasNonFatal": {
+            "type": "string",
+            "nullable": true
+          },
+          "adzTimefrom": {
+            "type": "string",
+            "nullable": true
+          },
+          "adzTimeto": {
+            "type": "string",
+            "nullable": true
+          },
+          "adzNoOfPers": {
+            "type": "string",
+            "nullable": true
+          },
+          "adzActivity": {
+            "type": "string",
+            "nullable": true
+          },
+          "soCUnitType": {
+            "type": "string",
+            "nullable": true
+          },
+          "soCNoOfUnits": {
+            "type": "string",
+            "nullable": true
+          },
+          "soCOccupiedBy": {
+            "type": "string",
+            "nullable": true
+          },
+          "soCNoOfPlaPers": {
+            "type": "string",
+            "nullable": true
+          },
+          "soCNoOfCivs": {
+            "type": "string",
+            "nullable": true
+          },
+          "soCNoOfRbaPers": {
+            "type": "string",
+            "nullable": true
+          },
+          "soCNoOfPapfPers": {
+            "type": "string",
+            "nullable": true
+          },
+          "soCNoOfMilitia": {
+            "type": "string",
+            "nullable": true
+          },
+          "soCNoOfEqpt": {
+            "type": "string",
+            "nullable": true
+          },
+          "soCDescription": {
+            "type": "string",
+            "nullable": true
+          },
+          "gaNoOfGraziers": {
+            "type": "string",
+            "nullable": true
+          },
+          "gaNoOfAnimals": {
+            "type": "string",
+            "nullable": true
+          },
+          "gaNoOfDu": {
+            "type": "string",
+            "nullable": true
+          },
+          "gaGrazierDescription": {
+            "type": "string",
+            "nullable": true
+          },
+          "arAggressiveRecceNoOfPers": {
+            "type": "string",
+            "nullable": true
+          },
+          "arTypeOfPers": {
+            "type": "string",
+            "nullable": true
+          },
+          "arAggressiveRecceDescription": {
+            "type": "string",
+            "nullable": true
+          },
+          "daiNoOfDrones": {
+            "type": "string",
+            "nullable": true
+          },
+          "daiAltM": {
+            "type": "string",
+            "nullable": true
+          },
+          "daiTypeOfDrone": {
+            "type": "string",
+            "nullable": true
+          },
+          "daiFltPathLocA": {
+            "type": "string",
+            "nullable": true
+          },
+          "daiFltPathLocB": {
+            "type": "string",
+            "nullable": true
+          },
+          "daiFltPathLocC": {
+            "type": "string",
+            "nullable": true
+          },
+          "daiFltPathLocD": {
+            "type": "string",
+            "nullable": true
+          },
+          "daiDirnFrom": {
+            "type": "string",
+            "nullable": true
+          },
+          "daiDirnTo": {
+            "type": "string",
+            "nullable": true
+          },
+          "daiIncursionKms": {
+            "type": "string",
+            "nullable": true
+          },
+          "capNoOfAeProximity": {
+            "type": "string",
+            "nullable": true
+          },
+          "capTypeOfAeProximity": {
+            "type": "string",
+            "nullable": true
+          },
+          "capFltPathLocA": {
+            "type": "string",
+            "nullable": true
+          },
+          "capFltPathLocB": {
+            "type": "string",
+            "nullable": true
+          },
+          "capFltPathLocC": {
+            "type": "string",
+            "nullable": true
+          },
+          "capProximityDirnFrom": {
+            "type": "string",
+            "nullable": true
+          },
+          "capProximityDirnTo": {
+            "type": "string",
+            "nullable": true
+          },
+          "capIncursionKms": {
+            "type": "string",
+            "nullable": true
+          },
+          "capActivity": {
+            "type": "string",
+            "nullable": true
+          },
+          "flacNoOfAc": {
+            "type": "string",
+            "nullable": true
+          },
+          "flacAltM": {
+            "type": "string",
+            "nullable": true
+          },
+          "flacTypeOfAc": {
+            "type": "string",
+            "nullable": true
+          },
+          "flacFltPathLocA": {
+            "type": "string",
+            "nullable": true
+          },
+          "flacFltPathLocB": {
+            "type": "string",
+            "nullable": true
+          },
+          "flacFltPathLocC": {
+            "type": "string",
+            "nullable": true
+          },
+          "flacFltPathLocD": {
+            "type": "string",
+            "nullable": true
+          },
+          "flacAcDirnFrom": {
+            "type": "string",
+            "nullable": true
+          },
+          "flacAcDirnTo": {
+            "type": "string",
+            "nullable": true
+          },
+          "flacActivity": {
+            "type": "string",
+            "nullable": true
+          },
+          "avNoOfAePlatform": {
+            "type": "string",
+            "nullable": true
+          },
+          "avAltM": {
+            "type": "string",
+            "nullable": true
+          },
+          "avAirspaceViolationTypeOfAc": {
+            "type": "string",
+            "nullable": true
+          },
+          "avFltPathLocA": {
+            "type": "string",
+            "nullable": true
+          },
+          "avFltPathLocB": {
+            "type": "string",
+            "nullable": true
+          },
+          "avFltPathLocC": {
+            "type": "string",
+            "nullable": true
+          },
+          "avFltPathLocD": {
+            "type": "string",
+            "nullable": true
+          },
+          "avAirspaceViolationDirnFrom": {
+            "type": "string",
+            "nullable": true
+          },
+          "avAirspaceViolationDirnTo": {
+            "type": "string",
+            "nullable": true
+          },
+          "avActivity": {
+            "type": "string",
+            "nullable": true
+          },
+          "avIncursionKms": {
+            "type": "string",
+            "nullable": true
+          },
+          "esfpTypeOfPers": {
+            "type": "string",
+            "nullable": true
+          },
+          "esfpStr": {
+            "type": "string",
+            "nullable": true
+          },
+          "esfpIden": {
+            "type": "string",
+            "nullable": true
+          },
+          "esfpDisposition": {
+            "type": "string",
+            "nullable": true
+          },
+          "esfpDispositionRemarks": {
+            "type": "string",
+            "nullable": true
+          },
+          "rbuTypeOfPers": {
+            "type": "string",
+            "nullable": true
+          },
+          "rbuResBuildUpStr": {
+            "type": "string",
+            "nullable": true
+          },
+          "rbuResBuildUpRemarks": {
+            "type": "string",
+            "nullable": true
+          },
+          "cavConcOfVehsTypeOfVeh": {
+            "type": "string",
+            "nullable": true
+          },
+          "cavConcOfVehsStr": {
+            "type": "string",
+            "nullable": true
+          },
+          "cavConcOfVehsIden": {
+            "type": "string",
+            "nullable": true
+          },
+          "cavConcOfVehsDisposition": {
+            "type": "string",
+            "nullable": true
+          },
+          "cavConcOfVehsDispositionRemarks": {
+            "type": "string",
+            "nullable": true
+          },
+          "teTypeOfTrg": {
+            "type": "string",
+            "nullable": true
+          },
+          "teTrgExStr": {
+            "type": "string",
+            "nullable": true
+          },
+          "teTrgExIden": {
+            "type": "string",
+            "nullable": true
+          },
+          "teTrgExDisposition": {
+            "type": "string",
+            "nullable": true
+          },
+          "teTrgExDispositionRemarks": {
+            "type": "string",
+            "nullable": true
+          },
+          "avnTypeOfVeh": {
+            "type": "string",
+            "nullable": true
+          },
+          "avnStr": {
+            "type": "string",
+            "nullable": true
+          },
+          "avnIden": {
+            "type": "string",
+            "nullable": true
+          },
+          "avnDirnLocA": {
+            "type": "string",
+            "nullable": true
+          },
+          "avnDirnLocB": {
+            "type": "string",
+            "nullable": true
+          },
+          "avnDirnLocC": {
+            "type": "string",
+            "nullable": true
+          },
+          "avnVehsNovMode": {
+            "type": "string",
+            "nullable": true
+          },
+          "avnNomenclatureOfRd": {
+            "type": "string",
+            "nullable": true
+          },
+          "aglmTypeOfArty": {
+            "type": "string",
+            "nullable": true
+          },
+          "aglmTypeOfPlatform": {
+            "type": "string",
+            "nullable": true
+          },
+          "aglmStr": {
+            "type": "string",
+            "nullable": true
+          },
+          "aglmIden": {
+            "type": "string",
+            "nullable": true
+          },
+          "aglmDirnLocA": {
+            "type": "string",
+            "nullable": true
+          },
+          "aglmDirnLocB": {
+            "type": "string",
+            "nullable": true
+          },
+          "aglmDirnLocC": {
+            "type": "string",
+            "nullable": true
+          },
+          "aglmArtyGunsMode": {
+            "type": "string",
+            "nullable": true
+          },
+          "aglmNomenclatureOfRd": {
+            "type": "string",
+            "nullable": true
+          },
+          "aadTypeOfAmn": {
+            "type": "string",
+            "nullable": true
+          },
+          "aadArtyAmnDumpingNoAmnVehs": {
+            "type": "string",
+            "nullable": true
+          },
+          "aadRouteLocA": {
+            "type": "string",
+            "nullable": true
+          },
+          "aadRouteLocB": {
+            "type": "string",
+            "nullable": true
+          },
+          "aadRouteLocC": {
+            "type": "string",
+            "nullable": true
+          },
+          "aadArtyAmnDumpingMode": {
+            "type": "string",
+            "nullable": true
+          },
+          "aadNomenclatureOfRd": {
+            "type": "string",
+            "nullable": true
+          },
+          "ecmTypeOfEqpt": {
+            "type": "string",
+            "nullable": true
+          },
+          "ecmEngrColnNovStr": {
+            "type": "string",
+            "nullable": true
+          },
+          "ecmIden": {
+            "type": "string",
+            "nullable": true
+          },
+          "ecmEngrColnNovRouteLocA": {
+            "type": "string",
+            "nullable": true
+          },
+          "ecmEngrColnNovRouteLocB": {
+            "type": "string",
+            "nullable": true
+          },
+          "ecmEngrColnNovRouteLocC": {
+            "type": "string",
+            "nullable": true
+          },
+          "ecmEngrColnNovMode": {
+            "type": "string",
+            "nullable": true
+          },
+          "ecmNomenclatureOfRd": {
+            "type": "string",
+            "nullable": true
+          },
+          "cowBilleting": {
+            "type": "string",
+            "nullable": true
+          },
+          "cowStorage": {
+            "type": "string",
+            "nullable": true
+          },
+          "cowSplConstr": {
+            "type": "string",
+            "nullable": true
+          },
+          "bidBdrInfraDevpBilleting": {
+            "type": "string",
+            "nullable": true
+          },
+          "bidBdrInfraDevpStorage": {
+            "type": "string",
+            "nullable": true
+          },
+          "bidBdrInfraDevpSplConstr": {
+            "type": "string",
+            "nullable": true
+          },
+          "bidBdrInfraDevpComnInfra": {
+            "type": "string",
+            "nullable": true
+          },
+          "bidBdrInfraDevpRdsCl": {
+            "type": "string",
+            "nullable": true
+          },
+          "bidBdrInfraDevpRdsLength": {
+            "type": "string",
+            "nullable": true
+          },
+          "bidTypeRd": {
+            "type": "string",
+            "nullable": true
+          },
+          "bidBrSpan": {
+            "type": "string",
+            "nullable": true
+          },
+          "bidBrCl": {
+            "type": "string",
+            "nullable": true
+          },
+          "bidNosOfSettlements": {
+            "type": "string",
+            "nullable": true
+          },
+          "bidNoOfHouses": {
+            "type": "string",
+            "nullable": true
+          },
+          "diLocs": {
+            "type": "string",
+            "nullable": true
+          },
+          "diPdsOhp": {
+            "type": "string",
+            "nullable": true
+          },
+          "diPdsWoOhp": {
+            "type": "string",
+            "nullable": true
+          },
+          "diWpnPitsOhp": {
+            "type": "string",
+            "nullable": true
+          },
+          "diWpnPitsWoOhp": {
+            "type": "string",
+            "nullable": true
+          },
+          "diComnTrenchesCovered": {
+            "type": "string",
+            "nullable": true
+          },
+          "diComnTrenchesUncovered": {
+            "type": "string",
+            "nullable": true
+          },
+          "diConstrBy": {
+            "type": "string",
+            "nullable": true
+          },
+          "gaSsSamSiteLocs": {
+            "type": "string",
+            "nullable": true
+          },
+          "gaSsNoOfRamps": {
+            "type": "string",
+            "nullable": true
+          },
+          "adcmAmnDumpsType": {
+            "type": "string",
+            "nullable": true
+          },
+          "adcmAmnDumpsQty": {
+            "type": "string",
+            "nullable": true
+          },
+          "abAddlBilletingType": {
+            "type": "string",
+            "nullable": true
+          },
+          "abAddlBilletingQty": {
+            "type": "string",
+            "nullable": true
+          },
+          "cidTypeOfInfra": {
+            "type": "string",
+            "nullable": true
+          },
+          "cidTypeOfInfraDescription": {
+            "type": "string",
+            "nullable": true
+          },
+          "cidBdrInfraDevpQty": {
+            "type": "string",
+            "nullable": true
+          },
+          "cidFromLoc": {
+            "type": "string",
+            "nullable": true
+          },
+          "cidToLoc": {
+            "type": "string",
+            "nullable": true
+          },
+          "cidtoiRoadCl": {
+            "type": "string",
+            "nullable": true
+          },
+          "cidtoiRailBroadGauge": {
+            "type": "string",
+            "nullable": true
+          },
+          "cidtoiRailMetreGauge": {
+            "type": "string",
+            "nullable": true
+          },
+          "cidtoiRailRailwaySidings": {
+            "type": "string",
+            "nullable": true
+          },
+          "cidtoiRailDescription": {
+            "type": "string",
+            "nullable": true
+          },
+          "cidtoiAirLengthAitstrip": {
+            "type": "string",
+            "nullable": true
+          },
+          "cidtoiAirNoOfHangers": {
+            "type": "string",
+            "nullable": true
+          },
+          "cidtoiAirNoOfHAS": {
+            "type": "string",
+            "nullable": true
+          },
+          "cidtoiAirMiscShelters": {
+            "type": "string",
+            "nullable": true
+          },
+          "cidtoiBrSpan": {
+            "type": "string",
+            "nullable": true
+          },
+          "cidtoiBrWidth": {
+            "type": "string",
+            "nullable": true
+          },
+          "cidtoiBrCl": {
+            "type": "string",
+            "nullable": true
+          },
+          "cidtoiBrPermt": {
+            "type": "string",
+            "nullable": true
+          },
+          "cidtoiBrTemp": {
+            "type": "string",
+            "nullable": true
+          },
+          "ctrcTypeOfComnInfra": {
+            "type": "string",
+            "nullable": true
+          },
+          "ctrcComnTowerQty": {
+            "type": "string",
+            "nullable": true
+          },
+          "ctrcComnTowerRemarks": {
+            "type": "string",
+            "nullable": true
+          },
+          "ldNoOfShelters": {
+            "type": "string",
+            "nullable": true
+          },
+          "ldModeOfDumping": {
+            "type": "string",
+            "nullable": true
+          },
+          "ldLgsDumpingTypeOfLgs": {
+            "type": "string",
+            "nullable": true
+          },
+          "ldNoOfVehFol": {
+            "type": "string",
+            "nullable": true
+          },
+          "ldNoOfVehSupplies": {
+            "type": "string",
+            "nullable": true
+          },
+          "ldNoOfVehAmn": {
+            "type": "string",
+            "nullable": true
+          },
+          "ldNoOfVehConstrMtrl": {
+            "type": "string",
+            "nullable": true
+          },
+          "ldNoOfTrainsFol": {
+            "type": "string",
+            "nullable": true
+          },
+          "ldNoOfTrainsSupplies": {
+            "type": "string",
+            "nullable": true
+          },
+          "ldNoOfTrainsAmn": {
+            "type": "string",
+            "nullable": true
+          },
+          "ldNoOfTrainsConstrMtrl": {
+            "type": "string",
+            "nullable": true
+          },
+          "bsdBrStoresDumpingNoOfVehs": {
+            "type": "string",
+            "nullable": true
+          },
+          "bsdBrStoresDumpingDescriptionStores": {
+            "type": "string",
+            "nullable": true
+          },
+          "esdEngrStoresDumpingNoOfVehs": {
+            "type": "string",
+            "nullable": true
+          },
+          "esdEngrStoresDumpingDescriptionStores": {
+            "type": "string",
+            "nullable": true
+          },
+          "ivsaIncrVehsInStgAsTypeOfVeh": {
+            "type": "string",
+            "nullable": true
+          },
+          "ivsaIncrVehsInStgAsStr": {
+            "type": "string",
+            "nullable": true
+          },
+          "ivsaIden": {
+            "type": "string",
+            "nullable": true
+          },
+          "ivsaIncrVehsInStgAsDispositionRemarks": {
+            "type": "string",
+            "nullable": true
+          },
+          "ilcIncrLgsCvysStr": {
+            "type": "string",
+            "nullable": true
+          },
+          "ilcIden": {
+            "type": "string",
+            "nullable": true
+          },
+          "ilcIncrLgsCvysRouteLocA": {
+            "type": "string",
+            "nullable": true
+          },
+          "ilcIncrLgsCvysRouteLocB": {
+            "type": "string",
+            "nullable": true
+          },
+          "ilcIncrLgsCvysRouteLocC": {
+            "type": "string",
+            "nullable": true
+          },
+          "ilcIncrLgsCvysMode": {
+            "type": "string",
+            "nullable": true
+          },
+          "ilcNomenclatureOfRd": {
+            "type": "string",
+            "nullable": true
+          },
+          "iltIncrLgsTrainsDateFrom": {
+            "type": "string",
+            "nullable": true
+          },
+          "iltIncrLgsTrainsDateTo": {
+            "type": "string",
+            "nullable": true
+          },
+          "iltNoOfTrainsRoutine": {
+            "type": "string",
+            "nullable": true
+          },
+          "iltNoOfTrainsEnhanced": {
+            "type": "string",
+            "nullable": true
+          },
+          "iltNoOfTrainsIncr": {
+            "type": "string",
+            "nullable": true
+          },
+          "iltRouteOrigin": {
+            "type": "string",
+            "nullable": true
+          },
+          "iltRouteDestination": {
+            "type": "string",
+            "nullable": true
+          },
+          "iltTypeOfLgs": {
+            "type": "string",
+            "nullable": true
+          },
+          "irtIncrRadioTfcDateFrom": {
+            "type": "string",
+            "nullable": true
+          },
+          "irtIncrRadioTfcDateTo": {
+            "type": "string",
+            "nullable": true
+          },
+          "irtTxnBand": {
+            "type": "string",
+            "nullable": true
+          },
+          "irtTypeOfTxn": {
+            "type": "string",
+            "nullable": true
+          },
+          "irtNoOfTxns": {
+            "type": "string",
+            "nullable": true
+          },
+          "teTypeOfForces": {
+            "type": "string",
+            "nullable": true
+          },
+          "teMobTrgExStr": {
+            "type": "string",
+            "nullable": true
+          },
+          "teMobTrgExIden": {
+            "type": "string",
+            "nullable": true
+          },
+          "teMobTrgExDisposition": {
+            "type": "string",
+            "nullable": true
+          },
+          "teMobTrgExEqptOnWheels": {
+            "type": "string",
+            "nullable": true
+          },
+          "teMobTrgExActivityTrg": {
+            "type": "string",
+            "nullable": true
+          },
+          "teActivityRoutine": {
+            "type": "string",
+            "nullable": true
+          },
+          "teHault": {
+            "type": "string",
+            "nullable": true
+          },
+          "rlfPermtLocName": {
+            "type": "string",
+            "nullable": true
+          },
+          "rlfNewLocName": {
+            "type": "string",
+            "nullable": true
+          },
+          "rlfReLocOfForcesDate": {
+            "type": "string",
+            "nullable": true
+          },
+          "rlfQuantumTps": {
+            "type": "string",
+            "nullable": true
+          },
+          "rlfQuantumAVehs": {
+            "type": "string",
+            "nullable": true
+          },
+          "rlfQuantumBVehs": {
+            "type": "string",
+            "nullable": true
+          },
+          "rlfQuantumCVehs": {
+            "type": "string",
+            "nullable": true
+          },
+          "rlfBilletingType": {
+            "type": "string",
+            "nullable": true
+          },
+          "rlfReLocOfForcesIden": {
+            "type": "string",
+            "nullable": true
+          },
+          "tmMobTrsoMovStr": {
+            "type": "string",
+            "nullable": true
+          },
+          "tmEnFmn": {
+            "type": "string",
+            "nullable": true
+          },
+          "tmEnUnit": {
+            "type": "string",
+            "nullable": true
+          },
+          "tmTrsoMovRouteLocA": {
+            "type": "string",
+            "nullable": true
+          },
+          "tmTrsoMovRouteLocB": {
+            "type": "string",
+            "nullable": true
+          },
+          "tmTrsoMovRouteLocC": {
+            "type": "string",
+            "nullable": true
+          },
+          "tmTrsoMovMode": {
+            "type": "string",
+            "nullable": true
+          },
+          "tmHaltLocA": {
+            "type": "string",
+            "nullable": true
+          },
+          "tmHaltLocB": {
+            "type": "string",
+            "nullable": true
+          },
+          "tmHaltLocC": {
+            "type": "string",
+            "nullable": true
+          },
+          "userId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "vLoc": {
+            "type": "string",
+            "nullable": true
+          },
+          "vLevel": {
+            "type": "string",
+            "nullable": true
+          },
+          "vFromTime": {
+            "type": "string",
+            "nullable": true
+          },
+          "vTotime": {
+            "type": "string",
+            "nullable": true
+          },
+          "vNoOfIndis": {
+            "type": "string",
+            "nullable": true
+          },
+          "bmmLoc": {
+            "type": "string",
+            "nullable": true
+          },
+          "bmmLevel": {
+            "type": "string",
+            "nullable": true
+          },
+          "bmmFromTime": {
+            "type": "string",
+            "nullable": true
+          },
+          "bmmToTime": {
+            "type": "string",
+            "nullable": true
+          },
+          "bmmNoOfIndis": {
+            "type": "string",
+            "nullable": true
+          },
+          "cLoc": {
+            "type": "string",
+            "nullable": true
+          },
+          "cLevel": {
+            "type": "string",
+            "nullable": true
+          },
+          "cFromTime": {
+            "type": "string",
+            "nullable": true
+          },
+          "cToTime": {
+            "type": "string",
+            "nullable": true
+          },
+          "cNoOfIndis": {
+            "type": "string",
+            "nullable": true
+          },
+          "aDate": {
+            "type": "string",
+            "nullable": true
+          },
+          "aWith": {
+            "type": "string",
+            "nullable": true
+          },
+          "aAgenda": {
+            "type": "string",
+            "nullable": true
+          },
+          "cDate": {
+            "type": "string",
+            "nullable": true
+          },
+          "cWith": {
+            "type": "string",
+            "nullable": true
+          },
+          "jvDate": {
+            "type": "string",
+            "nullable": true
+          },
+          "jvWith": {
+            "type": "string",
+            "nullable": true
+          },
+          "eadLoc": {
+            "type": "string",
+            "nullable": true
+          },
+          "eadDate": {
+            "type": "string",
+            "nullable": true
+          },
+          "eadTime": {
+            "type": "string",
+            "nullable": true
+          },
+          "eadOfCountry": {
+            "type": "string",
+            "nullable": true
+          },
+          "cdmLoc": {
+            "type": "string",
+            "nullable": true
+          },
+          "cdmDate": {
+            "type": "string",
+            "nullable": true
+          },
+          "cdmTime": {
+            "type": "string",
+            "nullable": true
+          },
+          "cdmOfCountry": {
+            "type": "string",
+            "nullable": true
+          },
+          "rdLoc": {
+            "type": "string",
+            "nullable": true
+          },
+          "rdDate": {
+            "type": "string",
+            "nullable": true
+          },
+          "rdTime": {
+            "type": "string",
+            "nullable": true
+          },
+          "rdFromCountry": {
+            "type": "string",
+            "nullable": true
+          },
+          "dapmLoc": {
+            "type": "string",
+            "nullable": true
+          },
+          "dapmDate": {
+            "type": "string",
+            "nullable": true
+          },
+          "dapmTime": {
+            "type": "string",
+            "nullable": true
+          },
+          "dapmTypeOfAgreement": {
+            "type": "string",
+            "nullable": true
+          },
+          "caLoc": {
+            "type": "string",
+            "nullable": true
+          },
+          "caNoOfLocs": {
+            "type": "string",
+            "nullable": true
+          },
+          "caDate": {
+            "type": "string",
+            "nullable": true
+          },
+          "caTime": {
+            "type": "string",
+            "nullable": true
+          },
+          "mdLoc": {
+            "type": "string",
+            "nullable": true
+          },
+          "mdDate": {
+            "type": "string",
+            "nullable": true
+          },
+          "mdTime": {
+            "type": "string",
+            "nullable": true
+          },
+          "mdTgtAgenda": {
+            "type": "string",
+            "nullable": true
+          },
+          "dmpLoc": {
+            "type": "string",
+            "nullable": true
+          },
+          "dmpDate": {
+            "type": "string",
+            "nullable": true
+          },
+          "dmpTime": {
+            "type": "string",
+            "nullable": true
+          },
+          "dmpType": {
+            "type": "string",
+            "nullable": true
+          },
+          "dmpLevel": {
+            "type": "string",
+            "nullable": true
+          },
+          "mrLoc": {
+            "type": "string",
+            "nullable": true
+          },
+          "mrDate": {
+            "type": "string",
+            "nullable": true
+          },
+          "mrTime": {
+            "type": "string",
+            "nullable": true
+          },
+          "mrType": {
+            "type": "string",
+            "nullable": true
+          },
+          "eidLoc": {
+            "type": "string",
+            "nullable": true
+          },
+          "eidDate": {
+            "type": "string",
+            "nullable": true
+          },
+          "eidTime": {
+            "type": "string",
+            "nullable": true
+          },
+          "eidType": {
+            "type": "string",
+            "nullable": true
+          },
+          "teLoc": {
+            "type": "string",
+            "nullable": true
+          },
+          "teDate": {
+            "type": "string",
+            "nullable": true
+          },
+          "teTime": {
+            "type": "string",
+            "nullable": true
+          },
+          "teOnWhom": {
+            "type": "string",
+            "nullable": true
+          },
+          "teType": {
+            "type": "string",
+            "nullable": true
+          },
+          "sLoc": {
+            "type": "string",
+            "nullable": true
+          },
+          "sDate": {
+            "type": "string",
+            "nullable": true
+          },
+          "sTime": {
+            "type": "string",
+            "nullable": true
+          },
+          "sByWhom": {
+            "type": "string",
+            "nullable": true
+          },
+          "sOnWhom": {
+            "type": "string",
+            "nullable": true
+          },
+          "sType": {
+            "type": "string",
+            "nullable": true
+          },
+          "esdLoc": {
+            "type": "string",
+            "nullable": true
+          },
+          "esdDate": {
+            "type": "string",
+            "nullable": true
+          },
+          "esdTime": {
+            "type": "string",
+            "nullable": true
+          },
+          "esdOnWhom": {
+            "type": "string",
+            "nullable": true
+          },
+          "tLoc": {
+            "type": "string",
+            "nullable": true
+          },
+          "tDate": {
+            "type": "string",
+            "nullable": true
+          },
+          "tTime": {
+            "type": "string",
+            "nullable": true
+          },
+          "tBywhom": {
+            "type": "string",
+            "nullable": true
+          },
+          "tToWhom": {
+            "type": "string",
+            "nullable": true
+          },
+          "tType": {
+            "type": "string",
+            "nullable": true
+          },
+          "octrLoc": {
+            "type": "string",
+            "nullable": true
+          },
+          "octrLocTo": {
+            "type": "string",
+            "nullable": true
+          },
+          "octrDate": {
+            "type": "string",
+            "nullable": true
+          },
+          "octrTime": {
+            "type": "string",
+            "nullable": true
+          },
+          "octrTimeTo": {
+            "type": "string",
+            "nullable": true
+          },
+          "puLoc": {
+            "type": "string",
+            "nullable": true
+          },
+          "puDate": {
+            "type": "string",
+            "nullable": true
+          },
+          "puTime": {
+            "type": "string",
+            "nullable": true
+          },
+          "puLevel": {
+            "type": "string",
+            "nullable": true
+          },
+          "ruiLoc": {
+            "type": "string",
+            "nullable": true
+          },
+          "ruiDate": {
+            "type": "string",
+            "nullable": true
+          },
+          "ruiTime": {
+            "type": "string",
+            "nullable": true
+          },
+          "ruiLevel": {
+            "type": "string",
+            "nullable": true
+          },
+          "fiSector": {
+            "type": "string",
+            "nullable": true
+          },
+          "fiDate": {
+            "type": "string",
+            "nullable": true
+          },
+          "fiTime": {
+            "type": "string",
+            "nullable": true
+          },
+          "hcLoc": {
+            "type": "string",
+            "nullable": true
+          },
+          "hcDate": {
+            "type": "string",
+            "nullable": true
+          },
+          "hcTime": {
+            "type": "string",
+            "nullable": true
+          },
+          "hcType": {
+            "type": "string",
+            "nullable": true
+          },
+          "hclLevel": {
+            "type": "string",
+            "nullable": true
+          },
+          "hcoLoc": {
+            "type": "string",
+            "nullable": true
+          },
+          "hcoDate": {
+            "type": "string",
+            "nullable": true
+          },
+          "hcoTime": {
+            "type": "string",
+            "nullable": true
+          },
+          "hcoTimeTo": {
+            "type": "string",
+            "nullable": true
+          },
+          "hcoTgt": {
+            "type": "string",
+            "nullable": true
+          },
+          "hcoLevel": {
+            "type": "string",
+            "nullable": true
+          },
+          "tcinLoc": {
+            "type": "string",
+            "nullable": true
+          },
+          "tcinDate": {
+            "type": "string",
+            "nullable": true
+          },
+          "tcinTime": {
+            "type": "string",
+            "nullable": true
+          },
+          "tcinTimeTo": {
+            "type": "string",
+            "nullable": true
+          },
+          "tcinTgt": {
+            "type": "string",
+            "nullable": true
+          },
+          "htsiLoc": {
+            "type": "string",
+            "nullable": true
+          },
+          "htsiNoOfIndis": {
+            "type": "string",
+            "nullable": true
+          },
+          "htsiPurpose": {
+            "type": "string",
+            "nullable": true
+          },
+          "idsLoc": {
+            "type": "string",
+            "nullable": true
+          },
+          "idsDate": {
+            "type": "string",
+            "nullable": true
+          },
+          "idsSection": {
+            "type": "string",
+            "nullable": true
+          },
+          "ipLoc": {
+            "type": "string",
+            "nullable": true
+          },
+          "ipDate": {
+            "type": "string",
+            "nullable": true
+          },
+          "ipType": {
+            "type": "string",
+            "nullable": true
+          },
+          "ipTypeEqpt_Nos": {
+            "type": "string",
+            "nullable": true
+          },
+          "ipTypeArms_Type": {
+            "type": "string",
+            "nullable": true
+          },
+          "ipTypeArms_Nos": {
+            "type": "string",
+            "nullable": true
+          },
+          "ipTypeAmn_Type": {
+            "type": "string",
+            "nullable": true
+          },
+          "ipTypeAmn_Nos": {
+            "type": "string",
+            "nullable": true
+          },
+          "ipTypeTech_Type": {
+            "type": "string",
+            "nullable": true
+          },
+          "ipTypeTech_Nos": {
+            "type": "string",
+            "nullable": true
+          },
+          "ipTypeWLS_Type": {
+            "type": "string",
+            "nullable": true
+          },
+          "ipTypeWLS_Nos": {
+            "type": "string",
+            "nullable": true
+          },
+          "etrLoc": {
+            "type": "string",
+            "nullable": true
+          },
+          "etrDate": {
+            "type": "string",
+            "nullable": true
+          },
+          "etrNosRect": {
+            "type": "string",
+            "nullable": true
+          },
+          "erLoc": {
+            "type": "string",
+            "nullable": true
+          },
+          "erDate": {
+            "type": "string",
+            "nullable": true
+          },
+          "erRect": {
+            "type": "string",
+            "nullable": true
+          },
+          "fcLoc": {
+            "type": "string",
+            "nullable": true
+          },
+          "fcDate": {
+            "type": "string",
+            "nullable": true
+          },
+          "fcNosRect": {
+            "type": "string",
+            "nullable": true
+          },
+          "ipcLoc": {
+            "type": "string",
+            "nullable": true
+          },
+          "ipcDate": {
+            "type": "string",
+            "nullable": true
+          },
+          "ipcTimeFrom": {
+            "type": "string",
+            "nullable": true
+          },
+          "ipcTimeTo": {
+            "type": "string",
+            "nullable": true
+          },
+          "ipcType": {
+            "type": "string",
+            "nullable": true
+          },
+          "ipcTypeCommercial_Nos": {
+            "type": "string",
+            "nullable": true
+          },
+          "ipcTypeWarship_Type": {
+            "type": "string",
+            "nullable": true
+          },
+          "ipcTypeWarship_Nos": {
+            "type": "string",
+            "nullable": true
+          },
+          "ipcTypeSvl_Type": {
+            "type": "string",
+            "nullable": true
+          },
+          "ipcTypeSvl_Nos": {
+            "type": "string",
+            "nullable": true
+          },
+          "maDate": {
+            "type": "string",
+            "nullable": true
+          },
+          "maWith": {
+            "type": "string",
+            "nullable": true
+          },
+          "maAgenda": {
+            "type": "string",
+            "nullable": true
+          },
+          "ieaLoc": {
+            "type": "string",
+            "nullable": true
+          },
+          "ieaDate": {
+            "type": "string",
+            "nullable": true
+          },
+          "ieaTime": {
+            "type": "string",
+            "nullable": true
+          },
+          "ieaTimeTo": {
+            "type": "string",
+            "nullable": true
+          },
+          "ieaTypeOfActivity": {
+            "type": "string",
+            "nullable": true
+          },
+          "bpmLoc": {
+            "type": "string",
+            "nullable": true
+          },
+          "bpmDate": {
+            "type": "string",
+            "nullable": true
+          },
+          "bpmBetween": {
+            "type": "string",
+            "nullable": true
+          },
+          "bpmTimeFrom": {
+            "type": "string",
+            "nullable": true
+          },
+          "bpmTimeTo": {
+            "type": "string",
+            "nullable": true
+          },
+          "bpmNpm": {
+            "type": "string",
+            "nullable": true
+          },
+          "bpmNpo": {
+            "type": "string",
+            "nullable": true
+          },
+          "biLoc": {
+            "type": "string",
+            "nullable": true
+          },
+          "biDate": {
+            "type": "string",
+            "nullable": true
+          },
+          "biBetween": {
+            "type": "string",
+            "nullable": true
+          },
+          "biTimeFrom": {
+            "type": "string",
+            "nullable": true
+          },
+          "biTimeTo": {
+            "type": "string",
+            "nullable": true
+          },
+          "biNpm": {
+            "type": "string",
+            "nullable": true
+          },
+          "biNpo": {
+            "type": "string",
+            "nullable": true
+          },
+          "cfvLoc": {
+            "type": "string",
+            "nullable": true
+          },
+          "cfvate": {
+            "type": "string",
+            "nullable": true
+          },
+          "cfvBetween": {
+            "type": "string",
+            "nullable": true
+          },
+          "cfvTimeFrom": {
+            "type": "string",
+            "nullable": true
+          },
+          "cfvTimeTo": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Notification": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "createdBy": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "updatedBy": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "createdOn": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "updatedOn": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "isDeleted": {
+            "type": "boolean"
+          },
+          "corpsId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "divisionId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "senderId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "receiverId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "notificationType": {
+            "$ref": "#/components/schemas/NotificationType"
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "content": {
+            "type": "string",
+            "nullable": true
+          },
+          "isRead": {
+            "type": "boolean"
+          },
+          "senderEntityType": {
+            "$ref": "#/components/schemas/RoleType"
+          },
+          "receiverEntityType": {
+            "$ref": "#/components/schemas/RoleType"
+          },
+          "dataId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "status": {
+            "$ref": "#/components/schemas/Status"
+          }
+        },
+        "additionalProperties": false
+      },
+      "NotificationType": {
+        "enum": [
+          "MasterData",
+          "GenerateReport",
+          "ApprovedReport"
+        ],
+        "type": "string"
+      },
+      "RoleType": {
+        "enum": [
+          "Staff1",
+          "G1Int",
+          "Colgs",
+          "ColInt",
+          "Bgs",
+          "Mggs",
+          "Goc",
+          "Admin",
+          "SuperAdmin",
+          "StaffEc",
+          "G1IntEc",
+          "ColIntEc",
+          "BgsEc",
+          "MggsEc",
+          "GocEc"
+        ],
+        "type": "string"
+      },
+      "Status": {
+        "enum": [
+          "Created",
+          "Progress",
+          "Approved",
+          "Rejected"
+        ],
+        "type": "string"
+      },
+      "UserDetail": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "createdBy": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "updatedBy": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "createdOn": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "updatedOn": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "isDeleted": {
+            "type": "boolean"
+          },
+          "corpsId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "divisionId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "username": {
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "phone": {
+            "type": "string",
+            "nullable": true
+          },
+          "password": {
+            "type": "string",
+            "nullable": true
+          },
+          "roleId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "userRoleId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "roleType": {
+            "$ref": "#/components/schemas/RoleType"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "securitySchemes": {
+      "Bearer": {
+        "type": "apiKey",
+        "description": "Input the JWT like: Bearer {your token}",
+        "name": "Authorization",
+        "in": "header"
+      }
+    }
+  },
+  "security": [
+    {
+      "Bearer": [ ]
+    }
+  ]
+}
