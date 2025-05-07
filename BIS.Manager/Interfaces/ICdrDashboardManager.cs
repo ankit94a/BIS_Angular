@@ -10,7 +10,7 @@ namespace BIS.Manager.Interfaces
 {
 	public interface ICdrDashboardManager
 	{
-		public List<GenerateReport> GetReportByDate(FilterModel filterModel, int corpsId, RoleType roleType, int divisionId);
+		public List<GenerateReport> GetReport(int corpsId, RoleType roleType, int divisionId);
 		public Task<bool> AddInference(ApprovedReports inference,RoleType roleType);
 		public List<ApprovedReports> GetInference(int corpsId, int divisionId);
 

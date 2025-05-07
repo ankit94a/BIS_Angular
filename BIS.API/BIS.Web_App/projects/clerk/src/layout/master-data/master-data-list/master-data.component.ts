@@ -16,6 +16,8 @@ import { DownloadService } from 'projects/sharedlibrary/src/services/download.se
 import { formatDate } from '@angular/common';
 import { AuthService } from 'projects/sharedlibrary/src/services/auth.service';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { NotificationModel } from 'projects/sharedlibrary/src/model/notification.model';
+import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-master-data',
   imports: [SharedLibraryModule,ZipperTableComponent],
@@ -31,7 +33,7 @@ export class MasterDataComponent extends TablePaginationSettingsConfig implement
   roleType;
   isCommand:boolean=false;
   filterType = ['All','Created','Processing','Approved','Rejected']
-  constructor(private authService:AuthService,private spinnerService: NgxSpinnerService,private datePipe:BisdefaultDatePipe,private apiService:ApiService,private downloadService:DownloadService,private masterFilterService:MasterDataFilterService,private dialogService:BISMatDialogService,private router:Router,private masterDataService:MasterDataService){
+  constructor(private authService:AuthService,private toastr:ToastrService, private spinnerService: NgxSpinnerService,private datePipe:BisdefaultDatePipe,private apiService:ApiService,private downloadService:DownloadService,private masterFilterService:MasterDataFilterService,private dialogService:BISMatDialogService,private router:Router,private masterDataService:MasterDataService){
     super();
     this.roleType = this.authService.getRoleType();
     this.tablePaginationSettings.enableAction = true;
@@ -40,13 +42,28 @@ export class MasterDataComponent extends TablePaginationSettingsConfig implement
     this.tablePaginationSettings.enableColumn = true;
     this.tablePaginationSettings.pageSizeOptions = [50, 100];
     this.tablePaginationSettings.showFirstLastButtons = false;
+    this.tablePaginationSettings.enableApproved = true;
     if(parseInt(this.authService.getRoleType()) >= 10)
       this.isCommand = true;
   }
   getSelectedRows($event){
     this.selectedSample = $event;
   }
-
+  isApproved($event){
+    debugger
+    var notify = new NotificationModel();
+    notify.dataId = $event.id;
+    notify.CorpsId = $event.corpsId;
+    notify.DivisionId = $event.divisionId;
+    $event.action == true? notify.status = Status.Approved : notify.status = Status.Rejected;
+    this.apiService.postWithHeader(`notification/updatestatus`, notify).subscribe(res => {
+      debugger
+      if (res) {
+        $event.action == true ? this.toastr.success("Input approved successfully", 'success') : this.toastr.success("Input rejected successfully", 'success');
+        this.getDataFromServer();
+      }
+    })
+  }
   exportToExcel() {
     if (this.selectedSample?.length > 0) {
         const { Header, DataList } = this.masterFilterService.getMasterData(this.selectedSample);

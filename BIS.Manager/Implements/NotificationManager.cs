@@ -29,6 +29,10 @@ namespace BIS.Manager.Implements
 			return _notificationDB.GetNotificationByUserId(userId);
 
 		}
+		public bool NotificationActionTaken(int notificationId, int corpsId, int divisionId, RoleType roleType)
+		{
+			return _notificationDB.NotificationActionTaken(notificationId, corpsId, divisionId);
+		}
 		public long NotificationViewed(Notification notification)
 		{
 			return _notificationDB.NotificationViewed(notification);
@@ -36,7 +40,7 @@ namespace BIS.Manager.Implements
 		public long UpdateStatus(Notification notify)
 		{
 			var masterId = _masterDataDB.UpdateStatus(notify.DataId, notify.Status.Value);
-
+			var actionTaken = _notificationDB.NotificationActionTaken(notify.Id, notify.CorpsId, notify.DivisionId.Value);
 			// sending notification to staff that his form is approved or not.
 			Task.Run(async () =>
 			{
@@ -65,10 +69,10 @@ namespace BIS.Manager.Implements
 				}
 
 			});
+			return 1;
 
 
-
-			return _notificationDB.UpdateStatus(notify);
+			//return _notificationDB.UpdateStatus(notify);
 		}
 		public bool GetNotificationConfig()
 		{

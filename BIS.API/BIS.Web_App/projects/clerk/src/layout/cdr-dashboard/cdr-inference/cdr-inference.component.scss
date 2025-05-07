@@ -6,8 +6,6 @@
   border: 1px solid #ddd;
   border-radius: 5px;
   padding: 10px;
-  // width: 220px;
-  // height: 200px;
   overflow: hidden;
 }
 
@@ -16,6 +14,21 @@
   max-height: 100%;
   object-fit: cover;
   margin-bottom: 10px;
+}
+.close-icon-container {
+  position: relative;
+  top: -10px;
+  left: 19vw;
+  background-color: rgba(255, 255, 255, 0.7); /* optional: for better visibility */
+  border-radius: 50%;
+  padding: 5px;
+  cursor: pointer;
+  height: 50px;
+}
+
+.close-icon {
+  font-size: 20px; /* Adjust size as needed */
+  color: #555;
 }
 
 .image-name {

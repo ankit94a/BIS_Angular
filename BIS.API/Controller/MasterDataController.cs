@@ -24,32 +24,32 @@ namespace BIS.API.Controller
 			_masterDataManager = masterDataManager;
 			_notificationHubContext = notificationHubContext;
 		}
-
-		//[HttpGet]
-		//public IActionResult GetAll()
-		//{
-		//    long CorpsId = HttpContext.GetCorpsId();
-		//    long DivisonId = HttpContext.GetDivisionId();
-		//    return Ok(_masterDataManager.GetAll(CorpsId,DivisonId));
-		//}
 		[AuthorizePermission(PermissionItem.MasterData, PermissionAction.Read)]
 		[HttpGet]
-		public async Task<IActionResult> GetAllMasterData()
+		public IActionResult GetAll()
 		{
-			try
-			{
-				RoleType roleType = HttpContext.GetRoleType();
-				int corpsId = HttpContext.GetCorpsId();
-				int divisionId = HttpContext.GetDivisionId();
-				var masterData = await _masterDataManager.GetAllMasterData(corpsId, roleType, divisionId);
-				return Ok(masterData);
-			}
-			catch (Exception ex)
-			{
-				BISLogger.Error(ex, "Error retrieving all master data");
-				return StatusCode(500, "Internal server error while retrieving master data");
-			}
+			int CorpsId = HttpContext.GetCorpsId();
+			int DivisonId = HttpContext.GetDivisionId();
+			return Ok(_masterDataManager.GetAll(CorpsId, DivisonId));
 		}
+		//[AuthorizePermission(PermissionItem.MasterData, PermissionAction.Read)]
+		//[HttpGet]
+		//public async Task<IActionResult> GetAllMasterData()
+		//{
+		//	try
+		//	{
+		//		RoleType roleType = HttpContext.GetRoleType();
+		//		int corpsId = HttpContext.GetCorpsId();
+		//		int divisionId = HttpContext.GetDivisionId();
+		//		var masterData = await _masterDataManager.GetAllMasterData(corpsId, roleType, divisionId);
+		//		return Ok(masterData);
+		//	}
+		//	catch (Exception ex)
+		//	{
+		//		BISLogger.Error(ex, "Error retrieving all master data");
+		//		return StatusCode(500, "Internal server error while retrieving master data");
+		//	}
+		//}
 
 		[AuthorizePermission(PermissionItem.MasterData, PermissionAction.Create)]
 		[HttpPost]

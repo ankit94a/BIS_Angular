@@ -3,13 +3,14 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Division } from 'projects/sharedlibrary/src/model/base.model';
 import { User } from 'projects/sharedlibrary/src/model/user.model';
+import { SlicePairsPipe } from 'projects/sharedlibrary/src/pipe/slicepairs.pipe';
 import { ApiService } from 'projects/sharedlibrary/src/services/api.service';
 import { AuthService } from 'projects/sharedlibrary/src/services/auth.service';
 import { SharedLibraryModule } from 'projects/sharedlibrary/src/shared-library.module';
 
 @Component({
   selector: 'app-corps-list',
-  imports: [SharedLibraryModule],
+  imports: [SharedLibraryModule,SlicePairsPipe],
   templateUrl: './corps-list.component.html',
   styleUrl: './corps-list.component.scss'
 })

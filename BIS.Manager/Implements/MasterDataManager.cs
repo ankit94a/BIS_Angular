@@ -57,6 +57,7 @@ namespace BIS.Manager.Implements
 						}
 					}
 				}
+
 			}
 			return masterDataList;
 		}

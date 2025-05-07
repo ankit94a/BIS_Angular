@@ -47,6 +47,7 @@ export class NotificationActionComponent extends EnumBase {
   constructor(private authService:AuthService,private toastr: ToastrService, private cdr: ChangeDetectorRef, private masterDataService: MasterDataFilterService, @Inject(MAT_DIALOG_DATA) data, private apiService: ApiService, private dialogRef: MatDialogRef<NotificationActionComponent>) {
     super();
     this.notify = data;
+    debugger
     this.masterData = new masterData();
     if (this.notify.notificationType == NotificationType.MasterData) {
       this.getMasterData(this.notify.dataId)
@@ -85,65 +86,19 @@ export class NotificationActionComponent extends EnumBase {
   excluedeFields = ['Id', 'Status', 'UserId', 'Fmn', 'CreatedBy', 'CreatedOn', 'IsActive', 'IsDeleted', 'CorpsId', 'DivisionId','ReportedDate']
 
   getReport() {
+    debugger;
+    this.notify.isReaded
     this.apiService.postWithHeader('notification/getreport', this.notify).subscribe(res => {
       if (res) {
         this.mergeReport = res;
         const { Header, DataList } = this.masterDataService.getMasterData(this.mergeReport.masterData);
                 this.tableHeaderSubject.next(Header);
                 this.masterDataListSubject.next(DataList);
-        // if (res.rptId != null && res.rptId != undefined && res?.rptId > 0) {
-        //   this.report2 = res;
-        //   this.getG1Report(this.report.rptId)
-        //   if (this.report2.graphIds != undefined && this.report2.graphIds != null && this.report2.graphIds != '') {
-        //     this.getGraphs(this.report2.graphIds);
-        //   }
-        // } else {
-        //   this.report = res;
-        //   this.getMasterList();
-        //   if (this.report.graphIds != undefined && this.report.graphIds != null && this.report.graphIds != '') {
-        //     this.getGraphs(this.report.graphIds);
-        //   }
-        // }
       }
     })
   }
 
-//   getG1Report(reportId:number) {
-//     let rpt = new NotificationModel();
-//     rpt.dataId = reportId;
-//     this.apiService.postWithHeader('notification/report', rpt).subscribe(res => {
-//       if (res) {
-//         this.report = res;
-//         this.getMasterList();
-//         if (this.report.graphIds != undefined && this.report.graphIds != null && this.report.graphIds != '') {
-//           this.getGraphs(this.report.graphIds);
-//         }
-//       }
-//     })
-//   }
-//   getGraphs(graphIds) {
-//     this.apiService.getWithHeaders('generatereport/graph' + graphIds).subscribe(res => {
-//       this.report.graphs = res
-//       // .map(graph => {
-//       //   return {
-//       //     ...graph,  // Spread the existing properties of the graph
-//       //     url: 'data:image/png;base64,' + graph.url  // Prepend the base64 string
-//       //   };
-//       // });
-//       console.log(this.report)
-//       this.chartImagesSubject.next(this.report.graphs);
-//     })
-//   }
-//   getMasterList() {
-//     this.apiService.getWithHeaders('masterdata/idsList' + this.report.masterDataIds).subscribe(res => {
-//       if (res) {
-//         this.report.masterData = res;
-//         const { Header, DataList } = this.masterDataService.getMasterData(res);
-//         this.tableHeaderSubject.next(Header);
-//         this.masterDataListSubject.next(DataList);
-//       }
-//     })
-//   }
+
   changeStatus(isApproved) {
     isApproved ? this.notify.status = Status.Approved : this.notify.status = Status.Rejected;
     this.apiService.postWithHeader(`notification/updatestatus`, this.notify).subscribe(res => {
@@ -169,6 +124,7 @@ export class NotificationActionComponent extends EnumBase {
   }
 
   submitReport() {
+    debugger
     this.report2.reportTitle = this.mergeReport.reportTitle;
     this.report2.reportType = this.mergeReport.reportType;
     this.report2.reportDate = new Date();
@@ -176,6 +132,7 @@ export class NotificationActionComponent extends EnumBase {
     this.report2.endDate = this.mergeReport.endDate;
     this.report2.graphs = this.selectedImages;
     this.report2.rptId = this.mergeReport.id;
+    this.report2.isRead = this.mergeReport.isRead;
     this.apiService.postWithHeader('GenerateReport', this.report2).subscribe(res => {
       if (res) {
         this.toastr.success("Report saved successfully", 'success');

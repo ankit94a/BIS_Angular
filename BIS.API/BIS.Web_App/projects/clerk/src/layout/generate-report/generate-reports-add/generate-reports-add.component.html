@@ -102,7 +102,8 @@
         <input type="file" accept="image/*" #fileInput id="fileInput" hidden (change)="onFileSelect($event)" multiple />
         <div>
           <label for="fileInput" class="btn-outline-primary fileUpload">
-            <mat-icon>file_upload</mat-icon>
+            <!-- <mat-icon>file_upload</mat-icon> -->
+            <img src="/assets/upload.svg" class="custom-icon upload-icon" alt="" height="20px;">
             <h6 style="margin: 0px;">Upload Images</h6>
           </label>
         </div>
@@ -112,7 +113,7 @@
     <div class="row">
       <div *ngFor="let image of selectedImages; let i = index" class="image-preview col-md-6">
         <div class="close-icon-container">
-          <img src="/assets/delete.svg" class="custom-icon" (click)="removeImage(i)" alt="">
+          <img src="/assets/cross.png" class="custom-icon" (click)="removeImage(i)" alt="">
         </div>
         <img [src]="image.url" [alt]="image.name" />
         <span class="image-name">{{ image.name }}</span>

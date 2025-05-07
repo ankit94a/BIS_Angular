@@ -57,7 +57,7 @@
       </div>
         <app-table *ngIf="generateReportList.length > 0" [rowData]="generateReportList" [tablePaginationSettings]="tablePaginationSettings" [isRowBackgroundColor]="true"
         [isRefresh]="isRefresh" [allowMultiSelect]="true"  (view)="view($event)"
-         [sqColumnDefinition]="columns"
+         [sqColumnDefinition]="columns" (getSelectedRows)="getRowData($event)"
         (pageChanged)="getMoreSameples($event)">
       </app-table>
       <div class="span" *ngIf="generateReportList.length == 0">

@@ -30,7 +30,7 @@ namespace BIS.Manager.Implements
 			_masterDataManager = masterDataManager;
 			_serviceScopeFactory = serviceScopeFactory;
 		}
-		public List<GenerateReport> GetReportByDate(FilterModel filterModel, int corpsId, RoleType roleType, int divisionId = 0)
+		public List<GenerateReport> GetReport(int corpsId, RoleType roleType, int divisionId = 0)
 		{
 			var roleId = 0;
 			if (corpsId == 1)
@@ -45,7 +45,7 @@ namespace BIS.Manager.Implements
 			{
 				roleId = GetUserIdByDivisonOrCorps(corpsId, divisionId, RoleType.Colgs);
 			}
-			return _cdrDashboardDB.GetReportByDate(filterModel, corpsId, roleId, divisionId);
+			return _cdrDashboardDB.GetReportByDate(corpsId, roleId, divisionId);
 			if (divisionId > 0)
 			{
 
@@ -66,8 +66,6 @@ namespace BIS.Manager.Implements
 				//return _notificationDB.AddNotification(notification);
 				//}
 				//}
-
-				return _cdrDashboardDB.GetReportByDate(filterModel, corpsId, roleId, divisionId);
 			}
 			else
 			{
@@ -192,21 +190,49 @@ namespace BIS.Manager.Implements
 		}
 		public MergeReports GetCdrViewReport(GenerateReport generateReport, int corpsId, int divisionId)
 		{
-			var masterReport = new MergeReports();
+			var masterReport = new MergeReports()
+			{
+				masterData = new List<MasterData>(),
+				Graphs = new List<GraphImages>(),
+				ColGraphs = new List<GraphImages>(),
+				BgsGraphs = new List<GraphImages>(),
+				MggsGraphs = new List<GraphImages>()
+			};
+			var mggsGraphs = new List<GraphImages>();
+			var brigIntGraphs = new List<GraphImages>();
+			var colIntGraphs = new List<GraphImages>();
+			var g1Graphs = new List<GraphImages>();
+			var bgsGraphs = new List<GraphImages>();
+
 			if (corpsId == 1)
 			{
 				var mggsReport = _generateReportDB.GetById(generateReport.Id, corpsId, divisionId);
-				var mggsGraphs = GetGraphs(mggsReport.GraphIds);
-				var brigIntReport = _generateReportDB.GetById(mggsReport.RptId.Value, corpsId, divisionId);
-				var brigIntGraphs = GetGraphs(brigIntReport.GraphIds);
-				var colIntReport = _generateReportDB.GetById(brigIntReport.RptId.Value, corpsId, divisionId);
-				var colIntGraphs = GetGraphs(colIntReport.GraphIds);
-				var g1Report = _generateReportDB.GetById(colIntReport.RptId.Value, corpsId, divisionId);
-				var g1Graphs = GetGraphs(g1Report.GraphIds);
+				if (mggsReport.GraphIds != null)
+				{
+					mggsGraphs = GetGraphs(mggsReport.GraphIds);
+					masterReport.MggsGraphs = mggsGraphs;
+				}
 
-				masterReport.masterData = new List<MasterData>();
-				masterReport.Graphs = new List<GraphImages>();
-				masterReport.Graphs = g1Graphs;
+				var brigIntReport = _generateReportDB.GetById(mggsReport.RptId.Value, corpsId, divisionId);
+				if (brigIntReport.GraphIds != null)
+				{
+					brigIntGraphs = GetGraphs(brigIntReport.GraphIds);
+					masterReport.BgsGraphs = brigIntGraphs;
+				}
+
+				var colIntReport = _generateReportDB.GetById(brigIntReport.RptId.Value, corpsId, divisionId);
+				if (colIntReport.GraphIds != null)
+				{
+					colIntGraphs = GetGraphs(colIntReport.GraphIds);
+					masterReport.ColGraphs = colIntGraphs;
+				}
+
+				var g1Report = _generateReportDB.GetById(colIntReport.RptId.Value, corpsId, divisionId);
+				if (g1Report.GraphIds != null)
+				{
+					g1Graphs = GetGraphs(g1Report.GraphIds);
+					masterReport.Graphs = g1Graphs;
+				}
 				masterReport.ReportTitle = g1Report.ReportTitle;
 				masterReport.startDate = g1Report.startDate;
 				masterReport.endDate = g1Report.endDate;
@@ -214,29 +240,34 @@ namespace BIS.Manager.Implements
 				masterReport.Id = mggsReport.Id;
 				masterReport.Notes = g1Report.Notes;
 				masterReport.masterData = _masterDataManager.GetByIds(g1Report.MasterDataIds);
-
-				masterReport.ColGraphs = new List<GraphImages>();
-				masterReport.BgsGraphs = new List<GraphImages>();
-				masterReport.MggsGraphs = new List<GraphImages>();
-				masterReport.ColGraphs = colIntGraphs;
 				masterReport.ColNotes = colIntReport.Notes;
-				masterReport.BgsGraphs = brigIntGraphs;
 				masterReport.BgsNotes = brigIntReport.Notes;
-				masterReport.MggsGraphs = mggsGraphs;
 				masterReport.MggsNotes = mggsReport.Notes;
 
 			}
 			else if (corpsId > 1 && divisionId == 0)
 			{
 				var bgsReport = _generateReportDB.GetById(generateReport.Id, corpsId, divisionId);
-				var bgsGraphs = GetGraphs(bgsReport.GraphIds);
+				if (bgsReport.GraphIds != null)
+				{
+					brigIntGraphs = GetGraphs(bgsReport.GraphIds);
+					masterReport.BgsGraphs = brigIntGraphs;
+				}
 				var colIntReport = _generateReportDB.GetById(bgsReport.RptId.Value, corpsId, divisionId);
-				var colIntGraphs = GetGraphs(colIntReport.GraphIds);
-				var g1Report = _generateReportDB.GetById(colIntReport.RptId.Value, corpsId, divisionId);
-				var g1Graphs = GetGraphs(g1Report.GraphIds);
+				if (colIntReport.GraphIds != null)
+				{
+					colIntGraphs = GetGraphs(colIntReport.GraphIds);
+					masterReport.ColGraphs = colIntGraphs;
+				}
 
-				masterReport.masterData = new List<MasterData>();
-				masterReport.Graphs = new List<GraphImages>();
+				var g1Report = _generateReportDB.GetById(colIntReport.RptId.Value, corpsId, divisionId);
+				if (g1Report.GraphIds != null)
+				{
+					g1Graphs = GetGraphs(g1Report.GraphIds);
+					masterReport.Graphs = g1Graphs;
+				}
+
+
 				masterReport.Graphs = g1Graphs;
 				masterReport.ReportTitle = g1Report.ReportTitle;
 				masterReport.startDate = g1Report.startDate;
@@ -245,23 +276,26 @@ namespace BIS.Manager.Implements
 				masterReport.Id = bgsReport.Id;
 				masterReport.Notes = g1Report.Notes;
 				masterReport.masterData = _masterDataManager.GetByIds(g1Report.MasterDataIds);
-
-				masterReport.ColGraphs = new List<GraphImages>();
-				masterReport.BgsGraphs = new List<GraphImages>();
 				masterReport.ColGraphs = colIntGraphs;
 				masterReport.ColNotes = colIntReport.Notes;
-				masterReport.BgsGraphs = bgsGraphs;
 				masterReport.BgsNotes = bgsReport.Notes;
 			}
 			else
 			{
 				var colIntReport = _generateReportDB.GetById(generateReport.Id, corpsId, divisionId);
-				var colIntGraphs = GetGraphs(colIntReport.GraphIds);
-				var g1Report = _generateReportDB.GetById(colIntReport.RptId.Value, corpsId, divisionId);
-				var g1Graphs = GetGraphs(g1Report.GraphIds);
+				if (colIntReport.GraphIds != null)
+				{
+					colIntGraphs = GetGraphs(colIntReport.GraphIds);
+					masterReport.ColGraphs = colIntGraphs;
+				}
 
-				masterReport.masterData = new List<MasterData>();
-				masterReport.Graphs = new List<GraphImages>();
+				var g1Report = _generateReportDB.GetById(colIntReport.RptId.Value, corpsId, divisionId);
+				if (g1Report.GraphIds != null)
+				{
+					g1Graphs = GetGraphs(g1Report.GraphIds);
+					masterReport.Graphs = g1Graphs;
+				}
+
 				masterReport.Graphs = g1Graphs;
 				masterReport.ReportTitle = g1Report.ReportTitle;
 				masterReport.startDate = g1Report.startDate;
@@ -271,7 +305,6 @@ namespace BIS.Manager.Implements
 				masterReport.Notes = g1Report.Notes;
 				masterReport.masterData = _masterDataManager.GetByIds(g1Report.MasterDataIds);
 
-				masterReport.ColGraphs = new List<GraphImages>();
 				masterReport.ColGraphs = colIntGraphs;
 				masterReport.ColNotes = colIntReport.Notes;
 			}
@@ -305,8 +338,12 @@ namespace BIS.Manager.Implements
 			//		fullReport.MasterDatas = masterDataList;
 			//	}
 			//}
-			var gocGraphIds = inference.GraphIds.Trim('[', ']').Split(',').Select(id => int.Parse(id)).ToList();
-			inference.Graphs = _generateReportDB.GetGraphs(gocGraphIds);
+			if (inference.GraphIds != null)
+			{
+				var gocGraphIds = inference.GraphIds.Trim('[', ']').Split(',').Select(id => int.Parse(id)).ToList();
+				inference.Graphs = _generateReportDB.GetGraphs(gocGraphIds);
+			}
+
 			fullReport.Inference = inference;
 			var generateReport = new GenerateReport();
 			generateReport.Id = inference.GenerateReportId;

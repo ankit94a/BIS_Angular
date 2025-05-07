@@ -17,14 +17,14 @@ namespace BIS.API.Controller
 			_cdrDashboardManager = cdrDashboardManager;
 		}
 		[AuthorizePermission(PermissionItem.CdrDashboard, PermissionAction.Read)]
-		[HttpPost]
-		public IActionResult GetReportByDate([FromBody] FilterModel filterModel)
+		[HttpGet]
+		public IActionResult GetReportByDate()
 		{
 			int CorpsId = HttpContext.GetCorpsId();
 			int DivisionId = HttpContext.GetDivisionId();
 			int userId = HttpContext.GetUserId();
 			var roleType = HttpContext.GetRoleType();
-			return Ok(_cdrDashboardManager.GetReportByDate(filterModel, CorpsId, roleType, DivisionId));
+			return Ok(_cdrDashboardManager.GetReport(CorpsId, roleType, DivisionId));
 		}
 		[AuthorizePermission(PermissionItem.CdrDashboard, PermissionAction.Create)]
 		[HttpPost, Route("inference")]

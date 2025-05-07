@@ -21,7 +21,7 @@ namespace BIS.DB.Implements
 		public List<Notification> GetNotificationByUserId(int userId)
 		{
 			var result = _dbContext.Notification
-				.Where(n => n.ReceiverId == userId && !n.IsRead)
+				.Where(n => n.ReceiverId == userId && !n.IsRead).OrderByDescending(n => n.Id)
 				.ToList();
 			return result;
 		}
@@ -45,17 +45,33 @@ namespace BIS.DB.Implements
 
 			return result?.Id ?? 0;
 		}
-        public long NotificationViewed(Notification notification)
-        {
-            var result = _dbContext.Notification.Where(n => n.Id == notification.Id).FirstOrDefault();
+		public long NotificationViewed(Notification notification)
+		{
+			var result = _dbContext.Notification.Where(n => n.Id == notification.Id).FirstOrDefault();
 
-            if (result != null)
-            {
-                result.IsRead = true;
-                _dbContext.SaveChanges();
-            }
+			if (result != null)
+			{
+				result.IsRead = true;
+				_dbContext.SaveChanges();
+			}
 
-            return result?.Id ?? 0;
-        }
-    }
+			return result?.Id ?? 0;
+		}
+		public bool NotificationActionTaken(int notificationId, int corpsId, int divisionId = 0)
+		{
+			var result = _dbContext.Notification.Where(n => n.DataId == notificationId).FirstOrDefault();
+
+			if (result != null)
+			{
+				result.IsActionTaken = true;
+				_dbContext.SaveChanges();
+				return true;
+			}
+			return false;
+		}
+		public List<Notification> GetAllUserNotification(int userId)
+		{
+			return _dbContext.Notification.Where(n => n.SenderId == userId && !n.IsActionTaken.Value).ToList();
+		}
+	}
 }

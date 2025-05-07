@@ -38,18 +38,26 @@ namespace BIS.API.Controller
 			int divisionId = HttpContext.GetDivisionId();
 			return Ok(_reportManager.GetById(notification.DataId, corpsId, divisionId));
 		}
-		[HttpPost,Route("viewed")]
+		[HttpPost, Route("viewed")]
 		public IActionResult NotificationViewed(Notification notification)
 		{
 			return Ok(_notificationManager.NotificationViewed(notification));
 		}
-        [HttpPost, Route("getreport")]
-        public IActionResult GetUserReport(Notification notification)
-        {
-            int corpsId = HttpContext.GetCorpsId();
-            int divisionId = HttpContext.GetDivisionId();
+		[HttpPost, Route("getreport")]
+		public IActionResult GetUserReport(Notification notification)
+		{
+			int corpsId = HttpContext.GetCorpsId();
+			int divisionId = HttpContext.GetDivisionId();
 			RoleType roleType = HttpContext.GetRoleType();
-            return Ok(_reportManager.GetByRole(notification, corpsId, divisionId,roleType));
-        }
-    }
+			return Ok(_reportManager.GetByRole(notification, corpsId, divisionId, roleType));
+		}
+		[HttpGet, Route("actiontaken/{notificationId}")]
+		public IActionResult NotificationActionTaken(int notificationId)
+		{
+			int corpsId = HttpContext.GetCorpsId();
+			int divisionId = HttpContext.GetDivisionId();
+			RoleType roleType = HttpContext.GetRoleType();
+			return Ok(_notificationManager.NotificationActionTaken(notificationId, corpsId, divisionId, roleType));
+		}
+	}
 }

@@ -121,19 +121,18 @@
 
       <!-- Col Graphs and Notes (If Exist) -->
       <div *ngIf="mergeReport.colGraphs?.length > 0">
-        <!-- <h4>Col Graphs</h4> -->
         <div class="row image-preview-container">
           <div *ngFor="let image of mergeReport.colGraphs" class="col-md-6 image-preview">
             <img [src]="image.url" [alt]="image.name" />
             <span class="image-name">{{ image.name }}</span>
           </div>
         </div>
-        <div class="col-md-12">
-          <mat-form-field>
-            <mat-label>Col Comment</mat-label>
-            <textarea matInput readonly class="full-width text-area" [(ngModel)]="mergeReport.colNotes"></textarea>
-          </mat-form-field>
-        </div>
+      </div>
+      <div class="row" *ngIf="mergeReport.colNotes">
+        <mat-form-field>
+          <mat-label>Col Comment</mat-label>
+          <textarea matInput readonly  [(ngModel)]="mergeReport.colNotes"></textarea>
+        </mat-form-field>
       </div>
       <br>
 
@@ -145,12 +144,13 @@
             <span class="image-name">{{ image.name }}</span>
           </div>
         </div>
-        <div class="col-md-12">
-          <mat-form-field>
-            <mat-label>BGs Comment</mat-label>
-            <textarea matInput readonly class="full-width text-area" [(ngModel)]="mergeReport.bgsNotes"></textarea>
-          </mat-form-field>
-        </div>
+
+      </div>
+      <div class="col-md-12" *ngIf="mergeReport.bgsNotes">
+        <mat-form-field>
+          <mat-label>BGs Comment</mat-label>
+          <textarea matInput readonly class="full-width text-area" [(ngModel)]="mergeReport.bgsNotes"></textarea>
+        </mat-form-field>
       </div>
       <br>
 
@@ -161,7 +161,7 @@
             multiple />
           <div>
             <label for="fileInput" class="btn-outline-primary fileUpload">
-              <mat-icon>file_upload</mat-icon>
+              <img src="/assets/upload.svg" class="custom-icon upload-icon" alt="" height="20px;">
               <h6>Upload Images</h6>
             </label>
           </div>

@@ -32,10 +32,11 @@ namespace BIS.API.Controller
 		[HttpGet]
 		public IActionResult GetReport()
 		{
-			long CorpsId = HttpContext.GetCorpsId();
-			long DivisionId = HttpContext.GetDivisionId();
+			int CorpsId = HttpContext.GetCorpsId();
+			int DivisionId = HttpContext.GetDivisionId();
 			int userId = HttpContext.GetUserId();
-			return Ok(_generateReportManager.GetReportByUser(CorpsId, DivisionId, userId));
+			RoleType roleType = HttpContext.GetRoleType();
+			return Ok(_generateReportManager.GetReportByUser(CorpsId, DivisionId, userId,roleType));
 		}
 		[AuthorizePermission(PermissionItem.GenerateReport, PermissionAction.Read)]
 		[HttpGet, Route("graph{ids}")]

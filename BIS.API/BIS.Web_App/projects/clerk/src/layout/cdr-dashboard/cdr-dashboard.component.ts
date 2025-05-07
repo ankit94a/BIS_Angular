@@ -89,20 +89,21 @@ export class CdrDashboardComponent {
     this.dialogService.open(CdrInferenceComponent,item);
   }
   getReportByDate(){
-    if(this.filterModel2.endDate != null && this.filterModel2.endDate != undefined){
-      this.apiService.postWithHeader('cdrdashboard',this.filterModel2).subscribe(res =>{
+    // if(this.filterModel2.endDate != null && this.filterModel2.endDate != undefined){
+      this.apiService.getWithHeaders('cdrdashboard').subscribe(res =>{
       if(res){
         this.allReports = res;
       }
     })
-    }
+    // }
   }
-  isWithinOneHour(dateString: string | Date): boolean {
+  isWithinSixHours(dateString: string | Date): boolean {
     const createdTime = new Date(dateString).getTime();
     const currentTime = new Date().getTime();
-    const oneHourInMs = 60 * 60 * 1000;
-    return (currentTime - createdTime) <= oneHourInMs;
+    const sixHoursInMs = 6 * 60 * 60 * 1000; // 6 hours
+    return (currentTime - createdTime) <= sixHoursInMs;
   }
+  
 
   getWeekRange(
     weekNumber: number,

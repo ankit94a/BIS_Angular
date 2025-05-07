@@ -10,6 +10,9 @@ import { BisdefaultDatePipe } from 'projects/sharedlibrary/src/pipe/bisdefault-d
 import { GenerateReportViewComponent } from '../generate-report-view/generate-report-view.component';
 import { AuthService } from 'projects/sharedlibrary/src/services/auth.service';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { IsCurrentUserPipe } from 'projects/sharedlibrary/src/pipe/is-current-user.pipe';
+import { NotificationType } from 'projects/sharedlibrary/src/model/enum';
+import { NotificationActionComponent } from 'projects/sharedlibrary/src/component/notification-action/notification-action.component';
 
 @Component({
   selector: 'app-generate-reports-list',
@@ -38,6 +41,11 @@ export class GenerateReportsListComponent extends TablePaginationSettingsConfig 
     this.spinner.show();
     this.getReportData()
   }
+  getRowData(row){
+    row.notificationType = NotificationType.GenerateReport;
+    row.dataId = row.id;
+    this.dialogService.open(NotificationActionComponent,row)
+  }
   getReportData() {
     this.spinner.show();
     this.apiService.getWithHeaders('GenerateReport').subscribe(res =>{
@@ -63,7 +71,7 @@ export class GenerateReportsListComponent extends TablePaginationSettingsConfig 
     $event.isView = true;
     this.dialogService.open(GenerateReportViewComponent,$event)
   }
-  
+
   edit($event){
     this.dialogService.open(GenerateReportViewComponent,$event)
   }

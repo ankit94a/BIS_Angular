@@ -3,7 +3,6 @@
     max-height: 400px; /* Adjust the height as needed */
     overflow: auto;    /* Enable both x and y axis scrolling */
     width: 100%;       /* Ensure it takes full width */
-    border: 1px solid #ccc;  /* Optional, just for visual appearance */
   }
 
   /* Add styles to the table to ensure it behaves responsively */

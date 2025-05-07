@@ -108,7 +108,7 @@
                 <button mat-icon-button color="accent" *ngIf="element!=null && tablePaginationSettings.enableUpload"
                     type="button" (click)="uploadFile(element)" matTooltip="upload"> <mat-icon>upload</mat-icon>
                 </button>
-                <button mat-icon-button color="accent" *ngIf="element!=null && tablePaginationSettings.enableView"
+                <button mat-icon-button color="accent" *ngIf="element!=null && tablePaginationSettings.enableView && !element.isRead"
                     type="button" (click)="viewObj(element)" matTooltip="view"> <img src="/assets/eye.svg" class="custom-icon" alt="">
                 </button>
                 <button mat-icon-button color="basic" *ngIf="element!=null && tablePaginationSettings.enableEdit && element.status == '1'"
@@ -119,9 +119,15 @@
                     type="button" (click)="deleteObj(i,element)" matTooltip="delete">
                     <mat-icon>delete_outline</mat-icon>
                 </button>
-                <button mat-icon-button color="basic"
-                    *ngIf="element!=null && tablePaginationSettings.enablemarkAsDelivered" type="button"
-                    (click)="markAsDeliveredObj(element)" matTooltip="delivered"> <mat-icon>local_shipping</mat-icon>
+
+                <button mat-icon-button color="accent" *ngIf="(element!=null && tablePaginationSettings.enableApproved  && element.status == '2' && roleType !='1'  && roleType !='10')"
+                    type="button" (click)="isApprovedFun(element,true)" matTooltip="approve"> <img src="/assets/checked.png" class="custom-icon" alt="">
+                </button>
+                <button mat-icon-button color="basic" *ngIf="element!=null && tablePaginationSettings.enableApproved && element.status == '2' && roleType !='1'  && roleType !='10'"
+                    type="button" (click)="isApprovedFun(element,false)" matTooltip="reject"> <img src="/assets/cross.png" class="custom-icon" alt="">
+                  </button>
+                  <button mat-icon-button color="accent" *ngIf="element.isRead"
+                    type="button" (click)="getUserData(element)" matTooltip="approve"> <img src="/assets/plus-icon.png" class="custom-icon" alt="">
                 </button>
             </mat-cell>
         </ng-container>

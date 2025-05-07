@@ -11,6 +11,7 @@ import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { FormsModule } from '@angular/forms';
+import { RoleType } from '../../model/enum';
 
 @Component({
   selector: 'app-table',
@@ -80,10 +81,12 @@ export class ZipperTableComponent extends TablePaginationSettingsConfig implemen
   /**
    * @description Lifecycle hook that is called after a component's view has been fully initialized.
    */
+  @Input() roleType;
   @Output() getSelectedRows = new EventEmitter();
   @Output() download = new EventEmitter<any>();
   @Output() upload = new EventEmitter<any>();
   @Output() edit = new EventEmitter();
+  @Output() isApproved = new EventEmitter();
   @Output() view = new EventEmitter();
   @Output() delete = new EventEmitter();
   @Output() markAsDelivered = new EventEmitter();
@@ -149,7 +152,9 @@ export class ZipperTableComponent extends TablePaginationSettingsConfig implemen
     const dataCount = this.dataSource.data.reduce((count: number, _) => count + 1, 0);
     return numSelected === dataCount;
   }
-
+  getUserData(element){
+    this.getSelectedRows.emit(element);
+  }
 
   masterToggle() {
     this.isAllSelected() ?
@@ -180,6 +185,8 @@ export class ZipperTableComponent extends TablePaginationSettingsConfig implemen
     //     // dropDownList: undefined
     //   });
     // }
+    debugger;
+    this.roleType
     this.selection = new SelectionModel<{}>(this.allowMultiSelect, []);
     this.dataSource = new MatTableDataSource(this.rowData);
     // this.dataSource.data = new MatTableDataSource(this.rowData); // Set initial data
@@ -238,7 +245,10 @@ export class ZipperTableComponent extends TablePaginationSettingsConfig implemen
   editObj(element) {
     this.edit.emit(element);
   }
-
+  isApprovedFun(element,action) {
+    element.action = action;
+    this.isApproved.emit(element);
+  }
   viewObj(element) {
     this.view.emit(element);
   }

@@ -64,12 +64,12 @@
       </div>
     </div>
 
-    
+
 
 
     <app-table *ngIf="sortedData.length > 0" [rowData]="sortedData" [tablePaginationSettings]="tablePaginationSettings"
       [enableCheckbox]="true" [isRowBackgroundColor]="true" [isRefresh]="isRefresh" [allowMultiSelect]="true"
-      (edit)="edit($event)" (view)="view($event)" [sqColumnDefinition]="columns"
+      (edit)="edit($event)" (view)="view($event)" [sqColumnDefinition]="columns" (isApproved)="isApproved($event)" [roleType]="roleType"
       (pageChanged)="getMoreSameples($event)" (getSelectedRows)="getSelectedRows($event)">
     </app-table>
     <div class="span" *ngIf="DataList.length == 0">

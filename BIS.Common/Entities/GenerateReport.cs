@@ -25,6 +25,8 @@ namespace BIS.Common.Entities
 		public string? GraphIds { get; set; }
 		public int? RptId { get; set; }
 		public Status? Status { get; set; }
+		[NotMapped]
+		public bool? IsRead { get; set; }
 	}
 	public class GraphImages : BaseEntity
 	{
@@ -37,9 +39,9 @@ namespace BIS.Common.Entities
 		public List<MasterData> masterData { get; set; }
 		public List<GraphImages> ColGraphs { get; set; }
 		public string ColNotes { get; set; }
-		public List <GraphImages> BgsGraphs { get; set; }
+		public List<GraphImages> BgsGraphs { get; set; }
 		public string BgsNotes { get; set; }
-        public List<GraphImages> MggsGraphs { get; set; }
-        public string MggsNotes { get; set; }
-    }
+		public List<GraphImages> MggsGraphs { get; set; }
+		public string MggsNotes { get; set; }
+	}
 }

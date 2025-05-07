@@ -142,7 +142,7 @@
     <br>
     <hr>
     <br>
-    <div class="row">
+    <!-- <div class="row">
       <div class="col-sm-4">
         <mat-form-field>
           <mat-label>Enter a date range</mat-label>
@@ -155,7 +155,7 @@
       </mat-form-field>
 
     </div>
-    </div>
+    </div> -->
     <div class="row">
       <div class="col-md-12">
         <div class="card">
@@ -175,7 +175,7 @@
                     <td>{{item.reportType}}</td>
                     <td>{{item.createdOn | bisdefaultDate}}</td>
                     <td>{{item.notes}}
-                       <mat-chip *ngIf="item.createdOn && isWithinOneHour(item.createdOn)"  class="alert" mat-basic> <span >New</span></mat-chip>
+                       <mat-chip *ngIf="item.createdOn && isWithinSixHours(item.createdOn)"  class="alert" mat-basic> <span >New</span></mat-chip>
 
                        </td>
                     <td>

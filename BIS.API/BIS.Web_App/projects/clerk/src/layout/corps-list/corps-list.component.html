@@ -1,4 +1,4 @@
-<main>
+<!-- <main>
   <div class="bis-banner">
     <div class="context">
       <div class="content-left">
@@ -27,4 +27,33 @@
       </div>
     </div>
   </div>
-</main>
+</main> -->
+
+<!-- <mat-card> -->
+  <div class="main-box">
+  <h1 class="heading">AI Based BATTLEFIELD INDICATOR Software</h1>
+  <!-- <mat-card-content> -->
+
+    <!-- First card centered -->
+    <div class="row justify-content-center" *ngIf="corpsList.length > 0">
+      <div class="col-md-6 col-lg-4">
+        <div class="card text-center" (click)="redirectUrl(corpsList[0])">
+          <img [src]="corpsList[0].imageUrl" alt="Corps" width="30px">
+          <div class="card-name"> {{corpsList[0].name}} </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Next rows, two cards per row -->
+    <div class="row" *ngFor="let pair of corpsList.slice(1) | slicePairs">
+      <div class="col-md-6" *ngFor="let corps of pair" (click)="redirectUrl(corps)">
+        <div class="card">
+          <img [src]="corps.imageUrl" alt="Corps">
+          <div class="card-name">{{ corps.name }}</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <!-- </mat-card-content>
+</mat-card> -->

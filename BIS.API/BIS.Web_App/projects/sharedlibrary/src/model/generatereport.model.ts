@@ -16,6 +16,7 @@ export class GenerateReport extends BaseEntity {
   graphs:GraphImages[]=[];
   graphIds:string;
   rptId:number;
+  isRead:boolean;
 }
 export class GraphImages extends BaseEntity{
   name:string;

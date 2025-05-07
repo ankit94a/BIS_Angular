@@ -37,10 +37,11 @@ export interface TablePaginationSettingsModel {
     enableColumn: boolean;
     enablemarkAsDelivered: boolean;
     enableAdd: boolean;
+    enableApproved:boolean;
 }
 
 export  class ColumnSettingsModel {
-     
+
     icon?: string;
     name: string;
     displayName: string;
@@ -52,6 +53,6 @@ export  class ColumnSettingsModel {
    sortDirection?:string;
    isSearchEnabled?:boolean=false
 //    dropDownList;
-   
+
 }
 

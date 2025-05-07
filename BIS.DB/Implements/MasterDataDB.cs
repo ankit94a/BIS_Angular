@@ -21,8 +21,47 @@ namespace BIS.DB.Implements
 		}
 		public List<MasterData> GetAll(long corpsId, long DivisonId)
 		{
-			return _dbContext.MasterDatas.Where(m => m.ID == corpsId && m.DivisionId == DivisonId).ToList();
+			return _dbContext.MasterDatas.Where(m => m.CorpsId == corpsId && m.DivisionId == DivisonId).ToList();
 		}
+		//public List<MasterData> GetAll(long corpsId, long divisionId)
+		//{
+		//	// 1. Get MasterData by corps and division
+		//	var masterDataByDivision = _dbContext.MasterDatas
+		//		.Where(m => m.CorpsId == corpsId && m.DivisionId == divisionId)
+		//		.ToList();
+
+		//	// 2. Get DataIds from Notifications where IsActionTaken == false
+		//	var notificationDataIds = _dbContext.Notification
+		//		.Where(n => n.NotificationType == NotificationType.MasterData)
+		//		.Select(n => n.DataId)
+		//		.Distinct()
+		//		.ToList();
+
+		//	// 3. Get MasterData from Notification (if not already fetched)
+		//	var masterDataFromNotification = _dbContext.MasterDatas
+		//		.Where(m => notificationDataIds.Contains(m.ID))
+		//		.ToList();
+
+		//	// 4. Merge the two lists without duplicates
+		//	var combinedMasterData = masterDataByDivision
+		//		.Union(masterDataFromNotification)
+		//		.ToList();
+
+		//	// 5. Update IsReaded = true only for Notification rows involved
+		//	var notificationsToUpdate = _dbContext.Notification
+		//		.Where(n => notificationDataIds.Contains(n.DataId) && !n.IsActionTaken.Value)
+		//		.ToList();
+
+		//	foreach (var notification in notificationsToUpdate)
+		//	{
+		//		notification.IsReaded = true;
+		//	}
+
+		//	_dbContext.SaveChanges();
+
+		//	return combinedMasterData;
+		//}
+
 		public List<MasterData> GetByUserId(int userId)
 		{
 			var result = _dbContext.MasterDatas.Where(m => m.CreatedBy == userId).ToList();
