@@ -28,7 +28,8 @@ namespace BIS.Common.Enum
 			User,
 			Role,
 			PermissionVerification,
-			Attribute
+			Attribute,
+			AIAnalysis
 		}
 		[JsonConverter(typeof(StringEnumConverter))]
 		public enum PermissionAction

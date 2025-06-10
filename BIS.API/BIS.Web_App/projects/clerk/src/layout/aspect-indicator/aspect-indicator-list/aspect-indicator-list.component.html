@@ -22,10 +22,14 @@
                 <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
                 <mat-cell *matCellDef="let source">
                   <!-- <button mat-button (click)="edit(source)"><i class="fa-solid fa-eye"></i></button> -->
-                  <button mat-icon-button color="warn"
+                  <!-- <button mat-icon-button color="warn"
                   type="button" (click)="remove(source,'aspect')"matTooltip="delete">
                   <mat-icon>delete_outline</mat-icon>
-              </button>
+              </button> -->
+                  <button mat-icon-button color="warn"
+                              type="button" (click)="remove(source,'aspect')"matTooltip="delete">
+                              <img src="/assets/delete.svg" class="custom-icon" alt="">
+                          </button>
                 </mat-cell>
               </ng-container>
               <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
@@ -64,10 +68,14 @@
                 <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
                 <mat-cell *matCellDef="let source">
                   <!-- <button mat-button (click)="edit(source)"><i class="fa-solid fa-eye"></i></button> -->
-                  <button mat-icon-button color="warn"
+                  <!-- <button mat-icon-button color="warn"
                   type="button" (click)="remove(source,'indicator')"matTooltip="delete">
                   <mat-icon>delete_outline</mat-icon>
-              </button>
+              </button> -->
+                  <button mat-icon-button color="warn"
+                              type="button" (click)="remove(source,'indicator')"matTooltip="delete">
+                              <img src="/assets/delete.svg" class="custom-icon" alt="">
+                          </button>
                 </mat-cell>
               </ng-container>
               <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

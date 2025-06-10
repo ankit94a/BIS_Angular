@@ -114,11 +114,17 @@ export const routes: Routes = [
                 data: { allowedRoles: ['8'] },
               },
 
-             
+               {
+                path: 'ai-analysis',
+                loadComponent : () =>import('projects/clerk/src/layout/ai-analysis/ai-analysis.component').then(m =>m.AIAnalysisComponent),
+                canActivate:[AuthGuard,PermissionGuard],
+                data: { allowedRoles: ['2','4','7','5'] },
+              },
               {
                 path: 'forbidden',
                 component: ForbiddenComponent
-              }
+              },
+            
 
         ]
     }

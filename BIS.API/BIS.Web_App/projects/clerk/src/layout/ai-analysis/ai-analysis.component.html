@@ -1,0 +1,25 @@
+<mat-card appearance="outlined">
+    <mat-card-header class="insync-header">
+        <div class="row full-width">
+            <div class="col-sm-2">AI Analysis</div>
+            <div class="col-sm-2 offset-4"></div>
+            <div class="col-md-2" align="end">
+                <!-- <a href="/corps" *ngIf="isCommand" class="back-link"> Back</a> -->
+            </div>
+
+        </div>
+    </mat-card-header>
+    <mat-card-content>
+  <div class="row" *ngFor="let row of cardRows">
+    <div class="col-md-6" *ngFor="let card of row" (click)="openCardDetails(card)">
+      <div class="card">
+        <div class="card-body">
+          <h1>{{ card }}</h1>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+    </mat-card-content>
+</mat-card>
