@@ -1,88 +1,88 @@
 <form [formGroup]="createData" (ngSubmit)="save()">
-    <mat-card appearance="outlined">
-        <mat-card-header class="insync-header" >
-            <div class="row full-width" >
-                <div class="col-sm-2">Add Master Data</div>
-            </div>
-        </mat-card-header>
-        <mat-card-content>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <mat-form-field>
-                                <mat-label>Fmn</mat-label>
-                                <mat-select formControlName="frmn" (selectionChange)="onFilterChange($event)">
-                                    @for (list of fmnList; track list) {
-                                    <mat-option [value]="list">{{list}}</mat-option>
-                                    }
-                                </mat-select>
-                            </mat-form-field>
-                        </div>
-                        <div class="col-md-4">
-                            <mat-form-field>
-                                <mat-label>Select date</mat-label>
-                                <input matInput [matDatepicker]="picker" formControlName="reportedDate">
-                                <mat-hint>(MM/DD/YYYY)</mat-hint>
-                                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-                                <mat-datepicker #picker></mat-datepicker>
-                            </mat-form-field>
-                        </div>
-                        <div class="col-md-4">
-                            <mat-form-field>
-                                <mat-label>Input Level</mat-label>
-                                <mat-select formControlName="inputLevel">
-                                    <mat-option *ngFor="let item of inputLevels" [value]="item.name">
-                                        {{ item.name }}
-                                    </mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <mat-form-field>
-                                <mat-label>Sector</mat-label>
-                                <mat-select formControlName="sector">
-                                    <mat-option *ngFor="let item of sectors" [value]="item.name">
-                                        {{ item.name }}
-                                    </mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </div>
-                        <div class="col-md-4">
-                            <mat-form-field>
-                                <mat-label>Source</mat-label>
-                                <mat-select formControlName="source">
-                                    <mat-option *ngFor="let item of sourceList" [value]="item.name">
-                                        {{ item.name }}
-                                    </mat-option>
+  <mat-card appearance="outlined">
+    <mat-card-header class="insync-header">
+      <div class="row full-width">
+        <div class="col-sm-2">Add Master Data</div>
+      </div>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="row">
+        <div class="col-md-4">
+          <mat-form-field>
+            <mat-label>Fmn</mat-label>
+            <mat-select formControlName="frmn" (selectionChange)="onFilterChange($event)">
+              @for (list of fmnList; track list) {
+              <mat-option [value]="list">{{list}}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-md-4">
+          <mat-form-field>
+            <mat-label>Select date</mat-label>
+            <input matInput [matDatepicker]="picker" formControlName="reportedDate">
+            <mat-hint>(MM/DD/YYYY)</mat-hint>
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+        </div>
+        <div class="col-md-4">
+          <mat-form-field>
+            <mat-label>Input Level</mat-label>
+            <mat-select formControlName="inputLevel">
+              <mat-option *ngFor="let item of inputLevels" [value]="item.name">
+                {{ item.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4">
+          <mat-form-field>
+            <mat-label>Sector</mat-label>
+            <mat-select formControlName="sector">
+              <mat-option *ngFor="let item of sectors" [value]="item.name">
+                {{ item.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-md-4">
+          <mat-form-field>
+            <mat-label>Source</mat-label>
+            <mat-select formControlName="source">
+              <mat-option *ngFor="let item of sourceList" [value]="item.name">
+                {{ item.name }}
+              </mat-option>
 
-                                </mat-select>
-                            </mat-form-field>
-                        </div>
-                        <div class="col-md-4">
-                            <mat-form-field>
-                                <mat-label>Source Loc</mat-label>
-                                <mat-select formControlName="sourceLoc">
-                                    <mat-option *ngFor="let item of sourceLoc" [value]="item.name">
-                                        {{ item.name }}
-                                    </mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </div>
-                    </div>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-md-4">
+          <mat-form-field>
+            <mat-label>Source Loc</mat-label>
+            <mat-select formControlName="sourceLoc">
+              <mat-option *ngFor="let item of sourceLoc" [value]="item.name">
+                {{ item.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
 
-                    <div class="row">
-                        <div class="col-md-4">
-                            <mat-form-field>
-                                <mat-label>Type Of Loc</mat-label>
-                                <mat-select formControlName="typeOfLoc">
-                                    <mat-option *ngFor="let item of typeOfLoc" [value]="item.name">
-                                        {{ item.name }}
-                                    </mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </div>
-                        <div class="col-md-4">
+      <div class="row">
+        <div class="col-md-4">
+          <mat-form-field>
+            <mat-label>Type Of Loc</mat-label>
+            <mat-select formControlName="typeOfLoc">
+              <mat-option *ngFor="let item of typeOfLoc" [value]="item.name">
+                {{ item.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <!-- <div class="col-md-4">
                             <mat-form-field>
                                 <mat-label>En Loc Name</mat-label>
                                 <mat-select formControlName="enLocName">
@@ -91,102 +91,112 @@
                                     </mat-option>
                                 </mat-select>
                             </mat-form-field>
-                        </div>
-                        <div class="col-md-4">
-                            <mat-form-field>
-                                <mat-label>Aspect</mat-label>
-                                <mat-select (selectionChange)="getIndicator($event.value)" formControlName="aspect">
-                                    <mat-option *ngFor="let option of aspectList" [value]="option.id">
-                                        {{ option.name }}
-                                    </mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </div>
-                    </div>
+                        </div> -->
+        <div class="col-md-4">
+          <mat-form-field>
+            <mat-label>En Loc Name</mat-label>
+            <input type="text" matInput [formControl]="enLocNameControl" [matAutocomplete]="auto">
+            <mat-autocomplete #auto="matAutocomplete">
+              <mat-option *ngFor="let item of enemyLocations" [value]="item.name">
+                {{ item.name }}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+        </div>
+
+        <div class="col-md-4">
+          <mat-form-field>
+            <mat-label>Aspect</mat-label>
+            <mat-select (selectionChange)="getIndicator($event.value)" formControlName="aspect">
+              <mat-option *ngFor="let option of aspectList" [value]="option.id">
+                {{ option.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
 
 
 
-                <mat-card-content *ngIf="indicators.length > 0" >
-                    <div class="row">
-                        <div class="col-md-12">
-                            <mat-form-field>
-                                <mat-label>Indicators</mat-label>
-                                <mat-select (selectionChange)="onChange2($event.value)"
-                                    formControlName="indicator">
-                                    <mat-option *ngFor="let indicator of indicators" [value]="indicator.name">
-                                        {{ indicator.name }}
-                                    </mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </div>
-                    </div>
+      <mat-card-content *ngIf="indicators.length > 0">
+        <div class="row">
+          <div class="col-md-12">
+            <mat-form-field>
+              <mat-label>Indicators</mat-label>
+              <mat-select (selectionChange)="onChange2($event.value)" formControlName="indicator">
+                <mat-option *ngFor="let indicator of indicators" [value]="indicator.name">
+                  {{ indicator.name }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
 
-                    <div *ngIf="dynamicFields.length > 0">
-                        <div class="row">
-                            <div class="col-md-4" *ngFor="let field of dynamicFields">
-                                <mat-form-field *ngIf="field.type === 'string'">
-                                    <mat-label>{{ field.label }}</mat-label>
-                                    <input matInput [formControlName]="field.name" />
-                                </mat-form-field>
-                                <mat-form-field *ngIf="field.type === 'date'">
-                                    <mat-label>{{ field.label }}</mat-label>
-                                    <input matInput [matDatepicker]="picker" [formControlName]="field.name">
-                                    <mat-hint>(MM/DD/YYYY)</mat-hint>
-                                    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-                                    <mat-datepicker #picker></mat-datepicker>
-                                </mat-form-field>
-                                <mat-form-field *ngIf="field.type === 'time'">
-                                    <mat-label>{{ field.label }}</mat-label>
-                                    <input type="time" matInput [formControlName]="field.name">
+        <div *ngIf="dynamicFields.length > 0">
+          <div class="row">
+            <div class="col-md-4" *ngFor="let field of dynamicFields">
+              <mat-form-field *ngIf="field.type === 'string'">
+                <mat-label>{{ field.label }}</mat-label>
+                <input matInput [formControlName]="field.name" />
+              </mat-form-field>
+              <mat-form-field *ngIf="field.type === 'date'">
+                <mat-label>{{ field.label }}</mat-label>
+                <input matInput [matDatepicker]="picker" [formControlName]="field.name">
+                <mat-hint>(MM/DD/YYYY)</mat-hint>
+                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+              </mat-form-field>
+              <mat-form-field *ngIf="field.type === 'time'">
+                <mat-label>{{ field.label }}</mat-label>
+                <input type="time" matInput [formControlName]="field.name">
 
-                                </mat-form-field>
-                                <mat-form-field *ngIf="field.type === 'number'">
-                                    <mat-label>{{ field.label }}</mat-label>
-                                    <input matInput type="number" [formControlName]="field.name" />
-                                </mat-form-field>
-                            </div>
-                        </div>
-                    </div>
+              </mat-form-field>
+              <mat-form-field *ngIf="field.type === 'number'">
+                <mat-label>{{ field.label }}</mat-label>
+                <input matInput type="number" [formControlName]="field.name" />
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
 
-                    <div *ngIf="dynamicDropdownOptions.length > 0">
-                        <div class="row">
-                            <div class="col-md-4">
-                                <mat-form-field>
-                                    <mat-label>{{ dynamicDropdownLabel }}</mat-label>
-                                    <mat-select [formControl]="createData.get('dynamicDropdown')"
-                                        (selectionChange)="onDropdownSelectionChange($event)"
-                                        [placeholder]="dynamicDropdownLabel">
-                                        <mat-option>--None--</mat-option>
-                                        <mat-option *ngFor="let option of dynamicDropdownOptions" [value]="option">
-                                            {{ option }}
-                                        </mat-option>
-                                    </mat-select>
-                                </mat-form-field>
-                            </div>
-                        </div>
-                    </div>
+        <div *ngIf="dynamicDropdownOptions.length > 0">
+          <div class="row">
+            <div class="col-md-4">
+              <mat-form-field>
+                <mat-label>{{ dynamicDropdownLabel }}</mat-label>
+                <mat-select [formControl]="createData.get('dynamicDropdown')"
+                  (selectionChange)="onDropdownSelectionChange($event)" [placeholder]="dynamicDropdownLabel">
+                  <mat-option>--None--</mat-option>
+                  <mat-option *ngFor="let option of dynamicDropdownOptions" [value]="option">
+                    {{ option }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
 
-                    <!-- Render additional fields based on dropdown selection -->
-                    <div *ngIf="additionalFields.length > 0">
-                        <div class="row" *ngFor="let field of additionalFields">
-                            <div class="col-md-4">
-                                <mat-form-field *ngIf="field.type === 'string'">
-                                    <mat-label>{{ field.label }}</mat-label>
-                                    <input matInput [formControlName]="field.name" />
-                                </mat-form-field>
-                                <mat-form-field *ngIf="field.type === 'time'">
-                                    <mat-label>{{ field.label }}</mat-label>
-                                    <input type="time" matInput [formControlName]="field.name">
-                                </mat-form-field>
-                            </div>
-                        </div>
-                    </div>
-                    <div align="end">
-                        <!-- <button mat-button matStepperPrevious type="button">Back</button> -->
-                        <button class="btn btn-sm btn-primary" type="submit">Save</button>
-                    </div>
-                </mat-card-content>
+        <!-- Render additional fields based on dropdown selection -->
+        <div *ngIf="additionalFields.length > 0">
+          <div class="row" *ngFor="let field of additionalFields">
+            <div class="col-md-4">
+              <mat-form-field *ngIf="field.type === 'string'">
+                <mat-label>{{ field.label }}</mat-label>
+                <input matInput [formControlName]="field.name" />
+              </mat-form-field>
+              <mat-form-field *ngIf="field.type === 'time'">
+                <mat-label>{{ field.label }}</mat-label>
+                <input type="time" matInput [formControlName]="field.name">
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+        <div align="end">
+          <!-- <button mat-button matStepperPrevious type="button">Back</button> -->
+          <button class="btn btn-sm btn-primary" type="submit">Save</button>
+        </div>
+      </mat-card-content>
 
-        </mat-card-content>
-    </mat-card>
+    </mat-card-content>
+  </mat-card>
 </form>

@@ -9,7 +9,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class ApiService {
   private baseUrl = environment.apiUrl;
-
+  private modelUrl = environment.modelUrl
   constructor(private http: HttpClient,private toastr:ToastrService) { }
 
   getWithHeaders(url: string): Observable<any> {
@@ -39,7 +39,18 @@ export class ApiService {
         }
       ))
   }
-
+    modelApiCall(url: string, Data: any): Observable<any> {
+    return this.http.post(`${this.modelUrl}` + url, Data).pipe(map(
+      (res: any) => {
+        if (res) {
+          return res;
+        }
+      }), catchError(
+        (error: any) => {
+          return this.showError(error);
+        }
+      ))
+  }
   putWithHeader(url: string, Data: any): Observable<any> {
     return this.http.put(`${this.baseUrl}` + url, Data).pipe(map(
       (res: any) => {

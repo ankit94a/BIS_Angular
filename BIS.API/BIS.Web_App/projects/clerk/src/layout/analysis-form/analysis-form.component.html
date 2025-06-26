@@ -1,27 +1,39 @@
+
 <div mat-dialog-title>
     Analysis
 </div>
 <mat-dialog-content>
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-6">
                <mat-form-field>
           <mat-label>Date Range</mat-label>
           <mat-date-range-input [rangePicker]="picker">
-            <input matStartDate formControlName="startDate" placeholder="Start date" #dateRangeStart [max]="currentDate">
-            <input matEndDate formControlName="endDate" placeholder="End date" #dateRangeEnd
+            <input matStartDate [(ngModel)]="filterModel.startdate"  placeholder="Start date" #dateRangeStart [max]="currentDate">
+            <input matEndDate [(ngModel)]="filterModel.enddate" placeholder="End date" #dateRangeEnd
                [max]="currentDate">
           </mat-date-range-input>
           <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
           <mat-date-range-picker #picker></mat-date-range-picker>
-          <mat-error *ngIf="analysisForm.controls['startDate'].hasError('required') && analysisForm.controls['startDate'].touched">
+          <!-- <mat-error *ngIf="analysisForm.controls['startDate'].hasError('required') && analysisForm.controls['startDate'].touched">
             StartDate is required.
-          </mat-error>
+          </mat-error> -->
         </mat-form-field>
+        </div>
+        <div class="col-md-6">
+          <mat-form-field>
+            <mat-label>Frequecy Type</mat-label>
+            <mat-select [(ngModel)]="filterModel.granularity">
+              <mat-option value="daily">Daily</mat-option>
+              <mat-option value="weekly">Weekly</mat-option>
+              <mat-option value="monthly">Monthly</mat-option>
+              <mat-option value="yearly">Yearly</mat-option>
+            </mat-select>
+          </mat-form-field>
         </div>
     </div>
     <div class="row">
         <div class="col-md-6">
-             <ng-select appendTo="ng-select" [items]="frmnList" [multiple]="true" 
+             <!-- <ng-select appendTo="ng-select" [items]="frmnList" [multiple]="false"  bindLabel="name" bindValue="name"
           bindLabel="name"  [closeOnSelect]="true" placeholder="Fmn" [searchable]="true"
           [(ngModel)]="filterModel.frmn">
           <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
@@ -30,10 +42,18 @@
               <span class="ng-value-icon right px-1" (click)="clear(item)" aria-hidden="true">×</span>
             </div>
           </ng-template>
-        </ng-select>
-        </div>
+        </ng-select> -->
+        <mat-form-field>
+              <mat-label>Fmn</mat-label>
+              <mat-select  [(ngModel)]="filterModel.frmn">
+                <mat-option *ngFor="let option of frmnList" [value]="option.name">
+                  {{ option.name }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+      </div>
         <div class="col-sm-6">
-        <ng-select appendTo="ng-select" [items]="sectorList" [multiple]="true" bindLabel="name" bindValue="name" 
+        <!-- <ng-select appendTo="ng-select" [items]="sectorList" [multiple]="false" bindLabel="name" bindValue="name"
           [closeOnSelect]="true" [(ngModel)]="filterModel.sector" placeholder="Sector" [searchable]="true" >
           <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
             <div class="ng-value" *ngFor="let item of items">
@@ -41,14 +61,22 @@
               <span class="ng-value-icon right px-1" (click)="clear(item)" aria-hidden="true">×</span>
             </div>
           </ng-template>
-        </ng-select>
+        </ng-select> -->
+         <mat-form-field>
+              <mat-label>Sector</mat-label>
+              <mat-select  [(ngModel)]="filterModel.sector">
+                <mat-option *ngFor="let option of sectorList" [value]="option.name">
+                  {{ option.name }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
       </div>
     </div>
     <div class="row">
         <div class="col-md-6">
             <mat-form-field>
               <mat-label>Aspect</mat-label>
-              <mat-select (selectionChange)="getIndicator($event.value)" formControlName="aspect">
+              <mat-select (selectionChange)="getIndicator($event.value)" [(ngModel)]="filterModel.aspect">
                 <mat-option *ngFor="let option of aspectList" [value]="option.name">
                   {{ option.name }}
                 </mat-option>
@@ -58,7 +86,7 @@
         <div class="col-md-6">
             <mat-form-field>
               <mat-label>Indicators</mat-label>
-              <mat-select  formControlName="indicator">
+              <mat-select  [(ngModel)]="filterModel.indicator">
                 <mat-option *ngFor="let indicator of indicators" [value]="indicator.name">
                   {{ indicator.name }}
                 </mat-option>
@@ -71,8 +99,32 @@
     <button class="btn btn-sm btn-warning w-100" (click)="close()" type="button">Close</button>
   </div>
   <div class="col-md-6">
-    <button class="btn btn-sm btn-primary w-100" type="button">Start</button>
+    <button class="btn btn-sm btn-primary w-100" type="button" (click)="save()">Start</button>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-12">
+    <div class="card shadow-sm p-3 chart-card">
+      <div class="card-body">
+        <h5 class="card-title">Model Visualization</h5>
+        <canvas
+          *ngIf="lineChartData?.datasets?.length > 0"
+          baseChart
+          [data]="lineChartData"
+          [options]="lineChartOptions"
+          [type]="'line'">
+        </canvas>
+        <div *ngIf="lineChartData?.datasets?.length === 0" class="text-center mt-3 text-muted">
+          No data available to display.
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
+
 </mat-dialog-content>
+
+
+
+

@@ -13,6 +13,16 @@ export class FilterModel{
     startDate:Date;
     endDate:Date;
 }
+export class PredictionModel{
+    frmn:string;
+    source:string;
+    aspect:string;
+    sector:string;
+    indicator:string;
+    startdate:Date;
+    enddate:Date;
+    granularity:string;
+}
 export class DashboardInputCount{
     totalInputCount:number;
     last7DaysCount:number;

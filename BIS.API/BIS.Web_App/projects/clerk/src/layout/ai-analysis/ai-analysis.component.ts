@@ -10,7 +10,21 @@ import { AnalysisFormComponent } from '../analysis-form/analysis-form.component'
   styleUrl: './ai-analysis.component.scss'
 })
 export class AIAnalysisComponent {
-  cards = ['Activity Trend','Seasonability check','Strange Eqent','Deep Anomaly']
+  cards = [
+    {
+      name:'Activity Trend',
+      path:'activity-trend'
+    },{
+      name:'Seasonability Check',
+      path:'activity-trend'
+    },{
+      name:'Strange Event',
+      path:'activity-trend'
+    },{
+      name:'Deep Anomaly',
+      path:'detect-anomalies/'
+    }
+  ]
 
   constructor(private dialogService:BISMatDialogService){
 
@@ -24,7 +38,6 @@ export class AIAnalysisComponent {
 }
 
 openCardDetails(card){
-  debugger
   this.dialogService.open(AnalysisFormComponent,card)
 }
 

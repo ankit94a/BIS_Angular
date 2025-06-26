@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { BISDialogTitleComponent } from 'projects/sharedlibrary/src/component/edusynk-dialog-title/edusynk-dialog-title.component';
 import { EnemyLocation, masterData, MasterInputLevels, MasterLoc, MasterSector, Source } from 'projects/sharedlibrary/src/model/masterdata.model';
@@ -48,6 +48,7 @@ export class MasterDataFormComponent {
 
   // storing aspectName globally for handling add form
   aspectName: string;
+enLocNameControl: FormControl<any>;
   constructor(private masterDataService: MasterDataService, private authService: AuthService, private apiService: ApiService, private datePipe: DatePipe, private toastr: ToastrService) {
     this.indicators = [];
     this.getData();
