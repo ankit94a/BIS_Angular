@@ -1,7 +1,16 @@
-<div mat-dialog-title>
-  Analysis
-</div>
-<mat-dialog-content>
+<mat-card>
+  <mat-card-header class="insync-header">
+    <div class="row full-width">
+      <div class="col-sm-2">Analysis Form</div>
+      <div class="col-sm-7">
+        <div class="col-md-2"  align="end">
+          <!-- <a href="/corps" *ngIf="isCommand" class="back-link"> Back</a> -->
+        </div>
+      </div>
+    </div>
+  </mat-card-header>
+</mat-card>
+<mat-card-content>
   <div class="row">
     <div class="col-md-6">
       <mat-form-field>
@@ -13,9 +22,6 @@
         </mat-date-range-input>
         <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-date-range-picker #picker></mat-date-range-picker>
-        <!-- <mat-error *ngIf="analysisForm.controls['startDate'].hasError('required') && analysisForm.controls['startDate'].touched">
-            StartDate is required.
-          </mat-error> -->
       </mat-form-field>
     </div>
     <div class="col-md-6">
@@ -90,7 +96,7 @@
       <button class="btn btn-sm btn-primary w-100" type="button" (click)="save()">Start</button>
     </div>
   </div>
-  <div class="row">
+  <!-- <div class="row">
     <div class="col-md-12">
       <div class="card shadow-sm p-3 chart-card">
         <div class="card-body">
@@ -104,7 +110,17 @@
         </div>
       </div>
     </div>
+  </div> -->
+
+  <div class="row">
+   <div class="card">
+  <canvas baseChart
+    [data]="lineChartData"
+    [options]="lineChartOptions"
+    [type]="'line'">
+  </canvas>
+</div>
+
   </div>
 
-
-</mat-dialog-content>
+</mat-card-content>

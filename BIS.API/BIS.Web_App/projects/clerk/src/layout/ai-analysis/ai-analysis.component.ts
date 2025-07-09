@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { BISMatDialogService } from 'projects/sharedlibrary/src/services/insync-mat-dialog.service';
 import { SharedLibraryModule } from 'projects/sharedlibrary/src/shared-library.module';
 import { AnalysisFormComponent } from '../analysis-form/analysis-form.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-ai-analysis',
@@ -13,7 +14,7 @@ export class AIAnalysisComponent {
   cards = [
     {
       name:'Activity Trend',
-      path:'detect-arima-anomalies'
+      path:'detect-arima-anomalies/'
     },{
       name:'Seasonability Check',
       path:'activity-trend'
@@ -26,7 +27,7 @@ export class AIAnalysisComponent {
     }
   ]
 
-  constructor(private dialogService:BISMatDialogService){
+  constructor(private dialogService:BISMatDialogService,private router:Router){
 
   }
   get cardRows() {
@@ -37,8 +38,9 @@ export class AIAnalysisComponent {
   return rows;
 }
 
-openCardDetails(card){
-  this.dialogService.open(AnalysisFormComponent,card)
+openCardDetails(card: any) {
+  this.router.navigate(['/analysis-form'], { queryParams: { path: card.path } });
 }
+
 
 }

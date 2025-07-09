@@ -9,106 +9,74 @@ import { AuthService } from 'projects/sharedlibrary/src/services/auth.service';
 import { SharedLibraryModule } from 'projects/sharedlibrary/src/shared-library.module';
 import { ChartConfiguration } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
+import { ActivatedRoute } from '@angular/router';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-analysis-form',
-  imports: [SharedLibraryModule,BaseChartDirective],
+  imports: [SharedLibraryModule, BaseChartDirective],
   templateUrl: './analysis-form.component.html',
   styleUrl: './analysis-form.component.scss'
 })
 export class AnalysisFormComponent {
   currentDate = new Date();
-  analysisForm: FormGroup;
   frmnList: any[] = [];
   sectorList: any = [];
   aspectList: Aspect[] = [];
   indicators: Indicator[] = [];
   filterModel: PredictionModel = new PredictionModel();
-  modelType;
-   lineChartLabels: string[] = [];
-  lineChartData: ChartConfiguration<'line'>['data'] = {
-    labels: [],
-    datasets: []
-  };
-  lineChartOptions: ChartConfiguration<'line'>['options'] = {
-    responsive: true,
-    plugins: {
-      legend: { position: 'top' }
-    },
-    scales: {
-      y: { beginAtZero: true }
-    }
-  };
-  constructor(@Inject(MAT_DIALOG_DATA) data, private apiService: ApiService, private authService: AuthService, private toastr: ToastrService) {
-    this.modelType = data;
+  urlPath;
+  constructor(private apiService: ApiService, private authService: AuthService, private toastr: ToastrService, private route: ActivatedRoute,private datePipe:DatePipe) {
+    this.route.queryParams.subscribe(params => {
+      const path = params['path'];
+
+      if (path) {
+        this.urlPath = path;
+        console.log('Path:', this.urlPath);
+      }
+    });
+
   }
   ngOnInit(): void {
-    // this.createForm();
     this.getFrmDetails();
     this.getSector();
     this.getAspect();
   }
-  // createForm() {
-  //    this.analysisForm = this._formBuilder.group({
-  //      startDate: [this.currentDate, Validators.required],
-  //      endDate: [this.currentDate, Validators.required],
-  //      frmn: ['',Validators.required],
-  //      sector: ['', Validators.required],
-  //      aspect: ['',Validators.required],
-  //      indicator: ['',Validators.required],
-  //    });
-  //  }
 
+ save() {
+  if (this.filterModel.startdate <= this.filterModel.enddate) {
+    this.apiService.modelApiCall(`${this.urlPath}`, this.filterModel).subscribe(res => {
+      if (res) {
+        const labels: string[] = res.map(item =>
+          new Date(item.date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })
+        );
 
+        const observedValues: number[] = res.map(item => item.observed);
 
-  showGraphVisualization(model: any[]) {
-    if (!model || model.length === 0) {
-      this.lineChartData.datasets = [];
-      this.lineChartData.labels = [];
-      return;
-    }
-
-    const labels = model.map(entry => entry.Date);
-    const observedData = model.map(entry => entry.Observed);
-    const residualData = model.map(entry => parseFloat(entry.Residual.toFixed(2)));
-
-    // Update chart data
-    this.lineChartData = {
-      labels: labels,
-      datasets: [
-        {
-          label: 'Observed',
-          data: observedData,
-          borderColor: 'rgba(54, 162, 235, 1)',
-          backgroundColor: 'rgba(54, 162, 235, 0.2)',
-          fill: false,
-          tension: 0.4,
-          pointRadius: 4
-        },
-        {
-          label: 'Residual',
-          data: residualData,
-          borderColor: 'rgba(255, 99, 132, 1)',
-          backgroundColor: 'rgba(255, 99, 132, 0.2)',
-          fill: false,
-          tension: 0.4,
-          pointRadius: 4
-        }
-      ]
-    };
-
+        this.lineChartData = {
+          labels: labels,
+          datasets: [
+            {
+              data: observedValues,
+              label: 'Observed',
+              fill: false,
+              tension: 0.3,
+              borderColor: 'blue',
+              backgroundColor: 'blue',
+              pointBackgroundColor: 'blue',
+              pointBorderColor: 'white',
+              pointRadius: 5,
+              pointHoverRadius: 7,
+            }
+          ]
+        };
+      }
+    });
+  } else {
+    this.toastr.error("EndDate must be greater than StartDate", "Error");
   }
-  save() {
-    if (this.filterModel.startdate <= this.filterModel.enddate) {
-      this.apiService.modelApiCall(`${this.modelType.path}`, this.filterModel).subscribe(res => {
-        if (res) {
-          this.showGraphVisualization(res)
-        }
-      })
-    } else {
-      this.toastr.error("EndDate must be greater then StartDate", "error");
-    }
-  }
+}
+
 
   getFrmDetails() {
     this.apiService.getWithHeaders('dashboard/FmnDetails').subscribe(res => {
@@ -152,4 +120,57 @@ export class AnalysisFormComponent {
   close() {
 
   }
+
+
+lineChartData: ChartConfiguration<'line'>['data'] = {
+  labels: [],
+  datasets: [
+    {
+      data: [],
+      label: 'Observed',
+      fill: false,
+      tension: 0.3,
+      borderColor: 'blue',
+      backgroundColor: 'blue',
+      pointBackgroundColor: 'blue',
+      pointBorderColor: 'white',
+      pointRadius: 5,
+      pointHoverRadius: 7,
+    }
+  ]
+};
+
+lineChartOptions: ChartConfiguration<'line'>['options'] = {
+  responsive: true,
+  maintainAspectRatio: false, // <-- Important
+  plugins: {
+    legend: {
+      display: true
+    },
+    tooltip: {
+      enabled: true
+    }
+  },
+  interaction: {
+    mode: 'nearest',
+    intersect: false
+  },
+  scales: {
+    x: {
+      title: {
+        display: true,
+        text: 'Date'
+      }
+    },
+    y: {
+      beginAtZero: true,
+      title: {
+        display: true,
+        text: 'Observed'
+      }
+    }
+  }
+};
+
+
 }
