@@ -14,11 +14,11 @@ export class FilterModel{
     endDate:Date;
 }
 export class PredictionModel{
-    frmn:string;
-    source:string;
-    aspect:string;
-    sector:string;
-    indicator:string;
+    frmn:string[]=[];
+    source:string[]=[];
+    aspect:string[]=[];
+    sector:string[]=[];
+    indicator:string[]=[];
     startdate:Date;
     enddate:Date;
     granularity:string;

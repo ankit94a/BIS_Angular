@@ -13,7 +13,7 @@ export class AIAnalysisComponent {
   cards = [
     {
       name:'Activity Trend',
-      path:'activity-trend'
+      path:'detect-arima-anomalies'
     },{
       name:'Seasonability Check',
       path:'activity-trend'
