@@ -11,10 +11,14 @@ import { authInterceptor } from 'projects/sharedlibrary/src/services/auth-interc
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from '@danielmoncada/angular-datetime-picker';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { PlotlyModule } from 'angular-plotly.js';
+import * as PlotlyJS from 'plotly.js-dist-min';
 
+PlotlyModule.plotlyjs = PlotlyJS;
 export const appConfig: ApplicationConfig = {
   providers: [provideZoneChangeDetection({ eventCoalescing: true }), provideRouter(routes),
         // provideCharts(withDefaultRegisterables()),
+  importProvidersFrom(PlotlyModule) ,
         provideToastr(),
         provideAnimationsAsync(),
         importProvidersFrom(MatNativeDateModule),

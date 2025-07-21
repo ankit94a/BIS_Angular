@@ -14,16 +14,20 @@ export class AIAnalysisComponent {
   cards = [
     {
       name:'Activity Trend',
-      path:'detect-arima-anomalies/'
+      path:'detect-arima-anomalies/',
+      description:'This model uses ARIMA to analyze historical data, detect anomalies, and forecast future trends with high accuracy. Ideal for monitoring time-series data like sales, performance metrics, or sensor values'
     },{
       name:'Seasonability Check',
-      path:'activity-trend'
+      path:'detect-prophet-anomalies/',
+      description:'Built with Facebook’s Prophet model, this tool provides robust forecasts for time-series data with support for seasonality, holidays, and trend changes. Ideal for business metrics, traffic, or demand forecasting'
     },{
       name:'Strange Event',
-      path:'activity-trend'
+      path:'activity-trend',
+      description:'testing'
     },{
       name:'Deep Anomaly',
-      path:'detect-anomalies/'
+      path:'detect-anomalies/',
+      description:'This LSTM-based model leverages deep learning to capture complex temporal patterns in sequential data. Ideal for high-accuracy forecasting in dynamic environments like finance, energy, or sensor networks'
     }
   ]
 

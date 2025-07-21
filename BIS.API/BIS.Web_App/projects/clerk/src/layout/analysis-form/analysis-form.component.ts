@@ -8,13 +8,15 @@ import { ApiService } from 'projects/sharedlibrary/src/services/api.service';
 import { AuthService } from 'projects/sharedlibrary/src/services/auth.service';
 import { SharedLibraryModule } from 'projects/sharedlibrary/src/shared-library.module';
 import { ChartConfiguration } from 'chart.js';
-import { BaseChartDirective } from 'ng2-charts';
 import { ActivatedRoute } from '@angular/router';
 import { DatePipe } from '@angular/common';
+import { PlotlyModule } from 'angular-plotly.js';
+import { BISMatDialogService } from 'projects/sharedlibrary/src/services/insync-mat-dialog.service';
+import { AnalysisChartComponent } from '../analysis-chart/analysis-chart.component';
 
 @Component({
   selector: 'app-analysis-form',
-  imports: [SharedLibraryModule, BaseChartDirective],
+  imports: [SharedLibraryModule,PlotlyModule],
   templateUrl: './analysis-form.component.html',
   styleUrl: './analysis-form.component.scss'
 })
@@ -26,13 +28,13 @@ export class AnalysisFormComponent {
   indicators: Indicator[] = [];
   filterModel: PredictionModel = new PredictionModel();
   urlPath;
-  constructor(private apiService: ApiService, private authService: AuthService, private toastr: ToastrService, private route: ActivatedRoute,private datePipe:DatePipe) {
+
+  constructor(private apiService: ApiService, private authService: AuthService, private toastr: ToastrService, private route: ActivatedRoute,private dailog:BISMatDialogService) {
     this.route.queryParams.subscribe(params => {
       const path = params['path'];
 
       if (path) {
-        this.urlPath = path;
-        console.log('Path:', this.urlPath);
+        this.filterModel.urlPath = path;
       }
     });
 
@@ -41,41 +43,67 @@ export class AnalysisFormComponent {
     this.getFrmDetails();
     this.getSector();
     this.getAspect();
+
+
+
+
   }
 
- save() {
-  if (this.filterModel.startdate <= this.filterModel.enddate) {
-    this.apiService.modelApiCall(`${this.urlPath}`, this.filterModel).subscribe(res => {
-      if (res) {
-        const labels: string[] = res.map(item =>
-          new Date(item.date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })
-        );
+// save() {
+//   if (this.filterModel.startdate <= this.filterModel.enddate) {
+//     this.apiService.modelApiCall(`${this.urlPath}`, this.filterModel).subscribe(res => {
+//       if (res) {
+//         const labels: string[] = res.map(item =>
+//           new Date(item.date).toLocaleDateString('en-GB', {
+//             day: '2-digit', month: 'short', year: 'numeric'
+//           })
+//         );
 
-        const observedValues: number[] = res.map(item => item.observed);
+//         const observedValues: number[] = res.map(item => item.observed);
 
-        this.lineChartData = {
-          labels: labels,
-          datasets: [
-            {
-              data: observedValues,
-              label: 'Observed',
-              fill: false,
-              tension: 0.3,
-              borderColor: 'blue',
-              backgroundColor: 'blue',
-              pointBackgroundColor: 'blue',
-              pointBorderColor: 'white',
-              pointRadius: 5,
-              pointHoverRadius: 7,
-            }
-          ]
-        };
-      }
-    });
-  } else {
-    this.toastr.error("EndDate must be greater than StartDate", "Error");
-  }
+//         // Use .isAnomaly property or adjust logic
+//         const anomalies = res.map(item => item.isAnomaly);
+
+//         const pointColors = anomalies.map(a => a ? 'red' : 'blue');
+//         const pointRadius = anomalies.map(a => a ? 5 : 0); // 0 for hidden non-anomaly points
+
+//         this.lineChartData = {
+//           labels,
+//           datasets: [
+//             {
+//               data: observedValues,
+//               label: 'Observed',
+//               fill: false,
+//               tension: 0.3,
+//               borderColor: 'blue',
+//               backgroundColor: 'transparent',
+//               pointBackgroundColor: pointColors,
+//               pointBorderColor: pointColors,
+//               pointRadius,
+//               pointHoverRadius: 6,
+//               pointStyle: 'circle',
+//             }
+//           ]
+//         };
+//       }
+//     });
+//   } else {
+//     this.toastr.error("EndDate must be greater than StartDate", "Error");
+//   }
+// }
+
+save() {
+  this.dailog.open(AnalysisChartComponent,this.filterModel).then(res =>{
+    if(res){
+
+    }
+  })
+
 }
+
+
+
+
 
 
   getFrmDetails() {

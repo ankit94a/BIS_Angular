@@ -1,42 +1,25 @@
 <mat-card appearance="outlined">
-    <mat-card-header class="insync-header">
-        <div class="row full-width">
-            <div class="col-sm-2">AI Analysis</div>
-            <div class="col-sm-2 offset-4"></div>
-            <div class="col-md-2" align="end">
-                <!-- <a href="/corps" *ngIf="isCommand" class="back-link"> Back</a> -->
+  <mat-card-header class="insync-header">
+    <div class="row full-width justify-content-between align-items-center">
+      <div class="col-sm-2">AI Analysis</div>
+    </div>
+  </mat-card-header>
+
+  <mat-card-content>
+    <div class="row gx-4 gy-4">
+      <div class="col-12 col-md-6" *ngFor="let card of cards" (click)="openCardDetails(card)">
+        <div class="ecom-card">
+          <div class="card-body">
+            <h5 class="card-title">{{ card.name }}</h5>
+            <p class="card-description">{{card.description}}</p>
+            <!-- Optional price or CTA -->
+            <div class="card-footer">
+              <span class="price">abc</span>
+              <button mat-button color="primary">View</button>
             </div>
-
+          </div>
         </div>
-    </mat-card-header>
-    <mat-card-content>
-  <div class="row" *ngFor="let row of cardRows">
-    <div class="col-md-6 hero" *ngFor="let card of row" (click)="openCardDetails(card)">
-      <div class="description">
-          <h1>{{ card.name }}</h1>
-        </div>
-      <div class="hero-description-bk">
-
       </div>
     </div>
-  </div>
-
-  <!-- <div class="first hero">
-  <img class="hero-profile-img" src="https://cdn.gamer-network.net/2018/metabomb/leagueoflegendsbestcarrychampions2018pantheon.jpg" alt="">
-  <div class="hero-description-bk"></div>
-  <div class="hero-logo">
-    <img src="https://miscmedia-9gag-fun.9cache.com/images/thumbnail-facebook/1557291375.3948_Dy2yZu_n.jpg" alt="">
-  </div>
-  <div class="hero-description">
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-  </div>
-  <div  class="hero-date">
-    <p>20.02.2019</p>
-  </div>
-  <div class="hero-btn">
-    <a href="#">Learn More</a>
-  </div>
-</div> -->
-
-    </mat-card-content>
+  </mat-card-content>
 </mat-card>

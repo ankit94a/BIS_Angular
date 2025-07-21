@@ -50,14 +50,12 @@ export class MasterDataComponent extends TablePaginationSettingsConfig implement
     this.selectedSample = $event;
   }
   isApproved($event){
-    debugger
     var notify = new NotificationModel();
     notify.dataId = $event.id;
     notify.CorpsId = $event.corpsId;
     notify.DivisionId = $event.divisionId;
     $event.action == true? notify.status = Status.Approved : notify.status = Status.Rejected;
     this.apiService.postWithHeader(`notification/updatestatus`, notify).subscribe(res => {
-      debugger
       if (res) {
         $event.action == true ? this.toastr.success("Input approved successfully", 'success') : this.toastr.success("Input rejected successfully", 'success');
         this.getDataFromServer();

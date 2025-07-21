@@ -1,36 +1,47 @@
-.description{
+.ecom-card {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 20px;
+  transition: box-shadow 0.3s ease;
+  height: 100%;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 240px;
-  h1{
-    font-weight: 700;
+  flex-direction: column;
+  justify-content: space-between;
+
+  &:hover {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
   }
 
-}
+  .card-body {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
 
-.hero {
-  display: inline-block;
-  position: relative;
-  width: 800px;
-  min-width: 400px;
-  height: 300px;
-  border-radius: 30px;
-  overflow:hidden;
-  box-shadow: 5px 5px 30px rgba(0, 0, 0, 0.3);
-  margin: 30px;
-}
-.hero:hover{
-  cursor: pointer;
-}
+  .card-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #333;
+    margin: 0;
+  }
 
-.hero-description-bk {
-  background-image: linear-gradient(0deg , #3f5efb, #fc466b);
-  border-radius: 30px;
-  position: absolute;
-  top: 55%;
-  left: -5px;
-  height: 65%;
-  width: 108%;
-  transform: skew(25deg, -9deg);
+  .card-description {
+    font-size: 0.95rem;
+    color: #666;
+    flex-grow: 1;
+  }
+
+  .card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto;
+
+    .price {
+      font-weight: bold;
+      color: #1a1a1a;
+    }
+  }
 }
