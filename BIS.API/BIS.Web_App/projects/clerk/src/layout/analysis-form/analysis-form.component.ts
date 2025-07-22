@@ -109,11 +109,12 @@ save() {
   getFrmDetails() {
     this.apiService.getWithHeaders('dashboard/FmnDetails').subscribe(res => {
       if (res) {
+        debugger
         this.frmnList = res;
-        var divisionId = parseInt(this.authService.getDivisionId());
-        var corpsId = parseInt(this.authService.getCorpsId());
-        var frm = this.frmnList.find(item => item.corpsId === corpsId && item.divisionId === divisionId).name;
-        this.filterModel.frmn = frm
+        // var divisionId = parseInt(this.authService.getDivisionId());
+        // var corpsId = parseInt(this.authService.getCorpsId());
+        // var frm = this.frmnList.find(item => item.corpsId === corpsId && item.divisionId === divisionId).name;
+        // this.filterModel.frmn = frm
         // if (frm) {
         //   if (!this.filterModel.frmn) {
         //     this.filterModel.frmn = [];

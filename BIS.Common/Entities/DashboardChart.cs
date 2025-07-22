@@ -59,7 +59,9 @@ namespace BIS.Common.Entities
 	public class FilterModelEntries : FilterModel
 	{
 		public FilterType FilterType { get; set; }
-	}
+        public int CorpsId { get; set; }
+        public int DivisionId { get; set; }
+    }
 	public class GroupedData
 	{
 		public string Date { get; set; }

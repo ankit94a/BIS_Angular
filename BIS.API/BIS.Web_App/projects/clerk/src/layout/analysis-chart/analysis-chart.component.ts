@@ -4,10 +4,14 @@ import { PlotlyModule } from 'angular-plotly.js';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { ConfirmDialogComponent } from 'projects/sharedlibrary/src/component/confirm-dialog/confirm-dialog.component';
-import { PredictionModel } from 'projects/sharedlibrary/src/model/dashboard.model';
+import { FilterModel, FmnModel, PredictionModel } from 'projects/sharedlibrary/src/model/dashboard.model';
+import { masterData } from 'projects/sharedlibrary/src/model/masterdata.model';
 import { ApiService } from 'projects/sharedlibrary/src/services/api.service';
+import { AuthService } from 'projects/sharedlibrary/src/services/auth.service';
 import { BISMatDialogService } from 'projects/sharedlibrary/src/services/insync-mat-dialog.service';
+import { MasterDataFilterService } from 'projects/sharedlibrary/src/services/master-data-filter.service';
 import { SharedLibraryModule } from 'projects/sharedlibrary/src/shared-library.module';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-analysis-chart',
@@ -21,9 +25,19 @@ export class AnalysisChartComponent {
   plotlyLayout: any;
   plotlyConfig: any;
   title: string;
-  constructor(private dailog: BISMatDialogService, @Inject(MAT_DIALOG_DATA) data, private apiService: ApiService, private toastr: ToastrService, private spinnerService: NgxSpinnerService) {
-    this.model = data;
-
+  filterModel:FilterModel = new FilterModel();
+  masterDatas:masterData [] = [];
+  frmn:FmnModel = new FmnModel();
+  
+  private tableHeaderSubject = new BehaviorSubject<string[]>([]);
+  private masterDataListSubject = new BehaviorSubject<masterData[]>([])
+  tableHeader$ = this.tableHeaderSubject.asObservable();
+  masterDataList$ = this.masterDataListSubject.asObservable();
+  constructor(private dailog: BISMatDialogService, @Inject(MAT_DIALOG_DATA) data,private masterDataService: MasterDataFilterService, private apiService: ApiService, private toastr: ToastrService, private spinnerService: NgxSpinnerService) {
+    this.frmn = data.frmn[0];
+    this.model = JSON.parse(JSON.stringify(data))
+    this.model.frmn = [];
+    this.model.frmn.push(data.frmn[0].name)
   }
 
   ngOnInit() {
@@ -183,9 +197,20 @@ export class AnalysisChartComponent {
     }
   }
 
-  handleAnomalyClick(date: string, value: number) {
-    alert(`Anomaly detected on ${date} with value ${value}`);
-    this.apiService.postWithHeader("hgggh",this.model)
+  handleAnomalyClick(date, value: number) {
+    var anomali = {
+      startdate:date,
+      endDate:date,
+      corpsId:this.frmn.corpsId,
+      divisionId:this.frmn.divisionId
+    }
+    this.apiService.postWithHeader("masterdata/anamolies",anomali).subscribe( res =>{
+      if(res){
+        const { Header, DataList } = this.masterDataService.getMasterData(res);
+        this.tableHeaderSubject.next(Header);
+        this.masterDataListSubject.next(DataList);
+      }
+    })
   }
 
 }

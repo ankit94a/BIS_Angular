@@ -202,5 +202,12 @@ namespace BIS.API.Controller
 		{
 			return Ok(_masterDataManager.Deactive(id, table));
 		}
-	}
+
+        [HttpPost, Route("anamolies")]
+        public IActionResult GetAnamoliesBetweenDateRange(FilterModelEntries filterModel)
+        {
+            
+            return Ok(_masterDataManager.GetBetweenDateRange(filterModel, filterModel.CorpsId, filterModel.DivisionId));
+        }
+    }
 }

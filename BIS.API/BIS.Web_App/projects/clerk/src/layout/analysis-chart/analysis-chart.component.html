@@ -10,4 +10,36 @@
             </div>
         </div>
     </div>
+
+      <div class="row" *ngIf="(masterDataList$ | async)?.length > 0">
+      <div class="table-container">
+          <table>
+              <thead>
+                  <tr>
+                      <!-- <th>#</th> -->
+                      <ng-container *ngFor="let item of tableHeader$ | async">
+                          <th *ngIf="!['Id','Status','UserId','Fmn', 'CreatedBy', 'CreatedOn', 'IsActive', 'IsDeleted', 'CorpsId', 'DivisionId','ReportedDate'].includes(item)"
+                              class="space">
+                              {{ item }}
+                          </th>
+                      </ng-container>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr *ngFor="let item of masterDataList$ | async; let i = index">
+                      <!-- Checkbox for individual rows -->
+                      <!-- <td>
+                          <mat-checkbox></mat-checkbox>
+                      </td> -->
+                      <ng-container *ngFor="let header of tableHeader$ | async">
+                          <td *ngIf="!['Id','Status','UserId','Fmn', 'CreatedBy', 'CreatedOn', 'IsActive', 'IsDeleted', 'CorpsId', 'DivisionId','ReportedDate'].includes(header)"
+                              class="space">
+                              {{ item[header] }}
+                          </td>
+                      </ng-container>
+                  </tr>
+              </tbody>
+          </table>
+      </div>
+  </div>
 </mat-dialog-content>

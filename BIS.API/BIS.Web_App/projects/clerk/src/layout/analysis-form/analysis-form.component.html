@@ -38,7 +38,7 @@
   </div>
   <div class="row">
     <div class="col-md-6">
-      <ng-select appendTo="ng-select" [items]="frmnList" [multiple]="true" bindLabel="name" bindValue="name"
+      <ng-select appendTo="ng-select" [items]="frmnList" [multiple]="true" bindLabel="name" 
         bindLabel="name" [closeOnSelect]="true" placeholder="Fmn" [searchable]="true" [(ngModel)]="filterModel.frmn">
         <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
           <div class="ng-value" *ngFor="let item of items">

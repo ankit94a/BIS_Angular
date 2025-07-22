@@ -12,9 +12,12 @@ export class FilterModel{
     indicator:string[]=[];
     startDate:Date;
     endDate:Date;
+    // corpsId:number;
+    // divisionId:number;
+    // urlPath:string;
 }
 export class PredictionModel{
-    frmn:string[]=[];
+    frmn:FmnModel[]=[];
     source:string[]=[];
     aspect:string[]=[];
     sector:string[]=[];
