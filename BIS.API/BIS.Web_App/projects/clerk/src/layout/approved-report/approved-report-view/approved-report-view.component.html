@@ -4,9 +4,7 @@
 <mat-dialog-content>
   <div class="book">
     <div class="book-page" *ngIf="currentChapter === 1">
-      <!-- Chapter 1 Content -->
       <ng-container>
-        <!-- your existing full HTML for Chapter 1 here -->
         <div class="row">
           <div class="col-md-4">
             <mat-form-field>
@@ -34,14 +32,12 @@
         </div>
       
         <hr>
-      
-        <!-- G1 Master Data -->
+
         <div class="row" *ngIf="(masterDataList$ | async)?.length > 0">
           <div class="table-container">
             <table>
               <thead>
                 <tr>
-                  <!-- <th>#</th> -->
                   <ng-container *ngFor="let item of tableHeader$ | async">
                     <th
                       *ngIf="!['Id','Status','UserId','Fmn', 'CreatedBy', 'CreatedOn', 'IsActive', 'IsDeleted', 'CorpsId', 'DivisionId','ReportedDate'].includes(item)"
@@ -53,10 +49,6 @@
               </thead>
               <tbody>
                 <tr *ngFor="let item of masterDataList$ | async; let i = index">
-                  <!-- Checkbox for individual rows -->
-                  <!-- <td>
-                              <mat-checkbox></mat-checkbox>
-                          </td> -->
                   <ng-container *ngFor="let header of tableHeader$ | async">
                     <td
                       *ngIf="!['Id','Status','UserId','Fmn', 'CreatedBy', 'CreatedOn', 'IsActive', 'IsDeleted', 'CorpsId', 'DivisionId','ReportedDate'].includes(header)"
@@ -73,16 +65,14 @@
       
       
         <br>
-      
-        <!-- G1 Graphs -->
+
         <div *ngIf="fullReport.mergeReport.graphs.length > 0" class="row image-preview-container">
           <div *ngFor="let image of fullReport.mergeReport.graphs" class="col-md-6 image-preview">
             <img [src]="image.url" [alt]="image.name" />
             <span class="image-name">{{ image.name }}</span>
           </div>
         </div>
-      
-        <!-- G1 Notes -->
+
         <div class="col-md-12" *ngIf="fullReport.mergeReport.notes">
           <mat-form-field>
             <mat-label>G1 Comment</mat-label>
@@ -91,10 +81,9 @@
         </div>
       
         <br>
-      
-        <!-- Col Graphs and Notes (If Exist) -->
+
         <div *ngIf="fullReport.mergeReport.colGraphs?.length > 0">
-          <!-- <h4>Col Graphs</h4> -->
+
           <div class="row image-preview-container">
             <div *ngFor="let image of fullReport.mergeReport.colGraphs" class="col-md-6 image-preview">
               <img [src]="image.url" [alt]="image.name" />
@@ -111,9 +100,7 @@
         </div>
         <br>
       
-        <!-- Bgs Graphs and Notes (If Exist) -->
         <div *ngIf="fullReport.mergeReport.bgsGraphs?.length > 0">
-          <!-- <h4>BGs Graphs</h4> -->
           <div class="row image-preview-container">
             <div *ngFor="let image of fullReport.mergeReport.bgsGraphs" class="col-md-6 image-preview">
               <img [src]="image.url" [alt]="image.name" />
@@ -130,9 +117,7 @@
               [(ngModel)]="fullReport.mergeReport.bgsNotes"></textarea>
           </mat-form-field>
         </div>
-        <!-- Mggs Graphs and Notes (If Exist) -->
         <div *ngIf="fullReport.mergeReport.mggsGraphs?.length > 0">
-          <!-- <h4>BGs Graphs</h4> -->
           <div class="row image-preview-container">
             <div *ngFor="let image of fullReport.mergeReport.mggsGraphs" class="col-md-6 image-preview">
               <img [src]="image.url" [alt]="image.name" />
@@ -153,7 +138,7 @@
     </div>
   
     <div class="book-page" *ngIf="currentChapter === 2">
-      <!-- Chapter 2 Content -->
+
       <ng-container>
         <div class="row">
           <div class="col-sm-4">
@@ -331,14 +316,12 @@
         </div>
       </ng-container>
     </div>
-  
-    <!-- Add as many chapters as you want -->
+
   </div>
   
 </mat-dialog-content>
 
 <mat-dialog-actions>
-   <!-- Chapter Navigation -->
   <div class="btn-gap">
     <div class="gp">
       <button mat-raised-button color="primary" (click)="prevChapter()" [disabled]="currentChapter === 1">

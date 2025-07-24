@@ -1,13 +1,6 @@
 <div class="bell-container" (click)="openNotifications()">
-  <!-- <mat-icon
-  style="color: #fff;"
-  [@bounce]="animState"
-  (@bounce.done)="animDone($event)">
-  notifications
-</mat-icon> -->
 <img src="/assets/bell-ringing-svgrepo-com.svg" class="custom-icon"  [@bounce]="animState"
 (@bounce.done)="animDone($event)"  alt="">
-
   <span class="badge" *ngIf="notifications.length>0"> {{notifications.length}}</span>
 </div>
 <div class="popup" *ngIf="dropdownVisible">
@@ -25,10 +18,4 @@
     </div>
     <mat-divider></mat-divider>
   </div>
-  <!-- <div class="spinner" *ngIf="loading">
-    <mat-spinner diameter="40"></mat-spinner>
-  </div> -->
-  <!-- <div *ngIf="!hasMore && !loading" class="end-message">
-    No more notifications.
-  </div> -->
 </div>

@@ -1,4 +1,3 @@
-import { RoleType } from './../../../../sharedlibrary/src/model/enum';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Division } from 'projects/sharedlibrary/src/model/base.model';
@@ -48,7 +47,6 @@ export class CorpsListComponent {
       const decodedPayload = atob(payload);
       return JSON.parse(decodedPayload);
     } catch (e) {
-      console.error('Invalid token', e);
       return null;
     }
   }
@@ -72,21 +70,6 @@ export class CorpsListComponent {
         this.router.navigate(['/dashboard']);
       }
     })
-
-
-// if (decoded) {
-//   decoded.corpsId = corps.id;
-//   localStorage.setItem("BIS_TOKEN", JSON.stringify(decoded));
-//   localStorage.setItem("BIS_CorpsName", corps.name);
-//   localStorage.setItem("BIS_CorpsId", corps.id);
-// }
-    // if(this.user == "10"){
-    //   this.router.navigate(['/dashboard']);
-    // }else if(this.user == "15"){
-
-    // }else{
-
-    // }
 
   }
   openClerkApp(corps){

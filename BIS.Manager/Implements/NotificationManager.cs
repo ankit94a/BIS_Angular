@@ -41,7 +41,7 @@ namespace BIS.Manager.Implements
 		{
 			var masterId = _masterDataDB.UpdateStatus(notify.DataId, notify.Status.Value);
 			var actionTaken = _notificationDB.NotificationActionTaken(notify.Id, notify.CorpsId, notify.DivisionId.Value);
-			// sending notification to staff that his form is approved or not.
+
 			Task.Run(async () =>
 			{
 				await Task.Delay(TimeSpan.FromMinutes(2));
@@ -71,38 +71,15 @@ namespace BIS.Manager.Implements
 			});
 			return 1;
 
-
-			//return _notificationDB.UpdateStatus(notify);
 		}
 		public bool GetNotificationConfig()
 		{
-			// getting upto 30min of master form filled by staff
 			List<MasterData> masterDataList = _masterDataDB.GetUpto30MinForm();
 			BISLogger.Info("Total new master form created upto 30min before are" + masterDataList.Count, "Notification_Manager", "GetNotificationConfig");
 			foreach (var masterData in masterDataList)
 			{
-
 				var notification = new Notification();
 				notification.SenderId = masterData.CreatedBy;
-				//	notification.SenderEntityType = roleType;
-				//	foreach (var item in Enum.GetValues(typeof(RoleType)).Cast<RoleType>().OrderByDescending(e => (int)e))
-				//	{
-				//		if ((int)item == (int)roleType + 1)
-				//		{
-				//			notification.ReceiverId = _userDB.GetUserIdByRoleType(item, masterData.CorpsId, masterData.DivisionId);
-				//			notification.ReceiverEntityType = item;
-				//			notification.NotificationType = NotificationType.MasterData;
-				//			notification.Title = "Master Form Submitted";
-				//			notification.Content = $"Input filled by {roleType}. Please review and respond!";
-				//			notification.CreatedBy = masterData.CreatedBy;
-				//			notification.CreatedOn = DateTime.UtcNow;
-				//			notification.CorpsId = masterData.CorpsId;
-				//			notification.DivisionId = masterData.DivisionId;
-				//			notification.DataId = Convert.ToInt32(id);
-				//			return _notificationDB.AddNotification(notification);
-				//		}
-				//	}
-
 			}
 			return true;
 		}

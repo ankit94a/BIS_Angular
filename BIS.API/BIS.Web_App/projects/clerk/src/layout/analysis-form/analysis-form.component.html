@@ -4,7 +4,6 @@
       <div class="col-sm-2">Analysis Form</div>
       <div class="col-sm-7">
         <div class="col-md-2"  align="end">
-          <!-- <a href="/corps" *ngIf="isCommand" class="back-link"> Back</a> -->
         </div>
       </div>
     </div>
@@ -111,7 +110,6 @@
 
   <br>
 
-<!-- Plotly Chart For AI-Analysis -->
 <div class="row" *ngIf="plotlyData.length > 0">
         <div class="card">
             <div class="plot-wrapper">
@@ -128,7 +126,6 @@
           <table>
               <thead>
                   <tr>
-                      <!-- <th>#</th> -->
                       <ng-container *ngFor="let item of tableHeader$ | async">
                           <th *ngIf="!['Id','Status','UserId','Fmn', 'CreatedBy', 'CreatedOn', 'IsActive', 'IsDeleted', 'CorpsId', 'DivisionId','ReportedDate'].includes(item)"
                               class="space">

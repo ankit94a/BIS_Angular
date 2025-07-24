@@ -19,10 +19,7 @@
               <ng-container matColumnDef="actions">
                 <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
                 <mat-cell *matCellDef="let source">
-                  <!-- <button mat-icon-button color="warn"
-                  type="button" (click)="view(source,'MasterSources')"matTooltip="delete">
-                  <mat-icon>delete_outline</mat-icon>
-              </button> -->
+
               <button mat-icon-button color="warn"
                               type="button" (click)="view(source,'MasterSources')"matTooltip="delete">
                               <img src="/assets/delete.svg" class="custom-icon" alt="">
@@ -48,18 +45,7 @@
 
         <mat-card>
           <mat-card-content>
-            <!-- <div class="row">
-              <div class="col-md-4">
-                <mat-form-field appearance="fill">
-                  <mat-label>Wing</mat-label>
-                  <mat-select [multiple]="false" [(ngModel)]="wingId" panelClass="custom-dropdown" placeholder="Category" (selectionChange)="getCategory($event.value)">
-                    <mat-option *ngFor="let wing of wing" [value]="wing.id">
-                      {{ wing.name }}
-                    </mat-option>
-                  </mat-select>
-                </mat-form-field>
-              </div>
-            </div> -->
+
             <mat-table [dataSource]="dataSource" class="mat-elevation-z8">
               <ng-container matColumnDef="name">
                 <mat-header-cell *matHeaderCellDef> Source Location </mat-header-cell>
@@ -68,10 +54,7 @@
               <ng-container matColumnDef="actions">
                 <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
                 <mat-cell *matCellDef="let sourceLoc">
-                  <!-- <button mat-icon-button color="warn"
-                  type="button" (click)="view(sourceLoc,'MasterLocations')" matTooltip="delete">
-                  <mat-icon>delete_outline</mat-icon>
-              </button> -->
+
               <button mat-icon-button color="warn"
                               type="button" (click)="view(sourceLoc,'MasterLocations')"matTooltip="delete">
                               <img src="/assets/delete.svg" class="custom-icon" alt="">
@@ -96,29 +79,7 @@
         </div>
         <mat-card>
           <mat-card-content>
-            <!-- <div class="row">
-              <div class="col-md-4">
-                <mat-form-field appearance="fill">
-                  <mat-label>Wing</mat-label>
-                  <mat-select [multiple]="false" [(ngModel)]="wingId" panelClass="custom-dropdown" placeholder="Category" (selectionChange)="getCategory($event.value)">
-                    <mat-option *ngFor="let wing of wing" [value]="wing.id">
-                      {{ wing.name }}
-                    </mat-option>
-                  </mat-select>
-                </mat-form-field>
-              </div>
-              <div class="col-md-4">
-                <mat-form-field appearance="fill">
-                  <mat-label>Category</mat-label>
-                  <mat-select [multiple]="false" [(ngModel)]="categoryId" panelClass="custom-dropdown" placeholder="Category" (selectionChange)="getSubCategory($event.value)">
-                    <mat-option *ngFor="let category of categoryList" [value]="category.id">
-                      {{ category.name }}
-                    </mat-option>
-                  </mat-select>
-                </mat-form-field>
-              </div>
-            </div> -->
-
+          
             <mat-table [dataSource]="dataSource1" class="mat-elevation-z8">
               <ng-container matColumnDef="name">
                 <mat-header-cell *matHeaderCellDef>Type of Loc </mat-header-cell>
@@ -127,10 +88,7 @@
               <ng-container matColumnDef="actions">
                 <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
                 <mat-cell *matCellDef="let typeOfLoc">
-                  <!-- <button mat-icon-button color="warn"
-                  type="button" (click)="view(typeOfLoc,'MasterLocations')" matTooltip="delete">
-                  <mat-icon>delete_outline</mat-icon>
-              </button> -->
+
               <button mat-icon-button color="warn"
                               type="button" (click)="view(typeOfLoc,'MasterLocations')"matTooltip="delete">
                               <img src="/assets/delete.svg" class="custom-icon" alt="">
@@ -155,11 +113,7 @@
         </div>
         <mat-card>
           <mat-card-content>
-            <!-- <app-table *ngIf="enemyLocList.length > 0" [rowData]="enemyLocList" [tablePaginationSettings]="tablePaginationSettings"
-              [enableCheckbox]="true" [isRowBackgroundColor]="true" [isRefresh]="isRefresh" [allowMultiSelect]="true"
-              (edit)="edit($event)" (view)="view($event)" [sqColumnDefinition]="columns"
-              >
-            </app-table> -->
+
 
             <mat-table [dataSource]="dataSource2" class="mat-elevation-z8">
               <ng-container matColumnDef="name">
@@ -169,10 +123,7 @@
               <ng-container matColumnDef="actions">
                 <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
                 <mat-cell *matCellDef="let enemyLoc">
-                  <!-- <button mat-icon-button color="warn"
-                  type="button" (click)="view(enemyLoc,'MasterEnLocName')" matTooltip="delete">
-                  <mat-icon>delete_outline</mat-icon>
-              </button> -->
+
               <button mat-icon-button color="warn"
               type="button" (click)="view(enemyLoc,'MasterEnLocName')"matTooltip="delete">
               <img src="/assets/delete.svg" class="custom-icon" alt="">
@@ -191,7 +142,6 @@
   </mat-card-content>
 </mat-card>
 
-<!-- Adding Form -->
 
 <ng-template #sourceAdd>
   <div mat-dialog-title>Add Source</div>

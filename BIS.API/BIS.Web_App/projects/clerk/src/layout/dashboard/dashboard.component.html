@@ -15,7 +15,6 @@
         <div class="card2 card-stats">
           <div class="card-header2">
             <div class="card-icon red">
-              <!-- <mat-icon>equalizer</mat-icon> -->
                <img src="/assets/equalizer.svg" class="custom-icon" alt="">
             </div>
             <div class="count-text">{{ dashboardCount.totalInputCount }}</div>
@@ -31,7 +30,6 @@
         <div class="card2 card-stats">
           <div class="card-header2">
             <div class="card-icon green">
-              <!-- <mat-icon>store</mat-icon> -->
               <img src="/assets/house.svg" style="height: 35px;" class="custom-icon" alt="">
             </div>
             <div class="count-text">{{ dashboardCount.todayCount }}</div>
@@ -47,7 +45,6 @@
         <div class="card2 card-stats">
           <div class="card-header2">
             <div class="card-icon orange">
-              <!-- <mat-icon>weekend</mat-icon> -->
               <img src="/assets/sofa.svg" style="height: 35px;" class="custom-icon" alt="">
             </div>
             <div class="count-text">{{ dashboardCount.last7DaysCount }}</div>
@@ -96,15 +93,13 @@
       </div>
     </div>
 
-    <!-- Sector Graph -->
     <div class="card-container">
       <mat-card class="card card-small">
         <section class="card-title">
           <mat-checkbox [(ngModel)]="selectedCharts['Sector_wise_Inputs']"></mat-checkbox>
           <h3 class="card-heading">Sector wise Inputs</h3>
           <button class="download-icon mt-2" (click)="download('Sector_wise_Inputs')">
-            <!-- <mat-icon class="icon-display font-black" matTooltip="download">arrow_downward</mat-icon> -->
-            <img src="/assets/down-arrow.svg" style="height: 15px;" alt="">
+           <img src="/assets/down-arrow.svg" style="height: 15px;" alt="">
           </button>
         </section>
         <div class="chart-container">
@@ -118,7 +113,6 @@
           <mat-checkbox [(ngModel)]="selectedCharts['Sector_wise(Last_30_Days)']"></mat-checkbox>
           <h3 class="card-title adjust-font">Sector wise (Last 30 Days)</h3>
           <button class="download-icon mt-2" (click)="download('Sector_wise(Last_30_Days)')">
-            <!-- <mat-icon class="icon-display font-black" matTooltip="download">arrow_downward</mat-icon> -->
             <img src="/assets/down-arrow.svg" style="height: 15px;" alt="">
           </button>
         </section>
@@ -132,7 +126,6 @@
           <mat-checkbox [(ngModel)]="selectedCharts['Sector_wise(Today)']"></mat-checkbox>
           <h3 class="card-heading">Sector wise (Today)</h3>
           <button class="download-icon mt-2" (click)="download('Sector_wise(Today)')">
-            <!-- <mat-icon class="icon-display font-black" matTooltip="download">arrow_downward</mat-icon> -->
             <img src="/assets/down-arrow.svg" style="height: 15px;" alt="">
           </button>
         </section>
@@ -146,7 +139,6 @@
           <mat-checkbox [(ngModel)]="selectedCharts['Sector_wise(Last_12_Months)']"></mat-checkbox>
           <h3 class="card-heading">Sector wise (Last 12 Months)</h3>
           <button class="download-icon lg-height" (click)="download('Sector_wise(Last_12_Months)')">
-            <!-- <mat-icon class="icon-display font-black" matTooltip="download">arrow_downward</mat-icon> -->
             <img src="/assets/down-arrow.svg" style="height: 15px;" alt="">
           </button>
         </section>
@@ -159,43 +151,31 @@
     </div>
 
     <br>
-    <!-- Frmn Graph -->
+
     <div class="card-container">
       <mat-card class="card card-small">
         <section class="card-title">
           <mat-checkbox [(ngModel)]="selectedCharts['Fmn_wise_Inputs']"></mat-checkbox>
           <h3 class="card-heading">Fmn wise Inputs</h3>
           <button class="download-icon mt-2" (click)="download('Fmn_wise_Inputs')">
-            <!-- <mat-icon class="icon-display font-black" matTooltip="download">arrow_downward</mat-icon> -->
             <img src="/assets/down-arrow.svg" style="height: 15px;" alt="">
           </button>
         </section>
         <div class="chart-container">
           <canvas baseChart [data]="frmInputChartData" type="polarArea" [options]="ChartOptions"></canvas>
         </div>
-        <!-- <div class="card-footer">
-                <ul>
-                  <li> 1 : 10</li>
-                </ul>
-              </div> -->
       </mat-card>
       <mat-card class="card card-small">
         <section class="card-title">
           <mat-checkbox [(ngModel)]="selectedCharts['Fmn_wise(Last_30_Days)']"></mat-checkbox>
           <h3 class="card-title adjust-font">Fmn wise (Last 30 Days)</h3>
           <button class="download-icon mt-2" (click)="download('Fmn_wise(Last_30_Days)')">
-            <!-- <mat-icon class="icon-display font-black" matTooltip="download">arrow_downward</mat-icon> -->
             <img src="/assets/down-arrow.svg" style="height: 15px;" alt="">
           </button>
         </section>
         <div class="chart-container">
           <canvas baseChart [data]="frm30DaysChartData" type='polarArea' [options]="ChartOptions"></canvas>
         </div>
-        <!-- <div class="card-footer">
-                  <ul>
-                    <li> 1 : 10</li>
-                  </ul>
-                </div> -->
       </mat-card>
 
       <mat-card class="card card-small">
@@ -203,67 +183,42 @@
           <mat-checkbox [(ngModel)]="selectedCharts['Fmn_wise(Today)']"></mat-checkbox>
           <h3 class="card-heading">Fmn wise (Today)</h3>
           <button class="download-icon mt-2" (click)="download('Fmn_wise(Today)')">
-            <!-- <mat-icon class="icon-display font-black" matTooltip="download">arrow_downward</mat-icon> -->
             <img src="/assets/down-arrow.svg" style="height: 15px;" alt="">
           </button>
         </section>
         <div class="chart-container">
           <canvas baseChart [data]="frmTodayChartData" type='polarArea' [options]="ChartOptions"></canvas>
         </div>
-        <!-- <div class="card-footer">
-                  <ul>
-                    <li> 1 : 10</li>
-                  </ul>
-                </div> -->
+
       </mat-card>
       <mat-card class="card card-large">
         <section class="card-title lg">
           <mat-checkbox [(ngModel)]="selectedCharts['Fmn_wise_(Last_12_Months)']"></mat-checkbox>
           <h3 class="card-heading">Fmn wise (Last 12 Months)</h3>
           <button class="download-icon lg-height" (click)="download('Fmn_wise_(Last_12_Months) ')">
-            <!-- <mat-icon class="icon-display font-black" matTooltip="download">arrow_downward</mat-icon> -->
             <img src="/assets/down-arrow.svg" style="height: 15px;" alt="">
           </button>
         </section>
         <div class="chart-container">
           <canvas baseChart [data]="frm12MonthsChartData" [options]="lineChartOptions" [type]="'line'"></canvas>
         </div>
-        <!-- <div class="card-footer">
-                <ul>
-                  <li>val : val2</li>
-                </ul>
-              </div> -->
+
       </mat-card>
     </div>
     <br>
-    <!-- Aspect Graph -->
     <div class="card-container">
       <mat-card class="card card-small">
         <section class="card-title">
           <mat-checkbox [(ngModel)]="selectedCharts['All_Aspect']"></mat-checkbox>
           <h3 class="card-heading">All Aspect</h3>
           <button class="download-icon mt-2" (click)="download('All_Aspect')">
-            <!-- <mat-icon class="icon-display font-black" matTooltip="download">arrow_downward</mat-icon> -->
             <img src="/assets/down-arrow.svg" style="height: 15px;" alt="">
           </button>
         </section>
         <div class="chart-container">
           <canvas baseChart [data]="aspectAllChartData" type="pie" [options]="ChartOptions"></canvas>
         </div>
-        <!-- <div class="card-footer">
-              <ul *ngIf="aspectAllChartData?.labels?.length > 0">
-                <li *ngFor="let label of aspectAllChartData.labels | slice: 0:3; let i = index">
-                  <span
-                    class="color-box"
-                    [style.color]="aspectAllChartData.datasets[0]?.backgroundColor?.[i]"
-                  > {{ label }}</span>
-
-                </li>
-              </ul>
-              <span *ngIf="aspectAllChartData?.labels?.length > 3" class="more-labels">
-                &#x2026;
-              </span>
-            </div> -->
+ 
       </mat-card>
 
       <mat-card class="card card-small">
@@ -271,18 +226,13 @@
           <mat-checkbox [(ngModel)]="selectedCharts['Aspect (Last_30_Days)']"></mat-checkbox>
           <h3 class="card-title adjust-font">Aspect (Last 30 Days)</h3>
           <button class="download-icon mt-2" (click)="download('Aspect (Last_30_Days)')">
-            <!-- <mat-icon class="icon-display font-black" matTooltip="download">arrow_downward</mat-icon> -->
             <img src="/assets/down-arrow.svg" style="height: 15px;" alt="">
           </button>
         </section>
         <div class="chart-container">
           <canvas baseChart [data]="aspect30DaysChartData" type='pie' [options]="ChartOptions"></canvas>
         </div>
-        <!-- <div class="card-footer">
-                  <ul>
-                    <li> 1 : 10</li>
-                  </ul>
-                </div> -->
+
       </mat-card>
 
       <mat-card class="card card-small">
@@ -290,18 +240,12 @@
           <mat-checkbox [(ngModel)]="selectedCharts['Aspect_Today']"></mat-checkbox>
           <h3 class="card-heading">Aspect Today</h3>
           <button class="download-icon mt-2" (click)="download('Aspect_Today')">
-            <!-- <mat-icon class="icon-display font-black" matTooltip="download">arrow_downward</mat-icon> -->
             <img src="/assets/down-arrow.svg" style="height: 15px;" alt="">
           </button>
         </section>
         <div class="chart-container">
           <canvas baseChart [data]="aspectTodayChartData" type='pie' [options]="ChartOptions"></canvas>
         </div>
-        <!-- <div class="card-footer">
-                  <ul>
-                    <li> 1 : 10</li>
-                  </ul>
-                </div> -->
       </mat-card>
 
       <mat-card class="card card-large">
@@ -309,18 +253,12 @@
           <mat-checkbox [(ngModel)]="selectedCharts['Aspect (Last_12_Months)']"></mat-checkbox>
           <h3 class="card-heading">Aspect (Last 12 Months)</h3>
           <button class="download-icon mt-2" (click)="download('Aspect (Last_12_Months)')">
-            <!-- <mat-icon class="icon-display font-black" matTooltip="download">arrow_downward</mat-icon> -->
             <img src="/assets/down-arrow.svg" style="height: 15px;" alt="">
           </button>
         </section>
         <div class="chart-container">
           <canvas baseChart [data]="aspect12MonthsChartData" [options]="lineChartOptions" [type]="'line'"></canvas>
         </div>
-        <!-- <div class="card-footer">
-                <ul>
-                  <li>val : val2</li>
-                </ul>
-              </div> -->
       </mat-card>
     </div>
     <br>
@@ -339,25 +277,18 @@
       </div>
     </div>
 
-    <!-- Indicator Graph -->
     <div class="card-container">
       <mat-card class="card card-equal">
         <section class="card-title">
           <mat-checkbox [(ngModel)]="selectedCharts['Top_10_Indicators']"></mat-checkbox>
           <h3 class="card-heading">Top 10 Indicators</h3>
           <button class="download-icon mt-2" (click)="download('Top_10_Indicators')">
-            <!-- <mat-icon class="icon-display font-black" matTooltip="download">arrow_downward</mat-icon> -->
             <img src="/assets/down-arrow.svg" style="height: 15px;" alt="">
           </button>
         </section>
         <div class="chart-container">
           <canvas baseChart [data]="indicatorData" type='pie' [options]="ChartOptions"></canvas>
         </div>
-        <!-- <div class="card-footer">
-                <ul>
-                  <li> 1 : 10</li>
-                </ul>
-              </div> -->
       </mat-card>
 
       <mat-card class="card card-equal">
@@ -365,18 +296,12 @@
           <mat-checkbox [(ngModel)]="selectedCharts['Top_5_Indicators(Last_7_Days)']"></mat-checkbox>
           <h3 class="card-heading adjust-font">Top 5 Indicators (Last 7 Days)</h3>
           <button class="download-icon mt-2" (click)="download('Top_5_Indicators(Last_7_Days)')">
-            <!-- <mat-icon class="icon-display font-black" matTooltip="download">arrow_downward</mat-icon> -->
             <img src="/assets/down-arrow.svg" style="height: 15px;" alt="">
           </button>
         </section>
         <div class="chart-container">
           <canvas baseChart [data]="indicatorTop5Data" type='pie' [options]="ChartOptions"></canvas>
         </div>
-        <!-- <div class="card-footer">
-                  <ul>
-                    <li> 1 : 10</li>
-                  </ul>
-                </div> -->
       </mat-card>
 
       <mat-card class="card card-equal">
@@ -384,18 +309,12 @@
           <mat-checkbox [(ngModel)]="selectedCharts['Top_5_Location']"></mat-checkbox>
           <h3 class="card-heading">Top 5 Location</h3>
           <button class="download-icon mt-2" (click)="download('Top_5_Location')">
-            <!-- <mat-icon class="icon-display font-black" matTooltip="download">arrow_downward</mat-icon> -->
             <img src="/assets/down-arrow.svg" style="height: 15px;" alt="">
           </button>
         </section>
         <div class="chart-container">
           <canvas baseChart [data]="enLocationData" type='pie' [options]="ChartOptions"></canvas>
         </div>
-        <!-- <div class="card-footer">
-                  <ul>
-                    <li> 1 : 10</li>
-                  </ul>
-                </div> -->
       </mat-card>
 
       <mat-card class="card card-equal">
@@ -403,18 +322,12 @@
           <mat-checkbox [(ngModel)]="selectedCharts['Top_5_Loc(7_Days)']"></mat-checkbox>
           <h3 class="card-heading">Top 5 Loc (7 Days)</h3>
           <button class="download-icon mt-2" (click)="download('Top_5_Loc(7_Days)')">
-            <!-- <mat-icon class="icon-display font-black" matTooltip="download">arrow_downward</mat-icon> -->
-            <img src="/assets/down-arrow.svg" style="height: 15px;" alt="">
+           <img src="/assets/down-arrow.svg" style="height: 15px;" alt="">
           </button>
         </section>
         <div class="chart-container">
           <canvas baseChart [data]="enLocationData7Days" type='pie' [options]="ChartOptions"></canvas>
         </div>
-        <!-- <div class="card-footer">
-                  <ul>
-                    <li> 1 : 10</li>
-                  </ul>
-                </div> -->
       </mat-card>
     </div>
   </mat-card-content>

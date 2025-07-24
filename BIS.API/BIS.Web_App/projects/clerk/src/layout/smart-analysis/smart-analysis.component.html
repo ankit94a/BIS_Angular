@@ -154,24 +154,6 @@
     </div>
     <br>
 
-    <!-- Button for merging charts in a single row or expanding into two rows -->
-     <!-- <div class="row">
-      <div class="col-md-10"></div>
-      <div class="col-md-2">
-        <button type="button" class="gradient-button" style="margin-left: 26%;" (click)="isExpand = !isExpand">
-          {{ isExpand ? 'Merge Variation Charts' : 'Expand Variation Charts' }}
-        </button>
-      </div>
-     </div> -->
-
-
-<!-- Chart Filter & Charts Section -->
-
-
-
-
-
-
     <div class="row" *ngFor="let model of variationFilterList; let i = index">
       <div class="col-sm-2">
         <ng-select [(ngModel)]="model.frmn" appendTo="ng-select" [items]="frmnList" [multiple]="false"
@@ -242,66 +224,6 @@
     </div>
 
 
-
-<!--
-    <div class="row">
-      <div class="col-sm-2">
-        <ng-select [(ngModel)]="filterModel3.frmn" appendTo="ng-select" [items]="frmnList" [multiple]="true"
-          bindLabel="name" (change)="getvariation2()" placeholder="Fmn" [searchable]="true"
-          (keydown.enter)="getvariation2()">
-        </ng-select>
-      </div>
-      <div class="col-sm-2">
-        <ng-select [(ngModel)]="filterModel3.sector" appendTo="ng-select" [items]="sectorList" [multiple]="true"
-          bindLabel="name" (change)="getvariation2()" bindValue="name" placeholder="Sector" [searchable]="true"
-          (keydown.enter)="getvariation2()">
-        </ng-select>
-      </div>
-      <div class="col-sm-2">
-        <ng-select [(ngModel)]="filterModel3.aspects" appendTo="ng-select" [items]="aspectList" [multiple]="true"
-          bindLabel="name" (change)="getIndicatorForVarition2($event)" bindValue="name" placeholder="Aspect"
-          [searchable]="true" (keydown.enter)="getIndicatorForVarition2($event)">
-        </ng-select>
-      </div>
-      <div class="col-sm-3">
-        <ng-select [(ngModel)]="filterModel3.indicator" appendTo="ng-select" [items]="indicatorList3" [multiple]="true"
-          bindLabel="name" (change)="getvariation2()" bindValue="name" placeholder="Indicators" [searchable]="true"
-          (keydown.enter)="getvariation2()">
-        </ng-select>
-      </div>
-      <div class="col-sm-3">
-        <mat-form-field>
-          <mat-label>Enter a date range</mat-label>
-          <mat-date-range-input [rangePicker]="picker2">
-            <input matStartDate placeholder="Start date" [(ngModel)]="filterModel3.startDate">
-            <input matEndDate placeholder="End date" (dateChange)="getvariation2()" [(ngModel)]="filterModel3.endDate">
-          </mat-date-range-input>
-          <mat-datepicker-toggle matIconSuffix [for]="picker2"></mat-datepicker-toggle>
-          <mat-date-range-picker #picker2></mat-date-range-picker>
-        </mat-form-field>
-      </div>
-    </div>
-
-
-    <div class="card-container">
-      <mat-card class="card card-extralarge">
-        <section class="card-title">
-          <mat-checkbox [(ngModel)]="selectedCharts['chart7']"></mat-checkbox>
-          <h3 class="card-title">Variation (all Fmn)</h3>
-          <button class="download-icon mt-2" (click)="download('chart7')">
-            <img src="/assets/down-arrow.svg" style="height: 15px;" alt="">
-          </button>
-        </section>
-        <div class="chart-container">
-          <canvas baseChart [data]="variation2" [options]="chartOptions" [type]="'line'"></canvas>
-        </div>
-      </mat-card>
-    </div> -->
-
-
-
-
-<!-- Entries Chart Starts -->
 
     <br>
     <div class="row">
@@ -404,7 +326,6 @@
         </table>
       </div>
       <div class="arrow-icon">
-        <!-- <mat-icon>compare_arrows</mat-icon> -->
         <img src="/assets/right-arrow.svg" class="custom-icon" style="height: 20px;" alt="">
       </div>
       <div class="table-container">

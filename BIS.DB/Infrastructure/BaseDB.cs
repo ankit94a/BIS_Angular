@@ -11,7 +11,6 @@ public class BaseDB
 
 	public BaseDB(IConfiguration configuration)
 	{
-		// Get connection string using GetConnectionString
 		var connectionString = configuration.GetConnectionString("BISDbConn");
 
 		if (string.IsNullOrWhiteSpace(connectionString))

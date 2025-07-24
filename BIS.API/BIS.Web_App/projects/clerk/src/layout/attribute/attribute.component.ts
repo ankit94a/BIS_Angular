@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { CategoryComponent } from './category/category.component';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { SharedLibraryModule } from 'projects/sharedlibrary/src/shared-library.module';
@@ -11,7 +10,6 @@ import { EnemyLocation, MasterLoc, Source } from 'projects/sharedlibrary/src/mod
 import { MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { TablePaginationSettingsConfig } from 'projects/sharedlibrary/src/component/zipper-table/table-settings.model';
-import { ZipperTableComponent } from 'projects/sharedlibrary/src/component/zipper-table/zipper-table.component';
 
 @Component({
   selector: 'app-attribute',
@@ -38,7 +36,6 @@ export class AttributeComponent extends TablePaginationSettingsConfig implements
   subCategoryId:number;
   wingId:number;
 
-  // adding section
   isRefresh:boolean=false;
   name:string;
   @ViewChild('sourceAdd') sourceTemplate;
@@ -54,10 +51,8 @@ export class AttributeComponent extends TablePaginationSettingsConfig implements
   constructor(private dialogService:BISMatDialogService,private apiService:ApiService,private dailog:MatDialog,private toastr:ToastrService){
     super();
     this.tablePaginationSettings.enableAction = true;
-    // this.tablePaginationSettings.enableEdit = true;
     this.tablePaginationSettings.enableView = true;
     this.tablePaginationSettings.enableDelete = true;
-    // this.tablePaginationSettings.enableColumn = true;
     this.tablePaginationSettings.pageSizeOptions = [50, 100];
     this.tablePaginationSettings.showFirstLastButtons = false
     this.getSource();

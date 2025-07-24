@@ -1,21 +1,16 @@
 import { Component, Inject, inject, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
-import { BISDialogTitleComponent } from 'projects/sharedlibrary/src/component/edusynk-dialog-title/edusynk-dialog-title.component';
-import { EnemyLocation, masterData, MasterInputLevels, MasterLoc, MasterSector, Source } from 'projects/sharedlibrary/src/model/masterdata.model';
-import { CommonModule, DatePipe, NgClass } from '@angular/common';
+import { EnemyLocation, MasterInputLevels, MasterLoc, MasterSector, Source } from 'projects/sharedlibrary/src/model/masterdata.model';
+import { DatePipe } from '@angular/common';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { ApiService } from 'projects/sharedlibrary/src/services/api.service';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { SharedLibraryModule } from 'projects/sharedlibrary/src/shared-library.module';
 import { MatStepperModule } from '@angular/material/stepper';
-import { BISMatDialogService, } from 'projects/sharedlibrary/src/services/insync-mat-dialog.service';
-import { MasterDataComponent } from '../master-data-list/master-data.component';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AuthService } from 'projects/sharedlibrary/src/services/auth.service';
 import { Aspect, Indicator } from 'projects/sharedlibrary/src/model/attribute.model';
-import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
-import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-master-data-add',
@@ -32,24 +27,15 @@ export class MasterDataAddComponent implements OnInit {
   createData;
   name = '';
   isEdit = false;
-  // fmnList: string[] = ["33 Corps", "27 Mtn Div", "17 Mtn Div", "111 Sub Area", "20 Mtn Div", "3 Corps", "2 Mtn Div", "56 Mtn Div", "57 Mtn Div", "4 Corps", "5 Mtn Div", "21 Mtn Div", "71 Mtn Div", "17 Corps", "59 Mtn Div", "23 Mtn Div"];
   fmnList: string[] = []
 
   sectorList = [];
   formBuilder = inject(FormBuilder);
-  selectedValue: string = '';  // To hold the selected value from the dropdown
-  // sectordropdownItems: any[] = [];
-  // sourcedropdownItems: any[] = [];
-  // enLocdropdownItems: any[] = [];
-  // sourceLocdropdownItems: any[] = [];
-  // typeOfLocdropdownItems: any[] = [];
-  // selected = 'any';
-  // selectedType = 'Svl / Counter Svl';
-  // subselectedType = 'any';
+  selectedValue: string = '';  
   subselected = 'Svl / Counter Svl';
   router = inject(Router);
   route = inject(ActivatedRoute);
-  // improvement
+
   indicatorSubFieldList = [];
   sectors: MasterSector[] = [];
   inputLevels: MasterInputLevels[] = [];
@@ -75,9 +61,11 @@ export class MasterDataAddComponent implements OnInit {
       }
     })
   }
+
   close() {
     this.dialogref.close(true)
   }
+
   getIndicator(event) {
     let apsectId = this.aspectList.find(item => item.name == event)?.id;
     this.apiService.getWithHeaders('attribute/indicator/' + apsectId).subscribe(res => {
@@ -89,21 +77,13 @@ export class MasterDataAddComponent implements OnInit {
       }
     })
   }
-  // getIndicatorSubFields(event){
-  //   this.apiService.getWithHeaders('attribute/indicatorSubField/' + event.value).subscribe(res =>{
-  //     if(res){
-  //       this.indicatorSubFieldList = res;
-  //     }
-  //   })
-  // }
+
   ngOnInit(): void {
     this.createData = this.formBuilder.group({
       inputLevel: ['',],
       reportedDate: [new Date(), Validators.required],
       masterInputlevelID: [0],
       masterSectorID: [0],
-      // inputLevelNew: [0],
-      // sectorNew :[0],
       name: ['',],
       sector: ['',],
       fmn: [0,],
@@ -579,9 +559,6 @@ export class MasterDataAddComponent implements OnInit {
     this.fmnList.push(this.name);
     this.createData.get('frmn')?.setValue(this.name);
     this.getData();
-    // this.createData.get('reportedDate')?.disable();
-
-    // handling view part
     if (this.masterData?.id && this.masterData.id > 0) {
       this.patchFormValues(this.masterData)
     }
@@ -717,9 +694,7 @@ export class MasterDataAddComponent implements OnInit {
       case '57 Mtn Div':
         this.sectorList = ['Dibang Valley', 'Dou-delai valley', 'Lohit Valley', 'Subansiri Valley', 'Siyom Valley', 'Siang Valley'];
         break;
-      // case 'Option 3':
-      //   this.childItems = ['Suboption X', 'Suboption Y', 'Suboption Z'];
-      // break;
+
       default:
         this.sectorList = ['MSS', 'PSS', 'Cho_La', 'Doka_La', 'NESS', 'Semi Held', 'NatuLa'];
         break;
@@ -731,8 +706,8 @@ export class MasterDataAddComponent implements OnInit {
 
   indicators: Indicator[] = [];
   dynamicFields: Array<any> = [];
-  dynamicDropdownOptions: Array<any> = [];  // Holds dynamic dropdown options for the selected indicator
-  dynamicDropdownLabel: string = '';  // Label for the dynamic dropdown
+  dynamicDropdownOptions: Array<any> = [];  
+  dynamicDropdownLabel: string = ''; 
   currentStepIndex: number = 0;
   additionalFields: Array<any> = [];
 
@@ -746,7 +721,7 @@ export class MasterDataAddComponent implements OnInit {
       this.dynamicDropdownOptions = dropdownFields[0].options || [];
       this.dynamicDropdownLabel = dropdownFields[0].label;
     }
-    // setting formControl to the reactive form based on type
+
     fields.forEach(field => {
       if (!this.createData.contains(field.name)) {
         if (field.type === 'dropdown') {
@@ -761,7 +736,6 @@ export class MasterDataAddComponent implements OnInit {
   onDropdownSelectionChange($event: any) {
     const dropdownValue = $event.value;
     this.additionalFields = [];
-    // Handle further dynamic fields based on dropdown value
     switch (dropdownValue) {
       case 'Rd':
         this.additionalFields = this.getAdditionalFieldsForDropdown('Rd');
@@ -780,11 +754,10 @@ export class MasterDataAddComponent implements OnInit {
         break;
 
       default:
-        // Add additional logic for other dropdown values if needed
+
         break;
     }
 
-    // You can add additional form controls for the new fields if needed
     this.additionalFields.forEach(field => {
       if (!this.createData.contains(field.name)) {
         if (field.type === 'dropdown') {
@@ -797,8 +770,6 @@ export class MasterDataAddComponent implements OnInit {
   }
 
   getAdditionalFieldsForDropdown(dropdownValue: string) {
-    // Logic to return additional fields based on dropdown value
-    // Example: You can map dropdown values to additional fields here
     switch (dropdownValue) {
       case 'Rd':
         return [
@@ -807,8 +778,6 @@ export class MasterDataAddComponent implements OnInit {
 
       case 'Rail':
         return [
-          // { name: 'additionalField1', label: 'Additional Field 1', type: 'string' },
-          // { name: 'additionalField2', label: 'Additional Field 2', type: 'time' },
           { name: 'cidtoiRailBroadGauge', label: 'Broad_gauge(kms)', type: 'string' },
           { name: 'cidtoiRailMetreGauge', label: 'Metre_gauge', type: 'string' },
           { name: 'cidtoiRailRailwaySidings', label: 'Railway_sidings', type: 'string' },
@@ -1454,7 +1423,7 @@ export class MasterDataAddComponent implements OnInit {
       { name: 'cfvTimeFrom', label: 'Time From', type: 'time' },
       { name: 'cfvTimeTo', label: 'Time To', type: 'time' },
     ],
-    // Additional configurations for other indicators
+
   };
 
 

@@ -2,9 +2,7 @@
     <mat-toolbar-row>
       <div class="contents">
         <div fxShow="true">
-            <!-- <button mat-icon-button (click)="toggleSideBar()">
-                <mat-icon>menu</mat-icon>
-            </button> -->
+
         </div>
         <span> {{facilityName }} </span>
         <span class="example-spacer">
@@ -13,24 +11,13 @@
                 <app-notification *ngIf="roleType != '7' && roleType != 8"></app-notification>
         </div>
         <div class="user-profile" *ngIf="roleType != '7' && roleType != '8' && roleType != '9'">
-          <!-- <mat-icon class="py-1">person</mat-icon>  -->
+
            <img src="/assets/user.svg" class="custom-icon" alt="">
            &nbsp;{{userName}}
            <img src="/assets/logout2.svg" class="custom-icon px-2" style="height: 20px; cursor: pointer;" alt="" (click)="onLoggedout()">
         </div>
         <div *ngIf="roleType == '7' || roleType == '8' || roleType == '9'">
-            <!-- <button mat-button [matMenuTriggerFor]="settingMenu">
-                <img src="/assets/setting.svg" class="custom-icon px-2" style="height: 20px; cursor: pointer;" alt="" (click)="onLoggedout()">
-            </button>
-            <mat-menu #settingMenu="matMenu">
-                <a mat-menu-item routerLinkActive="list-item-active" routerLink="/user-list">
-                  User
-                </a>
-                <a mat-menu-item routerLinkActive="list-item-active" routerLink="/roles">
-                    Role & Permission
-                </a>
-                <img src="/assets/logout2.svg" class="custom-icon" alt="" (click)="onLoggedout()">
-            </mat-menu> -->
+
             <img src="/assets/user.svg" class="custom-icon" alt="">
             &nbsp;{{userName}}
             <img src="/assets/logout2.svg" class="custom-icon px-2" style="height: 20px; cursor: pointer;" alt="" (click)="onLoggedout()">

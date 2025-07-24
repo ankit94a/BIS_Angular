@@ -1,15 +1,12 @@
-<!-- <BIS-dialog-title [dataObject]="masterData"></BIS-dialog-title> -->
 <form [formGroup]="createData" (ngSubmit)="save()">
   <div mat-dialog-title>
     Add Master Data
   </div>
   <mat-dialog-content>
     <mat-horizontal-stepper [linear]="true" #stepper [selectedIndex]="currentStepIndex">
-      <!-- Step 1: Aspect Dropdown -->
+
       <mat-step [stepControl]="createData">
-        <!-- <ng-template matStepLabel>
-      <img src="assets/edit.svg" alt="Step 1 Icon" class="step-icon" />
-    </ng-template> -->
+
         <div class="row">
           <div class="col-md-4">
             <mat-form-field>
@@ -142,7 +139,6 @@
               </mat-form-field>
               <mat-form-field *ngIf="field.type === 'time'">
                 <mat-label>{{ field.label }}</mat-label>
-                <!-- <input type="time" matInput [formControlName]="field.name"> -->
                 <input matInput [owlDateTimeTrigger]="dt4" [owlDateTime]="dt4">
                 <owl-date-time [hour12Timer]="true" [pickerType]="'timer'" #dt4></owl-date-time>
               </mat-form-field>
@@ -171,7 +167,6 @@
           </div>
         </div>
 
-        <!-- Render additional fields based on dropdown selection -->
         <div *ngIf="additionalFields.length > 0">
           <div class="row" *ngFor="let field of additionalFields">
             <div class="col-md-4">
@@ -183,7 +178,6 @@
                 <mat-label>{{ field.label }}</mat-label>
                 <input matInput [owlDateTimeTrigger]="dt1" [owlDateTime]="dt1">
                 <owl-date-time [hour12Timer]="true" [pickerType]="'timer'" #dt1></owl-date-time>
-                <!-- <input type="time" matInput [formControlName]="field.name"> -->
               </mat-form-field>
             </div>
           </div>
@@ -197,7 +191,6 @@
             <button class="btn btn-sm btn-primary" type="submit" *ngIf="!masterData">Save</button>
           </div>
         </div>
-
       </mat-step>
     </mat-horizontal-stepper>
   </mat-dialog-content>

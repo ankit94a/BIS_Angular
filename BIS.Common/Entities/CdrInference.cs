@@ -35,8 +35,5 @@ namespace BIS.Common.Entities
 	{
 		public ApprovedReports Inference { get; set; }
 		public MergeReports MergeReport { get; set; }
-		//public GenerateReport ColGsReport { get; set; }
-		//public GenerateReport G1IntReport { get; set; }
-		//public List<MasterData> MasterDatas { get; set; }
 	}
 }

@@ -63,12 +63,7 @@ export const routes: Routes = [
                 canActivate: [AuthGuard,PermissionGuard],
                 data: { allowedRoles: ['7','15'] },
               },
-              {
-                path:'notes-for-me',
-                loadComponent:() => import('./notes-for-me/notes-for-me.component').then(m => m.NotesForMeComponent),
-                canActivate: [AuthGuard,PermissionGuard],
-                data: { allowedRoles: ['2','3','4','7'] },
-              },
+  
               {
                 path:'user-list',
                 loadComponent:() => import('projects/sharedlibrary/src/component/user/user-list/user-list.component').then(m => m.UserListComponent),
@@ -81,12 +76,7 @@ export const routes: Routes = [
                 canActivate: [AuthGuard,PermissionGuard],
                 data: { allowedRoles: ['8'] },
               },
-              {
-                path:'facility',
-                loadComponent : () =>import('projects/sharedlibrary/src/component/facility/facility-list/facility-list.component').then(m => m.FacilityListComponent),
-                canActivate: [AuthGuard,PermissionGuard],
-                data: { allowedRoles: ['2','3','4','7','10','11','12','13','14','15'] },
-              }
+   
               ,
               {
                 path:'master-data-form',

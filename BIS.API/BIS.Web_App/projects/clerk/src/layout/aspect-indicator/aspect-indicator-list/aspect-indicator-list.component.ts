@@ -25,10 +25,8 @@ export class AspectIndicatorListComponent extends TablePaginationSettingsConfig 
   constructor(private apiService:ApiService,private dialogService:BISMatDialogService,private dailog:MatDialog,private toastr:ToastrService){
     super();
     this.tablePaginationSettings.enableAction = true;
-    // this.tablePaginationSettings.enableEdit = true;
     this.tablePaginationSettings.enableView = true;
     this.tablePaginationSettings.enableDelete = true;
-    // this.tablePaginationSettings.enableColumn = true;
     this.tablePaginationSettings.pageSizeOptions = [50, 100];
     this.tablePaginationSettings.showFirstLastButtons = false;
     this.getAspect();
@@ -50,7 +48,7 @@ export class AspectIndicatorListComponent extends TablePaginationSettingsConfig 
       endpoint = 'attribute/indicator';
       successMessage = 'Indicator added successfully';
     } else {
-      console.error('Invalid type provided:', type);
+
       return;
     }
 

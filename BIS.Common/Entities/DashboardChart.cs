@@ -23,8 +23,8 @@ namespace BIS.Common.Entities
 	}
 	public class DashboardSectorData
 	{
-		public string Sector { get; set; } = string.Empty; // Sector name (e.g., "NESS", "PSS")
-		public List<int> Count { get; set; } = new List<int>(); // Counts for each month in `Name`
+		public string Sector { get; set; } = string.Empty; 
+		public List<int> Count { get; set; } = new List<int>(); 
 	}
 	public class MeanValueModel : DashboardChart
 	{
@@ -77,8 +77,8 @@ namespace BIS.Common.Entities
 	{
 		public string Frmn { get; set; }
 		public List<int> Data { get; set; } = new List<int>();
-		[JsonIgnore] // optional, if using JSON serialization
-		public object Tag { get; set; } // temporary internal use
+		[JsonIgnore]
+		public object Tag { get; set; }
 	}
 
 

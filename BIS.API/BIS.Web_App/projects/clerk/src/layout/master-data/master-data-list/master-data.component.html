@@ -49,23 +49,10 @@
       </div>
       <div class="col-sm-3" align="end" *ngIf="roleType == '1' || roleType == '10'"><button class="btn btn-primary" (click)="add()">+ Add Data</button>
       </div>
-      <!-- <div class="col-md-6">
-        <ng-select appendTo="ng-select" [items]="filterType" [multiple]="false" (change)="filterData($event)"
-          placeholder="Select Filter" [searchable]="true" [closeOnSelect]="true">
-          <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-            <div class="ng-value" *ngFor="let item of items">
-              <span class="ng-value-label">{{item}}</span>
-            </div>
-          </ng-template>
-        </ng-select>
-      </div> -->
       <div class="col-md-3">
         <button type="button" class="btn btn-sm btn-outline-primary" *ngIf="selectedSample?.length > 0" (click)="exportToExcel()">Download Selected</button>
       </div>
     </div>
-
-
-
 
     <app-table *ngIf="sortedData.length > 0" [rowData]="sortedData" [tablePaginationSettings]="tablePaginationSettings"
       [enableCheckbox]="true" [isRowBackgroundColor]="true" [isRefresh]="isRefresh" [allowMultiSelect]="true"

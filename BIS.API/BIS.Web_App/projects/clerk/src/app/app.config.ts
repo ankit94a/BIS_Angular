@@ -2,11 +2,10 @@ import { ApplicationConfig, importProvidersFrom, provideZoneChangeDetection } fr
 import { provideRouter } from '@angular/router';
 import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 import { routes } from './app.routes';
-import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { provideToastr } from 'ngx-toastr';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { MatNativeDateModule } from '@angular/material/core';
-import { HttpClientModule, provideHttpClient, withInterceptors, withInterceptorsFromDi } from '@angular/common/http';
+import { HttpClientModule, provideHttpClient, withInterceptors } from '@angular/common/http';
 import { authInterceptor } from 'projects/sharedlibrary/src/services/auth-interceptor.service';
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from '@danielmoncada/angular-datetime-picker';
 import { NgxSpinnerModule } from 'ngx-spinner';
@@ -17,7 +16,6 @@ import * as PlotlyJS from 'plotly.js-dist-min';
 PlotlyModule.plotlyjs = PlotlyJS;
 export const appConfig: ApplicationConfig = {
   providers: [provideZoneChangeDetection({ eventCoalescing: true }), provideRouter(routes),
-        // provideCharts(withDefaultRegisterables()),
   importProvidersFrom(PlotlyModule) ,
         provideToastr(),
         provideAnimationsAsync(),

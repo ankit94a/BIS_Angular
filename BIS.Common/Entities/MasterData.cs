@@ -27,32 +27,8 @@ namespace BIS.Common.Entities
 		public string InputLevel { get; set; }
 		public DateTime ReportedDate { get; set; }
 		public DateTime? RptDate { get; set; }
-		//[Column("Input Level")]
-		//[Display(Name = "Input Lvl")]
-		//public string Name { get; set; }
 		public string Sector { get; set; }
 		public int Fmn { get; set; }
-
-		//public int? CorpsId { get; set; }
-		//[ForeignKey("MasterFmn")]
-		//public int? MasterFmnID { get; set; }
-		//public virtual MasterFmn FmnNew { get; set; }
-
-
-		//
-		//public int? MasterSectorID { get; set; }
-		//[ForeignKey("MasterSector")]
-		//[ValidateNever]
-		//public MasterSector SectorNew { get; set; }
-
-		//[ForeignKey("MasterInputLevel")]
-		//public int? MasterInputlevelID { get; set; }
-		//public virtual MasterInputLevel InputLevelNew { get; set; }
-
-		//[ForeignKey("MasterSource")]
-		//public int? MasterSourceID { get; set; }
-		//public virtual MasterSource SourceNew { get; set; }
-
 		public string Source { get; set; }
 		public string SourceLoc { get; set; }
 		public string TypeOfLoc { get; set; }

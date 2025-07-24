@@ -8,7 +8,6 @@ using static BIS.Common.Enum.Enum;
 
 namespace BIS.Manager.Interfaces
 {
-	// Handling both Frmn & Aspect Chart in One Method
 	public interface IDashboardManager
 	{
 		public List<FmnModel> GetFmnDetails(int corpsId, int divisionId);

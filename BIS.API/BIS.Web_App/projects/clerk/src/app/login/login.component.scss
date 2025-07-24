@@ -1,128 +1,4 @@
-// .form-container {
-//     display: flex;
-//     justify-content: center;
-//     align-items: center;
-//     height: 100vh;
-//     padding: 20px;
-//     background-color: #f6fcff;
-//   }
-
-//   mat-card {
-//     width: 100%;
-//     max-width: 750px;
-//     border-radius: 16px;
-//     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-//   }
-
-//   mat-card-header {
-//     display: flex;
-//     flex-direction: column;
-//     align-items: center;
-//     background: linear-gradient(135deg, #ddfff2, #c3e9ff);
-//     border-radius: 16px 16px 0 0;
-//     padding: 20px 0;
-//   }
-
-//   .brand-logo-container {
-//     text-align: center;
-//   }
-
-//   .brand-logo {
-//     width: 150px;
-//     height: 150px;
-//   }
-
-//   .brand-name {
-//     font-size: 25px;
-//     font-weight: bold;
-//     color: #270944;
-//   }
-
-//   .login-card-content {
-//     padding: 20px;
-//   }
-
-//   .row {
-//     margin-bottom: 20px;
-//   }
-
-//   mat-form-field {
-//     width: 100%;
-//   }
-
-//   .password-field {
-//     position: relative;
-//   }
-
-//   mat-icon {
-//     color: #0ac57e;
-//     font-size: 20px;
-//   }
-
-//   .forgot-password-link {
-//     text-align: right;
-//   }
-
-//   mat-card-actions {
-//     display: flex;
-//     justify-content: space-between;
-//   }
-
-//   mat-card-footer {
-//     padding: 20px 0;
-//     text-align: center;
-//   }
-
-//   .register-link {
-//     font-size: 14px;
-//     color: #707070;
-//   }
-
-//   .register-link a {
-//     color: #0da0f7;
-//     text-decoration: underline;
-//   }
-
-//   .login-card-content {
-//     display: flex;
-//     width: 100%;
-//   }
-
-//   .left-side {
-//     flex: 1;
-//     background: #ddfff2; /* Set your background color or image */
-//     display: flex;
-//     justify-content: center;
-//     align-items: center;
-//     border-radius: 20px 0 0 20px;
-//     position: relative;
-//   }
-//   .login-image {
-//     width: 100%;
-//     height: 100%;
-//     object-fit: cover;
-//     border-radius: 20px 0 0 20px;
-//   }.logo-focused{
-//     color: #A31D1D;
-//   }
-//   .right-side {
-//     flex: 1;
-//     padding: 20px;
-//     display: flex;
-//     flex-direction: column;
-//     justify-content: center;
-//   }
-//   button[mat-raised-button]{
-//     background-color: #3f51b5;
-//     color: #ffff;
-//     padding: 12px 24px;
-//     font-size: 16px;
-//     border-radius: 4px;
-//     width: 320px;
-//   }
-
 .page-wrapper {
-  // background-image: url("/assets/background.jpg");
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
@@ -132,8 +8,6 @@
   align-items: center;
   height: 100vh;
   width: 100%;
-  // background: linear-gradient(to right, rgb(91, 168, 194), white);
-
 }
 
 
@@ -173,7 +47,6 @@ mat-card-header {
 .brand-name {
   font-size: 25px;
   font-weight: bold;
-  // color: #270944;
 }
 
 .login-card-content {
@@ -193,7 +66,6 @@ mat-form-field {
 }
 
 mat-icon {
-  // color: #0ac57e;
   font-size: 20px;
 }
 
@@ -213,11 +85,9 @@ mat-card-footer {
 
 .register-link {
   font-size: 14px;
-  // color: #707070;
 }
 
 .register-link a {
-  // color: #0da0f7;
   text-decoration: underline;
 }
 
@@ -226,9 +96,7 @@ mat-card-footer {
   height: auto;
   padding: 20px;
   background: linear-gradient(rgba(150, 174, 243, 2),
-      /* Dark overlay */
       rgba(67, 85, 190, 2));
-  // background-color: #3f51b5;
   border-radius: 10px;
 }
 
@@ -240,7 +108,7 @@ mat-card-footer {
   justify-content: center;
 }
 
-/* Brand text */
+
 .brand-name {
   font-size: 20px;
   margin-bottom: 20px;
@@ -272,7 +140,6 @@ mat-form-field {
 mat-card-actions {
   display: flex;
   justify-content: center;
-  /* centers the button horizontally */
   margin-top: 20px;
 }
 
@@ -280,14 +147,10 @@ button[mat-raised-button] {
   background-color: #3f51b5;
   color: #fff;
   padding: 16px 32px;
-  /* Bigger padding */
   font-size: 18px;
-  /* Bigger text */
   border-radius: 6px;
   width: 100%;
-  /* Full width inside its parent */
   max-width: 420px;
-  /* Limit the max width */
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
 }
 
@@ -295,12 +158,10 @@ button[mat-raised-button] {
 .login-card {
   display: flex;
   flex-direction: row;
-  /* background-color: #4b5320; (commented out) */
   color: white;
   border-radius: 10px;
   padding: 0;
   overflow: hidden;
   width: 400px;
   margin: 0 auto;
-  /* Center horizontally */
 }

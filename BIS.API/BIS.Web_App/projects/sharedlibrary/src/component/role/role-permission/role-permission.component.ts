@@ -3,8 +3,7 @@ import { Component, Inject } from '@angular/core';
 import { FormArray, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
-import { menupermission, menus, roles, UserRolePermission } from 'projects/sharedlibrary/src/model/permission.model';
-import { Role, Roles } from 'projects/sharedlibrary/src/model/role.model';
+import { menupermission, menus, roles } from 'projects/sharedlibrary/src/model/permission.model';
 import { ApiService } from 'projects/sharedlibrary/src/services/api.service';
 import { SharedLibraryModule } from 'projects/sharedlibrary/src/shared-library.module';
 

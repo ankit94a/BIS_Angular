@@ -12,28 +12,24 @@ export class BisdefaultDatePipe extends DatePipe implements PipeTransform {
         return null;
     }
 
-    // If the value is a string and matches "Week XX, YYYY", return as it is
     if (typeof value === 'string' && value.match(/^Week \d{1,2}, \d{4}$/)) {
-        return value; // Return "Week 11, 2024" as-is
+        return value; 
     }
 
     const date = new Date(value);
 
     if (isNaN(date.getTime())) {
-        return null; // Invalid date, return null
+        return null; 
     }
 
-    // Check if the value is in "YYYY-MM" format
     if (typeof value === 'string' && value.match(/^\d{4}-\d{2}$/)) {
-        return super.transform(date, 'MMM yyyy'); // Format as "Mar 2024"
+        return super.transform(date, 'MMM yyyy'); 
     }
 
-    // If the year is 1 (invalid date scenario)
     if (date.getFullYear() === 1) {
         return null;
     }
 
-    // Default transformation: "dd MMM yyyy"
     return super.transform(date, 'dd MMM yyyy');
 }
 

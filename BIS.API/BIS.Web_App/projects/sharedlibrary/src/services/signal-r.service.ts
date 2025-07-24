@@ -18,7 +18,7 @@ export class SignalRService {
     this.hubConnection = new signalR.HubConnectionBuilder()
       .withUrl(this.baseUrl + 'notificationhub', {
         skipNegotiation: true,
-        transport: signalR.HttpTransportType.WebSockets, // Optional: Use specific transport
+        transport: signalR.HttpTransportType.WebSockets, 
 
         accessTokenFactory: () => token,
       }).withAutomaticReconnect().build();

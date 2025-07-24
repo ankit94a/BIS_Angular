@@ -3,9 +3,6 @@ import { SharedLibraryModule } from '../../shared-library.module';
 import { RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { NotificationComponent } from '../notification/notification.component';
-import { RoleType } from '../../model/enum';
-// import { AuthHelper } from 'projects/shared/src/helpers/auth-helper';
-// import { SharedModule } from 'projects/shared/src/public-api';
 
 @Component({
   selector: 'app-header',
@@ -17,7 +14,6 @@ import { RoleType } from '../../model/enum';
 export class HeaderComponent implements OnInit {
 
   @Output() toggleSideBarForMe: EventEmitter<any> = new EventEmitter();
-  // companyName: string;
   userName:string;
   facilityName:string ;
   roleType;

@@ -12,7 +12,6 @@ namespace BIS.Manager.Interfaces
         long Update(T obj);
         long Add(T obj);
         T GetBy(int Id, int CorpsId);
-        //bool Deactivate(long Id, long CorpsId, long UserId);
 
     }
 }

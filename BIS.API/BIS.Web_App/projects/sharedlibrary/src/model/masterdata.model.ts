@@ -276,7 +276,7 @@ export class masterData extends BaseEntity {
   tmHaltLocB: string
   tmHaltLocC: string
   userId: number
-  //latest addition 210624
+
   cidtoiRoadCl: string
   cidtoiRailBroadGauge: string
   cidtoiRailMetreGauge: string
@@ -291,8 +291,6 @@ export class masterData extends BaseEntity {
   cidtoiBrCl: string
   cidtoiBrPermt: string
   cidtoiBrTemp: string
-
-  //new addition
 
   vLoc: string
   vLevel: string

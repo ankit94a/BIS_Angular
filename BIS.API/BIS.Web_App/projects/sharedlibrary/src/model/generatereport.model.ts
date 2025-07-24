@@ -3,11 +3,10 @@ import { masterData } from "./masterdata.model"
 
 export class GenerateReport extends BaseEntity {
 
-    reportGenId?: number;
+  reportGenId?: number;
   reportType: string;
   reportDate: Date;
   reportTitle: string;
-//   "userId"?: string,
   notes: string;
   startDate: Date;
   endDate:Date
@@ -55,8 +54,5 @@ export class ApprovedReports extends BaseEntity{
 
 export class FullReport {
   inference:ApprovedReports = new ApprovedReports();
-  // colGsReport:GenerateReport = new GenerateReport();
-  // g1IntReport:GenerateReport = new GenerateReport();
-  // masterDatas:masterData[]=[];
   mergeReport:MergeReports = new MergeReports();
 }

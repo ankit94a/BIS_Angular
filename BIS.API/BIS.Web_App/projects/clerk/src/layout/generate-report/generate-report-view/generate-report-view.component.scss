@@ -1,15 +1,14 @@
 
-   /* Make the table container scrollable */
+
    .table-container {
-    max-height: 400px; /* Adjust the height as needed */
-    overflow: auto;    /* Enable both x and y axis scrolling */
-    width: 100%;       /* Ensure it takes full width */
+    max-height: 400px; 
+    overflow: auto;   
+    width: 100%;    
   }
 
-  /* Add styles to the table to ensure it behaves responsively */
   table {
-    width: 100%;       /* Ensure the table takes the full width */
-    border-collapse: collapse; /* Optional, makes table borders collapse */
+    width: 100%;     
+    border-collapse: collapse; 
   }
 
   th, td {
@@ -21,25 +20,14 @@
   thead {
     position: sticky;
     top: 0;
-    background-color: #f1f1f1;  /* Optional: for better visibility */
-    z-index: 1; /* Ensures the header stays on top while scrolling */
+    background-color: #f1f1f1; 
+    z-index: 1; 
   }
 
-  /* Optional: Adjust table header size and font */
   th {
     font-weight: bold;
     background-color: #f1f1f1;
   }
-
-
-  /* input images */
-
-  /* .image-preview-container {
-    display: flex;
-    flex-wrap: wrap;
-    margin-top: 20px;
-    gap: 15px;
-  } */
 
   .image-preview {
     display: flex;
@@ -48,9 +36,6 @@
     justify-content: center;
     border: 1px solid #ddd;
     border-radius: 5px;
-    /* padding: 10px;
-    width: 220px;
-    height: 200px; */
     overflow: hidden;
   }
 

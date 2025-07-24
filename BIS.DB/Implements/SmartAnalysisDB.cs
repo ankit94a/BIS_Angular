@@ -30,10 +30,8 @@ namespace BIS.DB.Implements
 				startDate = endDate.AddMonths(-1);
 			}
 
-			//var query = _dbContext.MasterDatas.Where(ms => ms.CorpsId == corpsId && ms.DivisionId == divisionId && ms.CreatedOn.Value.Date >= startDate.Date && ms.CreatedOn.Value.Date <= endDate.Date && ms.Status == Status.Approved);
 			var filteredMasterData = _dbContext.MasterDatas.Where(ms => ms.Status == Status.Approved && ms.ReportedDate.Date >= startDate.Date && ms.ReportedDate.Date <= endDate.Date).ToList();
 			var query = filteredMasterData.Where(ms => filterModel.Frmn.Any(f => f.CorpsId == ms.CorpsId && f.DivisionId == ms.DivisionId));
-			// handling filter arrays 
 			if (filterModel != null && filterModel.Sector?.Count > 0)
 			{
 				query = query.Where(ms => filterModel.Sector.Contains(ms.Sector));
@@ -71,11 +69,9 @@ namespace BIS.DB.Implements
 				startDate = endDate.AddMonths(-1);
 			}
 
-			//var query = _dbContext.MasterDatas.Where(ms => ms.CorpsId == corpsId && ms.DivisionId == divisionId && ms.CreatedOn.Value.Date >= startDate.Date && ms.CreatedOn.Value.Date <= endDate.Date && ms.Status == Status.Approved);
 			var filteredMasterData = _dbContext.MasterDatas.Where(ms => ms.Status == Status.Approved && ms.ReportedDate.Date >= startDate.Date && ms.ReportedDate.Date <= endDate.Date).ToList();
 			var query = filteredMasterData.Where(ms => filterModel.Frmn.Any(f => f.CorpsId == ms.CorpsId && f.DivisionId == ms.DivisionId));
 
-			// handling filter arrays 
 			if (filterModel != null && filterModel.Sector?.Count > 0)
 			{
 				query = query.Where(ms => filterModel.Sector.Contains(ms.Sector));
@@ -113,10 +109,8 @@ namespace BIS.DB.Implements
 				startDate = endDate.AddMonths(-1);
 			}
 
-			//var query = _dbContext.MasterDatas.Where(ms => ms.CorpsId == corpsId && ms.DivisionId == divisionId && ms.CreatedOn.Value.Date >= startDate.Date && ms.CreatedOn.Value.Date <= endDate.Date && ms.Status == Status.Approved);
 			var filteredMasterData = _dbContext.MasterDatas.Where(ms => ms.Status == Status.Approved && ms.ReportedDate.Date >= startDate.Date && ms.ReportedDate.Date <= endDate.Date).ToList();
 			var query = filteredMasterData.Where(ms => filterModel.Frmn.Any(f => f.CorpsId == ms.CorpsId && f.DivisionId == ms.DivisionId));
-			// handling filter arrays 
 			if (filterModel != null && filterModel.Sector?.Count > 0)
 			{
 				query = query.Where(ms => filterModel.Sector.Contains(ms.Sector));
@@ -153,7 +147,6 @@ namespace BIS.DB.Implements
 
 				var filteredMasterData = await query.ToListAsync(); // Ensures we fetch data asynchronously
 
-				// Ensure filterModel.Frmn exists before calling Any()
 				if (filterModel?.Frmn != null && filterModel.Frmn.Any())
 				{
 					filteredMasterData = filteredMasterData
@@ -161,7 +154,6 @@ namespace BIS.DB.Implements
 						.ToList();
 				}
 
-				// Apply additional filters
 				if (filterModel?.Sector?.Any() == true)
 				{
 					filteredMasterData = filteredMasterData.Where(ms => filterModel.Sector.Contains(ms.Sector)).ToList();
@@ -175,7 +167,6 @@ namespace BIS.DB.Implements
 					filteredMasterData = filteredMasterData.Where(ms => filterModel.Indicator.Contains(ms.Indicator)).ToList();
 				}
 
-				// Grouping logic remains unchanged
 				var groupedQuery = new List<GroupedData>();
 
 				if (filterModel?.FilterType == FilterType.Daily)
@@ -217,7 +208,6 @@ namespace BIS.DB.Implements
 						.ToList();
 				}
 
-				// Avoid First() errors by checking if data exists before accessing it
 				var totalDays = groupedQuery.Any() ? groupedQuery.Count() : 1;
 				var totalEntries = filteredMasterData.Count;
 				var meanValue = totalDays > 0 ? (double)totalEntries / totalDays : 0;
@@ -239,65 +229,6 @@ namespace BIS.DB.Implements
 			}
 		}
 
-		private static DateTime FirstDateOfWeekISO8601(int year, int weekNumber)
-		{
-			DateTime jan1 = new DateTime(year, 1, 1);
-			int daysOffset = DayOfWeek.Thursday - jan1.DayOfWeek;
-
-			DateTime firstThursday = jan1.AddDays(daysOffset);
-			var calendar = CultureInfo.CurrentCulture.Calendar;
-
-			int firstWeek = calendar.GetWeekOfYear(firstThursday, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
-			int weekNum = (weekNumber == 1 && firstWeek > 1) ? weekNumber - 1 : weekNumber;
-
-			return firstThursday.AddDays((weekNum - 1) * 7 - 3);
-		}
-
-		//public DashboardChart GetVariationData(RoleType roleType, FilterModel filterModel)
-		//{
-		//	var chart = new DashboardChart();
-
-		//	//var query = _dbContext.MasterDatas.Where(ms => ms.CorpsId == corpsId && ms.DivisionId == divisionId && ms.Status == Status.Approved);
-		//	var filteredMasterData = _dbContext.MasterDatas.Where(ms => ms.Status == Status.Approved && ms.IsActive).ToList();
-		//	var query = filteredMasterData.Where(ms => filterModel.Frmn.Any(f => f.CorpsId == ms.CorpsId && f.DivisionId == ms.DivisionId));
-
-
-		//	// handling filter arrays 
-		//	if (filterModel != null && filterModel.Sector?.Count > 0)
-		//	{
-		//		query = query.Where(ms => filterModel.Sector.Contains(ms.Sector));
-		//	}
-		//	if (filterModel != null && filterModel.Aspects?.Count > 0)
-		//	{
-		//		query = query.Where(ms => filterModel.Aspects.Contains(ms.Aspect));
-		//	}
-		//	if (filterModel != null && filterModel.Indicator?.Count > 0)
-		//	{
-		//		query = query.Where(ms => filterModel.Indicator.Contains(ms.Indicator));
-		//	}
-		//	if (filterModel != null && filterModel.startDate.HasValue && filterModel.endDate.HasValue && filterModel.endDate >= filterModel.startDate)
-		//	{
-		//		query = query.Where(ms =>
-		//			ms.ReportedDate.Date >= filterModel.startDate.Value.Date &&
-		//			ms.ReportedDate.Date <= filterModel.endDate.Value.Date
-		//		);
-		//	}
-
-		//	query = query.OrderBy(ms => ms.ReportedDate);
-		//	var result = query.GroupBy(ms => ms.ReportedDate.Date).Select(group => new
-		//	{
-		//		Date = group.Key,
-		//		Count = group.Count()
-		//	}).ToList();
-
-		//	foreach (var item in result)
-		//	{
-		//		chart.Name.Add(item.Date.ToString("dd-MM-yyyy"));
-		//		chart.Count.Add(item.Count);
-		//	}
-		//	return chart;
-		//}
-
 		public VaritaionChart GetVariationData(RoleType roleType, List<VaritaionFilter> filterModels)
 		{
 			var chart = new VaritaionChart();
@@ -315,7 +246,6 @@ namespace BIS.DB.Implements
 
 				var frmnItem = filter.Frmn;
 
-				// Apply base filtering for this filter
 				var query = filteredMasterData
 					.Where(ms => ms.CorpsId == frmnItem.CorpsId && ms.DivisionId == frmnItem.DivisionId);
 
@@ -335,7 +265,6 @@ namespace BIS.DB.Implements
 					query = query.Where(ms => ms.ReportedDate.Date >= start && ms.ReportedDate.Date <= end);
 				}
 
-				// Group by date
 				var grouped = query
 					.GroupBy(ms => ms.ReportedDate.Date)
 					.Select(g => new { Date = g.Key, Count = g.Count() })
@@ -348,18 +277,16 @@ namespace BIS.DB.Implements
 
 				var series = new ChartSeries
 				{
-					Frmn = $"{frmnItem.Name}", // Label per filter
+					Frmn = $"{frmnItem.Name}", 
 					Data = new List<int>(),
-					Tag = dateCountMap // Temporarily store the map
+					Tag = dateCountMap 
 				};
 
 				chart.Series.Add(series);
 			}
 
-			// Create sorted labels
 			chart.Labels = allDates.OrderBy(d => d).Select(d => d.ToString("dd-MM-yyyy")).ToList();
 
-			// Populate each series' data by matching against label dates
 			foreach (var series in chart.Series)
 			{
 				var dateCountMap = series.Tag as Dictionary<string, int>;
@@ -377,7 +304,6 @@ namespace BIS.DB.Implements
 
 			var query = filteredMasterData.Where(ms => filterModel.Frmn.Any(f => f.CorpsId == ms.CorpsId && f.DivisionId == ms.DivisionId));
 
-			// handling filter arrays 
 			if (filterModel != null && filterModel.Sector?.Count > 0)
 			{
 				query = query.Where(ms => filterModel.Sector.Contains(ms.Sector));
@@ -402,7 +328,6 @@ namespace BIS.DB.Implements
 
 				else if (filterModel.FilterType == FilterType.Monthly)
 				{
-					// Set endDate to the last day of the month
 					filterModel.endDate = new DateTime(filterModel.startDate.Value.Year, filterModel.startDate.Value.Month, DateTime.DaysInMonth(filterModel.startDate.Value.Year, filterModel.startDate.Value.Month));
 
 					query = query.Where(ms =>
@@ -411,7 +336,6 @@ namespace BIS.DB.Implements
 					);
 				}
 			}
-
 			return query.ToList();
 		}
 	}

@@ -49,7 +49,6 @@ namespace BIS.Manager.Implements
 					if ((int)item <= (int)roleType)
 					{
 						var userId = await _userDB.GetUserIdByRoleType(item, corpsId, divisionId);
-						// checking that user fill any masterdata or not
 						if (userId > 0)
 						{
 							var dataList = _masterDataDB.GetByUserId(userId);
@@ -57,7 +56,6 @@ namespace BIS.Manager.Implements
 						}
 					}
 				}
-
 			}
 			return masterDataList;
 		}
@@ -73,11 +71,7 @@ namespace BIS.Manager.Implements
 
 		public List<MasterData> GetBetweenDateRange(FilterModelEntries model, int corpsId, int divisionId = 0)
 		{
-			// for division roles
-
 			return _masterDataDB.GetBetweenDateRange(model, corpsId, divisionId);
-
-
 		}
 		public List<MasterSector> GetSectorByCorpsId(int corpsId)
 		{
@@ -177,7 +171,6 @@ namespace BIS.Manager.Implements
 			return _masterDataDB.GetBy(Id, CorpsId);
 		}
 
-		// ansh smart-analysis
 		public async Task<(List<List<int>> Id, List<string> Labels, List<double> Data, List<double> Data2, List<string> Alerts, List<List<string>> FrmnsList, List<List<string>> SectorsList, List<List<string>> AspectsList, List<List<string>> IndicatorsList)> GetDailyAverageEntriesAsync(string frmn = null, string sector = null, string Aspects = null, string Indicator = null, DateTime? filterStartDate = null, DateTime? filterEndDate = null, int? Id = null)
 		{
 			return await _masterDataDB.GetDailyAverageEntriesAsync(frmn, sector, Aspects, Indicator, filterStartDate, filterEndDate, Id);

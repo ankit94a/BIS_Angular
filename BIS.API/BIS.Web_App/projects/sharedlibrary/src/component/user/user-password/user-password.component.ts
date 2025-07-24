@@ -4,13 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { User } from 'projects/sharedlibrary/src/model/user.model';
 import { ApiService } from 'projects/sharedlibrary/src/services/api.service';
 import { SharedLibraryModule } from 'projects/sharedlibrary/src/shared-library.module';
-// import { InSyncDialogActionModule } from 'projects/shared/src/lib/component/insync-dialog-action/insync-dialog-action.module';
-// import { InSyncDialogTitleModule } from 'projects/shared/src/lib/component/insync-dialog-title/insync-dialog-title.module';
-// import { InSyncApiService } from 'projects/shared/src/lib/insync-api.service';
-// import { Role } from 'projects/shared/src/lib/model/role';
-// import { User } from 'projects/shared/src/lib/model/user';
-// import { UtilService } from 'projects/shared/src/lib/util.service';
-// import { SharedModule } from 'projects/shared/src/public-api';
+
 
 @Component({
   selector: 'app-user-password',

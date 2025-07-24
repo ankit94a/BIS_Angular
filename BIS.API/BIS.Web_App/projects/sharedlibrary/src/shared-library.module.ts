@@ -6,10 +6,6 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MaterialModule } from './helpers/material';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { PipesModule } from './pipe/pipes.module';
-// import { PipesModule } from './pipe/pipes.module';
-//do not delete this import ConfirmDialogModule
-// import { CurrentColumnDirective } from './directive/current-column.directive';
-// import { WarningDialogComponent } from './components/warning-dialog/warning-dialog.component';
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from '@danielmoncada/angular-datetime-picker';
 import { NgxSpinnerModule } from 'ngx-spinner';
 
@@ -25,7 +21,6 @@ import { NgxSpinnerModule } from 'ngx-spinner';
     NgxSpinnerModule
   ],
   exports: [
-    // PipesModule,
     CommonModule,
     FormsModule,
     MaterialModule,

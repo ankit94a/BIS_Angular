@@ -4,10 +4,8 @@ import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { HeaderComponent } from '../../../sharedlibrary/src/component/header/header.component';
 import { SidebarComponent } from '../../../sharedlibrary/src/component/sidebar/sidebar.component';
 import { FooterComponent } from 'projects/sharedlibrary/src/component/footer/footer.component';
-import { AuthService } from 'projects/sharedlibrary/src/services/auth.service';
 import { filter } from 'rxjs';
 import { NgxSpinnerModule, NgxSpinnerService } from 'ngx-spinner';
-import { AIAnalysisComponent } from './ai-analysis/ai-analysis.component';
 import { BISMatDialogService } from 'projects/sharedlibrary/src/services/insync-mat-dialog.service';
 
 
@@ -26,7 +24,6 @@ export class LayoutComponent {
    position = { x: 1500, y: 650 };
   isDragging = false;
   offset = { x: 0, y: 0 };
-  // dialogService: any;
   constructor(private route:Router,public spinnerService: NgxSpinnerService,private dialogService:BISMatDialogService ) {
     this.typeSelected= 'ball-fussion';
     this.route.events
@@ -47,10 +44,6 @@ this.setDynamicPosition();
     };
   }
 
-
-  // changeClass() {
-  //   this.isMinimized = !this.isMinimized;
-  // }
 
   isLoaded($event: any) {
     this.isSideBarLoaded = $event
@@ -75,7 +68,6 @@ this.setDynamicPosition();
       const newX = event.clientX - this.offset.x;
       const newY = event.clientY - this.offset.y;
 
-      // Limit drag within viewport
       this.position.x = Math.max(0, Math.min(newX, window.innerWidth - 60));
       this.position.y = Math.max(0, Math.min(newY, window.innerHeight - 60));
     }
@@ -89,15 +81,4 @@ this.setDynamicPosition();
   onDragBound = this.onDrag.bind(this);
   stopDragBound = this.stopDrag.bind(this);
 }
-
-
-  // ngOnInit(): void {
-
-  // }
-  // isLoaded($event){
-  //   this.isSideBarLoaded = $event
-  // }
-  // sideBarToggler() {
-  //   this.sideBarOpen = !this.sideBarOpen;
-  // }
 

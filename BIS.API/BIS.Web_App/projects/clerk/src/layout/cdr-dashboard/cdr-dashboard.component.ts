@@ -1,6 +1,6 @@
 import { Component, QueryList, ViewChildren } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { ChartConfiguration, ChartData, ChartOptions, ChartType } from 'chart.js';
+import { ChartData, ChartOptions } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
 import { GetMeanvalueColorDirective } from 'projects/sharedlibrary/src/directives/get-meanvalue-color.directive';
 import { Aspect, Indicator, Sector } from 'projects/sharedlibrary/src/model/attribute.model';
@@ -33,17 +33,13 @@ export class CdrDashboardComponent {
   indicatorList: Indicator[] = [];
   meanChartList;
   allReports:GenerateReport[] = [];
-   // Using BehaviorSubject for reactivity
+
   private tableHeaderSubject = new BehaviorSubject<string[]>([]);
   private masterDataListSubject = new BehaviorSubject<masterData[]>([]);
   tableHeader$ = this.tableHeaderSubject.asObservable();
   masterDataList$ = this.masterDataListSubject.asObservable();
   @ViewChildren(BaseChartDirective) charts!: QueryList<BaseChartDirective>;
 
-  // fmnList: string[] = ["33 Corps", "27 Mtn Div", "17 Mtn Div", "111 Sub Area", "20 Mtn Div", "3 Corps", "2 Mtn Div", "56 Mtn Div", "57 Mtn Div", "4 Corps", "5 Mtn Div", "21 Mtn Div", "71 Mtn Div", "17 Corps", "59 Mtn Div", "23 Mtn Div"];
-  // sectorList:string[]=['None','PSS','MSS','Cho_la','Doka_la'];
-  // aspectList:string[]=['None','Svl / Counter Svl','Friction / Belligerence','Ae Activity','Conc of Tps','Armr / Arty / AD / Engrs Indn','Mob','Infra Devp','Dumping of WLS','Heightened Diplomatic Eng','Collapse of Diplomatic Ties','Propoganda','Internal Issues','Cyber','Def','Interactions'];
-  // indicatorList:string[]=['None','Placement of addl Svl Eqpt','Incr Recce','Incr in OP loc','Jamming','Enhanced Tourist Influx']
   staffList = ['Staff1','Staff2','Staff3']
   notesList = ['None','temp1','temp2','temp3']
   selected11: string = 'Monthly';
@@ -89,18 +85,16 @@ export class CdrDashboardComponent {
     this.dialogService.open(CdrInferenceComponent,item);
   }
   getReportByDate(){
-    // if(this.filterModel2.endDate != null && this.filterModel2.endDate != undefined){
-      this.apiService.getWithHeaders('cdrdashboard').subscribe(res =>{
+    this.apiService.getWithHeaders('cdrdashboard').subscribe(res =>{
       if(res){
         this.allReports = res;
       }
     })
-    // }
   }
   isWithinSixHours(dateString: string | Date): boolean {
     const createdTime = new Date(dateString).getTime();
     const currentTime = new Date().getTime();
-    const sixHoursInMs = 6 * 60 * 60 * 1000; // 6 hours
+    const sixHoursInMs = 6 * 60 * 60 * 1000; 
     return (currentTime - createdTime) <= sixHoursInMs;
   }
   
@@ -109,19 +103,18 @@ export class CdrDashboardComponent {
     weekNumber: number,
     year: number
   ): { startDate: Date; endDate: Date } {
-    const firstDayOfYear = new Date(year, 0, 1); // January 1st of the given year
-    const daysOffset = (weekNumber - 1) * 7; // Offset in days based on the week number
+    const firstDayOfYear = new Date(year, 0, 1); 
+    const daysOffset = (weekNumber - 1) * 7; 
     const firstWeekStart = new Date(
       firstDayOfYear.getTime() + daysOffset * 24 * 60 * 60 * 1000
     );
 
-    // Adjust to the nearest Monday
-    const dayOfWeek = firstWeekStart.getDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
+    const dayOfWeek = firstWeekStart.getDay(); 
     const startDate = new Date(firstWeekStart);
-    startDate.setDate(startDate.getDate() - (dayOfWeek - 1)); // Move to Monday
+    startDate.setDate(startDate.getDate() - (dayOfWeek - 1)); 
 
     const endDate = new Date(startDate);
-    endDate.setDate(startDate.getDate() + 6); // Move to Sunday
+    endDate.setDate(startDate.getDate() + 6); 
 
     return { startDate, endDate };
   }
@@ -165,9 +158,7 @@ export class CdrDashboardComponent {
       .subscribe((res) => {
         if (res) {
           this.meanChartList = res;
-          console.log(this.meanChartList);
 
-          // Define datasets
           this.entriesChart = {
             labels: res.name,
             datasets: [
@@ -199,7 +190,7 @@ export class CdrDashboardComponent {
                 borderWidth: 1.2,
                 fill: false,
                 tension: 0.4,
-                pointBackgroundColor: '#205781', // Static color for mean value dots
+                pointBackgroundColor: '#205781', 
               },
             ],
           };
@@ -222,7 +213,6 @@ export class CdrDashboardComponent {
   }
   getIndicator(event) {
     if (event != undefined && event != null) {
-      this.onFilterChange1('aspect')
       this.apiService.postWithHeader('attribute/indicatorlist', event).subscribe(res => {
         if (res) {
           this.indicatorList = res;
@@ -231,34 +221,7 @@ export class CdrDashboardComponent {
     }
   }
 
-  // smartanalysis/getentrieschart/entrydata
 
-  onFilterChange1(filterKey: string): void {
-    // this.filters[filterKey] = event;
-    // this.getFrmnDataAll();
-    // this.getNoOfInputChart();
-    // this.getNoOfInputChartLY();
-    // this.getAspectChart();
-    // this.getAspectChartLY();
-    // this.getIndicatorChart();
-    // this.getIndicatorChartLY();
-    switch (filterKey) {
-      case 'sector':
-        // this.getAllData();
-        break;
-      case 'aspect':
-        // this.get30DaysAspect();
-        // this.getlastYearAspect();
-        // this.get30DaysIndicator();
-        // this.getlastYearIndicator();
-        break;
-      case 'indicator':
-        // this.get30DaysIndicator();
-        // this.getlastYearIndicator();
-        break;
-    }
-
-  }
   public lineChartOptions: ChartOptions<'line'> = {
     responsive: true,
     maintainAspectRatio: false,
@@ -319,7 +282,6 @@ export class CdrDashboardComponent {
       link.download = `${chartId}.png`;
       link.click();
     } else {
-      console.error(`Chart instance not found or not ready for ${chartId}`);
     }
   }
 
@@ -359,55 +321,14 @@ export class CdrDashboardComponent {
     })
   }
   getWeeklyEntries(): void{
-    // this.service.getWeeklyentries(this.filterNew)
-    // .pipe(
-    //   takeUntil(this.unsubscribe$) // Unsubscribe when `unsubscribe$` emits
-    // ).subscribe({
-    //   next: (data) => {
-    //     console.log('Filtered data from API:', data);
-    //     this.chartDataWeeklyEntry = data;
-    //     this.renderChartWeeklyEntry();
-    //     console.log('Filtered data:', this.chartDataWeeklyEntry);
-    //   },
-    //   error: (error) => {
-    //     console.error('Error fetching data:', error);
-    //   }
 
-    // });
+ 
   }
   getMEntries(): void{
-    // this.service.getMonthMe(this.filterNew)
-    // .pipe(
-    //   takeUntil(this.unsubscribe$) // Unsubscribe when `unsubscribe$` emits
-    // ).subscribe({
-    //   next: (data) => {
-    //     console.log('Filtered data from API:', data);
-    //     this.chartDataMEntry = data;
-    //     this.renderChartMEntry();
-    //     console.log('Filtered data:', this.chartDataMEntry);
-    //   },
-    //   error: (error) => {
-    //     console.error('Error fetching data:', error);
-    //   }
-
-    // });
+ 
   }
   getDEntries(): void{
-    // this.service.getDailyMe(this.filterNew)
-    // .pipe(
-    //   takeUntil(this.unsubscribe$) // Unsubscribe when `unsubscribe$` emits
-    // ).subscribe({
-    //   next: (data) => {
-    //     console.log('Filtered data from API:', data);
-    //     this.chartDataDEntry = data;
-    //     this.renderChartDEntry();
-    //     console.log('Filtered data:', this.chartDataDEntry);
-    //   },
-    //   error: (error) => {
-    //     console.error('Error fetching data:', error);
-    //   }
 
-    // });
   }
   onFilterChange(event){
 

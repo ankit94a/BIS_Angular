@@ -7,7 +7,7 @@ import { NotificationModel } from '../../model/notification.model';
 import { EnumBase, NotificationType, Status } from '../../model/enum';
 import { GenerateReport, GraphImages, MergeReports } from '../../model/generatereport.model';
 import { MasterDataFilterService } from '../../services/master-data-filter.service';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { BisdefaultDatePipe } from '../../pipe/bisdefault-date.pipe';
 import { CommonModule } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
@@ -21,19 +21,15 @@ import { AuthService } from '../../services/auth.service';
   providers: [BisdefaultDatePipe]
 })
 export class NotificationActionComponent extends EnumBase {
-  selectedImages: { url: string; name: string }[] = []; // Array to store selected images
-
+  selectedImages: { url: string; name: string }[] = []; 
   masterData: masterData;
   notify: NotificationModel = new NotificationModel();
   report: GenerateReport;
-  // for handling ColGs new report attached G1 reportId
   report2: GenerateReport;
-  // handling unique table header & master Data;
   tableHeader = [];
   masterDataList = [];
-  /* handling user like staff view */
   userRole = this.authService.getRoleType()
-  // Using BehaviorSubject for reactivity
+
   private tableHeaderSubject = new BehaviorSubject<string[]>([]);
   private masterDataListSubject = new BehaviorSubject<masterData[]>([]);
   private chartImagesSubject = new BehaviorSubject<GraphImages[]>([]);
@@ -42,17 +38,14 @@ export class NotificationActionComponent extends EnumBase {
   masterDataList$ = this.masterDataListSubject.asObservable();
   chartImages$ = this.chartImagesSubject.asObservable();
 
-  // based on recieverEntityType show the dynamic ng-template;
   mergeReport:MergeReports = new MergeReports();
   constructor(private authService:AuthService,private toastr: ToastrService, private cdr: ChangeDetectorRef, private masterDataService: MasterDataFilterService, @Inject(MAT_DIALOG_DATA) data, private apiService: ApiService, private dialogRef: MatDialogRef<NotificationActionComponent>) {
     super();
     this.notify = data;
-    debugger
     this.masterData = new masterData();
     if (this.notify.notificationType == NotificationType.MasterData) {
       this.getMasterData(this.notify.dataId)
     } else if(this.notify.notificationType == NotificationType.GenerateReport) {
-      // this.report = new GenerateReport();
       this.report2 = new GenerateReport();
       this.mergeReport.masterData = [];
       this.getReport();
@@ -86,7 +79,6 @@ export class NotificationActionComponent extends EnumBase {
   excluedeFields = ['Id', 'Status', 'UserId', 'Fmn', 'CreatedBy', 'CreatedOn', 'IsActive', 'IsDeleted', 'CorpsId', 'DivisionId','ReportedDate']
 
   getReport() {
-    debugger;
     this.notify.isReaded
     this.apiService.postWithHeader('notification/getreport', this.notify).subscribe(res => {
       if (res) {
@@ -124,7 +116,6 @@ export class NotificationActionComponent extends EnumBase {
   }
 
   submitReport() {
-    debugger
     this.report2.reportTitle = this.mergeReport.reportTitle;
     this.report2.reportType = this.mergeReport.reportType;
     this.report2.reportDate = new Date();

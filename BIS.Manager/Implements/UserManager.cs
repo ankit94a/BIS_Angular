@@ -52,7 +52,7 @@ namespace BIS.DB.Implements
         public async Task<List<PredictionResponse>> GetAnomalies(PredictionModel requestModel)
 		{
             var httpClient = _httpClientFactory.CreateClient("AiModelCall");
-            // Serialize the request model to JSON
+
             var options = new JsonSerializerOptions
             {
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase
@@ -84,6 +84,12 @@ namespace BIS.DB.Implements
                         Residual = item.GetProperty("residual").ValueKind == JsonValueKind.Null
                                    ? (float?)null
                                    : item.GetProperty("residual").GetSingle(),
+                        Predicted = item.GetProperty("predicted").ValueKind == JsonValueKind.Null
+                                   ? (float?)null
+                                   : item.GetProperty("predicted").GetSingle(),
+                        Count = item.GetProperty("count").ValueKind == JsonValueKind.Null
+                                   ? (string?)null
+                                   : item.GetProperty("count").GetString(),
                         Title = item.GetProperty("title").GetString()
                     };
 
@@ -92,15 +98,6 @@ namespace BIS.DB.Implements
 
                 return results;
 
-
-
-                // Deserialize JSON response
-                var result = JsonSerializer.Deserialize<List<PredictionResponse>>(responseContent, new JsonSerializerOptions
-                {
-                    PropertyNameCaseInsensitive = true
-                });
-
-                return result ?? new List<PredictionResponse>();
             }
             else
             {

@@ -10,7 +10,6 @@ import { BisdefaultDatePipe } from 'projects/sharedlibrary/src/pipe/bisdefault-d
 import { GenerateReportViewComponent } from '../generate-report-view/generate-report-view.component';
 import { AuthService } from 'projects/sharedlibrary/src/services/auth.service';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { IsCurrentUserPipe } from 'projects/sharedlibrary/src/pipe/is-current-user.pipe';
 import { NotificationType } from 'projects/sharedlibrary/src/model/enum';
 import { NotificationActionComponent } from 'projects/sharedlibrary/src/component/notification-action/notification-action.component';
 
@@ -27,11 +26,8 @@ export class GenerateReportsListComponent extends TablePaginationSettingsConfig 
   generateReportList: GenerateReport[] = [];
   constructor(private spinner:NgxSpinnerService, private dialogService:BISMatDialogService,private apiService:ApiService ,private datePipe:BisdefaultDatePipe,private authService:AuthService){
     super();
-
     this.tablePaginationSettings.enableAction = true;
-    // this.tablePaginationSettings.enableEdit = true;
     this.tablePaginationSettings.enableView = true;
-    // this.tablePaginationSettings.enableDelete = true;
     this.tablePaginationSettings.pageSizeOptions = [50, 100];
     this.tablePaginationSettings.showFirstLastButtons = false
     if(parseInt(this.authService.getRoleType()) >= 10)

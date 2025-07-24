@@ -37,16 +37,6 @@
                                     <mat-datepicker #startDate></mat-datepicker>
                                 </mat-form-field>
                             </div>
-                            <!-- <div *ngSwitchCase="'dropdown'">
-                                <mat-form-field>
-                                    <mat-select placeholder="{{'Select'}}" #filterName name="filterName"
-                                        (selectionChange)="applyInsyncFilter($event,column.name,column.type)">
-                                        <mat-option *ngFor="let item of column?.dropDownList"
-                                            value={{item.key}}>{{item.value}}
-                                        </mat-option>
-                                    </mat-select>
-                                </mat-form-field>
-                            </div> -->
                             <div *ngSwitchDefault>
                                 <mat-form-field class="example-form-field">
                                     <input matInput type="text" placeholder="Search"
@@ -59,9 +49,7 @@
                 <mat-cell *matCellDef="let element">
                     <div [ngSwitch]="column.valueType">
                         <div *ngSwitchCase="'custom'">
-                            <!-- <custom-view-component [column]="column" [element]="element"></custom-view-component> -->
                         </div>
-
                         <div *ngSwitchCase="'html'" [innerHtml]="getValues(element,column)"></div>
                         <div *ngSwitchDefault >{{getValues(element,column) }}</div>
                     </div>
@@ -76,8 +64,7 @@
                     <button class="btn btn-link" type="button"
                         *ngIf="tablePaginationSettings.enableColumn;else actionTemplate" #menuTrigger="matMenuTrigger"
                         [matMenuTriggerFor]="mainMenuButton">
-                         <!-- <mat-icon matTooltip="Add More Columns">filter_list</mat-icon>  -->
-                         <img src="/assets/filter.svg" class="custom-icon" style="height: 30px;" alt="">
+                        <img src="/assets/filter.svg" class="custom-icon" style="height: 30px;" alt="">
                       </button>
 
 
@@ -145,6 +132,4 @@
             [showFirstLastButtons]="tablePaginationSettings.showFirstLastButtons">
         </mat-paginator>
     </ng-container>
-    <!-- <h1 [libGetRowBackgroundColor]="isRowBackgroundColor ? 'approved' : null"></h1> -->
-
 </section>

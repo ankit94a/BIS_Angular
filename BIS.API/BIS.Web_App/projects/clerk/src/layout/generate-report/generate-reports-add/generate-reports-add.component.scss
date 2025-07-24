@@ -1,14 +1,14 @@
-/* Make the table container scrollable */
+
 .table-container {
-    max-height: 400px; /* Adjust the height as needed */
-    overflow: auto;    /* Enable both x and y axis scrolling */
-    width: 100%;       /* Ensure it takes full width */
+    max-height: 400px; 
+    overflow: auto;   
+    width: 100%;       
   }
 
-  /* Add styles to the table to ensure it behaves responsively */
+
   table {
-    width: 100%;       /* Ensure the table takes the full width */
-    border-collapse: collapse; /* Optional, makes table borders collapse */
+    width: 100%;     
+    border-collapse: collapse; 
   }
 
   th, td {
@@ -20,21 +20,18 @@
   thead {
     position: sticky;
     top: 0;
-    background-color: #f1f1f1;  /* Optional: for better visibility */
-    z-index: 1; /* Ensures the header stays on top while scrolling */
+    background-color: #f1f1f1; 
+    z-index: 1;
   }
 
-  /* Optional: Adjust table header size and font */
+  
   th {
     font-weight: bold;
     background-color: #f1f1f1;
   }
 
-
-   /* input images */
-
    .image-preview {
-    position: relative; /* To position the close icon relative to the image preview */
+    position: relative; 
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -63,7 +60,7 @@
     position: absolute;
     top: 0px;
     right: -15px;
-    background-color: rgba(255, 255, 255, 0.7); /* optional: for better visibility */
+    background-color: rgba(255, 255, 255, 0.7);
     border-radius: 50%;
     padding: 5px;
     cursor: pointer;
@@ -71,7 +68,7 @@
   }
 
   .close-icon {
-    font-size: 20px; /* Adjust size as needed */
+    font-size: 20px; 
     color: #555;
   }
 

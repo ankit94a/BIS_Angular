@@ -104,14 +104,12 @@
         </table>
       </div>
       <div class="arrow-icon">
-        <!-- <mat-icon>compare_arrows</mat-icon> -->
         <img src="/assets/right-arrow.svg" class="custom-icon" style="height: 20px;" alt="">
       </div>
       <div class="table-container">
         <table>
           <thead>
             <tr>
-              <!-- <th>#</th> -->
               <ng-container *ngFor="let item of tableHeader$ | async">
                 <th
                   *ngIf="!['Id', 'CreatedBy', 'CreatedOn', 'IsActive', 'IsDeleted', 'CorpsId', 'DivisionId','ReportedDate','Status','Fmn','UserId'].includes(item)"
@@ -142,20 +140,7 @@
     <br>
     <hr>
     <br>
-    <!-- <div class="row">
-      <div class="col-sm-4">
-        <mat-form-field>
-          <mat-label>Enter a date range</mat-label>
-          <mat-date-range-input [rangePicker]="picker1">
-              <input matStartDate placeholder="Start date" [(ngModel)]="filterModel2.startDate">
-              <input matEndDate placeholder="End date" [(ngModel)]="filterModel2.endDate" (dateChange)="getReportByDate()">
-          </mat-date-range-input>
-          <mat-datepicker-toggle matIconSuffix [for]="picker1"></mat-datepicker-toggle>
-          <mat-date-range-picker #picker1></mat-date-range-picker>
-      </mat-form-field>
 
-    </div>
-    </div> -->
     <div class="row">
       <div class="col-md-12">
         <div class="card">

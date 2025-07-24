@@ -1,8 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
-import { role, roles } from 'projects/sharedlibrary/src/model/permission.model';
-import { Role, Roles } from 'projects/sharedlibrary/src/model/role.model';
+import { roles } from 'projects/sharedlibrary/src/model/permission.model';
 import { ApiService } from 'projects/sharedlibrary/src/services/api.service';
 import { SharedLibraryModule } from 'projects/sharedlibrary/src/shared-library.module';
 
@@ -20,22 +19,8 @@ export class RoleAddComponent {
      if(data != null && data != undefined && data != ""){
       this.role = data;
      }
-    //  this.getAllCorps();
   }
-  // getAllCorps(){
-  //   this.apiService.getWithHeaders('corps').subscribe(res => {
-  //     if(res){
-  //       this.corps = res;
-  //     }
-  //   })
-  // }
-  // getAllDivision(corpsId){
-  //   this.apiService.getWithHeaders('corsp/divison'+corpsId).subscribe(res =>{
-  //     if(res){
-  //       this.divison = res;
-  //     }
-  //   })
-  // }
+
   onSubmit(){
     if(this.role?.id > 0){
       this.apiService.putWithHeader('role',this.role).subscribe(res => {

@@ -82,16 +82,6 @@
             </mat-select>
           </mat-form-field>
         </div>
-        <!-- <div class="col-md-4">
-                            <mat-form-field>
-                                <mat-label>En Loc Name</mat-label>
-                                <mat-select formControlName="enLocName">
-                                    <mat-option *ngFor="let item of enemyLocations" [value]="item.name">
-                                        {{ item.name }}
-                                    </mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </div> -->
         <div class="col-md-4">
           <mat-form-field>
             <mat-label>En Loc Name</mat-label>
@@ -115,8 +105,6 @@
           </mat-form-field>
         </div>
       </div>
-
-
 
       <mat-card-content *ngIf="indicators.length > 0">
         <div class="row">
@@ -176,7 +164,6 @@
           </div>
         </div>
 
-        <!-- Render additional fields based on dropdown selection -->
         <div *ngIf="additionalFields.length > 0">
           <div class="row" *ngFor="let field of additionalFields">
             <div class="col-md-4">
@@ -192,11 +179,9 @@
           </div>
         </div>
         <div align="end">
-          <!-- <button mat-button matStepperPrevious type="button">Back</button> -->
           <button class="btn btn-sm btn-primary" type="submit">Save</button>
         </div>
       </mat-card-content>
-
     </mat-card-content>
   </mat-card>
 </form>

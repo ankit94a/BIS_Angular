@@ -23,10 +23,10 @@
 }
 .count-text {
   font-size: 40px;
-  text-align: center; /* Center text horizontally */
+  text-align: center; 
   display: flex;
-  justify-content: center; /* Center inside the div */
-  align-items: center; /* Align vertically */
+  justify-content: center; 
+  align-items: center; 
   width: 100%;
   height: 100%;
   color:#000
@@ -36,7 +36,6 @@
 }
 .font-black{
   color: #000;
-  // background-color: #000;
 }
 .card-header2{
   display: flex;
@@ -128,16 +127,16 @@
     flex-grow: 1;
     align-self: center;
     width: 100%;
-    height: calc(100% - 10%); /* Subtract the space occupied by the title and footer */
+    height: calc(100% - 10%); 
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow: hidden; /* Prevent overflowing content */
+    overflow: hidden;
   }
 
   .chart-container canvas {
     max-width: 100%;
-    height: 100% !important; /* Ensure the chart doesn't exceed the container height */
+    height: 100% !important; 
     object-fit: contain;
   }
   .download-icon{
@@ -156,7 +155,6 @@
     box-shadow: rgba(206, 206, 210, 0.25) 0px 30px 60px -12px inset, rgba(226, 223, 223, 0.3) 0px 18px 36px -18px inset;
   }
   .card-footer {
-    // margin-top: 1rem;
     height: 40px;
   }
 
@@ -182,29 +180,27 @@
 
 
   .gradient-button {
-    // background: linear-gradient(to right, rgba(255, 165, 0, 0.8), rgba(0, 123, 255, 0.8)); /* Orange to Blue */
-    background-color: #3f51b5;
+   background-color: #3f51b5;
     border: none;
     color: white;
     font-size: 14px;
     padding: 7px 20px;
     border-radius: 5px;
     cursor: pointer;
-    transition: all 0.3s ease; /* Smooth transition for hover */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     margin-left: 93px;
   }
 
   .gradient-button:hover {
-    // background: linear-gradient(to right, rgba(255, 140, 0, 1), rgba(30, 144, 255, 1)); /* Brighter gradient on hover */
     background-color: #ff9800;
-    transform: scale(1.05); /* Slightly enlarge button */
-    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15); /* Enhance shadow on hover */
+    transform: scale(1.05);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15); 
   }
 
   .gradient-button:active {
-    transform: scale(0.98); /* Slight press effect */
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1); /* Reduced shadow */
+    transform: scale(0.98); 
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
   }
   .custom-icon{
     height: 25px;

@@ -15,10 +15,6 @@ export class SavedNotesComponent extends TablePaginationSettingsConfig implement
   isRefresh = false;
   constructor(private apiService:ApiService){
     super();
-    // this.tablePaginationSettings.enableAction = true;
-    // this.tablePaginationSettings.enableEdit = true;
-    // this.tablePaginationSettings.enableView = true;
-    // this.tablePaginationSettings.enableDelete = true;
     this.tablePaginationSettings.pageSizeOptions = [50, 100];
     this.tablePaginationSettings.showFirstLastButtons = false
   }

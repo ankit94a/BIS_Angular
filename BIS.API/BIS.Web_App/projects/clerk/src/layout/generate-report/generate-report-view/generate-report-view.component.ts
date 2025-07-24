@@ -19,7 +19,7 @@ export class GenerateReportViewComponent {
   report1: GenerateReport = new GenerateReport();
   masterDataList = [];
   reportType = ['ISUM', 'DISUM', 'SITREP']
-  // Using BehaviorSubject for reactivity
+
   private tableHeaderSubject = new BehaviorSubject<string[]>([]);
   private masterDataListSubject = new BehaviorSubject<masterData[]>([]);
   private chartImagesSubject = new BehaviorSubject<GraphImages[]>([]);

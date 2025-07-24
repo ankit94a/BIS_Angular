@@ -52,28 +52,11 @@ namespace BIS.DB.Implements
 				throw;
 			}
 		}
-		//public async Task<int> GetUserIdByRoleType(RoleType roleType, int corpsId, int? divisionId = 0)
-		//{
-		//	try
-		//	{
-		//		var query = dbContext.UserDetails.Where(us => us.RoleType == roleType && corpsId == corpsId && us.DivisionId == divisionId);
 
-		//		var user = await query.FirstOrDefaultAsync();
-
-		//		return user?.Id ?? 0;
-		//	}
-		//	catch (Exception ex)
-		//	{
-		//		BISLogger.Error(ex, "Getting user list error in for CorpsId = ");
-		//		throw;
-		//	}
-
-		//}
 		public async Task<int> GetUserIdByRoleType(RoleType roleType, int corpsId, int? divisionId = 0)
 		{
 			try
 			{
-				// Create a scope for the background task
 				using (var scope = _serviceProvider.CreateScope())
 				{
 					var dbContext = scope.ServiceProvider.GetRequiredService<AppDBContext>();

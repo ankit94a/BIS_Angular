@@ -1,17 +1,13 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
-import { BISDialogTitleComponent } from 'projects/sharedlibrary/src/component/edusynk-dialog-title/edusynk-dialog-title.component';
-import { EnemyLocation, masterData, MasterInputLevels, MasterLoc, MasterSector, Source } from 'projects/sharedlibrary/src/model/masterdata.model';
-import { CommonModule, DatePipe, NgClass } from '@angular/common';
+import { EnemyLocation, MasterInputLevels, MasterLoc, MasterSector, Source } from 'projects/sharedlibrary/src/model/masterdata.model';
+import { DatePipe } from '@angular/common';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { ApiService } from 'projects/sharedlibrary/src/services/api.service';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { SharedLibraryModule } from 'projects/sharedlibrary/src/shared-library.module';
 import { MatStepperModule } from '@angular/material/stepper';
-import { BISMatDialogService, } from 'projects/sharedlibrary/src/services/insync-mat-dialog.service';
-import { MasterDataComponent } from '../master-data-list/master-data.component';
-import { MatDialogRef } from '@angular/material/dialog';
 import { AuthService } from 'projects/sharedlibrary/src/services/auth.service';
 import { Aspect, Indicator } from 'projects/sharedlibrary/src/model/attribute.model';
 import { MasterDataService } from 'projects/sharedlibrary/src/services/master-data.service';
@@ -46,7 +42,6 @@ export class MasterDataFormComponent {
   masterData;
   hasNonEmptyParams: boolean = false;
 
-  // storing aspectName globally for handling add form
   aspectName: string;
 enLocNameControl: FormControl<any>;
   constructor(private masterDataService: MasterDataService, private authService: AuthService, private apiService: ApiService, private datePipe: DatePipe, private toastr: ToastrService) {
@@ -67,9 +62,7 @@ enLocNameControl: FormControl<any>;
     })
   }
   getIndicator(event) {
-    // if(!this.hasNonEmptyParams){
     this.aspectName = this.aspectList.find(item => item.id == event).name;
-    // }
     this.apiService.getWithHeaders('attribute/indicator/' + event).subscribe(res => {
       if (res) {
         this.indicators = res;
@@ -83,26 +76,11 @@ enLocNameControl: FormControl<any>;
   ngOnInit(): void {
 
     this.createData = this.formBuilder.group({
-      // reportedDate: ['', Validators.required],
-      // masterInputlevelID:[0],
-      // masterSectorID:[0],
-      // // inputLevelNew: [0],
-      // // sectorNew :[0],
-      // name: ['', Validators.required],
-      // sector: ['', Validators.required],
-      // fmn: [0, Validators.required],
-      // source: ['', Validators.required],
-      // sourceLoc: [''],
-      // typeOfLoc: ['', Validators.required],
-      // enLocName: ['', Validators.required],
-      // aspect: [''],
       id: [0],
       inputLevel: ['',],
       reportedDate: [new Date(), Validators.required],
       masterInputlevelID: [0],
       masterSectorID: [0],
-      // inputLevelNew: [0],
-      // sectorNew :[0],
       name: ['',],
       sector: ['',],
       fmn: [0,],
@@ -678,8 +656,8 @@ enLocNameControl: FormControl<any>;
   currentStepIndex: number = 0;
   additionalFields: Array<any> = [];
   dynamicFields: Array<any> = [];
-  dynamicDropdownOptions: Array<any> = [];  // Holds dynamic dropdown options for the selected indicator
-  dynamicDropdownLabel: string = '';  // Label for the dynamic dropdown
+  dynamicDropdownOptions: Array<any> = [];  
+  dynamicDropdownLabel: string = '';  
 
   onChange2($event) {
     const selectedIndicator = $event;
@@ -692,7 +670,7 @@ enLocNameControl: FormControl<any>;
       this.dynamicDropdownOptions = dropdownFields[0].options || [];
       this.dynamicDropdownLabel = dropdownFields[0].label;
     }
-    // setting formControl to the reactive form based on type
+
     fields.forEach(field => {
       if (!this.createData.contains(field.name)) {
         if (field.type === 'dropdown') {
@@ -707,7 +685,6 @@ enLocNameControl: FormControl<any>;
   onDropdownSelectionChange($event: any) {
     const dropdownValue = $event.value;
     this.additionalFields = [];
-    // Handle further dynamic fields based on dropdown value
     switch (dropdownValue) {
       case 'Rd':
         this.additionalFields = this.getAdditionalFieldsForDropdown('Rd');
@@ -726,11 +703,10 @@ enLocNameControl: FormControl<any>;
         break;
 
       default:
-        // Add additional logic for other dropdown values if needed
         break;
     }
 
-    // You can add additional form controls for the new fields if needed
+
     this.additionalFields.forEach(field => {
       if (!this.createData.contains(field.name)) {
         if (field.type === 'dropdown') {
@@ -743,8 +719,6 @@ enLocNameControl: FormControl<any>;
   }
 
   getAdditionalFieldsForDropdown(dropdownValue: string) {
-    // Logic to return additional fields based on dropdown value
-    // Example: You can map dropdown values to additional fields here
     switch (dropdownValue) {
       case 'Rd':
         return [
@@ -753,8 +727,6 @@ enLocNameControl: FormControl<any>;
 
       case 'Rail':
         return [
-          // { name: 'additionalField1', label: 'Additional Field 1', type: 'string' },
-          // { name: 'additionalField2', label: 'Additional Field 2', type: 'time' },
           { name: 'cidtoiRailBroadGauge', label: 'Broad_gauge(kms)', type: 'string' },
           { name: 'cidtoiRailMetreGauge', label: 'Metre_gauge', type: 'string' },
           { name: 'cidtoiRailRailwaySidings', label: 'Railway_sidings', type: 'string' },
@@ -779,7 +751,7 @@ enLocNameControl: FormControl<any>;
         ];
 
       default:
-        return []; // Return an empty array if no matching dropdown value is found
+        return []; 
     }
   }
 
@@ -820,9 +792,6 @@ enLocNameControl: FormControl<any>;
       case '57 Mtn Div':
         this.sectorList = ['Dibang Valley', 'Dou-delai valley', 'Lohit Valley', 'Subansiri Valley', 'Siyom Valley', 'Siang Valley'];
         break;
-      // case 'Option 3':
-      //   this.childItems = ['Suboption X', 'Suboption Y', 'Suboption Z'];
-      // break;
       default:
         this.sectorList = ['MSS', 'PSS', 'Cho_La', 'Doka_La', 'NESS', 'Semi Held', 'NatuLa'];
         break;
@@ -1439,6 +1408,5 @@ enLocNameControl: FormControl<any>;
       { name: 'cfvTimeFrom', label: 'Time From', type: 'time' },
       { name: 'cfvTimeTo', label: 'Time To', type: 'time' },
     ],
-    // Additional configurations for other indicators
   };
 }

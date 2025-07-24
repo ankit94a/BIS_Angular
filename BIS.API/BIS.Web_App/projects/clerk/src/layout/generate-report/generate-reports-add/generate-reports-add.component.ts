@@ -29,24 +29,12 @@ export class GenerateReportsAddComponent implements OnInit {
   reportType = ['ISUM','DISUM','SITREP'];
 
   constructor(@Inject(MAT_DIALOG_DATA) data,private masterDataService: MasterDataFilterService, private apiService: ApiService, private toastr: ToastrService, private _formBuilder: FormBuilder, private dialogRef: MatDialogRef<GenerateReportsAddComponent>) {
-    // if(data.id > 0){
-    //   this.report = data;
-    //   this.getReportById(data.masterDataIds);
-    // }else{
 
-    // }
   }
   ngOnInit(): void {
     this.createForm()
     this.onDateChange(this.reportForm.get('startDate').value, this.reportForm.get('endDate').value);
   }
-  // getReportById(masterDataIds) {
-  //   this.apiService.getWithHeaders('masterdata/idsList' + masterDataIds).subscribe(res => {
-  //     if (res) {
-  //       this.report.masterData = res;
-  //     }
-  //   })
-  // }
 
   createForm() {
     this.reportForm = this._formBuilder.group({

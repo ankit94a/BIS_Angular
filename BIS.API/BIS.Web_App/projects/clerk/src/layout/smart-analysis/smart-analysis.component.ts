@@ -35,7 +35,7 @@ export class SmartAnalysisComponent implements OnInit, OnDestroy {
   filterModel: FilterModel = new FilterModel();
   filterModel3: FilterModel = new FilterModel();
   filterModel4: FilterModel4 = new FilterModel4();
-  //chart variables
+
   input30Days: ChartData<'line'>;
   inputLastYear: ChartData<'line'>;
   aspect30Days: ChartData<'line'>;
@@ -47,14 +47,13 @@ export class SmartAnalysisComponent implements OnInit, OnDestroy {
   entriesChart: ChartData<'line'>;
   meanChartList;
 
-  // Using BehaviorSubject for reactivity
   private tableHeaderSubject = new BehaviorSubject<string[]>([]);
   private masterDataListSubject = new BehaviorSubject<masterData[]>([]);
   tableHeader$ = this.tableHeaderSubject.asObservable();
   masterDataList$ = this.masterDataListSubject.asObservable();
 
   @ViewChildren(BaseChartDirective) charts!: QueryList<BaseChartDirective>;
-  // Map to track selected charts by their IDs
+
   selectedCharts: { [key: string]: boolean } = {
     chart0: false,
     chart1: false,
@@ -176,7 +175,6 @@ chartList: string[] = ['Monthly', 'Daily', 'Weekly'];
       link.download = `${chartId}.png`;
       link.click();
     } else {
-      console.error(`Chart instance not found or not ready for ${chartId}`);
     }
   }
   getAllData() {
@@ -224,27 +222,6 @@ chartList: string[] = ['Monthly', 'Daily', 'Weekly'];
     return colors[index % colors.length];
   }
 
-  // getvariation2() {
-  //   if (this.filterModel3.endDate != null &&this.filterModel3.endDate != undefined) {
-  //     this.apiService.postWithHeader('smartanalysis/variation', this.filterModel3).subscribe((res) => {
-  //         if (res) {
-  //           this.variation2 = {
-  //             labels: res.name,
-  //             datasets: [
-  //               {
-  //                 data: res.count,
-  //                 label: 'Inputs',
-  //                 borderColor: 'rgba(173, 93, 13, 0.8)',
-  //                 borderWidth: 1.2,
-  //                 fill: false,
-  //                 tension: 0.4,
-  //               },
-  //             ],
-  //           };
-  //         }
-  //       });
-  //   }
-  // }
   ngOnInit(): void {
 
   }
@@ -303,9 +280,6 @@ chartList: string[] = ['Monthly', 'Daily', 'Weekly'];
       .subscribe((res) => {
         if (res) {
           this.meanChartList = res;
-          console.log(this.meanChartList);
-
-          // Define datasets
           this.entriesChart = {
             labels: res.name,
             datasets: [
@@ -337,7 +311,7 @@ chartList: string[] = ['Monthly', 'Daily', 'Weekly'];
                 borderWidth: 1.2,
                 fill: false,
                 tension: 0.4,
-                pointBackgroundColor: '#205781', // Static color for mean value dots
+                pointBackgroundColor: '#205781', 
               },
             ],
           };
@@ -493,18 +467,7 @@ chartList: string[] = ['Monthly', 'Daily', 'Weekly'];
         });
     }
   }
-  // getIndicatorForVarition2(event) {
-  //   if (event != undefined && event != null) {
-  //     this.getvariation2();
-  //     this.apiService
-  //       .postWithHeader('attribute/indicatorlist', event)
-  //       .subscribe((res) => {
-  //         if (res) {
-  //           this.indicatorList3 = res;
-  //         }
-  //       });
-  //   }
-  // }
+
   getIndicatorForEntries(event) {
     if (event != undefined && event != null) {
       this.getEntries();
@@ -570,11 +533,11 @@ chartList: string[] = ['Monthly', 'Daily', 'Weekly'];
       {
         label: 'Fmn',
         data: [30, 45, 28, 50, 60, 33, 45, 40, 55, 48, 62, 70],
-        backgroundColor: 'rgba(54, 162, 235, 0.5)', // Semi-transparent blue
-        borderColor: 'rgba(54, 162, 235, 1)', // Solid blue
+        backgroundColor: 'rgba(54, 162, 235, 0.5)', 
+        borderColor: 'rgba(54, 162, 235, 1)',
         borderWidth: 1.2,
-        fill: true, // Fill area under the line
-        tension: 0.4, // Adds smoothness to the line
+        fill: true, 
+        tension: 0.4, 
       },
     ],
   };
@@ -585,7 +548,7 @@ chartList: string[] = ['Monthly', 'Daily', 'Weekly'];
     plugins: {
       legend: {
         display: false,
-        position: 'top', // Show the legend at the top
+        position: 'top', 
       },
     },
     scales: {
@@ -610,7 +573,7 @@ chartList: string[] = ['Monthly', 'Daily', 'Weekly'];
     },
   };
 
-  // Chart Data - Complete data
+
   completeChartData: ChartData<'line', number[], string | string[]> = {
     labels: [
       'January',
@@ -630,8 +593,8 @@ chartList: string[] = ['Monthly', 'Daily', 'Weekly'];
       {
         label: 'Fmn',
         data: [30, 45, 28, 50, 60, 33, 45, 40, 55, 48, 62, 70],
-        backgroundColor: 'rgba(54, 162, 235, 0.5)', // Semi-transparent blue
-        borderColor: 'rgba(54, 162, 235, 1)', // Solid blue
+        backgroundColor: 'rgba(54, 162, 235, 0.5)', 
+        borderColor: 'rgba(54, 162, 235, 1)', 
         borderWidth: 1.2,
         fill: true,
         tension: 0.4,
@@ -639,8 +602,8 @@ chartList: string[] = ['Monthly', 'Daily', 'Weekly'];
       {
         label: 'Sales',
         data: [22, 38, 45, 60, 75, 50, 80, 65, 60, 58, 80, 90],
-        backgroundColor: 'rgba(255, 99, 132, 0.5)', // Semi-transparent red
-        borderColor: 'rgba(255, 99, 132, 1)', // Solid red
+        backgroundColor: 'rgba(255, 99, 132, 0.5)', 
+        borderColor: 'rgba(255, 99, 132, 1)',
         borderWidth: 1.2,
         fill: true,
         tension: 0.4,
@@ -648,8 +611,8 @@ chartList: string[] = ['Monthly', 'Daily', 'Weekly'];
       {
         label: 'Expenses',
         data: [40, 55, 48, 70, 80, 60, 75, 65, 72, 68, 85, 100],
-        backgroundColor: 'rgba(75, 192, 192, 0.5)', // Semi-transparent green
-        borderColor: 'rgba(75, 192, 192, 1)', // Solid green
+        backgroundColor: 'rgba(75, 192, 192, 0.5)', 
+        borderColor: 'rgba(75, 192, 192, 1)',
         borderWidth: 1.2,
         fill: true,
         tension: 0.4,
@@ -657,7 +620,7 @@ chartList: string[] = ['Monthly', 'Daily', 'Weekly'];
     ],
   };
 
-  // Function to get chart data based on chart type using switch case
+
   getChartData(
     chartType: string
   ): ChartData<'line', number[], string | string[]> {
@@ -680,7 +643,7 @@ chartList: string[] = ['Monthly', 'Daily', 'Weekly'];
         );
         break;
       default:
-        filteredDatasets = this.completeChartData.datasets; // Return all datasets if no match
+        filteredDatasets = this.completeChartData.datasets;
         break;
     }
 
@@ -694,7 +657,7 @@ chartList: string[] = ['Monthly', 'Daily', 'Weekly'];
   public chartDataLine2 = this.getChartData('Sales');
   public chartDataLine3 = this.getChartData('Expenses');
 
-  //FOR CHARTSN AP
+
   private unsubscribe$ = new Subject<void>();
 
   ngOnDestroy(): void {
@@ -787,34 +750,28 @@ chartList: string[] = ['Monthly', 'Daily', 'Weekly'];
   } = {};
   getFrmnDataAll(): void {
     const queryParams = Object.entries(this.filters)
-      .filter(([key, value]) => value) // Include only non-empty filters
+      .filter(([key, value]) => value)
       .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
       .join('&');
 
-    // Base URL
     const baseUrl = 'Rpt/getfrmn30Days?last30Days=true';
 
-    // Full URL with query parameters
+
     const fullUrl = queryParams ? `${baseUrl}&${queryParams}` : baseUrl;
     this.apiService
       .getWithHeaders(fullUrl)
-      // this.apiService.getWithHeaders("Rpt/getfrmn30Days?last30Days=true")
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe({
-        next: (data) => {
-          // console.log('Filtered data from API:', data);
+        next: (data) => {         
           this.chartDataLineFrmn = data;
-          this.renderPieChartFrmn();
-          // console.log('Filtered data:', this.chartDataLineFrmn);
+          this.renderPieChartFrmn();         
         },
         error: (error) => {
-          console.error('Error fetching data:', error);
         },
       });
   }
   renderPieChartFrmn(): void {
     if (!this.chartDataLineFrmn || !this.myChartLineFrmn) {
-      // this.renderEmptyPieChart(this.myChart111);
       return;
     }
 
@@ -824,7 +781,6 @@ chartList: string[] = ['Monthly', 'Daily', 'Weekly'];
 
     const ctx = this.myChartLineFrmn.nativeElement.getContext('2d');
     if (!ctx) {
-      console.error('Canvas context is null.');
       return;
     }
 
@@ -873,8 +829,8 @@ chartList: string[] = ['Monthly', 'Daily', 'Weekly'];
             },
             ticks: {
               autoSkip: false,
-              maxRotation: 90, // Rotate labels to 90 degrees
-              minRotation: 90, // Ensure they are fully vertical
+              maxRotation: 90, 
+              minRotation: 90, 
             },
           },
           y: {
@@ -893,23 +849,19 @@ chartList: string[] = ['Monthly', 'Daily', 'Weekly'];
     this.apiService
       .getWithHeaders('Rpt/getfrmn30Dayslastyear?last30Days=true')
       .pipe(
-        takeUntil(this.unsubscribe$) // Unsubscribe when `unsubscribe$` emits
+        takeUntil(this.unsubscribe$) 
       )
       .subscribe({
         next: (data) => {
-          // console.log('Filtered data from API:', data);
           this.chartDataLineFrmnLastYear = data;
           this.renderPieChartFrmn30();
-          // console.log('Filtered data:', this.chartDataLineFrmnLastYear);
         },
         error: (error) => {
-          console.error('Error fetching data:', error);
         },
       });
   }
   renderPieChartFrmn30(): void {
     if (!this.myChartLineFrmnLastYear || !this.myChartLineFrmnLastYear) {
-      // this.renderEmptyPieChart(this.myChart111);
       return;
     }
 
@@ -919,7 +871,6 @@ chartList: string[] = ['Monthly', 'Daily', 'Weekly'];
 
     const ctx = this.myChartLineFrmnLastYear.nativeElement.getContext('2d');
     if (!ctx) {
-      console.error('Canvas context is null.');
       return;
     }
 
@@ -968,8 +919,8 @@ chartList: string[] = ['Monthly', 'Daily', 'Weekly'];
             },
             ticks: {
               autoSkip: false,
-              maxRotation: 90, // Rotate labels to 90 degrees
-              minRotation: 90, // Ensure they are fully vertical
+              maxRotation: 90, 
+              minRotation: 90,
             },
           },
           y: {
@@ -988,23 +939,20 @@ chartList: string[] = ['Monthly', 'Daily', 'Weekly'];
     this.apiService
       .getWithHeaders('Rpt/getaspect30?last30Days=true')
       .pipe(
-        takeUntil(this.unsubscribe$) // Unsubscribe when `unsubscribe$` emits
+        takeUntil(this.unsubscribe$)
       )
       .subscribe({
         next: (data) => {
-          // console.log('Filtered data from API:', data);
+          
           this.chartDataAspect30 = data;
           this.renderPieChartAspect30();
-          // console.log('Filtered data:', this.chartDataAspect30);
         },
         error: (error) => {
-          console.error('Error fetching data:', error);
         },
       });
   }
   renderPieChartAspect30(): void {
     if (!this.chartDataAspect30 || !this.myChartAspect30) {
-      // this.renderEmptyPieChart(this.myChart111);
       return;
     }
 
@@ -1014,7 +962,6 @@ chartList: string[] = ['Monthly', 'Daily', 'Weekly'];
 
     const ctx = this.myChartAspect30.nativeElement.getContext('2d');
     if (!ctx) {
-      console.error('Canvas context is null.');
       return;
     }
 
@@ -1048,8 +995,8 @@ chartList: string[] = ['Monthly', 'Daily', 'Weekly'];
             },
             ticks: {
               autoSkip: false,
-              maxRotation: 90, // Rotate labels to 90 degrees
-              minRotation: 90, // Ensure they are fully vertical
+              maxRotation: 90, 
+              minRotation: 90, 
             },
           },
           y: {
@@ -1068,23 +1015,19 @@ chartList: string[] = ['Monthly', 'Daily', 'Weekly'];
     this.apiService
       .getWithHeaders('Rpt/getaspect30LY?last30Days=true')
       .pipe(
-        takeUntil(this.unsubscribe$) // Unsubscribe when `unsubscribe$` emits
+        takeUntil(this.unsubscribe$) 
       )
       .subscribe({
         next: (data) => {
-          // console.log('Filtered data from API:', data);
           this.chartDataAspect30LY = data;
           this.renderPieChartAspect30LY();
-          // console.log('Filtered data:', this.chartDataAspect30LY);
         },
         error: (error) => {
-          console.error('Error fetching data:', error);
         },
       });
   }
   renderPieChartAspect30LY(): void {
     if (!this.chartDataAspect30LY || !this.myChartAspect30LY) {
-      // this.renderEmptyPieChart(this.myChart111);
       return;
     }
 
@@ -1094,7 +1037,6 @@ chartList: string[] = ['Monthly', 'Daily', 'Weekly'];
 
     const ctx = this.myChartAspect30LY.nativeElement.getContext('2d');
     if (!ctx) {
-      console.error('Canvas context is null.');
       return;
     }
 
@@ -1136,8 +1078,8 @@ chartList: string[] = ['Monthly', 'Daily', 'Weekly'];
             },
             ticks: {
               autoSkip: false,
-              maxRotation: 90, // Rotate labels to 90 degrees
-              minRotation: 90, // Ensure they are fully vertical
+              maxRotation: 90, 
+              minRotation: 90, 
             },
           },
           y: {
@@ -1156,23 +1098,19 @@ chartList: string[] = ['Monthly', 'Daily', 'Weekly'];
     this.apiService
       .getWithHeaders('Rpt/gettoptenindicators30?last30Days=true')
       .pipe(
-        takeUntil(this.unsubscribe$) // Unsubscribe when `unsubscribe$` emits
+        takeUntil(this.unsubscribe$) 
       )
       .subscribe({
         next: (data) => {
-          // console.log('Filtered data from API:', data);
           this.chartDataIndicators30Days = data;
           this.renderPieChartIndicators30Day();
-          // console.log('Filtered data:', this.chartDataIndicators30Days);
         },
         error: (error) => {
-          console.error('Error fetching data:', error);
         },
       });
   }
   renderPieChartIndicators30Day(): void {
     if (!this.chartDataIndicators30Days || !this.myChartIndicators30Days) {
-      // this.renderEmptyPieChart(this.myChart111);
       return;
     }
 
@@ -1182,7 +1120,6 @@ chartList: string[] = ['Monthly', 'Daily', 'Weekly'];
 
     const ctx = this.myChartIndicators30Days.nativeElement.getContext('2d');
     if (!ctx) {
-      console.error('Canvas context is null.');
       return;
     }
 
@@ -1224,8 +1161,8 @@ chartList: string[] = ['Monthly', 'Daily', 'Weekly'];
             },
             ticks: {
               autoSkip: false,
-              maxRotation: 90, // Rotate labels to 90 degrees
-              minRotation: 90, // Ensure they are fully vertical
+              maxRotation: 90, 
+              minRotation: 90, 
             },
           },
           y: {
@@ -1244,23 +1181,19 @@ chartList: string[] = ['Monthly', 'Daily', 'Weekly'];
     this.apiService
       .getWithHeaders('Rpt/gettoptenindicators30LY?last30Days=true')
       .pipe(
-        takeUntil(this.unsubscribe$) // Unsubscribe when `unsubscribe$` emits
+        takeUntil(this.unsubscribe$)
       )
       .subscribe({
         next: (data) => {
-          // console.log('Filtered data from API:', data);
           this.chartDataIndicators30DaysLY = data;
           this.renderPieChartIndicators30DayLY();
-          // console.log('Filtered data:', this.chartDataIndicators30DaysLY);
         },
         error: (error) => {
-          console.error('Error fetching data:', error);
         },
       });
   }
   renderPieChartIndicators30DayLY(): void {
     if (!this.chartDataIndicators30DaysLY || !this.myChartIndicators30DaysLY) {
-      // this.renderEmptyPieChart(this.myChart111);
       return;
     }
 
@@ -1270,7 +1203,6 @@ chartList: string[] = ['Monthly', 'Daily', 'Weekly'];
 
     const ctx = this.myChartIndicators30DaysLY.nativeElement.getContext('2d');
     if (!ctx) {
-      console.error('Canvas context is null.');
       return;
     }
 
@@ -1312,8 +1244,8 @@ chartList: string[] = ['Monthly', 'Daily', 'Weekly'];
             },
             ticks: {
               autoSkip: false,
-              maxRotation: 90, // Rotate labels to 90 degrees
-              minRotation: 90, // Ensure they are fully vertical
+              maxRotation: 90, 
+              minRotation: 90, 
             },
           },
           y: {
@@ -1332,23 +1264,19 @@ chartList: string[] = ['Monthly', 'Daily', 'Weekly'];
     this.apiService
       .getWithHeaders('Rpt/getfrmn')
       .pipe(
-        takeUntil(this.unsubscribe$) // Unsubscribe when `unsubscribe$` emits
+        takeUntil(this.unsubscribe$) 
       )
       .subscribe({
         next: (data) => {
-          // console.log('Filtered data from API:', data);
           this.chartDataFrmn = data;
           this.renderChartFrmn();
-          // console.log('Filtered data:', this.chartDataFrmn);
         },
         error: (error) => {
-          console.error('Error fetching data:', error);
         },
       });
   }
   renderChartFrmn(): void {
     if (!this.chartDataFrmn || !this.myChartFrmn) {
-      // this.renderEmptyPieChart(this.myChart111);
       return;
     }
 
@@ -1358,7 +1286,6 @@ chartList: string[] = ['Monthly', 'Daily', 'Weekly'];
 
     const ctx = this.myChartFrmn.nativeElement.getContext('2d');
     if (!ctx) {
-      console.error('Canvas context is null.');
       return;
     }
 
@@ -1422,23 +1349,19 @@ chartList: string[] = ['Monthly', 'Daily', 'Weekly'];
     this.apiService
       .getWithHeaders('Rpt/getfrmn')
       .pipe(
-        takeUntil(this.unsubscribe$) // Unsubscribe when `unsubscribe$` emits
+        takeUntil(this.unsubscribe$) 
       )
       .subscribe({
         next: (data) => {
-          // console.log('Filtered data from API:', data);
           this.chartDataFrmn2 = data;
           this.renderChartFrmn2();
-          // console.log('Filtered data:', this.chartDataFrmn2);
         },
         error: (error) => {
-          console.error('Error fetching data:', error);
         },
       });
   }
   renderChartFrmn2(): void {
     if (!this.chartDataFrmn2 || !this.myChartFrmn2) {
-      // this.renderEmptyPieChart(this.myChart111);
       return;
     }
 
@@ -1448,7 +1371,6 @@ chartList: string[] = ['Monthly', 'Daily', 'Weekly'];
 
     const ctx = this.myChartFrmn2.nativeElement.getContext('2d');
     if (!ctx) {
-      console.error('Canvas context is null.');
       return;
     }
 
@@ -1508,22 +1430,19 @@ chartList: string[] = ['Monthly', 'Daily', 'Weekly'];
     });
   }
 
-  //             FOR WEEKLY,Monthly,DailyCharts
   getWeeklyEntries(): void {
     this.apiService
       .getWithHeaders('Rpt/weekly-entries-test')
       .pipe(
-        takeUntil(this.unsubscribe$) // Unsubscribe when `unsubscribe$` emits
+        takeUntil(this.unsubscribe$) 
       )
       .subscribe({
         next: (data) => {
-          // console.log('Filtered data from API:', data);
           this.chartDataWeeklyEntry = data;
           this.renderChartWeeklyEntry();
-          // console.log('Filtered data:', this.chartDataWeeklyEntry);
         },
         error: (error) => {
-          console.error('Error fetching data:', error);
+          
         },
       });
   }
@@ -1531,17 +1450,15 @@ chartList: string[] = ['Monthly', 'Daily', 'Weekly'];
     this.apiService
       .getWithHeaders('Rpt/monthly-entries-test')
       .pipe(
-        takeUntil(this.unsubscribe$) // Unsubscribe when `unsubscribe$` emits
+        takeUntil(this.unsubscribe$) 
       )
       .subscribe({
         next: (data) => {
-          // console.log('Filtered data from API:', data);
           this.chartDataMEntry = data;
           this.renderChartMEntry();
-          // console.log('Filtered data:', this.chartDataMEntry);
         },
         error: (error) => {
-          console.error('Error fetching data:', error);
+          
         },
       });
   }
@@ -1549,17 +1466,15 @@ chartList: string[] = ['Monthly', 'Daily', 'Weekly'];
     this.apiService
       .getWithHeaders('Rpt/daily-entries-chart')
       .pipe(
-        takeUntil(this.unsubscribe$) // Unsubscribe when `unsubscribe$` emits
+        takeUntil(this.unsubscribe$) 
       )
       .subscribe({
         next: (data) => {
-          // console.log('Filtered data from API:', data);
           this.chartDataDEntry = data;
           this.renderChartDEntry();
-          // console.log('Filtered data:', this.chartDataDEntry);
         },
         error: (error) => {
-          console.error('Error fetching data:', error);
+          
         },
       });
   }
@@ -1567,17 +1482,15 @@ chartList: string[] = ['Monthly', 'Daily', 'Weekly'];
     this.apiService
       .getWithHeaders('Rpt/weekly-entries-test')
       .pipe(
-        takeUntil(this.unsubscribe$) // Unsubscribe when `unsubscribe$` emits
+        takeUntil(this.unsubscribe$) 
       )
       .subscribe({
         next: (data) => {
-          // console.log('Filtered data from API:', data);
           this.chartDataMeanWeek = data;
           this.renderChartMeanW();
-          // console.log('Filtered data:', this.chartDataMeanWeek);
         },
         error: (error) => {
-          console.error('Error fetching data:', error);
+          
         },
       });
   }
@@ -1585,30 +1498,27 @@ chartList: string[] = ['Monthly', 'Daily', 'Weekly'];
     this.apiService
       .getWithHeaders('Rpt/monthly-entries-test')
       .pipe(
-        takeUntil(this.unsubscribe$) // Unsubscribe when `unsubscribe$` emits
+        takeUntil(this.unsubscribe$) 
       )
       .subscribe({
         next: (data) => {
-          // console.log('Filtered data from API:', data);
           this.chartDataMeanMonth = data;
           this.renderChartMeanMo();
-          // console.log('Filtered data:', this.chartDataMeanMonth);
         },
         error: (error) => {
-          console.error('Error fetching data:', error);
+          
         },
       });
   }
 
   renderChartMeanW(): void {
     if (!this.chartDataMeanWeek || !this.myChartMeanW) {
-      // this.renderEmptyPieChart(this.myChart111);
       return;
     }
 
     const ctx = this.myChartMeanW.nativeElement.getContext('2d');
     if (!ctx) {
-      console.error('Canvas context is null.');
+      
       return;
     }
 
@@ -1639,7 +1549,6 @@ chartList: string[] = ['Monthly', 'Daily', 'Weekly'];
   }
   renderChartMeanMo(): void {
     if (!this.chartDataMeanMonth || !this.myChartMeanMo) {
-      // this.renderEmptyPieChart(this.myChart111);
       return;
     }
 
@@ -1649,7 +1558,7 @@ chartList: string[] = ['Monthly', 'Daily', 'Weekly'];
 
     const ctx = this.myChartMeanMo.nativeElement.getContext('2d');
     if (!ctx) {
-      console.error('Canvas context is null.');
+      
       return;
     }
 
@@ -1662,13 +1571,7 @@ chartList: string[] = ['Monthly', 'Daily', 'Weekly'];
             label: 'Mean',
             data: this.chartDataMeanMonth,
             backgroundColor: [
-              // 'rgba(255, 99, 132, 1)',
               'rgba(54, 162, 235, 1)',
-              // 'rgba(255, 206, 86, 1)',
-              // 'rgba(75, 192, 192, 1)',
-              // 'rgba(153, 102, 255, 1)',
-              // 'rgba(255, 159, 64, 1)',
-              // 'rgba(199, 199, 199, 1)'
             ],
             borderColor: ['rgba(0, 0, 0, 1)'],
             borderWidth: 1.2,
@@ -1689,7 +1592,6 @@ chartList: string[] = ['Monthly', 'Daily', 'Weekly'];
 
   renderChartWeeklyEntry(): void {
     if (!this.chartDataWeeklyEntry || !this.myChartWeeklyEntry) {
-      // this.renderEmptyPieChart(this.myChart111);
       return;
     }
 
@@ -1699,7 +1601,6 @@ chartList: string[] = ['Monthly', 'Daily', 'Weekly'];
 
     const ctx = this.myChartWeeklyEntry.nativeElement.getContext('2d');
     if (!ctx) {
-      console.error('Canvas context is null.');
       return;
     }
 
@@ -1719,7 +1620,6 @@ chartList: string[] = ['Monthly', 'Daily', 'Weekly'];
             label: 'Mean',
             data: this.chartDataWeeklyEntry.data2,
             backgroundColor: [
-              // 'rgba(255, 99, 132, 1)',
               'rgba(255, 159, 64, 1)',
             ],
             borderColor: ['rgba(0, 0, 0, 1)'],
@@ -1764,7 +1664,6 @@ chartList: string[] = ['Monthly', 'Daily', 'Weekly'];
 
   renderChartMEntry(): void {
     if (!this.chartDataMEntry || !this.myChartMEntry) {
-      // this.renderEmptyPieChart(this.myChart111);
       return;
     }
 
@@ -1774,7 +1673,7 @@ chartList: string[] = ['Monthly', 'Daily', 'Weekly'];
 
     const ctx = this.myChartMEntry.nativeElement.getContext('2d');
     if (!ctx) {
-      console.error('Canvas context is null.');
+      
       return;
     }
 
@@ -1796,10 +1695,8 @@ chartList: string[] = ['Monthly', 'Daily', 'Weekly'];
           },
           {
             label: 'Mean',
-            // data: this.chartDataMeanMonth.data,
             data: this.chartDataMEntry.data2,
             backgroundColor: [
-              // 'rgba(255, 99, 132, 1)',
               'rgba(255, 159, 64, 1)',
             ],
             borderColor: ['rgba(0, 0, 0, 1)'],
@@ -1844,7 +1741,6 @@ chartList: string[] = ['Monthly', 'Daily', 'Weekly'];
 
   renderChartDEntry(): void {
     if (!this.chartDataDEntry || !this.myChartDEntry) {
-      // this.renderEmptyPieChart(this.myChart111);
       return;
     }
 
@@ -1854,7 +1750,7 @@ chartList: string[] = ['Monthly', 'Daily', 'Weekly'];
 
     const ctx = this.myChartDEntry.nativeElement.getContext('2d');
     if (!ctx) {
-      console.error('Canvas context is null.');
+      
       return;
     }
 
@@ -1914,101 +1810,27 @@ chartList: string[] = ['Monthly', 'Daily', 'Weekly'];
 
     this.createDataTable();
   }
-  // createDataTable(): void {
-  //   const tableBody = document.getElementById('data-table-body');
-  //   const meanTableBody = document.getElementById('mean-table-body');
-
-  //   if (!tableBody || !meanTableBody) {
-  //     console.error('Table body element not found.');
-  //     return;
-  //   }
-
-  //   // Clear previous rows
-  //   tableBody.innerHTML = '';
-  //   meanTableBody.innerHTML = '';
-
-  //   const meanValue = this.chartDataDEntry.data2[0] || 'N/A'; // Replace with actual mean calculation if needed
-
-  //   // Update the Mean header value (optional if dynamic)
-  //   const meanHeader = document.getElementById('mean-header');
-  //   if (meanHeader) {
-  //     meanHeader.textContent = `Mean: ${meanValue}`; // Show the mean value only once in the header
-  //   }
-
-  //   // Populate the table with labels and data
-  //   this.chartDataDEntry.labels.forEach((label: string, index: number) => {
-  //     const row = document.createElement('tr');
-  //     const cell1 = document.createElement('td');
-  //     const cell2 = document.createElement('td');
-  //     const cell3 = document.createElement('td');
-
-  //     row.style.backgroundColor = this.chartDataDEntry.alerts[index];
-
-  //     cell1.textContent = label; // Label
-  //     cell2.textContent = this.chartDataDEntry.data[index]; // Data
-  //     // cell3.textContent = ''; // Mean (if applicable)
-
-  //     const icon = document.createElement('span');
-  //     icon.classList.add('arrow-icon'); // Apply arrow icon styling
-  //     icon.textContent = '>>';  // Use a down arrow (Unicode character)
-
-  //     icon.addEventListener('click', () => {
-  //       event.stopPropagation();
-  //       console.log("Icon clicked: ", label, meanValue);
-  //       this.updateMeanTable(label, this.chartDataDEntry.data2[index]);  // Update the right table with the mean value
-  //     });
-
-  //     cell3.appendChild(icon);
-
-  //     row.appendChild(cell1);
-  //     row.appendChild(cell2);
-  //     row.appendChild(cell3);
-
-  //     tableBody.appendChild(row);
-  //   });
-  // }
-  // updateMeanTable(label: string, meanValue: number): void {
-  //   const meanTableBody = document.getElementById('mean-table-body');
-  //   if (!meanTableBody) {
-  //     console.error('Mean table body element not found.');
-  //     return;
-  //   }
-
-  //   // Create a new row for the mean value
-  //   const row = document.createElement('tr');
-  //   const cell1 = document.createElement('td');
-  //   const cell2 = document.createElement('td');
-
-  //   cell1.textContent = label; // Label
-  //   cell2.textContent = meanValue.toString(); // Mean value
-
-  //   row.appendChild(cell1);
-  //   row.appendChild(cell2);
-  //   meanTableBody.appendChild(row);
-  // }
+ 
   createDataTable(): void {
     const tableBody = document.getElementById('data-table-body');
     const meanTableBody = document.getElementById('mean-table-body');
     const meanTable = document.getElementById('mean-table');
 
     if (!tableBody || !meanTableBody || !meanTable) {
-      console.error('Table body element not found.');
+      
       return;
     }
 
-    // Clear previous rows
     tableBody.innerHTML = '';
     meanTableBody.innerHTML = '';
 
-    const meanValue = this.chartDataDEntry.data2[0] || 'N/A'; // Replace with actual mean calculation if needed
+    const meanValue = this.chartDataDEntry.data2[0] || 'N/A';
 
-    // Update the Mean header value (optional if dynamic)
-    const meanHeader = document.getElementById('mean-header');
+   const meanHeader = document.getElementById('mean-header');
     if (meanHeader) {
-      meanHeader.textContent = `Mean: ${meanValue}`; // Show the mean value only once in the header
+      meanHeader.textContent = `Mean: ${meanValue}`; 
     }
 
-    // Populate the table with labels and data
     this.chartDataDEntry.labels.forEach((label: string, index: number) => {
       const row = document.createElement('tr');
       const cell1 = document.createElement('td');
@@ -2017,26 +1839,22 @@ chartList: string[] = ['Monthly', 'Daily', 'Weekly'];
 
       row.style.backgroundColor = this.chartDataDEntry.alerts[index];
 
-      cell1.textContent = label; // Label
-      cell2.textContent = this.chartDataDEntry.data[index]; // Data
+      cell1.textContent = label; 
+      cell2.textContent = this.chartDataDEntry.data[index]; 
 
       const icon = document.createElement('span');
-      icon.classList.add('arrow-icon'); // Apply arrow icon styling
-      icon.textContent = '>>'; // Use a down arrow (Unicode character)
+      icon.classList.add('arrow-icon'); 
+      icon.textContent = '>>'; 
 
       icon.addEventListener('click', () => {
         event.stopPropagation();
         const relatedIds = this.chartDataDEntry.id[index];
         const queryParams = relatedIds.map((id) => `ids=${id}`).join('&');
-        console.log('Icon clicked: ', label, meanValue, relatedIds);
-        // Pass the count along with the label to update the mean table with multiple rows
-        // this.updateMeanTable(label, this.chartDataDEntry.data2[index], this.chartDataDEntry.data[index],relatedIds);
-        this.apiService
+       this.apiService
           .getWithHeaders(`MasterData/by-ids?${queryParams}`)
           .subscribe((data) => {
-            console.log('Data from API:', data);
-            const frmn = data.map((item) => item.frmn); // Adjust based on the actual response structure
-            const sector = data.map((item) => item.sector); // Adjust based on the actual response structure
+            const frmn = data.map((item) => item.frmn); 
+            const sector = data.map((item) => item.sector);
             const aspect = data.map((item) => item.aspect);
             this.updateMeanTable(
               label,
@@ -2070,29 +1888,24 @@ chartList: string[] = ['Monthly', 'Daily', 'Weekly'];
   ): void {
     const meanTableBody = document.getElementById('mean-table-body');
     if (!meanTableBody) {
-      console.error('Mean table body element not found.');
       return;
     }
 
-    // Clear previous rows
     meanTableBody.innerHTML = '';
 
-    // Loop through the count for that label and populate the table with each entry's details
     for (let i = 0; i < count; i++) {
       const row = document.createElement('tr');
 
-      // Add the label and mean value for each entry
       const cell1 = document.createElement('td');
       const cell2 = document.createElement('td');
       const cell3 = document.createElement('td');
-      const cell4 = document.createElement('td'); // Frmn
+      const cell4 = document.createElement('td');
       const cell5 = document.createElement('td');
 
-      // Add the data you need for each entry (example: Frmns, Sectors, Aspects)
-      cell1.textContent = label; // Label
-      cell2.textContent = meanValue.toString(); // Mean Value
-      cell3.textContent = frmn[i] || 'N/A'; // Add Frmns data
-      cell4.textContent = sector[i] || 'N/A'; // Set the Frmn value
+      cell1.textContent = label; 
+      cell2.textContent = meanValue.toString(); 
+      cell3.textContent = frmn[i] || 'N/A'; 
+      cell4.textContent = sector[i] || 'N/A'; 
       cell5.textContent = aspect[i] || 'N/A';
 
       row.appendChild(cell1);
@@ -2105,43 +1918,33 @@ chartList: string[] = ['Monthly', 'Daily', 'Weekly'];
     }
   }
 
-  //Dropdown for chart
   selected11: string = '';
   selectedType11 = '';
   onChange1(event: any) {
     this.selected11 = event.value;
-    console.log(`Dropdown changed: ${this.selected11}`); // Debugging statement
     this.renderChart();
   }
   renderChart(): void {
-    console.log(`Rendering chart for: ${this.selected11}`);
-
-    // Destroy existing charts to avoid memory leaks
+  
     this.chartWeeklyEntry?.destroy();
     this.chartMEntry?.destroy();
     this.chartDEntry?.destroy();
 
-    // Render the chart based on the selected type
     switch (this.selected11) {
       case 'Weekly':
-        // this.renderChartWeeklyEntry();
         this.getWeeklyEntries();
         break;
       case 'Monthly':
-        // this.renderChartMEntry();
         this.getMEntries();
 
         break;
       case 'Daily':
-        // this.renderChartDEntry();
         this.getDEntries();
         break;
       default:
-        console.warn('Unknown chart type selected.');
+
     }
   }
-
-  // FOR CHARTS
 
   chartDataInput: ChartData<'line', number[], string | string[]> = {
     labels: [],
@@ -2180,27 +1983,25 @@ chartList: string[] = ['Monthly', 'Daily', 'Weekly'];
 
   getNoOfInputChart(): void {
     const queryParams = Object.entries(this.filters)
-      .filter(([key, value]) => value) // Include only non-empty filters
+      .filter(([key, value]) => value) 
       .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
       .join('&');
 
-    // Base URL
     const baseUrl = 'Rpt/getfrmn30Days?last30Days=true';
 
-    // Full URL with query parameters
     const fullUrl = queryParams ? `${baseUrl}&${queryParams}` : baseUrl;
     this.isLoadingPie = true;
     this.apiService
-      .getWithHeaders(fullUrl) // API 1 for Pie Chart
+      .getWithHeaders(fullUrl) 
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe({
         next: (data) => {
           const updatedData = data.datasets[0].data;
           this.chartDataInput = {
-            labels: data.labels, // Assuming the API returns an array of labels
+            labels: data.labels, 
             datasets: [
               {
-                data: updatedData, // Assuming the API returns an array of values
+                data: updatedData, 
                 backgroundColor: [
                   'rgba(255, 99, 132, 1)',
                   'rgba(54, 162, 235, 1)',
@@ -2213,35 +2014,31 @@ chartList: string[] = ['Monthly', 'Daily', 'Weekly'];
           this.isLoadingPie = false;
         },
         error: (error) => {
-          console.error('Error fetching pie chart data:', error);
           this.isLoadingPie = false;
         },
       });
   }
   getNoOfInputChartLY(): void {
     const queryParams = Object.entries(this.filters)
-      .filter(([key, value]) => value) // Include only non-empty filters
+      .filter(([key, value]) => value) 
       .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
       .join('&');
 
-    // Base URL
-    // const baseUrl = "Rpt/getfrmn30Dayslastyear?last30Days=true";
     const baseUrl = 'Rpt/getfrmn30Dayslastyear?last30Days=true';
 
-    // Full URL with query parameters
     const fullUrl = queryParams ? `${baseUrl}&${queryParams}` : baseUrl;
     this.isLoadingPie = true;
     this.apiService
-      .getWithHeaders(fullUrl) // API 1 for Pie Chart
+      .getWithHeaders(fullUrl) 
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe({
         next: (data) => {
           const updatedData = data.datasets[0].data;
           this.chartDataInputLY = {
-            labels: data.labels, // Assuming the API returns an array of labels
+            labels: data.labels, 
             datasets: [
               {
-                data: updatedData, // Assuming the API returns an array of values
+                data: updatedData,
                 backgroundColor: [
                   'rgba(255, 99, 132, 1)',
                   'rgba(54, 162, 235, 1)',
@@ -2254,34 +2051,32 @@ chartList: string[] = ['Monthly', 'Daily', 'Weekly'];
           this.isLoadingPie = false;
         },
         error: (error) => {
-          console.error('Error fetching pie chart data:', error);
+          
           this.isLoadingPie = false;
         },
       });
   }
   getAspectChart(): void {
     const queryParams = Object.entries(this.filters)
-      .filter(([key, value]) => value) // Include only non-empty filters
+      .filter(([key, value]) => value) 
       .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
       .join('&');
 
-    // Base URL
     const baseUrl = 'Rpt/getaspect30?last30Days=true';
 
-    // Full URL with query parameters
     const fullUrl = queryParams ? `${baseUrl}&${queryParams}` : baseUrl;
     this.isLoadingPie = true;
     this.apiService
-      .getWithHeaders(fullUrl) // API 1 for Pie Chart
+      .getWithHeaders(fullUrl) 
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe({
         next: (data) => {
           const updatedData = data.datasets[0].data;
           this.chartDataAspect = {
-            labels: data.labels, // Assuming the API returns an array of labels
+            labels: data.labels, 
             datasets: [
               {
-                data: updatedData, // Assuming the API returns an array of values
+                data: updatedData, 
                 backgroundColor: [
                   'rgba(255, 99, 132, 1)',
                   'rgba(54, 162, 235, 1)',
@@ -2294,34 +2089,32 @@ chartList: string[] = ['Monthly', 'Daily', 'Weekly'];
           this.isLoadingPie = false;
         },
         error: (error) => {
-          console.error('Error fetching pie chart data:', error);
           this.isLoadingPie = false;
         },
       });
   }
   getAspectChartLY(): void {
     const queryParams = Object.entries(this.filters)
-      .filter(([key, value]) => value) // Include only non-empty filters
+      .filter(([key, value]) => value) 
       .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
       .join('&');
 
-    // Base URL
+
     const baseUrl = 'Rpt/getaspect30LY?last30Days=true';
 
-    // Full URL with query parameters
     const fullUrl = queryParams ? `${baseUrl}&${queryParams}` : baseUrl;
     this.isLoadingPie = true;
     this.apiService
-      .getWithHeaders(fullUrl) // API 1 for Pie Chart
+      .getWithHeaders(fullUrl) 
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe({
         next: (data) => {
           const updatedData = data.datasets[0].data;
           this.chartDataAspectLY = {
-            labels: data.labels, // Assuming the API returns an array of labels
+            labels: data.labels, 
             datasets: [
               {
-                data: updatedData, // Assuming the API returns an array of values
+                data: updatedData,
                 backgroundColor: [
                   'rgba(255, 99, 132, 1)',
                   'rgba(54, 162, 235, 1)',
@@ -2334,34 +2127,33 @@ chartList: string[] = ['Monthly', 'Daily', 'Weekly'];
           this.isLoadingPie = false;
         },
         error: (error) => {
-          console.error('Error fetching pie chart data:', error);
+          
           this.isLoadingPie = false;
         },
       });
   }
   getIndicatorChart(): void {
     const queryParams = Object.entries(this.filters)
-      .filter(([key, value]) => value) // Include only non-empty filters
+      .filter(([key, value]) => value) 
       .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
       .join('&');
 
-    // Base URL
     const baseUrl = 'Rpt/gettoptenindicators30?last30Days=true';
 
-    // Full URL with query parameters
+   
     const fullUrl = queryParams ? `${baseUrl}&${queryParams}` : baseUrl;
     this.isLoadingPie = true;
     this.apiService
-      .getWithHeaders(fullUrl) // API 1 for Pie Chart
+      .getWithHeaders(fullUrl) 
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe({
         next: (data) => {
           const updatedData = data.datasets[0].data;
           this.chartDataIndicator = {
-            labels: data.labels, // Assuming the API returns an array of labels
+            labels: data.labels, 
             datasets: [
               {
-                data: updatedData, // Assuming the API returns an array of values
+                data: updatedData,
                 backgroundColor: [
                   'rgba(255, 99, 132, 1)',
                   'rgba(54, 162, 235, 1)',
@@ -2374,34 +2166,32 @@ chartList: string[] = ['Monthly', 'Daily', 'Weekly'];
           this.isLoadingPie = false;
         },
         error: (error) => {
-          console.error('Error fetching pie chart data:', error);
+          
           this.isLoadingPie = false;
         },
       });
   }
   getIndicatorChartLY(): void {
     const queryParams = Object.entries(this.filters)
-      .filter(([key, value]) => value) // Include only non-empty filters
+      .filter(([key, value]) => value)
       .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
       .join('&');
 
-    // Base URL
     const baseUrl = 'Rpt/gettoptenindicators30LY?last30Days=true';
 
-    // Full URL with query parameters
     const fullUrl = queryParams ? `${baseUrl}&${queryParams}` : baseUrl;
     this.isLoadingPie = true;
     this.apiService
-      .getWithHeaders(fullUrl) // API 1 for Pie Chart
+      .getWithHeaders(fullUrl) 
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe({
         next: (data) => {
           const updatedData = data.datasets[0].data;
           this.chartDataIndicatorLY = {
-            labels: data.labels, // Assuming the API returns an array of labels
+            labels: data.labels, 
             datasets: [
               {
-                data: updatedData, // Assuming the API returns an array of values
+                data: updatedData,
                 backgroundColor: [
                   'rgba(255, 99, 132, 1)',
                   'rgba(54, 162, 235, 1)',
@@ -2414,30 +2204,26 @@ chartList: string[] = ['Monthly', 'Daily', 'Weekly'];
           this.isLoadingPie = false;
         },
         error: (error) => {
-          console.error('Error fetching pie chart data:', error);
           this.isLoadingPie = false;
         },
       });
   }
   getVariationChart1(): void {
     const queryParams = Object.entries(this.filters2)
-      .filter(([key, value]) => value) // Include only non-empty filters
+      .filter(([key, value]) => value) 
       .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
       .join('&');
 
-    // Base URL
     const baseUrl = 'Rpt/daily-entries-chart';
 
-    // Full URL with query parameters
     const fullUrl = queryParams ? `${baseUrl}?${queryParams}` : baseUrl;
     this.isLoadingPie = true;
     this.apiService
-      .getWithHeaders(fullUrl) // API 1 for Pie Chart
+      .getWithHeaders(fullUrl) 
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe({
         next: (data) => {
           if (!data || !data.data || data.data.length === 0) {
-            console.error('Invalid data format:', data);
             this.emptyChart();
             this.isLoadingPie = false;
             return;
@@ -2460,41 +2246,38 @@ chartList: string[] = ['Monthly', 'Daily', 'Weekly'];
           this.isLoadingPie = false;
         },
         error: (error) => {
-          console.error('Error fetching pie chart data:', error);
-          console.error('Full URL causing error:', fullUrl);
           this.isLoadingPie = false;
         },
       });
   }
   getVariationChart2(): void {
     const queryParams = Object.entries(this.filters1)
-      .filter(([key, value]) => value) // Include only non-empty filters
+      .filter(([key, value]) => value) 
       .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
       .join('&');
 
-    // Base URL
+
     const baseUrl = 'Rpt/daily-entries-chart';
 
-    // Full URL with query parameters
     const fullUrl = queryParams ? `${baseUrl}?${queryParams}` : baseUrl;
     this.isLoadingPie = true;
     this.apiService
-      .getWithHeaders(fullUrl) // API 1 for Pie Chart
+      .getWithHeaders(fullUrl) 
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe({
         next: (data) => {
           if (!data || !data.data || data.data.length === 0) {
-            console.error('Invalid data format:', data);
+            
             this.emptyChart1();
             this.isLoadingPie = false;
             return;
           }
           const updatedData = data.data;
           this.chartDataVariation2 = {
-            labels: data.labels, // Assuming the API returns an array of labels
+            labels: data.labels, 
             datasets: [
               {
-                data: updatedData, // Assuming the API returns an array of values
+                data: updatedData,
                 backgroundColor: [
                   'rgba(255, 99, 132, 1)',
                   'rgba(54, 162, 235, 1)',
@@ -2507,32 +2290,15 @@ chartList: string[] = ['Monthly', 'Daily', 'Weekly'];
           this.isLoadingPie = false;
         },
         error: (error) => {
-          console.error('Error fetching pie chart data:', error);
+          
           this.isLoadingPie = false;
         },
       });
   }
-  // onDateRangeChange(): void {
-  //   if (this.filters.startDate && this.filters.endDate) {
-  //     // Print the final URL to the console
-  //     const queryParams = Object.entries(this.filters)
-  //       .filter(([key, value]) => value)
-  //       .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
-  //       .join('&');
-  //     console.log('Generated API URL:', `Rpt/daily-entries-chart?${queryParams}`);
 
-  //     // Call the API to fetch the chart data based on the selected date range
-  //     this.getVariationChart1();
-  //   }
-  // }
   onDateRangeChange(): void {
-    console.log(
-      'Date range changed:',
-      this.filters2.startDate,
-      this.filters2.endDate
-    );
+
     if (this.filters2.startDate && this.filters2.endDate) {
-      // Format dates for the API
       const formattedStartDate = this.datePipe.transform(
         this.filters2.startDate,
         'yyyy-MM-ddTHH:mm:ss.SSSSSSS'
@@ -2545,24 +2311,15 @@ chartList: string[] = ['Monthly', 'Daily', 'Weekly'];
       if (formattedStartDate && formattedEndDate) {
         this.filters2.startDate = formattedStartDate;
         this.filters2.endDate = formattedEndDate;
-
-        console.log('Filters with formatted dates:', this.filters2);
-
-        // Call the API to update the chart
         this.getVariationChart1();
       } else {
-        console.error('Invalid date format for start or end date.');
+
       }
     }
   }
   onDateRangeChange2(): void {
-    console.log(
-      'Date range changed:',
-      this.filters1.startDate,
-      this.filters1.endDate
-    );
+
     if (this.filters1.startDate && this.filters1.endDate) {
-      // Format dates for the API
       const formattedStartDate = this.datePipe.transform(
         this.filters1.startDate,
         'yyyy-MM-ddTHH:mm:ss.SSSSSSS'
@@ -2576,68 +2333,53 @@ chartList: string[] = ['Monthly', 'Daily', 'Weekly'];
         this.filters1.startDate = formattedStartDate;
         this.filters1.endDate = formattedEndDate;
 
-        console.log('Filters with formatted dates:', this.filters1);
-
-        // Call the API to update the chart
         this.getVariationChart2();
       } else {
-        console.error('Invalid date format for start or end date.');
       }
     }
   }
 
-  //For Resetting the Filters and Charts
 
   resetFilters() {
-    // Reset ng-select values
     this.filters1.Frmn = null;
     this.filters1.Sector = null;
     this.filters1.Aspects = null;
     this.filters1.Indicator = null;
 
-    // Reset date range picker values
     this.filters1.startDate = null;
     this.filters1.endDate = null;
 
-    this.onFilterChange2('fmn', null); // Resetting Fmn dropdown filter
-    this.onFilterChange2('sector', null); // Resetting Sector dropdown filter
-    this.onFilterChange2('aspects', null); // Resetting Aspects dropdown filter
+    this.onFilterChange2('fmn', null); 
+    this.onFilterChange2('sector', null); 
+    this.onFilterChange2('aspects', null); 
     this.onFilterChange2('indicator', null);
   }
   resetFilters1() {
-    // Reset ng-select values
     this.filters2.Frmn = null;
     this.filters2.Sector = null;
     this.filters2.Aspects = null;
     this.filters2.Indicator = null;
 
-    // Reset date range picker values
     this.filters2.startDate = null;
     this.filters2.endDate = null;
 
-    this.onFilterChange3('fmn', null); // Resetting Fmn dropdown filter
-    this.onFilterChange3('sector', null); // Resetting Sector dropdown filter
-    this.onFilterChange3('aspects', null); // Resetting Aspects dropdown filter
+    this.onFilterChange3('fmn', null);
+    this.onFilterChange3('sector', null);
+    this.onFilterChange3('aspects', null); 
     this.onFilterChange3('indicator', null);
   }
   resetFilters2() {
-    // Reset ng-select values
     this.filters.Frmn = null;
     this.filters.Sector = null;
     this.filters.Aspects = null;
     this.filters.Indicator = null;
 
-    // Reset date range picker values
     this.filters.startDate = null;
     this.filters.endDate = null;
 
-    // this.onFilterChange1('fmn', null);  // Resetting Fmn dropdown filter
-    // this.onFilterChange1('sector', null);  // Resetting Sector dropdown filter
-    // this.onFilterChange1('aspects', null);  // Resetting Aspects dropdown filter
-    // this.onFilterChange1('indicator', null);
   }
 
-  // Method to empty the chart
+
   emptyChart(): void {
     this.chartDataVariation1 = {
       labels: [],

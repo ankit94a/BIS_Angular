@@ -48,7 +48,6 @@ export class CorpsListComponent {
       const decodedPayload = atob(payload);
       return JSON.parse(decodedPayload);
     } catch (e) {
-      console.error('Invalid token', e);
       return null;
     }
   }

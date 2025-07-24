@@ -35,14 +35,11 @@ namespace BIS.DB.Implements
 		}
 		public string AddGraphs(List<GraphImages> graphs)
 		{
-			// Add the list of GraphImages to the context
 			_dbContext.GraphImages.AddRange(graphs);
 			_dbContext.SaveChanges();
 
-			// Get the IDs of the newly added GraphImages
 			var ids = graphs.Select(g => g.Id).ToList();
 
-			// Return the IDs as a string formatted like '[4,45,76]'
 			return $"[{string.Join(",", ids)}]";
 		}
 

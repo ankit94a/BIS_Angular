@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-// import { Address } from './model/address';
 
 @Injectable(
   {
@@ -53,28 +52,7 @@ export class UtilService {
   removebyId(myArray, id) {
     return myArray.filter(item => item.id !== id);
   }
-  // resetAddress(dataObject) {
-    
-  //   if (dataObject.billingAddress == undefined) {
-  //     dataObject.billingAddress = new Address();
-  //   }
-  //   if (dataObject.shippingAddress == undefined) {
-  //     dataObject.shippingAddress = new Address();
-  //   }
-  //   if (dataObject.registeredAddress == undefined) {
-  //     dataObject.registeredAddress = new Address();
-  //   }
-  //   if (dataObject.address == undefined) {
-  //     dataObject.address = new Address();
-  //   }
-  //   if (dataObject.credentialsObj == undefined) {
-  //     dataObject.credentialsObj = {};
-  //   }
-  //   if (dataObject.credentials == undefined) {
-  //     dataObject.credentials = {};
-  //   }
-  // }
-  
+ 
   public static groupBy(array, f) {
     let groups = {};
     array.forEach(function (o) {

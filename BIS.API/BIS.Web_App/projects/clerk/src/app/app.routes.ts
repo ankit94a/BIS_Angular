@@ -17,7 +17,7 @@ export const routes: Routes = [
         canActivate: [AuthGuard, PermissionGuard],
         data: { allowedRoles: ['10', '11', '12', '13', '14', '15'] },
     },
-    // otherwise redirect to home
+
     { path: '**', redirectTo: 'login' }
     
 ];

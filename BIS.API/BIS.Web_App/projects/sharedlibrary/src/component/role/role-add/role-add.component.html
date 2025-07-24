@@ -23,29 +23,9 @@
           </mat-form-field>
         </div>
         </div>
-        <!-- <div class="col-sm-6">
-          <mat-form-field><mat-label>Select Corps</mat-label>
-            <mat-select [(ngModel)]="role.corpsId" name="corpsId" #corpsId="ngModel">
-              <mat-option *ngFor="let cor of corps" [value]="cor.id" required>
-                {{cor.name}}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-        <div class="col-sm-6">
-          <mat-form-field><mat-label>Select Division</mat-label>
-            <mat-select [(ngModel)]="role.divisionId" name="divisionId" #divisionId="ngModel">
-              <mat-option *ngFor="let div of divison" [value]="div.id" required>
-                {{div.name}}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div> -->
     </mat-dialog-content>
     <mat-dialog-actions align="end">
         <button class="btn  btn-success btn-sm" type="submit" (click)="onSubmit()" *ngIf="!role.isView">Save</button>
-        <!-- <button type="button" class="btn btn-outline-danger btn-sm" (click)="resetObj()"
-          *ngIf="!dataObject.isView && !(dataObject.id>0)">Reset</button> -->
         <button type="button" class="btn btn-outline-info btn-sm" (click)="closeDialog()">Close</button>
       </mat-dialog-actions>
   </form>

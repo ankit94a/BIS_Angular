@@ -42,13 +42,7 @@ namespace BIS.API
 						   .AllowCredentials();
 				});
 			});
-			//services.AddCors(o => o.AddPolicy(MyAllowSpecificOrigins, builder =>
-			//{
-			//    //builder.AllowAnyOrigin()
-			//    builder.WithOrigins("http://localhost:4200")
-			//           .AllowAnyMethod()
-			//           .AllowAnyHeader();
-			//}));
+
 			services.AddSignalR();
             services.AddHttpClient("AiModelCall", httpClient =>
             {
@@ -102,29 +96,13 @@ namespace BIS.API
 			app.UseWebSockets();
 			app.UseRouting();
 			app.UseCors("_myAllowSpecificOrigins");
-			//app.ConfigureExceptionHandler();
-
-			//app.UseCors(MyAllowSpecificOrigins);
-
-
-
-			//app.UseAuthorization();
-			//app.UseCors();
-
 			app.UseAuthentication();
 			app.UseAuthorization();
 			app.UseResponseCompression();
-
-
-			//app.UseHttpsRedirection();
-
-			//app.UseResponseCaching();
 			app.UseEndpoints(endpoints =>
 			{
 				endpoints.MapControllers();
-				//endpoints.MapHub<NotificationHub>("/notificationhub");
 				endpoints.MapHub<NotificationHub>("/notificationhub");
-
 			});
 		}
 	}

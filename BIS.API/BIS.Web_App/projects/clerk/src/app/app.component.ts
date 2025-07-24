@@ -19,7 +19,7 @@ import { authInterceptor } from 'projects/sharedlibrary/src/services/auth-interc
     standalone:true
 })
 export class AppComponent {
-  title = 'clerk';
+  title = 'BAIS';
   constructor(private toastr: ToastrService) {}
 
   ngOnInit(){

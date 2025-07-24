@@ -12,48 +12,11 @@
     <mat-card-content>
       <div class="row">
         <div class="col-md-6">
-          <!-- <div class="layout">
-            <mat-chip>
-              <div class="chip-container">
-                <span>Created</span>
-                <span class="background blue"></span>
-              </div>
-            </mat-chip>
-            <mat-chip>
-              <div class="chip-container">
-                <span>Processing</span>
-                <span class="background orange"></span>
-              </div>
-            </mat-chip>
-            <mat-chip>
-              <div class="chip-container">
-                <span>Approved</span>
-                <span class="background green"></span>
-              </div>
-            </mat-chip>
-            <mat-chip>
-              <div class="chip-container">
-                <span>Rejected</span>
-                <span class="background red"></span>
-              </div>
-            </mat-chip>
-
-          </div> -->
-
         </div>
         <div class="col-md-6" align="end">
           <button class="btn btn-primary" (click)="add()">+ Create Report</button>
         </div>
-        <!-- <div class="col-md-6">
-          <ng-select appendTo="ng-select" [items]="filterType" [multiple]="false" (change)="filterData($event)"
-            placeholder="Select Filter" [searchable]="true" [closeOnSelect]="true">
-            <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
-              <div class="ng-value" *ngFor="let item of items">
-                <span class="ng-value-label">{{item}}</span>
-              </div>
-            </ng-template>
-          </ng-select>
-        </div> -->
+
       </div>
         <app-table *ngIf="generateReportList.length > 0" [rowData]="generateReportList" [tablePaginationSettings]="tablePaginationSettings" [isRowBackgroundColor]="true"
         [isRefresh]="isRefresh" [allowMultiSelect]="true"  (view)="view($event)"

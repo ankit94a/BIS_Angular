@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { BISMatDialogService } from 'projects/sharedlibrary/src/services/insync-mat-dialog.service';
 import { SharedLibraryModule } from 'projects/sharedlibrary/src/shared-library.module';
-import { AnalysisFormComponent } from '../analysis-form/analysis-form.component';
 import { Router } from '@angular/router';
 
 @Component({

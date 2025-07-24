@@ -31,18 +31,15 @@ namespace BIS.Manager.Implements
 		public List<GenerateReport> GetReportByUser(int corpsId, int divisionId, int userId, RoleType roleType)
 		{
 			var mergeReprot = new List<GenerateReport>();
-			// getting current user report;
 			var currentUserReports = _generateReportDB.GetReportByUser(corpsId, divisionId, userId);
 			mergeReprot.AddRange(currentUserReports);
-			// getting previous user report because action is not taken and notification is readed
 			var values = Enum.GetValues(typeof(RoleType)).Cast<RoleType>().OrderBy(r => (int)r).ToList();
 			int index = values.IndexOf(roleType);
 			var dataId = new List<int>();
 			if (index > 1)
 			{
-				var previousRole = values[index - 1]; // previous role
+				var previousRole = values[index - 1]; 
 				var previousUserId = _cdrDashboardDb.GetUserIdByDivisonOrCorps(corpsId, previousRole, divisionId);
-				// getting previous user notification
 				var notificationList = _notificationDB.GetAllUserNotification(previousUserId);
 				foreach (var notification in notificationList)
 				{
@@ -237,7 +234,6 @@ namespace BIS.Manager.Implements
 					masterReport.Graphs = g1Graphs;
 				}
 
-				// filling g1 data
 				masterReport.ReportTitle = g1Report.ReportTitle;
 				masterReport.startDate = g1Report.startDate;
 				masterReport.endDate = g1Report.endDate;
@@ -304,7 +300,6 @@ namespace BIS.Manager.Implements
 				_notificationDB.NotificationActionTaken(generateReport.RptId.Value, generateReport.CorpsId, generateReport.DivisionId.Value);
 			}
 
-			// Add graphs to the report if any
 			if (generateReport.Graphs.Count > 0)
 			{
 				foreach (var graph in generateReport.Graphs)
@@ -347,34 +342,8 @@ namespace BIS.Manager.Implements
 						var userDB = scope.ServiceProvider.GetRequiredService<UserDB>();
 						var notificationDB = scope.ServiceProvider.GetRequiredService<NotificationDB>();
 
-						//foreach (var item in Enum.GetValues(typeof(RoleType)).Cast<RoleType>().OrderByDescending(e => (int)e))
-						//{
-						//	if (roleType != RoleType.Colgs)
-						//	{
-						//		if ((int)item == (int)roleType + 1)
-						//		{
-						//			notification.ReceiverId = await userDB.GetUserIdByRoleType(item, generateReport.CorpsId, generateReport.DivisionId);
-						//			notification.ReceiverEntityType = item;
-						//			await notificationDB.AddNotification(notification);
-						//			break;
-						//		}
-						//	}
-						//	else
-						//	{
-						//		if ((int)item == (int)roleType + 4)
-						//		{
-						//			notification.ReceiverId = await userDB.GetUserIdByRoleType(item, generateReport.CorpsId, generateReport.DivisionId);
-						//			notification.ReceiverEntityType = item;
-						//			await notificationDB.AddNotification(notification);
-						//			break;
-						//		}
-						//	}
-						//}
-
-						// finding user is from which facility
 						if (generateReport.CorpsId == 1 && roleType != RoleType.MggsEc)
 						{
-							// command user
 							switch (roleType)
 							{
 								case RoleType.G1IntEc:
@@ -397,7 +366,6 @@ namespace BIS.Manager.Implements
 						}
 						else if (generateReport.CorpsId > 1 && generateReport.DivisionId == 0 && roleType != RoleType.Bgs)
 						{
-							// corps user
 							switch (roleType)
 							{
 								case RoleType.G1Int:
@@ -416,7 +384,6 @@ namespace BIS.Manager.Implements
 						}
 						else if (generateReport.CorpsId > 0 && generateReport.DivisionId > 0 && roleType != RoleType.Colgs)
 						{
-							// division user
 							switch (roleType)
 							{
 								case RoleType.G1Int:

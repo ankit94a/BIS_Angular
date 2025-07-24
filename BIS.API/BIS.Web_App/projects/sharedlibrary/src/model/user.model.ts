@@ -1,11 +1,9 @@
 import { BaseEntity } from "./base.model";
 
 export class User extends BaseEntity {
-
     username: string;
     name: string;
     email: string;
-    // address: Address;
     facilityId:number;
     roleId: number;
     rolename: string;
@@ -17,6 +15,4 @@ export class User extends BaseEntity {
     corpsId:number;
     divisionId:number;
     facilityType;
-    // userType:RoleType
-
   }

@@ -46,32 +46,6 @@ namespace BIS.Manager.Implements
 				roleId = GetUserIdByDivisonOrCorps(corpsId, divisionId, RoleType.Colgs);
 			}
 			return _cdrDashboardDB.GetReportByDate(corpsId, roleId, divisionId);
-			if (divisionId > 0)
-			{
-
-				//foreach (var item in Enum.GetValues(typeof(RoleType)).Cast<RoleType>().OrderByDescending(e => (int)e))
-				//{
-				//if ((int)item == (int)roleType + 1)
-				//{
-				//notification.ReceiverId = _userDB.GetUserIdByRoleType(item);
-				//notification.ReceiverEntityType = item;
-				//notification.NotificationType = NotificationType.MasterData;
-				//notification.Title = "Master Form Submitted";
-				//notification.Content = $"Input filled by {roleType}. Please review and respond!";
-				//notification.CreatedBy = masterData.CreatedBy;
-				//notification.CreatedOn = DateTime.UtcNow;
-				//notification.CorpsId = masterData.CorpsId;
-				//notification.DivisionId = masterData.DivisionId;
-				//notification.DataId = Convert.ToInt32(id);
-				//return _notificationDB.AddNotification(notification);
-				//}
-				//}
-			}
-			else
-			{
-				return new List<GenerateReport>();
-			}
-
 
 		}
 
@@ -98,11 +72,10 @@ namespace BIS.Manager.Implements
 
 			if (inferenceId > 0)
 			{
-				// Get all linked users dynamically
 				var linkedUsers = new List<(int receiverId, int dataId)>();
 
 				int? currentDataId = inference.GenerateReportId;
-				int maxDepth = 4; // maximum 4 users
+				int maxDepth = 4; 
 				int depth = 0;
 
 				while (currentDataId.HasValue && depth < maxDepth)
@@ -113,7 +86,7 @@ namespace BIS.Manager.Implements
 						linkedUsers.Add((userInfo.Item1, currentDataId.Value));
 					}
 
-					currentDataId = userInfo.Item2; // move to next linked report id
+					currentDataId = userInfo.Item2; 
 					depth++;
 				}
 				foreach (var user in linkedUsers)
@@ -123,7 +96,6 @@ namespace BIS.Manager.Implements
 						SenderId = inference.CreatedBy,
 						SenderEntityType = roleType,
 						ReceiverId = user.receiverId,
-						//ReceiverEntityType = GetReceiverRoleType(user.receiverId), 
 						NotificationType = NotificationType.ApprovedReport,
 						Title = "Generate Report Approved",
 						Content = $"Your report has been successfully reviewed and approved by {roleType}",
@@ -137,43 +109,6 @@ namespace BIS.Manager.Implements
 					await _notificationDB.AddNotification(notification);
 				}
 				await _generateReportDB.UpdateStatus(inference.GenerateReportId, Status.Approved);
-
-				// getting colgs id based on generate report id also if there is g1 generate report is exist then fetch the id;
-				//            var ColgsIdAndRptId = _generateReportDB.GetUserIdAndRptId(inference.GenerateReportId);
-				//var clogsUpdateStatus = _generateReportDB.UpdateStatus(inference.GenerateReportId, Status.Approved);
-				//if (ColgsIdAndRptId.Item2.HasValue)
-				//{
-				//	var G1IntId = _generateReportDB.GetUserIdAndRptId(ColgsIdAndRptId.Item2.Value);
-				//                var G1UpdateStatus = _generateReportDB.UpdateStatus(ColgsIdAndRptId.Item2.Value, Status.Approved);
-				//                var notif = new Notification();
-				//	notif.SenderId = inference.CreatedBy;
-				//	notif.SenderEntityType = roleType;
-				//	notif.ReceiverId = G1IntId.Item1;
-				//	notif.ReceiverEntityType = RoleType.G1Int;
-				//	notif.NotificationType = NotificationType.ApprovedReport;
-				//	notif.Title = "Generate Report Approved";
-				//	notif.Content = $"Your report has been successfully reviewed and approved by {roleType}";
-				//	notif.CreatedBy = inference.CreatedBy;
-				//	notif.CreatedOn = DateTime.UtcNow;
-				//	notif.CorpsId = inference.CorpsId;
-				//	notif.DivisionId = inference.DivisionId;
-				//	notif.DataId = ColgsIdAndRptId.Item2.Value;
-				//	_notificationDB.AddNotification(notif);
-				//}
-				//var notification = new Notification();
-				//notification.SenderId = inference.CreatedBy;
-				//notification.SenderEntityType = roleType;
-				//notification.ReceiverId = ColgsIdAndRptId.Item1;
-				//notification.ReceiverEntityType = RoleType.Colgs;
-				//notification.NotificationType = NotificationType.ApprovedReport;
-				//notification.Title = "Generate Report Approved";
-				//notification.Content = $"Your report has been successfully reviewed and approved by {roleType}";
-				//notification.CreatedBy = inference.CreatedBy;
-				//notification.CreatedOn = DateTime.UtcNow;
-				//notification.CorpsId = inference.CorpsId;
-				//notification.DivisionId = inference.DivisionId;
-				//notification.DataId = inference.GenerateReportId;
-				//_notificationDB.AddNotification(notification);
 			}
 			return true;
 		}
@@ -267,7 +202,6 @@ namespace BIS.Manager.Implements
 					masterReport.Graphs = g1Graphs;
 				}
 
-
 				masterReport.Graphs = g1Graphs;
 				masterReport.ReportTitle = g1Report.ReportTitle;
 				masterReport.startDate = g1Report.startDate;
@@ -314,30 +248,7 @@ namespace BIS.Manager.Implements
 		public FullReport GetFullReport(ApprovedReports inference, int corpsId, RoleType roleType, int divisionId)
 		{
 			var fullReport = new FullReport();
-			//// first getting GOC graphs
-			//var gocGraphIds = inference.GraphIds.Trim('[', ']').Split(',').Select(id => int.Parse(id)).ToList();
-			//inference.Graphs = _generateReportDB.GetGraphs(gocGraphIds);
-			//fullReport.Inference = inference;
-			//// then get's ColGs report;
-			//var colGsReport = _generateReportDB.GetById(inference.GenerateReportId, corpsId, divisionId);
-			//var colGsGraphIds = colGsReport.GraphIds.Trim('[', ']').Split(',').Select(id => int.Parse(id)).ToList();
-			//colGsReport.Graphs = _generateReportDB.GetGraphs(colGsGraphIds);
-			//fullReport.ColGsReport = colGsReport;
-			//// then get's G1Int report
-			//if (colGsReport.RptId.HasValue)
-			//{
-			//	var g1IntReport = _generateReportDB.GetById(colGsReport.RptId.Value, corpsId, divisionId);
-			//	var g1IntGraphIds = g1IntReport.GraphIds.Trim('[', ']').Split(',').Select(id => int.Parse(id)).ToList();
-			//	g1IntReport.Graphs = _generateReportDB.GetGraphs(g1IntGraphIds);
-			//	fullReport.G1IntReport = g1IntReport;
-
-			//	if (g1IntReport.MasterDataIds.Length > 0)
-			//	{
-			//		var masterDataIds = g1IntReport.MasterDataIds.Trim('[', ']').Split(',').Select(id => int.Parse(id)).ToList();
-			//		var masterDataList = _masterDataDB.GetByIds(masterDataIds);
-			//		fullReport.MasterDatas = masterDataList;
-			//	}
-			//}
+			
 			if (inference.GraphIds != null)
 			{
 				var gocGraphIds = inference.GraphIds.Trim('[', ']').Split(',').Select(id => int.Parse(id)).ToList();
@@ -348,7 +259,6 @@ namespace BIS.Manager.Implements
 			var generateReport = new GenerateReport();
 			generateReport.Id = inference.GenerateReportId;
 			fullReport.MergeReport = GetCdrViewReport(generateReport, corpsId, divisionId);
-
 			return fullReport;
 		}
 	}

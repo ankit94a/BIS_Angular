@@ -1,10 +1,8 @@
-import { Component, inject, Inject, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
 import { SharedLibraryModule } from '../../../../sharedlibrary/src/shared-library.module';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { LayoutComponent } from "../../layout/layout.component";
 
 @Component({
   selector: 'app-forgotpassword',
@@ -43,11 +41,9 @@ export class ForgotpasswordComponent {
     this.loginLoading = true;
     const loginData = this.loginform.value;
 
-    // Simulate a login process (replace with your API logic)
     setTimeout(() => {
       this.loginLoading = false;
       if (loginData.confirmPassword === 'password123' && loginData.password === 'password123') {
-        // Navigate to the dashboard if login is successful
         this.router.navigate(['/dashboard']);
       } else {
         alert('Invalid credentials');

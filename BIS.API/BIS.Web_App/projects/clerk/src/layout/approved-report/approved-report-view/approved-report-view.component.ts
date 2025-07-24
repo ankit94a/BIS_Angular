@@ -42,7 +42,7 @@ export class ApprovedReportViewComponent {
   }
 
   currentChapter = 1;
-totalChapters = 2; // or however many you have
+totalChapters = 2;
 
 nextChapter() {
   if (this.currentChapter < this.totalChapters) {

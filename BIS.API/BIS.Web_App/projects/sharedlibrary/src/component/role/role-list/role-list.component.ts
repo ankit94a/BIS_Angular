@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Role } from 'projects/sharedlibrary/src/model/role.model';
 import { ApiService } from 'projects/sharedlibrary/src/services/api.service';
 import { SharedLibraryModule } from 'projects/sharedlibrary/src/shared-library.module';
 import { RolePermissionComponent } from '../role-permission/role-permission.component';

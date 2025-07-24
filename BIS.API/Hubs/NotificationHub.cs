@@ -46,7 +46,6 @@ namespace BIS.API.Hubs
 		{
 			try
 			{
-				// Prepare the notification message
 				var msg = new Notification
 				{
 					Content = message,
@@ -59,10 +58,8 @@ namespace BIS.API.Hubs
 					Title = title,
 				};
 
-				// Check if the receiver's connection is active
 				if (NotificationHub.ConnectionIds.TryGetValue(receiverId, out var connectionId))
 				{
-					// Send notification to the specific client
 					await Clients.Client(connectionId).SendAsync("ReceiveNotification", msg);
 				}
 				else

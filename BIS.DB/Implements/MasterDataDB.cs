@@ -23,45 +23,7 @@ namespace BIS.DB.Implements
 		{
 			return _dbContext.MasterDatas.Where(m => m.CorpsId == corpsId && m.DivisionId == DivisonId).ToList();
 		}
-		//public List<MasterData> GetAll(long corpsId, long divisionId)
-		//{
-		//	// 1. Get MasterData by corps and division
-		//	var masterDataByDivision = _dbContext.MasterDatas
-		//		.Where(m => m.CorpsId == corpsId && m.DivisionId == divisionId)
-		//		.ToList();
-
-		//	// 2. Get DataIds from Notifications where IsActionTaken == false
-		//	var notificationDataIds = _dbContext.Notification
-		//		.Where(n => n.NotificationType == NotificationType.MasterData)
-		//		.Select(n => n.DataId)
-		//		.Distinct()
-		//		.ToList();
-
-		//	// 3. Get MasterData from Notification (if not already fetched)
-		//	var masterDataFromNotification = _dbContext.MasterDatas
-		//		.Where(m => notificationDataIds.Contains(m.ID))
-		//		.ToList();
-
-		//	// 4. Merge the two lists without duplicates
-		//	var combinedMasterData = masterDataByDivision
-		//		.Union(masterDataFromNotification)
-		//		.ToList();
-
-		//	// 5. Update IsReaded = true only for Notification rows involved
-		//	var notificationsToUpdate = _dbContext.Notification
-		//		.Where(n => notificationDataIds.Contains(n.DataId) && !n.IsActionTaken.Value)
-		//		.ToList();
-
-		//	foreach (var notification in notificationsToUpdate)
-		//	{
-		//		notification.IsReaded = true;
-		//	}
-
-		//	_dbContext.SaveChanges();
-
-		//	return combinedMasterData;
-		//}
-
+		
 		public List<MasterData> GetByUserId(int userId)
 		{
 			var result = _dbContext.MasterDatas.Where(m => m.CreatedBy == userId).ToList();
@@ -83,7 +45,7 @@ namespace BIS.DB.Implements
 			_dbContext.SaveChanges();
 			return masterData.ID;
 		}
-		// when creating report than fetching master data between daterange and isapproved
+
 		public List<MasterData> GetBetweenDateRange(FilterModelEntries model, int corpsId, int divisionId = 0)
 		{
 			if (model.startDate == null || model.endDate == null)
@@ -91,8 +53,8 @@ namespace BIS.DB.Implements
 				throw new ArgumentException("StartDate and EndDate must be provided.");
 			}
 
-			var startDate = model.startDate.Value.Date; // Truncate time for the start date
-			var endDate = model.endDate.Value.Date.AddDays(1).AddTicks(-1); // End of the day for end date
+			var startDate = model.startDate.Value.Date;
+			var endDate = model.endDate.Value.Date.AddDays(1).AddTicks(-1);
 			if (model.FilterType == FilterType.Monthly)
 			{
 				endDate = model.startDate.Value.AddMonths(1).AddDays(-1);
@@ -101,12 +63,6 @@ namespace BIS.DB.Implements
 				.Where(ms => ms.CorpsId == corpsId && ms.DivisionId == divisionId
 						  && ms.ReportedDate.Date >= startDate
 						  && ms.ReportedDate.Date <= endDate && ms.Status == Status.Approved);
-
-
-			//if (divisionId > 0)
-			//{
-			//	query = query.Where(ms => ms.DivisionId == divisionId);
-			//}
 
 			return query.ToList();
 		}
@@ -207,10 +163,8 @@ namespace BIS.DB.Implements
 			var existing = _dbContext.MasterDatas.FirstOrDefault(ms => ms.ID == masterData.ID && ms.Status == Status.Created);
 			if (existing != null)
 			{
-				// This copies values from the input to the tracked entity
 				_dbContext.Entry(existing).CurrentValues.SetValues(masterData);
 
-				// Ensure CreatedOn is not overwritten
 				_dbContext.Entry(existing).Property(x => x.CreatedOn).IsModified = false;
 				_dbContext.Entry(existing).Property(x => x.CreatedBy).IsModified = false;
 				_dbContext.Entry(existing).Property(x => x.CorpsId).IsModified = false;
@@ -230,39 +184,30 @@ namespace BIS.DB.Implements
 			return _dbContext.MasterDatas.Where(ms => ms.ID == Id && ms.CorpsId == CorpsId).FirstOrDefault();
 		}
 
-		// Ansh - Smart Analysis
 		public async Task<(List<List<int>> Id, List<string> Labels, List<double> Data, List<double> Data2, List<string> Alerts, List<List<string>> FrmnsList, List<List<string>> SectorsList, List<List<string>> AspectsList, List<List<string>> IndicatorsList)> GetDailyAverageEntriesAsync(string frmn = null, string sector = null, string Aspects = null, string Indicator = null, DateTime? filterStartDate = null, DateTime? filterEndDate = null, int? Id = null)
 		{
-			// Step 1: Find the earliest and latest dates from the database
 			var earliestEntryDate = await _dbContext.MasterDatas
-				//.Where(m => m.Frmn == frmn)
 				.OrderBy(m => m.ReportedDate)
 				.Select(m => m.ReportedDate)
 				.FirstOrDefaultAsync();
 
 			var latestEntryDate = await _dbContext.MasterDatas
-			//.Where(m => m.Frmn == frmn)
 			.OrderByDescending(m => m.ReportedDate)
 			.Select(m => m.ReportedDate)
 			.FirstOrDefaultAsync();
 
-			// If there are no entries, return empty results
 			if (earliestEntryDate == default || latestEntryDate == default)
 			{
 				return (new List<List<int>>(), new List<string>(), new List<double>(), new List<double>(), new List<string>(), new List<List<string>>(), new List<List<string>>(), new List<List<string>>(), new List<List<string>>());
 			}
 
-			// Determine the startDate and endDate based on the earliest and latest dates, respectively
 			var startDate = filterStartDate ?? earliestEntryDate;
 			var endDate = filterEndDate ?? latestEntryDate;
 
-			// Ensure endDate is not before startDate
 			if (endDate < startDate)
 			{
 				throw new ArgumentException("End date must be after or equal to the start date.");
 			}
-
-			// Step 2: Fetch the entries within the date range
 
 			var query = _dbContext.MasterDatas.AsQueryable();
 
@@ -278,26 +223,24 @@ namespace BIS.DB.Implements
 			{
 				query = query.Where(m => m.Indicator == Indicator);
 			}
-			if (!string.IsNullOrEmpty(frmn)) // Apply the frmn filter
+			if (!string.IsNullOrEmpty(frmn)) 
 			{
 				query = query.Where(m => m.Frmn == frmn);
 			}
 
 			var dailyData = await query
 				.Where(m => m.ReportedDate >= startDate && m.ReportedDate <= endDate)
-				.GroupBy(e => e.ReportedDate.Date)  // Group by date part of DateTime
+				.GroupBy(e => e.ReportedDate.Date)
 				.OrderBy(g => g.Key)
 				.Select(g => new
 				{
-					Date = g.Key.ToString("yyyy-MM-dd"),  // Format as YYYY-MM-DD
+					Date = g.Key.ToString("yyyy-MM-dd"),  
 					Count = g.Count(),
 					Frmns = g.Select(e => e.Frmn).Distinct().ToList(),
 					Sectors = g.Select(e => e.Sector).Distinct().ToList(),
 					Aspects = g.Select(e => e.Aspect).Distinct().ToList(),
 					Indicators = g.Select(e => e.Indicator).Distinct().ToList(),
 					Id = g.Select(e => e.ID).ToList()
-
-					//Id = g.Select(e => e.ID).Distinct().ToList()
 				})
 				.ToListAsync();
 
@@ -306,13 +249,11 @@ namespace BIS.DB.Implements
 
 			if (totalDays == 0)
 			{
-				// Prevent division by zero
 				throw new ArgumentException("Total days cannot be zero.");
 			}
 
 			var meanValue = (double)totalEntries / totalDays;
 
-			// Step 3: Prepare results
 			var labels = dailyData.Select(d => d.Date).ToList();
 			var data = dailyData.Select(d => (double)d.Count).ToList();
 			var data2 = dailyData.Select(d => meanValue).ToList();

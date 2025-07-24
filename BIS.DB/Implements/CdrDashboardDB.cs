@@ -20,12 +20,7 @@ namespace BIS.DB.Implements
 		{
 			var roleType = new RoleType();
 			var query = _dBContext.GenerateReports.Where(g => g.CorpsId == corpsId && g.CreatedBy == roleId && g.Status != Status.Approved);
-			//if (filterModel.startDate != default(DateTime))
-			//{
-			//	//filterModel.startDate = filterModel.startDate.Value.AddDays(1);
-			//	//filterModel.endDate = filterModel.endDate.Value.AddDays(1);
-			//	query = query.Where(g => g.CreatedOn.Value.Date >= filterModel.startDate.Value.Date && g.CreatedOn.Value.Date <= filterModel.endDate.Value.Date);
-			//}
+
 			if (divisionId > 0)
 			{
 				query = query.Where(g => g.DivisionId == divisionId);
@@ -72,8 +67,6 @@ namespace BIS.DB.Implements
 				Console.WriteLine(ex.Message);
 				throw ex;
 			}
-		}
-
-		
+		}		
 	}
 }

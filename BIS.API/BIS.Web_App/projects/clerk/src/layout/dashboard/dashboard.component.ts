@@ -1,12 +1,10 @@
-import { Component, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { SharedLibraryModule } from '../../../../sharedlibrary/src/shared-library.module';
 import { ApiService } from '../../../../sharedlibrary/src/services/api.service';
 import { BaseChartDirective } from 'ng2-charts';
-import { ChartConfiguration, ChartData, ChartDataset, ChartOptions } from 'chart.js';
-import { DashboardFmnAspect } from 'projects/sharedlibrary/src/model/dashboard-fmn-aspect';
-import { DasboardChart, DashboardInputCount, FilterModel } from 'projects/sharedlibrary/src/model/dashboard.model';
+import { ChartData, ChartOptions } from 'chart.js';
+import { DashboardInputCount, FilterModel } from 'projects/sharedlibrary/src/model/dashboard.model';
 import { AuthService } from 'projects/sharedlibrary/src/services/auth.service';
-import { Division } from 'projects/sharedlibrary/src/model/base.model';
 
 @Component({
   selector: 'app-dashboard',
@@ -18,7 +16,7 @@ export class DashboardComponent implements OnInit {
   isCommand:boolean=false
   dashboardCount:DashboardInputCount = new DashboardInputCount();
   @ViewChildren(BaseChartDirective) charts!: QueryList<BaseChartDirective>;
-  // Map to track selected charts by their IDs
+
   selectedCharts: { [key: string]: boolean } = {
     chart0: false,
     chart1: false,
@@ -46,11 +44,11 @@ export class DashboardComponent implements OnInit {
   aspectTodayChartData:ChartData<'pie'>;
   aspect12MonthsChartData:ChartData<'line'>;
 
-  // Indicator
+
   indicatorData:ChartData<'pie'>;
   indicatorTop5Data:ChartData<'pie'>;
 
-  // EnLocation
+
   enLocationData:ChartData<'pie'>;
   enLocationData7Days:ChartData<'pie'>;
 
@@ -89,7 +87,7 @@ export class DashboardComponent implements OnInit {
     })
   }
   syncModels(selectedItems: any) {
-    this.indicatorFilter.frmn = [...selectedItems];  // Sync with the second model
+    this.indicatorFilter.frmn = [...selectedItems];  
     this.getAll();
   }
 
@@ -153,17 +151,17 @@ export class DashboardComponent implements OnInit {
       case 'Sector_wise(Last_30_Days)': index = 1; break;
       case 'Sector_wise(Today)' : index = 2; break;
       case 'Sector_wise(Last_12_Months)' : index = 3; break;
-      // fmn chart
+
       case 'Fmn_wise_Inputs' :index = 4; break;
       case 'Fmn_wise(Last_30_Days)': index = 5; break;
       case 'Fmn_wise(Today)' : index = 6; break;
       case 'Fmn_wise_(Last_12_Months)' : index = 7; break;
-      // aspect chart
+
       case 'All_Aspect' : index = 8; break;
       case 'Aspect (Last_30_Days)': index = 9; break;
       case 'Aspect_Today' : index = 10; break;
       case 'Aspect (Last_12_Months)' : index = 11; break;
-      // indicator chart
+
       case 'Top_10_Indicators(Last_7_Days)': index = 12; break;
       case 'Top_5_Indicators': index = 13; break;
       case 'Top_5_Location' : index = 14; break;
@@ -178,11 +176,11 @@ export class DashboardComponent implements OnInit {
       link.download = `${chartId}.png`;
       link.click();
     } else {
-      console.error(`Chart instance not found or not ready for ${chartId}`);
+
     }
   }
 
-  // Getting Input Counts
+
    getCount() {
    this.apiService.postWithHeader('dashboard/count', this.filterModel).subscribe(res => {
      if (res) {
@@ -191,7 +189,7 @@ export class DashboardComponent implements OnInit {
    })
  }
 
-  // Getting Sector Chart Data
+
   getSectorInputData(){
     this.apiService.postWithHeader('dashboard/sector',this.filterModel).subscribe(res =>{
       if(res){
@@ -237,12 +235,11 @@ export class DashboardComponent implements OnInit {
   }
 
   prepareChartData(chartData: { name: any[], frmnData: { [key: string]: number[] } }) {
-    this.barChartLabels = chartData.name.map(label => label.toString()); // Convert dynamic labels to strings
+    this.barChartLabels = chartData.name.map(label => label.toString()); 
 
     const datasets = Object.keys(chartData.frmnData).map(sector => ({
-      label: sector.toString(), // Ensure dynamic key is converted to a string
       data: chartData.frmnData[sector],
-      backgroundColor: this.getSectorColor(sector.toString()) // Ensure correct color assignment
+      backgroundColor: this.getSectorColor(sector.toString())
     }));
 
     this.barChartData = {
@@ -253,15 +250,12 @@ export class DashboardComponent implements OnInit {
 
   getSectorColor(sector: string): string {
     if (!this.sectorColorMap[sector]) {
-      // Assign colors cyclically from the bgColor array
       const colorIndex = Object.keys(this.sectorColorMap).length % this.bgColor.length;
       this.sectorColorMap[sector] = this.bgColor[colorIndex];
     }
     return this.sectorColorMap[sector];
   }
 
-
-  // Getting Frmn Chart Data
   getFrmInputData(){
     this.apiService.postWithHeader('dashboard/fmn',this.filterModel).subscribe(res =>{
       if(res){
@@ -319,26 +313,7 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  // getFrm12MonthsData(){
-  //   this.apiService.postWithHeader('dashboard/fmn/last12Months',this.filterModel).subscribe(res =>{
-  //     if(res){
-  //       console.log(res)
-  //       this.frm12MonthsChartData = {
-  //         labels: res.name,
-  //         datasets: [
-  //           {
-  //             data: res.count, label: res.name,
-  //             borderColor: '#8AB2A6',
-  //             borderWidth: 1.9,
-  //             fill: false,
-  //             tension: 0.4,
-  //           },
-  //         ],
-  //       };
-  //     }
-  //   })
-  // }
-  // Getting Aspect Chart Data
+
   getAspectAllData(){
     this.apiService.postWithHeader('dashboard/aspect',this.filterModel).subscribe(res =>{
       if(res){
@@ -382,15 +357,14 @@ export class DashboardComponent implements OnInit {
   getAspect12MonthsData() {
     this.apiService.postWithHeader('dashboard/aspect/last12Months', this.filterModel).subscribe(res => {
       if (res) {
-        console.log(res)
-        const colors = ['#F38C79', '#8AB2A6', '#E27D60', '#85CDCA', '#C38D9E', '#41B3A3']; // Different colors for aspects
+        const colors = ['#F38C79', '#8AB2A6', '#E27D60', '#85CDCA', '#C38D9E', '#41B3A3']; 
         this.aspect12MonthsChartData = {
-          labels: res.name, // Month-Year labels
+          labels: res.name, 
           datasets: Object.keys(res.frmnData).map((aspect, index) => {
             return {
-              label: aspect, // Aspect Name
-              data: res.frmnData[aspect], // Aspect-wise count
-              borderColor: this.bgColor[index % this.bgColor.length], // Assign different colors
+              label: aspect, 
+              data: res.frmnData[aspect], 
+              borderColor: this.bgColor[index % this.bgColor.length], 
               borderWidth: 1.9,
               fill: false,
               tension: 0.4
@@ -401,7 +375,6 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  // Getting Indicator Chart Data
   getIndicatorData(){
     this.apiService.postWithHeader('dashboard/indicator',this.indicatorFilter).subscribe(res =>{
       if(res){
@@ -452,30 +425,30 @@ export class DashboardComponent implements OnInit {
   }
 
   public  bgColor= [
-    'rgba(54, 162, 235, 0.8)',   // Blue
-    'rgba(255, 159, 64, 0.8)',   // Orange
-    'rgba(22, 196, 127, 0.8)',   // Green
-    'rgba(255, 99, 132, 0.9)',   // Red
-    'rgba(112, 128, 144, 0.7)',  // Gray
-    'rgba(249, 253, 129, 0.7)',  // Yellow
-    'rgba(153, 102, 255, 0.8)',  // Purple
-    'rgba(75, 192, 192, 0.8)',   // Teal
-    'rgba(255, 87, 51, 0.8)',    // Bright Red-Orange
-    'rgba(128, 0, 128, 0.8)',    // Purple
-    'rgba(255, 215, 0, 0.8)',    // Gold
-    'rgba(0, 255, 127, 0.8)',    // Spring Green
-    'rgba(70, 130, 180, 0.8)',   // Steel Blue
-    'rgba(240, 128, 128, 0.8)',  // Light Coral
-    'rgba(135, 206, 250, 0.8)',  // Light Sky Blue
-    'rgba(199, 21, 133, 0.8)',   // Medium Violet Red
-    'rgba(0, 128, 128, 0.8)',    // Teal
-    'rgba(154, 205, 50, 0.8)',   // Yellow-Green
+    'rgba(54, 162, 235, 0.8)',   
+    'rgba(255, 159, 64, 0.8)',   
+    'rgba(22, 196, 127, 0.8)',  
+    'rgba(255, 99, 132, 0.9)',  
+    'rgba(112, 128, 144, 0.7)',  
+    'rgba(249, 253, 129, 0.7)',  
+    'rgba(153, 102, 255, 0.8)',  
+    'rgba(75, 192, 192, 0.8)',   
+    'rgba(255, 87, 51, 0.8)',    
+    'rgba(128, 0, 128, 0.8)',    
+    'rgba(255, 215, 0, 0.8)',   
+    'rgba(0, 255, 127, 0.8)',    
+    'rgba(70, 130, 180, 0.8)',   
+    'rgba(240, 128, 128, 0.8)',  
+    'rgba(135, 206, 250, 0.8)',  
+    'rgba(199, 21, 133, 0.8)',   
+    'rgba(0, 128, 128, 0.8)',   
+    'rgba(154, 205, 50, 0.8)',   
   ]
   public ChartOptions: ChartOptions = {
     responsive: true,
     plugins: {
       legend: {
-        // display:false
+
       },
       tooltip: {
         callbacks: {
@@ -498,11 +471,11 @@ export class DashboardComponent implements OnInit {
     maintainAspectRatio: false,
     plugins: {
       legend: {
-        display: true, // Enable legend
-        position: 'top', // Position at the top
-        align: 'center', // Center align
+        display: true, 
+        position: 'top', 
+        align: 'center',
         labels: {
-          usePointStyle: true, // Use point style to match dataset colors
+          usePointStyle: true,
         }
       },
       tooltip: {
@@ -542,9 +515,9 @@ export class DashboardComponent implements OnInit {
       tooltip: {
         callbacks: {
           label: (tooltipItem: any) => {
-            const sectorName = tooltipItem.dataset.label; // Get sector name
-            const count = tooltipItem.raw; // Get count
-            return `${sectorName}: ${count}`; // Format tooltip
+            const sectorName = tooltipItem.dataset.label; 
+            const count = tooltipItem.raw; 
+            return `${sectorName}: ${count}`; 
           }
         }
       }

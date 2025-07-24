@@ -1,18 +1,14 @@
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Component, Inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { Aspect, Indicator } from 'projects/sharedlibrary/src/model/attribute.model';
-import { FilterModel, PredictionModel } from 'projects/sharedlibrary/src/model/dashboard.model';
+import { PredictionModel } from 'projects/sharedlibrary/src/model/dashboard.model';
 import { ApiService } from 'projects/sharedlibrary/src/services/api.service';
 import { AuthService } from 'projects/sharedlibrary/src/services/auth.service';
 import { SharedLibraryModule } from 'projects/sharedlibrary/src/shared-library.module';
 import { ChartConfiguration } from 'chart.js';
 import { ActivatedRoute } from '@angular/router';
-import { DatePipe } from '@angular/common';
 import { PlotlyModule } from 'angular-plotly.js';
 import { BISMatDialogService } from 'projects/sharedlibrary/src/services/insync-mat-dialog.service';
-import { AnalysisChartComponent } from '../analysis-chart/analysis-chart.component';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { BehaviorSubject } from 'rxjs';
 import { masterData } from 'projects/sharedlibrary/src/model/masterdata.model';
@@ -54,11 +50,8 @@ export class AnalysisFormComponent {
     this.getFrmDetails();
     this.getSector();
     this.getAspect();
-
-
-
-
   }
+
   onPointClick(event: any) {
     const point = event.points[0];
     const traceName = point.data.name;
@@ -88,6 +81,7 @@ export class AnalysisFormComponent {
       }
     })
   }
+
   save() {
     if (this.filterModel.startdate <= this.filterModel.enddate) {
       this.plotlyData = [];
@@ -121,7 +115,6 @@ export class AnalysisFormComponent {
             }
           });
 
-          // Line Plot for All Observed Data
           const trace1 = {
             x: labels,
             y: observedValues,
@@ -136,7 +129,6 @@ export class AnalysisFormComponent {
             hoverinfo: 'x+y'
           };
 
-          // Red dots for anomalies only
           const trace2 = {
             x: anomalyX,
             y: anomalyY,
@@ -155,11 +147,11 @@ export class AnalysisFormComponent {
           this.plotlyLayout = {
             title: {
               text: res[0].title,
-              x: 0.5,                 // Center the title
-              xanchor: 'center',      // Anchor it from the center
+              x: 0.5,                 
+              xanchor: 'center',      
               yanchor: 'top',
               font: {
-                size: 18,              // (Optional) Title font size
+                size: 18,            
                 family: 'Arial, sans-serif',
                 color: '#000',
                 weight: 'bold'
@@ -180,15 +172,15 @@ export class AnalysisFormComponent {
             legend: {
               orientation: 'h',
               x: 0,
-              y: 1.25,  // move legend above chart
+              y: 1.25, 
               xanchor: 'left',
               yanchor: 'bottom'
             },
             margin: {
-              t: 100,   // more top margin for legend
+              t: 100, 
               l: 60,
               r: 30,
-              b: 100   // more bottom margin for rotated ticks
+              b: 100   
             },
             height: 430,
             hovermode: 'closest'
@@ -203,15 +195,6 @@ export class AnalysisFormComponent {
       this.toastr.error("EndDate must be greater than StartDate", "Error");
     }
   }
-
-  // save() {
-  //   this.dailog.open(AnalysisChartComponent,this.filterModel).then(res =>{
-  //     if(res){
-
-  //     }
-  //   })
-
-  // }
 
   setPath() {
     if (this.filterModel.isFuturePrediction) {
@@ -241,24 +224,10 @@ export class AnalysisFormComponent {
     }
   }
 
-
-
-
   getFrmDetails() {
     this.apiService.getWithHeaders('dashboard/FmnDetails').subscribe(res => {
       if (res) {
-        debugger
         this.frmnList = res;
-        // var divisionId = parseInt(this.authService.getDivisionId());
-        // var corpsId = parseInt(this.authService.getCorpsId());
-        // var frm = this.frmnList.find(item => item.corpsId === corpsId && item.divisionId === divisionId).name;
-        // this.filterModel.frmn = frm
-        // if (frm) {
-        //   if (!this.filterModel.frmn) {
-        //     this.filterModel.frmn = [];
-        //   }
-        //   this.filterModel.frmn.push({ ...frm });
-        // }
       }
     })
   }
@@ -309,7 +278,7 @@ export class AnalysisFormComponent {
 
   lineChartOptions: ChartConfiguration<'line'>['options'] = {
     responsive: true,
-    maintainAspectRatio: false, // <-- Important
+    maintainAspectRatio: false, 
     plugins: {
       legend: {
         display: true

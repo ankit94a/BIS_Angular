@@ -53,7 +53,6 @@
           <thead>
             <tr>
               <th>#</th>
-              <!-- <th *ngFor="let item of tableHeader">{{ item }}</th> -->
               <ng-container *ngFor="let item of tableHeader">
                 <th *ngIf="!['Id', 'CreatedBy', 'CreatedOn', 'IsActive', 'IsDeleted', 'CorpsId', 'DivisionId','Status','Fmn','UserId'].includes(item)"
                     class="space">
@@ -63,13 +62,7 @@
             </tr>
           </thead>
           <tbody formArrayName="masterData">
-            <!-- <tr *ngFor="let item of masterDataList; let i = index">
-              <td>
-                <mat-checkbox [(ngModel)]="item.selected" [ngModelOptions]="{standalone: true}">
-                </mat-checkbox>
-              </td>
-              <td *ngFor="let header of tableHeader">{{ item[header] }}</td>
-            </tr> -->
+
             <tr *ngFor="let item of masterDataList">
               <td>
                 <mat-checkbox [(ngModel)]="item.selected" [ngModelOptions]="{standalone: true}">
@@ -87,23 +80,13 @@
       </div>
     </div>
 
-    <!-- <div class="row" *ngIf="isNoDataFoundAlert">
-      <div class="error-message-container">
-        <div class="chart-container">
-          <mat-icon class="icon-display">close</mat-icon>
-          <h5>No input found for these date range</h5>
-        </div>
-      </div>
-    </div> -->
-
     <br>
     <div class="row">
       <div class="col-md-12">
         <input type="file" accept="image/*" #fileInput id="fileInput" hidden (change)="onFileSelect($event)" multiple />
         <div>
           <label for="fileInput" class="btn-outline-primary fileUpload">
-            <!-- <mat-icon>file_upload</mat-icon> -->
-            <img src="/assets/upload.svg" class="custom-icon upload-icon" alt="" height="20px;">
+           <img src="/assets/upload.svg" class="custom-icon upload-icon" alt="" height="20px;">
             <h6 style="margin: 0px;">Upload Images</h6>
           </label>
         </div>

@@ -80,7 +80,7 @@ export class ApiService {
 
   public showError(error: any): Observable<any> {
     if (error.status === 401 || error.status === 0) {
-      // this.authService.logout();
+
     }
     else if (error.status === 500) {
       this.toastr.error( "error");

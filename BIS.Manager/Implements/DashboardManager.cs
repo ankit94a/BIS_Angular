@@ -28,20 +28,11 @@ namespace BIS.Manager.Implements
 		}
 		public DashboardChart GetSectorWiseData(RoleType roleType, FilterModel filterModel, DaysMonthFilter daysMonthFilter)
 		{
-			//return new DashboardChart();
-
 			return _dashboardDB.GetSectorWiseData(filterModel, daysMonthFilter);
-
-
 		}
 
 		public DashboardChart GetAllFmnOrAspectData(RoleType roleType, FilterModel filterModel, bool isFrmn = true)
 		{
-			//case 1 role is belonging to division
-
-			// case 1.1 sector and aspect is empty any of one
-			// case 1.2 sector and aspect any of have value
-			// case 1.3 handling frmn and aspect base chart
 			var result = new DashboardChart();
 			if (isFrmn)
 			{
@@ -51,16 +42,9 @@ namespace BIS.Manager.Implements
 			{
 				return _dashboardDB.GetAspectChart(DaysMonthFilter.All, filterModel);
 			}
-
-
 		}
 		public DashboardChart Get30DaysFmnOrAspectData(RoleType roleType, FilterModel filterModel, bool isFrmn)
 		{
-			//case 1 role is belonging to division
-
-			// case 1.1 sector and aspect is empty any of one
-			// case 1.2 sector and aspect any of have value
-			// case 1.3 handling frmn and aspect base chart
 			var result = new DashboardChart();
 			if (isFrmn)
 			{
@@ -70,19 +54,10 @@ namespace BIS.Manager.Implements
 			{
 				return _dashboardDB.GetAspectChart(DaysMonthFilter.Days30, filterModel);
 			}
-
-
-
 		}
 
 		public DashboardChart GetTodayFmnOrAspectData(RoleType roleType, FilterModel filterModel, bool isFrmn = true)
 		{
-			//case 1 role is belonging to division
-
-
-			// case 1.1 sector and aspect is empty any of one
-			// case 1.2 sector and aspect of have value
-			// case 1.3 handling frmn and aspect base chart
 			var result = new DashboardChart();
 			if (isFrmn)
 			{
@@ -102,11 +77,6 @@ namespace BIS.Manager.Implements
 
 		public DashboardChart Get12MonthsFmnOrAspectData(RoleType roleType, FilterModel filterModel, bool isFrmn)
 		{
-			//case 1 role is belonging to division
-
-			// case 1.1 sector and aspect is empty any of one
-			// case 1.2 sector and aspect any of have value
-			// case 1.3 handling frmn and aspect base chart
 			var result = new DashboardChart();
 			if (isFrmn)
 			{
@@ -116,10 +86,6 @@ namespace BIS.Manager.Implements
 			{
 				return _dashboardDB.GetAspectChart(DaysMonthFilter.Months12, filterModel);
 			}
-
-
-			// case 2 role is belonging to corps
-
 		}
 		public DashboardChart GetIndicatorData(RoleType roleType, FilterModel filterModel, bool isTopTen = true)
 		{

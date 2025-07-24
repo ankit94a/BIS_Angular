@@ -1,5 +1,4 @@
-import { RoleType } from './../../../../sharedlibrary/src/model/enum';
-import { Component, inject, Inject, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { SharedLibraryModule } from '../../../../sharedlibrary/src/shared-library.module';
@@ -44,13 +43,12 @@ export class LoginComponent implements OnInit{
 
     this.apiService.postWithHeader('auth/login', loginData).subscribe({
       next: (res) => {
-        this.loginLoading = false; // Stop spinner
+        this.loginLoading = false; 
         if (res && res.token && res.user) {
           this.authService.setToken(res.token);
           this.authService.setUserDetails(res.user);
 
-          // Redirect based on roleType
-          let redirectUrl = '/dashboard'; // Default route
+          let redirectUrl = '/dashboard'; 
 
           if (res.user.roleType == '1') {
             redirectUrl = '/master-data';
@@ -62,14 +60,13 @@ export class LoginComponent implements OnInit{
             redirectUrl = '/corps'
           }
 
-          this.router.navigate([redirectUrl]); // Use navigate() instead of navigateByUrl()
+          this.router.navigate([redirectUrl]); 
         } else {
           this.router.navigate(['/login']);
         }
       },
       error: (err) => {
-        console.error("Login failed", err);
-        this.loginLoading = false; // Stop spinner on error
+        this.loginLoading = false; 
       }
     });
   }

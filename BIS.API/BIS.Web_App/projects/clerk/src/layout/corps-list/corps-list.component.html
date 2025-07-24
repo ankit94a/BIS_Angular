@@ -1,40 +1,6 @@
-<!-- <main>
-  <div class="bis-banner">
-    <div class="context">
-      <div class="content-left">
-        <h1>Your life's work,
-          <span class="dis-block">powered by our life's work</span>
-        </h1>
-        <p>HQ Eastern Command, based in Kolkata, oversees the Indian Army’s operations in Eastern India. It ensures national security, border defense, and strategic coordination across sensitive regions, including the Northeast.</p>
-        <button class="zh-btn">VIEW MORE</button>
-        <div class="zh-img-container">
-          <picture>
-            <img src="/assets/zoho_banner.webp" alt="" width="1030" height="299">
-          </picture>
-        </div>
-      </div>
-      <div class="content-right">
-        <div class="title">Featured apps</div>
-        <ul class="list" *ngFor="let corps of corpsList" (click)="redirectUrl(corps)">
-          <li class="main-app" >
-              <span><img [src]="corps.imageUrl" alt="" width="35" height="35"> &nbsp;</span>
-              <span class="content">
-                <span>{{corps.name}}</span> <br>
-                <small>{{corps.description}}</small>
-              </span>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</main> -->
-
-<!-- <mat-card> -->
   <div class="main-box">
   <h1 class="heading">AI Based BATTLEFIELD INDICATOR Software</h1>
-  <!-- <mat-card-content> -->
 
-    <!-- First card centered -->
     <div class="row justify-content-center" *ngIf="corpsList.length > 0">
       <div class="col-md-6 col-lg-4">
         <div class="card text-center" (click)="redirectUrl(corpsList[0])">
@@ -44,7 +10,6 @@
       </div>
     </div>
 
-    <!-- Next rows, two cards per row -->
     <div class="row" *ngFor="let pair of corpsList.slice(1) | slicePairs">
       <div class="col-md-6" *ngFor="let corps of pair" (click)="redirectUrl(corps)">
         <div class="card">
@@ -55,5 +20,4 @@
       </div>
     </div>
   </div>
-  <!-- </mat-card-content>
-</mat-card> -->
+

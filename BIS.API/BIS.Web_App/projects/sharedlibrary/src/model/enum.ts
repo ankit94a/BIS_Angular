@@ -55,17 +55,6 @@ export enum PermissionAction {
 
 }
 
-// export enum RoleType {
-//   Staff1 = "Staff1",
-//   G1Int = "G1Int",
-//   Colgs = "Colgs",
-//   ColInt = "ColInt",
-//   Bgs = "Bgs",
-//   Mggs = "Mggs",
-//   Goc = "Goc",
-//   Admin = "Admin",
-//   SuperAdmin = "SuperAdmin"
-// }
 export enum RoleType {
   Staff1 = 1,
   G1Int,

@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { ToastrService } from 'ngx-toastr';
-import { UserAddEditComponent } from '../user-add-edit/user-add-edit.component';
 import { UserPasswordComponent } from '../user-password/user-password.component';
 import { SharedLibraryModule } from 'projects/sharedlibrary/src/shared-library.module';
 import { User } from 'projects/sharedlibrary/src/model/user.model';
@@ -47,26 +45,13 @@ export class UserListComponent implements OnInit {
   }
   open(user) {
     user.labelTitle = "User";
-    this.dialogService.open(UserAddEditComponent, user).then(result => {
-      if (result) {
-        // this.fetchUser();
-      }
-    });
+
   }
   add() {
     let user = new User();
     this.open(user);
   }
 
-  // view(user: User) {
-  //   user.isView = true;
-  //   this.open(Object.assign({}, user));
-  // }
-
-  // edit(user: User) {
-  //   user.isView = false;
-  //   this.open(Object.assign({}, user));
-  // }
   update(user){
     this.dialogService.open(UserPasswordComponent, user,'22vw') ;
   }

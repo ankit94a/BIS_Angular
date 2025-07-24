@@ -34,8 +34,6 @@ export class AuthHelper {
     }
     public setToken(data: any): void {
         this.setStorageToken(JSON.stringify(data));
-     //  this._injector.get(ValidatepermissionService).init();
-
     }
     public setUserName(name:any):void{
         window.localStorage['name'] = name;
@@ -63,15 +61,9 @@ export class AuthHelper {
         this.authenticationChanged.next(this.isAuthenticated());
     }
     public navigateToLogin(stateUrl) {
-
-     //   this._injector.get(ValidatepermissionService).set();
-
         this.router.navigate(['/login'], { queryParams: { queryParams: { returnUrl: stateUrl } } });
-
     }
     public navigateToForbidden() {
         this.router.navigateByUrl('/forbidden');
-
-
     }
 }
