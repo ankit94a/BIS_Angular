@@ -33,7 +33,7 @@ export class AnalysisFormComponent {
   filterModel: PredictionModel = new PredictionModel();
   urlPath;
 
-  plotlyData: any;
+  plotlyData: any[]=[];
   plotlyLayout: any;
   plotlyConfig: any;
   private tableHeaderSubject = new BehaviorSubject<string[]>([]);
@@ -90,11 +90,14 @@ export class AnalysisFormComponent {
   }
   save() {
     if (this.filterModel.startdate <= this.filterModel.enddate) {
+      this.plotlyData = [];
+      this.tableHeaderSubject.next(null);
+      this.masterDataListSubject.next(null);
       this.spinnerService.show(undefined, {type: 'square-jelly-box',bdColor: 'rgba(0,0,0,0.8)',color: '#fff',size: 'medium'});
       const model = JSON.parse(JSON.stringify(this.filterModel))
       model.frmn = [];
       model.frmn.push(this.filterModel.frmn[0].name)
-      this.apiService.modelApiCall(`${this.filterModel.urlPath}`, model).subscribe(res => {
+      this.apiService.postWithHeader('user/anomalies', model).subscribe(res => {
         if (res) {
           this.spinnerService.hide();
           const labels: string[] = [];

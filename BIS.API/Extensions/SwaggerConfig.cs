@@ -45,9 +45,6 @@ namespace BIS.Api.Extensions
                         Array.Empty<string>()
                     },
                 });
-                //   var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-                // var xmlPath = System.IO.Path.Combine(AppContext.BaseDirectory, xmlFile);
-                //s.IncludeXmlComments(xmlPath, includeControllerXmlComments: true);
             });
         }
 

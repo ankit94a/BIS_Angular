@@ -46,5 +46,11 @@ namespace BIS.API.Controller
 		{
 			return Ok(_userManager.UpdatePassword(user));
 		}
-	}
+        [HttpPost,Route("anomalies")]
+        public async Task<IActionResult> GetAnomalies([FromBody] PredictionModel filterModel)
+        {
+            var result = await _userManager.GetAnomalies(filterModel);
+            return Ok(result); 
+        }
+    }
 }

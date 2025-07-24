@@ -18,11 +18,9 @@ namespace BIS.API.Controller
 	public class MasterDataController : ControllerBase
 	{
 		private readonly IMasterDataManager _masterDataManager;
-		private readonly IHubContext<NotificationHub> _notificationHubContext;
-		public MasterDataController(IMasterDataManager masterDataManager, IHubContext<NotificationHub> notificationHubContext)
+		public MasterDataController(IMasterDataManager masterDataManager)
 		{
 			_masterDataManager = masterDataManager;
-			_notificationHubContext = notificationHubContext;
 		}
 		[AuthorizePermission(PermissionItem.MasterData, PermissionAction.Read)]
 		[HttpGet]
@@ -32,24 +30,6 @@ namespace BIS.API.Controller
 			int DivisonId = HttpContext.GetDivisionId();
 			return Ok(_masterDataManager.GetAll(CorpsId, DivisonId));
 		}
-		//[AuthorizePermission(PermissionItem.MasterData, PermissionAction.Read)]
-		//[HttpGet]
-		//public async Task<IActionResult> GetAllMasterData()
-		//{
-		//	try
-		//	{
-		//		RoleType roleType = HttpContext.GetRoleType();
-		//		int corpsId = HttpContext.GetCorpsId();
-		//		int divisionId = HttpContext.GetDivisionId();
-		//		var masterData = await _masterDataManager.GetAllMasterData(corpsId, roleType, divisionId);
-		//		return Ok(masterData);
-		//	}
-		//	catch (Exception ex)
-		//	{
-		//		BISLogger.Error(ex, "Error retrieving all master data");
-		//		return StatusCode(500, "Internal server error while retrieving master data");
-		//	}
-		//}
 
 		[AuthorizePermission(PermissionItem.MasterData, PermissionAction.Create)]
 		[HttpPost]
@@ -108,7 +88,6 @@ namespace BIS.API.Controller
 			return Ok(_masterDataManager.GetBetweenDateRange(filterModel, CorpsId, DivisionId));
 		}
 
-		// Common Fields for MasterData
 		[HttpGet, Route("inputlevels")]
 		public IActionResult GetInputLevels()
 		{
@@ -188,14 +167,6 @@ namespace BIS.API.Controller
 			masterData.UpdatedBy = HttpContext.GetUserId();
 			return Ok(_masterDataManager.Update(masterData));
 		}
-
-		// Ansh - smart-analysis
-		//[HttpGet("by-ids")]
-		//public async Task<ActionResult> GetDataByIds([FromQuery] List<int> ids)
-		//{
-		//    var data = await _masterDataManager.GetByIds(ids);
-		//    return Ok(data);
-		//}
 
 		[HttpGet, Route("deactivate/{id}/{table}")]
 		public IActionResult DeactivateSource(long id, string table)

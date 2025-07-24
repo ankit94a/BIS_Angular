@@ -17,5 +17,7 @@ namespace BIS.DB.Interfaces
         public long AddUser(UserDetail user);
 		public bool UpdatePassword(UserDetail user);
 		public List<UserDetail> GetAllUsers();
+
+        public Task<List<PredictionResponse>> GetAnomalies(PredictionModel requestModel);
 	}
 }

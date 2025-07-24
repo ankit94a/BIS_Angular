@@ -102,7 +102,6 @@ namespace BIS.API.Controller
 			return Ok(_dashboardManager.Get12MonthsFmnOrAspectData(roleType, filterModel));
 		}
 
-		// Aspect Api Endpoint
 		[AuthorizePermission(PermissionItem.Dashboard, PermissionAction.Read)]
 		[HttpPost, Route("aspect")]
 		public IActionResult GetAspectWiseData([FromBody] FilterModel filterModel)

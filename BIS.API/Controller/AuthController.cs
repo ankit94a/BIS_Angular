@@ -22,7 +22,7 @@ namespace BIS.API.Controller
 			_corpsManager = corpsManager;
 		}
 
-		//[AllowAnonymous]
+		[AllowAnonymous]
 		[HttpPost]
 		[Route("login")]
 		public IActionResult Login([FromBody] Login login)

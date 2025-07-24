@@ -112,7 +112,7 @@
   <br>
 
 <!-- Plotly Chart For AI-Analysis -->
-<div class="row" *ngIf="plotlyData">
+<div class="row" *ngIf="plotlyData.length > 0">
         <div class="card">
             <div class="plot-wrapper">
                 <plotly-plot [data]="plotlyData" [layout]="plotlyLayout" [config]="plotlyConfig" (plotlyClick)="onPointClick($event)">

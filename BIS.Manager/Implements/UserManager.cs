@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using BIS.Common.Entities;
 using BIS.DB.Interfaces;
@@ -12,12 +13,14 @@ namespace BIS.DB.Implements
 	public class UserManager : IUserManager
 	{
 		private readonly IUserDB _userDB;
-		public UserManager(IUserDB userDB)
-		{
-			_userDB = userDB;
-		}
+        private readonly IHttpClientFactory _httpClientFactory;
+        public UserManager(IUserDB userDB, IHttpClientFactory httpClientFactory)
+        {
+            _userDB = userDB;
+            _httpClientFactory = httpClientFactory;
+        }
 
-		public UserDetail GetUserByEmailPassword(string email, string password)
+        public UserDetail GetUserByEmailPassword(string email, string password)
 		{
 			return _userDB.GetUserByEmailPassword(email, password);
 		}
@@ -46,6 +49,65 @@ namespace BIS.DB.Implements
 			return _userDB.GetAllUsers();
 
 		}
+        public async Task<List<PredictionResponse>> GetAnomalies(PredictionModel requestModel)
+		{
+            var httpClient = _httpClientFactory.CreateClient("AiModelCall");
+            // Serialize the request model to JSON
+            var options = new JsonSerializerOptions
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+            };
 
-	}
+            var jsonContent = JsonSerializer.Serialize(requestModel, options);
+            var httpContent = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+
+            var httpResponse = await httpClient.PostAsync(requestModel.UrlPath, httpContent);
+
+            if (httpResponse.IsSuccessStatusCode)
+            {
+                var responseContent = await httpResponse.Content.ReadAsStringAsync();
+
+
+
+
+                var doc = JsonDocument.Parse(responseContent);
+                var root = doc.RootElement;
+                var results = new List<PredictionResponse>();
+
+                foreach (var item in root.EnumerateArray())
+                {
+                    var prediction = new PredictionResponse
+                    {
+                        Date = item.GetProperty("date").GetDateTime(),
+                        Observed = item.GetProperty("observed").GetSingle(),
+                        IsAnomaly = item.GetProperty("isAnomaly").GetBoolean(),
+                        Residual = item.GetProperty("residual").ValueKind == JsonValueKind.Null
+                                   ? (float?)null
+                                   : item.GetProperty("residual").GetSingle(),
+                        Title = item.GetProperty("title").GetString()
+                    };
+
+                    results.Add(prediction);
+                }
+
+                return results;
+
+
+
+                // Deserialize JSON response
+                var result = JsonSerializer.Deserialize<List<PredictionResponse>>(responseContent, new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                });
+
+                return result ?? new List<PredictionResponse>();
+            }
+            else
+            {
+                throw new HttpRequestException($"Request failed with status code {httpResponse.StatusCode}");
+            }
+
+        }
+
+    }
 }

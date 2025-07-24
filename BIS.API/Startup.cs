@@ -7,6 +7,7 @@ using BIS.DB;
 using BIS.DB.Implements;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Net.Http.Headers;
 using Newtonsoft.Json;
 
 namespace BIS.API
@@ -49,7 +50,13 @@ namespace BIS.API
 			//           .AllowAnyHeader();
 			//}));
 			services.AddSignalR();
-			services.AddResponseCompression(options =>
+            services.AddHttpClient("AiModelCall", httpClient =>
+            {
+                httpClient.BaseAddress = new Uri("http://127.0.0.1:8000/");
+                httpClient.DefaultRequestHeaders.Add(HeaderNames.Accept, "application/json");
+            });
+
+            services.AddResponseCompression(options =>
 			{
 				options.EnableForHttps = true;
 			});
