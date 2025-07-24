@@ -10,13 +10,25 @@
     </div>
   </mat-card-header>
 </mat-card>
-<mat-card-content>
+<mat-card-content class="card-content">
+  <div class="row">
+    <div class="col-md-3 offset-9">
+      <h4>
+        Past Detection
+        <label style="font-weight: normal; font-size: 1.5rem;">
+          <mat-slide-toggle [(ngModel)]="filterModel.isFuturePrediction" (change)="setPath()">
+            Future Prediction
+          </mat-slide-toggle>
+        </label>
+      </h4>
+    </div>
+  </div>
   <div class="row">
     <div class="col-md-6">
       <mat-form-field>
         <mat-label>Date Range</mat-label>
-        <mat-date-range-input [rangePicker]="picker">
-          <input matStartDate [(ngModel)]="filterModel.startdate" placeholder="Start date" #dateRangeStart
+        <mat-date-range-input [rangePicker]="picker" [min]="filterModel.isFuturePrediction ? currentDate : null">
+          <input matStartDate matInput [(ngModel)]="filterModel.startdate" placeholder="Start date" #dateRangeStart
             [max]="currentDate">
           <input matEndDate [(ngModel)]="filterModel.enddate" placeholder="End date" #dateRangeEnd [max]="currentDate">
         </mat-date-range-input>
@@ -96,23 +108,47 @@
       <button class="btn btn-sm btn-primary w-100" type="button" (click)="save()">Start</button>
     </div>
   </div>
-  <!-- <div class="row">
-    <div class="col-md-12">
-      <div class="card shadow-sm p-3 chart-card">
-        <div class="card-body">
-          <h5 class="card-title">Model Visualization</h5>
-          <canvas *ngIf="lineChartData?.datasets?.length > 0" baseChart [data]="lineChartData"
-            [options]="lineChartOptions" [type]="'line'">
-          </canvas>
-          <div *ngIf="lineChartData?.datasets?.length === 0" class="text-center mt-3 text-muted">
-            No data available to display.
-          </div>
+
+  <br>
+
+<!-- Plotly Chart For AI-Analysis -->
+<div class="row" *ngIf="plotlyData">
+        <div class="card">
+            <div class="plot-wrapper">
+                <plotly-plot [data]="plotlyData" [layout]="plotlyLayout" [config]="plotlyConfig" (plotlyClick)="onPointClick($event)">
+                </plotly-plot>
+            </div>
         </div>
-      </div>
     </div>
-  </div> -->
 
+    <br>
 
-
+      <div class="row" *ngIf="(masterDataList$ | async)?.length > 0">
+      <div class="table-container">
+          <table>
+              <thead>
+                  <tr>
+                      <!-- <th>#</th> -->
+                      <ng-container *ngFor="let item of tableHeader$ | async">
+                          <th *ngIf="!['Id','Status','UserId','Fmn', 'CreatedBy', 'CreatedOn', 'IsActive', 'IsDeleted', 'CorpsId', 'DivisionId','ReportedDate'].includes(item)"
+                              class="space">
+                              {{ item }}
+                          </th>
+                      </ng-container>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr *ngFor="let item of masterDataList$ | async; let i = index">
+                      <ng-container *ngFor="let header of tableHeader$ | async">
+                          <td *ngIf="!['Id','Status','UserId','Fmn', 'CreatedBy', 'CreatedOn', 'IsActive', 'IsDeleted', 'CorpsId', 'DivisionId','ReportedDate'].includes(header)"
+                              class="space">
+                              {{ item[header] }}
+                          </td>
+                      </ng-container>
+                  </tr>
+              </tbody>
+          </table>
+      </div>
+  </div>
 
 </mat-card-content>

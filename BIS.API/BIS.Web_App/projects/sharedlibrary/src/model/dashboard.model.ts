@@ -26,6 +26,7 @@ export class PredictionModel{
     enddate:Date;
     granularity:string;
     urlPath:string;
+    isFuturePrediction:boolean = false;
 }
 export class DashboardInputCount{
     totalInputCount:number;

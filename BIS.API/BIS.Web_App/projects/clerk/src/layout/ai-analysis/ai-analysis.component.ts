@@ -22,11 +22,11 @@ export class AIAnalysisComponent {
       description:'Built with Facebook’s Prophet model, this tool provides robust forecasts for time-series data with support for seasonality, holidays, and trend changes. Ideal for business metrics, traffic, or demand forecasting'
     },{
       name:'Strange Event',
-      path:'activity-trend',
+      path:'detect-isolation-anomalies-single/',
       description:'testing'
     },{
       name:'Deep Anomaly',
-      path:'detect-anomalies/',
+      path:'detect-lstm-anomalies/',
       description:'This LSTM-based model leverages deep learning to capture complex temporal patterns in sequential data. Ideal for high-accuracy forecasting in dynamic environments like finance, energy, or sensor networks'
     }
   ]
