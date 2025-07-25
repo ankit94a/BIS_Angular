@@ -14,5 +14,16 @@ namespace BIS.Common.Entities.Auth
         public string UserName { get; set; }
         [Required]
         public string Password { get; set; }
+        public string Code { get; set; }
+        public string Token { get; set; }
+    }
+    public class BlockStatus
+    {
+        public bool IsBlocked { get; set; }
+        public TimeSpan? RemainingTime { get; set; }
+    }
+    public static class CaptchaStore
+    {
+        public static Dictionary<string, string> Captchas = new();
     }
 }

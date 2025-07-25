@@ -10,7 +10,7 @@ namespace BIS.DB.Interfaces
 {
     public interface IUserManager
     {
-        public UserDetail GetUserByEmailPassword(string email, string password);
+        public UserDetail GetUserByEmail(string email);
         public List<Menus> GetMenuByRoleCorpsAndDivision(long corpsId, long divisionId, long roleId,RoleType roleType);
         public List<UserDetail> GetUserByCoprs(long corpsId);
 

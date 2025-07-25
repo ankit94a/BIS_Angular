@@ -1,4 +1,6 @@
 ﻿using BIS.Api.Authorization;
+using BIS.API.Helpers;
+using BIS.DB.Implements;
 using InSync.Api.Authorization;
 
 namespace BIS.API.IOC
@@ -10,6 +12,7 @@ namespace BIS.API.IOC
             Configure(services, BIS.Manager.IOC.Module.GetTypes());
             Configure(services, BIS.DB.IOC.Module.GetTypes());
             services.AddScoped(typeof(IJwtManager), typeof(JwtManager));
+            services.AddScoped<LoginAttempt>();
         }
 
         private static void Configure(IServiceCollection services, Dictionary<Type, Type> types)

@@ -5,6 +5,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using BIS.Common.Entities;
+using BIS.Common.Helpers;
 using BIS.DB.Interfaces;
 using static BIS.Common.Enum.Enum;
 
@@ -20,11 +21,11 @@ namespace BIS.DB.Implements
             _httpClientFactory = httpClientFactory;
         }
 
-        public UserDetail GetUserByEmailPassword(string email, string password)
-		{
-			return _userDB.GetUserByEmailPassword(email, password);
-		}
-		public List<Menus> GetMenuByRoleCorpsAndDivision(long corpsId, long divisionId, long roleId, RoleType roleType)
+        public UserDetail GetUserByEmail(string email)
+        {
+            return _userDB.GetUserByEmail(email);
+        }
+        public List<Menus> GetMenuByRoleCorpsAndDivision(long corpsId, long divisionId, long roleId, RoleType roleType)
 		{
 			if (roleType == RoleType.StaffEc || roleType == RoleType.G1IntEc || roleType == RoleType.ColIntEc || roleType == RoleType.BrigInt || roleType == RoleType.MggsEc || roleType == RoleType.GocEc)
 			{
@@ -42,7 +43,19 @@ namespace BIS.DB.Implements
 		}
 		public bool UpdatePassword(UserDetail user)
 		{
-			return _userDB.UpdatePassword(user);
+            try
+            {
+                if (string.IsNullOrWhiteSpace(user.Password)) return false;
+
+
+                user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password, workFactor: 12);
+                return _userDB.UpdatePassword(user);
+            }
+            catch(Exception ex)
+            {
+                BISLogger.Error(ex, "some error happens while updating user password");
+            }
+            return false;
 		}
 		public List<UserDetail> GetAllUsers()
 		{

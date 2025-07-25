@@ -22,20 +22,21 @@ namespace BIS.DB.Implements
 			this.dbContext = dbContext;
 			_serviceProvider = serviceProvider;
 		}
-		public UserDetail GetUserByEmailPassword(string username, string password)
-		{
-			try
-			{
-				var user = dbContext.UserDetails.Where(us => us.Username == username && us.Password == password).FirstOrDefault();
-				return user;
-			}
-			catch (Exception ex)
-			{
-				BISLogger.Error(ex, "User Loggin error in method GetUserByEmailPassword");
-				throw;
-			}
-		}
-		public List<Menus> GetMenuByRoleCorpsAndDivision(long corpsId, long divisionId, long roleId, RoleType roleType)
+        public UserDetail GetUserByEmail(string username)
+        {
+            try
+            {
+                var user = dbContext.UserDetails.Where(us => us.Username == username).FirstOrDefault();
+                return user;
+            }
+            catch (Exception ex)
+            {
+                BISLogger.Error(ex, "User Loggin error in method GetUserByEmailPassword");
+                throw;
+            }
+        }
+
+        public List<Menus> GetMenuByRoleCorpsAndDivision(long corpsId, long divisionId, long roleId, RoleType roleType)
 		{
 			try
 			{

@@ -76,8 +76,6 @@ export const routes: Routes = [
                 canActivate: [AuthGuard,PermissionGuard],
                 data: { allowedRoles: ['8'] },
               },
-   
-              ,
               {
                 path:'master-data-form',
                 loadComponent : () =>import('projects/clerk/src/layout/master-data/master-data-form/master-data-form.component').then(m => m.MasterDataFormComponent),
@@ -119,7 +117,7 @@ export const routes: Routes = [
               {
                 path: 'forbidden',
                 component: ForbiddenComponent
-              },
+              }
 
 
         ]
